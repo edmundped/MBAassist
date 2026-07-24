@@ -646,7 +646,10 @@ body.dark .mini-card{background:#171a20;border-color:#2b3038}
 .hero.course-section.hidden{display:none!important}
 .home-hero{
   display:grid;grid-template-columns:1fr;gap:16px;align-items:stretch;
-  background:#fff;border:1px solid var(--rule);border-radius:8px;padding:18px;
+  background:
+    linear-gradient(90deg,rgba(255,255,255,.95),rgba(255,255,255,.88)),
+    url("assets/finance-bg.png") left center/cover no-repeat;
+  border:1px solid var(--rule);border-radius:8px;padding:18px;
 }
 .home-copy{display:grid;align-content:center;gap:12px}
 .home-copy h2{
@@ -675,7 +678,7 @@ body.dark .mini-card{background:#171a20;border-color:#2b3038}
 }
 .dock{grid-template-columns:repeat(5,1fr);width:min(calc(100% - 18px),520px)}
 .dock button{font-size:9px}
-body.dark .home-hero{background:#171a20;border-color:#2b3038}
+body.dark .home-hero{background:linear-gradient(90deg,rgba(23,26,32,.96),rgba(23,26,32,.88)),url("assets/finance-bg.png") left center/cover no-repeat;border-color:#2b3038}
 body.dark .home-photo{background:#1d2128}
 body.dark .home-photo:after{background:linear-gradient(90deg,rgba(23,26,32,.28),transparent 42%),linear-gradient(0deg,rgba(0,0,0,.28),transparent 44%)}
 @media (min-width:840px){
@@ -687,6 +690,47 @@ body.dark .home-photo:after{background:linear-gradient(90deg,rgba(23,26,32,.28),
   .home-copy h2{font-size:31px}
   .home-photo{min-height:250px}
 }
+
+
+
+/* ============ portable module polish ============ */
+body:before{
+  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+    linear-gradient(180deg,rgba(247,248,250,.86),rgba(247,248,250,.96) 38%,rgba(247,248,250,1) 72%),
+    url("assets/finance-bg.png") center top/cover no-repeat;
+}
+.quiz-scope{margin:10px 0 4px;max-width:420px}
+.quiz-scope label{display:grid;gap:5px;margin:0;font-size:12px;color:var(--dim)}
+.quiz-scope select{
+  min-height:44px;border:1px solid var(--rule);border-radius:7px;background:#fff;color:var(--ink);
+  padding:0 11px;font:inherit;font-size:14px;
+}
+.home-path .quick{
+  position:relative;overflow:hidden;background:
+    linear-gradient(180deg,#fff 0%,#fff 62%,#f8fafc 100%);
+}
+.home-path .quick:after{
+  content:"";position:absolute;right:-24px;bottom:-28px;width:88px;height:88px;border-radius:50%;
+  background:rgba(15,118,110,.08);pointer-events:none;
+}
+.module-strip{
+  display:grid;grid-template-columns:1fr;gap:10px;margin-top:12px;
+}
+.module-chip{
+  border:1px solid var(--rule);border-radius:8px;background:#fff;padding:12px;
+}
+.module-chip b{display:block;font-size:13px;color:var(--ink)}
+.module-chip span{display:block;font-size:12px;color:var(--dim);margin-top:3px}
+body.dark .quiz-scope select,body.dark .module-chip{background:#171a20;border-color:#2b3038;color:#f4f6f8}
+body.dark .home-path .quick{background:linear-gradient(180deg,#171a20 0%,#171a20 62%,#1d2128 100%)}
+body.dark:before{
+  background:
+    linear-gradient(180deg,rgba(15,17,21,.9),rgba(15,17,21,.96) 42%,rgba(15,17,21,1) 72%),
+    url("assets/finance-bg.png") center top/cover no-repeat;
+  filter:invert(1) hue-rotate(170deg) saturate(.7);opacity:.38;
+}
+@media (min-width:840px){.module-strip{grid-template-columns:repeat(3,minmax(0,1fr))}}
 
 </style>
 </head>
@@ -711,7 +755,7 @@ body.dark .home-photo:after{background:linear-gradient(90deg,rgba(23,26,32,.28),
 <section id="homeSection" class="hero course-section" aria-label="MBA512 home">
   <div class="home-hero">
     <div class="home-copy">
-      <span class="formula-count">Quiz 1 · Lecture 1 and 2</span>
+      <span class="formula-count">Quiz 1 · Lecture 1 and 3</span>
       <h2>Study Managerial Finance like a decision-maker.</h2>
       <p>Move from guided lecture notes to formative checks, case analysis, timed quiz practice, and step-by-step calculator support.</p>
       <div class="home-actions">
@@ -724,10 +768,15 @@ body.dark .home-photo:after{background:linear-gradient(90deg,rgba(23,26,32,.28),
     </figure>
   </div>
   <div class="home-path">
-    <button class="quick" data-mode-jump="learn" type="button"><span class="qi">01</span><b>Learn</b><small>Pick a lecture topic and get coaching.</small></button>
-    <button class="quick" data-mode-jump="quiz" type="button"><span class="qi">02</span><b>Quiz</b><small>20 questions from the Quiz 1 bank.</small></button>
+    <button class="quick" data-mode-jump="learn" type="button"><span class="qi">01</span><b>Learn</b><small>Lecture modules with coaching and checks.</small></button>
+    <button class="quick" data-mode-jump="quiz" type="button"><span class="qi">02</span><b>Quiz</b><small>Quiz 1, lecture drills, and mastery sets.</small></button>
     <button class="quick" data-mode-jump="cases" type="button"><span class="qi">03</span><b>Cases</b><small>Attempt first, then reveal analysis.</small></button>
     <button class="quick" data-mode-jump="calc" type="button"><span class="qi">04</span><b>Calculator</b><small>Check formulas and workings.</small></button>
+  </div>
+  <div class="module-strip" aria-label="Released modules">
+    <div class="module-chip"><b>Quiz 1 Ready</b><span>Lecture 1 + Lecture 3 practice bank</span></div>
+    <div class="module-chip"><b>Portable Sessions</b><span>Progress stays with this browser/device</span></div>
+    <div class="module-chip"><b>Offline App Shell</b><span>Core app and hero image cache after first load</span></div>
   </div>
 </section>
 
@@ -744,7 +793,7 @@ body.dark .home-photo:after{background:linear-gradient(90deg,rgba(23,26,32,.28),
   <section id="learnSection" class="course-section hidden">
     <div class="learning-band">
       <h2>MBA512 learning space</h2>
-      <p>Focused prep for Lecture 1 and Lecture 2. Next quiz target: Sunday, July 26, 2026.</p>
+      <p>Focused prep for Quiz 1: Lecture 1 and Lecture 3. Lecture-specific drills stay available for every released lecture.</p>
       <div class="statgrid" id="masteryStats"></div>
       <div class="quiz-actions">
         <button class="primary-action" id="startQuizHero" type="button">Take 20-question quiz</button>
@@ -778,8 +827,8 @@ body.dark .home-photo:after{background:linear-gradient(90deg,rgba(23,26,32,.28),
       <ul class="study-list">
         <li>Classify decisions first: capital budgeting invests in real assets; financing raises money through debt or equity; payout returns cash to owners.</li>
         <li>For Lecture 1, master shareholders, board oversight, agency problems, real vs financial assets, primary vs secondary markets, and intermediaries.</li>
-        <li>For Lecture 2, master ratio purpose, MVA/EVA, ROC/ROA/ROE, efficiency ratios, leverage, liquidity, DuPont, and sustainable growth.</li>
-        <li>For TVM sample questions, identify whether the cash flow is a lump sum, annuity, annuity due, perpetuity, or delayed/growing stream before calculating.</li>
+        <li>For Lecture 3, master PV, FV, rates, time, multiple cash flows, annuities, perpetuities, and annuity due timing.</li>
+        <li>Use Lecture 2 ratio drills separately when you want performance-analysis practice.</li>
       </ul>
     </div>
     <div class="learning-band">
@@ -791,8 +840,17 @@ body.dark .home-photo:after{background:linear-gradient(90deg,rgba(23,26,32,.28),
   <section id="quizSection" class="course-section hidden">
     <div class="learning-band">
       <h2>Quiz trainer</h2>
-      <p>Each attempt serves 20 questions from the stash, including the lecturer sample set. Grade the attempt, review every explanation, then retake weak topics.</p>
+      <p>Choose Quiz 1 or a specific lecture. Each attempt serves up to 20 questions, scores the attempt, and keeps progress inside this portable browser session.</p>
       <div class="quiz-meta" id="quizMeta"></div>
+      <div class="quiz-scope">
+        <label>Practice set<select id="quizScope">
+          <option value="quiz1">Quiz 1: Lecture 1 + Lecture 3</option>
+          <option value="lecture1">Lecture 1 only</option>
+          <option value="lecture2">Lecture 2 only</option>
+          <option value="lecture3">Lecture 3 only</option>
+          <option value="all">All released lectures</option>
+        </select></label>
+      </div>
       <div class="quiz-actions">
         <button class="primary-action" id="startQuiz" type="button">Take quiz</button>
         <button class="secondary-action" id="weakQuiz" type="button">Drill weak topics</button>
@@ -1455,9 +1513,12 @@ const TOPICS = [
   ["governance","Lecture 1: Governance & agency"],
   ["decisions","Lecture 1: Finance decisions"],
   ["markets","Lecture 1: Markets & intermediaries"],
-  ["tvm","Quiz 1: TVM foundations"],
   ["performance","Lecture 2: Performance measures"],
-  ["ratios","Lecture 2: Ratios & DuPont"]
+  ["ratios","Lecture 2: Ratios & DuPont"],
+  ["tvm","Lecture 3: TVM foundations"],
+  ["l3_cashflows","Lecture 3: Multiple cash flows"],
+  ["l3_annuity","Lecture 3: Annuities & perpetuities"],
+  ["l3_applications","Lecture 3: Applications"]
 ];
 
 const Q_BANK = [
@@ -1516,7 +1577,29 @@ const Q_BANK = [
 {id:"l2o",topic:"ratios",q:"Sustainable growth rate equals:",a:["Plowback ratio x ROE","Dividend payout x sales","MVA x EVA","Debt ratio x asset turnover"],c:0,e:"Growth from retained earnings depends on retention and return on equity."},
 {id:"l2p",topic:"ratios",q:"The plowback ratio equals:",a:["1 - payout ratio","Dividends / earnings","Debt / equity","Sales / assets"],c:0,e:"The firm either pays earnings out or retains them."},
 {id:"l2q",topic:"ratios",q:"Ratio analysis is most useful when compared with:",a:["Trends and competitors","Only the CEO's target","Only the tax rate","Only share par value"],c:0,e:"Ratios need benchmarks: time trends and peer comparisons."},
-{id:"l2r",topic:"performance",q:"A drawback of market value measures is that stock price may move because of:",a:["Economic events outside management control","The number of accountants","The par value of shares only","Inventory count frequency only"],c:0,e:"Market prices reflect expectations and external events, not just manager performance."}
+{id:"l2r",topic:"performance",q:"A drawback of market value measures is that stock price may move because of:",a:["Economic events outside management control","The number of accountants","The par value of shares only","Inventory count frequency only"],c:0,e:"Market prices reflect expectations and external events, not just manager performance."},
+{id:"l3a",topic:"tvm",q:"A present value problem asks you to find:",a:["The value today of future cash flow","The future sales level only","The tax rate on dividends","The number of shares outstanding"],c:0,e:"Present value discounts future cash flows back to today."},
+{id:"l3b",topic:"tvm",q:"A future value problem asks you to find:",a:["What an investment will grow to after earning interest","Only the current market price","Only the book value of equity","The dividend payout ratio"],c:0,e:"Future value compounds money forward through time."},
+{id:"l3c",topic:"tvm",q:"Simple interest differs from compound interest because simple interest:",a:["Earns interest only on the original principal","Earns interest on previous interest","Requires monthly compounding","Always gives a higher ending value"],c:0,e:"Simple interest does not pay interest on interest."},
+{id:"l3d",topic:"tvm",q:"If $1,000 earns 6% simple interest for 5 years, the ending balance is:",a:["$1,060","$1,300","$1,338.23","$1,500"],c:1,e:"Simple interest is 1,000 x 6% x 5 = 300; ending balance = 1,300."},
+{id:"l3e",topic:"tvm",q:"If $1,000 earns 6% compound interest for 5 years, the formula is:",a:["1,000 x (1.06)^5","1,000 + 6 x 5","1,000 / (1.06)^5","1,000 x 5 / .06"],c:0,e:"Compound future value is PV x (1+r)^t."},
+{id:"l3f",topic:"tvm",q:"Finding present value is often called:",a:["Discounting","Compounding","Payout","Diversifying"],c:0,e:"Discounting moves future cash flows back to today's value."},
+{id:"l3g",topic:"tvm",q:"The discount rate is represented by:",a:["r","t","FV only","PV only"],c:0,e:"In PV and FV formulas, r is the interest or discount rate per period."},
+{id:"l3h",topic:"tvm",q:"To solve for the interest rate when PV, FV and t are known, use:",a:["r = (FV/PV)^(1/t) - 1","r = FV x PV x t","r = PV/FV - t","r = t/(FV/PV)"],c:0,e:"Rearranging FV = PV(1+r)^t gives r = (FV/PV)^(1/t)-1."},
+{id:"l3i",topic:"tvm",q:"To solve for time when PV, FV and r are known, use:",a:["t = ln(FV/PV) / ln(1+r)","t = FV/PV x r","t = r / ln(FV)","t = PV / FV"],c:0,e:"Solving for the exponent requires logarithms."},
+{id:"l3j",topic:"tvm",q:"The Rule of 72 estimates:",a:["Years to double = 72 / interest rate percent","PV of a perpetuity","The tax rate","The payout ratio"],c:0,e:"Rule of 72 is a quick doubling-time approximation."},
+{id:"l3k",topic:"l3_cashflows",q:"When valuing multiple cash flows, the key rule is:",a:["Only compare cash flows at the same point in time","Always add nominal amounts directly","Ignore the discount rate","Use ROE for every cash flow"],c:0,e:"Move all cash flows to a common date before comparing or adding."},
+{id:"l3l",topic:"l3_cashflows",q:"To find the future value of uneven cash flows, you should:",a:["Compound each cash flow to the target date and add","Average the cash flows only","Divide every cash flow by the number of years","Use only the final cash flow"],c:0,e:"Uneven cash flows have no single annuity shortcut; move each one separately."},
+{id:"l3m",topic:"l3_cashflows",q:"For the dealer choice of $15,500 now versus $8,000 now plus $4,000 in years 1 and 2, the buyer should compare:",a:["Present values today","Book values","Market-to-book ratios","Coupon rates"],c:0,e:"Both options must be expressed at today’s value to decide which is cheaper."},
+{id:"l3n",topic:"l3_annuity",q:"An annuity is:",a:["Equal cash flows for a limited number of periods","Unequal cash flows forever","A single future payment","Only a stock dividend"],c:0,e:"Annuities are level cash flows that stop after a finite number of payments."},
+{id:"l3o",topic:"l3_annuity",q:"A perpetuity is:",a:["Equal cash flows forever","Equal cash flows for 3 years only","A single cash flow","A debt ratio"],c:0,e:"Perpetuities continue indefinitely."},
+{id:"l3p",topic:"l3_annuity",q:"PV of a regular perpetuity that starts one period from now is:",a:["C/r","C x r","C x t","C/(r-g) only"],c:0,e:"A level perpetuity is valued as C divided by r."},
+{id:"l3q",topic:"l3_annuity",q:"A delayed perpetuity payment starting in year 4 has its C/r value located at:",a:["End of year 3","Today","End of year 4","End of year 5"],c:0,e:"C/r sits one period before the first payment, so year 4 payments value at year 3."},
+{id:"l3r",topic:"l3_annuity",q:"An annuity due differs from an ordinary annuity because payments:",a:["Start immediately","Are unequal","Last forever","Never earn interest"],c:0,e:"An annuity due begins today, giving each cash flow one extra compounding period."},
+{id:"l3s",topic:"l3_annuity",q:"PV of an annuity due equals ordinary annuity PV:",a:["Multiplied by (1+r)","Divided by (1+r)","Multiplied by t","Minus the first payment"],c:0,e:"Earlier payments make the annuity due more valuable by one period of interest."},
+{id:"l3t",topic:"l3_annuity",q:"A growing perpetuity requires which condition for the formula to work?",a:["r greater than g","g greater than r","r equal to g","No discount rate"],c:0,e:"PV = C/(r-g) is valid when the discount rate exceeds growth."},
+{id:"l3u",topic:"l3_applications",q:"In retirement planning, the amount needed at retirement should include:",a:["Large one-time purchases plus PV of future living expenses","Only current salary","Only book value of assets","Only last year's dividends"],c:0,e:"Lecture 3 applies TVM by valuing the house cost and retirement spending at the retirement date."},
+{id:"l3v",topic:"l3_applications",q:"If you already have savings today for a future goal, the correct next step is to:",a:["Compound existing savings to the target date before solving for remaining deposits","Ignore existing savings","Treat existing savings as debt","Subtract it from annual payment without compounding"],c:0,e:"Existing savings grow over time and reduce the remaining amount that must be funded by deposits."}
 ];
 
 const CASES = [
@@ -1534,8 +1617,13 @@ const LECTURES = [
   ]},
   {id:"lecture2",title:"Lecture 2 - Measuring Corporate Performance",topics:[
     {id:"performance",title:"MVA, EVA, ROA, ROC and ROE",explain:"Performance analysis asks whether the firm is creating value after considering the capital invested. MVA uses market values; EVA deducts the cost of capital; accounting returns show profitability from different investor viewpoints.",tips:["MVA = market value of equity minus book value of equity.","EVA = NOPAT minus cost of capital times total capitalization.","ROA and ROC use NOPAT because they measure return to all investors.","ROE uses net income because it measures return to shareholders."]},
-    {id:"ratios",title:"Efficiency, leverage, liquidity and DuPont",explain:"Ratios turn financial statements into diagnostic signals. They are most useful when compared against the same firm over time and against competitors. DuPont connects profitability to asset use and leverage.",tips:["Efficiency: asset turnover, receivables turnover, inventory turnover.","Leverage: debt ratios, debt-to-equity, times interest earned, cash coverage.","Liquidity: net working capital, current ratio, quick ratio, cash ratio.","DuPont ROA = asset turnover x operating profit margin; sustainable growth = plowback x ROE."]},
-    {id:"tvm",title:"Time value foundations for Quiz 1",explain:"The sample quiz includes TVM, annuities and perpetuities. Before calculating, identify the cash-flow pattern: one amount, equal payments that stop, payments forever, or first payment today.",tips:["Lump sum: move one cash flow with (1+r)^t.","Ordinary annuity: first payment one period from now.","Annuity due: first payment today, so multiply ordinary annuity value by (1+r).","Perpetuity: PV = C/r and the value sits one period before the first payment."]}
+    {id:"ratios",title:"Efficiency, leverage, liquidity and DuPont",explain:"Ratios turn financial statements into diagnostic signals. They are most useful when compared against the same firm over time and against competitors. DuPont connects profitability to asset use and leverage.",tips:["Efficiency: asset turnover, receivables turnover, inventory turnover.","Leverage: debt ratios, debt-to-equity, times interest earned, cash coverage.","Liquidity: net working capital, current ratio, quick ratio, cash ratio.","DuPont ROA = asset turnover x operating profit margin; sustainable growth = plowback x ROE."]}
+  ]},
+  {id:"lecture3",title:"Lecture 3 - Time Value of Money & Applications",topics:[
+    {id:"tvm",title:"PV, FV, rates and time",explain:"Lecture 3 is about comparing money across time. Future value compounds money forward; present value discounts future money back to today. Given any three of PV, FV, r and t, solve for the fourth.",tips:["FV = PV x (1+r)^t.","PV = FV / (1+r)^t.","r = (FV/PV)^(1/t) - 1.","t = ln(FV/PV) / ln(1+r)."]},
+    {id:"l3_cashflows",title:"Multiple cash flows",explain:"When cash flows differ across years, move each cash flow to the same date before adding or comparing. That is why a dealer cash-price option must be compared with the present value of the instalment option.",tips:["Only compare cash flows at the same point in time.","For PV, discount each cash flow back to today.","For FV, compound each cash flow to the target date.","Uneven cash flows do not use the annuity shortcut."]},
+    {id:"l3_annuity",title:"Annuities, perpetuities and annuity due",explain:"Level cash flows create shortcuts. An annuity is finite; a perpetuity lasts forever. An annuity due starts immediately, so it is worth more than an ordinary annuity with the same payment, rate and length.",tips:["Regular annuity: first payment one period from now.","Annuity due: first payment today; multiply ordinary value by (1+r).","Perpetuity: PV = C/r and sits one period before first payment.","Growing perpetuity needs r > g."]},
+    {id:"l3_applications",title:"Real-world TVM applications",explain:"Lecture 3 uses TVM for decisions like how much to save, mortgage affordability, buy-versus-lease choices, investment returns and project evaluation. The workflow is always timeline first, formula second.",tips:["Draw the timeline before choosing a formula.","Separate one-time costs from recurring cash flows.","Compound existing savings to the target date.","Use the calculator tab to check workings after you understand the setup."]}
   ]}
 ];
 
@@ -1565,6 +1653,22 @@ function saveMastery(){try{localStorage.setItem(masteryStorageKey(),JSON.stringi
 loadMastery();
 function topicName(id){return (TOPICS.find(t=>t[0]===id)||[id,id])[1];}
 function shuffle(arr){return [...arr].sort(()=>Math.random()-.5);}
+function lectureTopicIds(lectureId){
+  const lecture=LECTURES.find(l=>l.id===lectureId);
+  return lecture ? lecture.topics.map(t=>t.id) : [];
+}
+function currentQuizScope(){return $("#quizScope")?.value || "quiz1";}
+function scopeTopicIds(scope){
+  if(scope==="quiz1") return [...new Set([...lectureTopicIds("lecture1"),...lectureTopicIds("lecture3")])];
+  if(scope==="all") return [...new Set(LECTURES.flatMap(l=>l.topics.map(t=>t.id)))];
+  return lectureTopicIds(scope);
+}
+function scopeLabel(scope){
+  if(scope==="quiz1") return "Quiz 1: Lecture 1 + Lecture 3";
+  if(scope==="all") return "All released lectures";
+  const lecture=LECTURES.find(l=>l.id===scope);
+  return lecture ? lecture.title : "Practice set";
+}
 function topicScore(topic){
   const qs=Q_BANK.filter(q=>q.topic===topic);
   if(!qs.length) return 0;
@@ -1650,14 +1754,21 @@ function renderMastery(){
     return `<div class="topic-card"><strong>${name}</strong><span>${weak} · ${pct}% mastered</span><div class="meter"><i style="width:${pct}%"></i></div></div>`;
   }).join("");
   const meta=$("#quizMeta");
-  if(meta) meta.innerHTML=`<span>${Q_BANK.filter(q=>q.sample).length} lecturer sample questions</span><span>${Q_BANK.length} total questions</span><span>${overall}% total mastery</span>`;
+  if(meta) {
+    const scope=currentQuizScope();
+    const scopedQuestions=Q_BANK.filter(q=>scopeTopicIds(scope).includes(q.topic));
+    meta.innerHTML=`<span>${scopeLabel(scope)}</span><span>${Math.min(20,scopedQuestions.length)} per attempt</span><span>${scopedQuestions.length} available questions</span><span>${overall}% total mastery</span>`;
+  }
 }
 
 function pickQuiz(weakOnly=false){
   quizMode=weakOnly?"weak":"standard"; quizGraded=false;
-  const weakTopics=TOPICS.filter(t=>topicScore(t[0])<70).map(t=>t[0]);
-  let pool=weakOnly && weakTopics.length ? Q_BANK.filter(q=>weakTopics.includes(q.topic)) : Q_BANK;
-  const sample=shuffle(pool.filter(q=>q.sample)).slice(0, weakOnly?4:8);
+  const scope=currentQuizScope();
+  const allowedTopics=scopeTopicIds(scope);
+  const weakTopics=allowedTopics.filter(t=>topicScore(t)<70);
+  let pool=Q_BANK.filter(q=>allowedTopics.includes(q.topic));
+  if(weakOnly && weakTopics.length) pool=pool.filter(q=>weakTopics.includes(q.topic));
+  const sample=shuffle(pool.filter(q=>q.sample)).slice(0, scope==="quiz1" ? 8 : 3);
   const rest=shuffle(pool.filter(q=>!sample.includes(q))).slice(0,20-sample.length);
   currentQuiz=shuffle([...sample,...rest]).slice(0,20);
   renderQuiz();
@@ -1666,8 +1777,8 @@ function pickQuiz(weakOnly=false){
 function renderQuiz(){
   const box=$("#quizBox"); if(!box) return;
   box.innerHTML=`<div class="learning-band quiz-card">
-    <h3>${quizMode==="weak"?"Weak-topic drill":"Quiz 1: Lecture 1 and 2"}</h3>
-    <p>Answer all 20 questions, then grade. Quiz 1 is locked to Lecture 1 and Lecture 2 until the next course update.</p>
+    <h3>${quizMode==="weak"?"Weak-topic drill":scopeLabel(currentQuizScope())}</h3>
+    <p>${currentQuizScope()==="quiz1"?"Quiz 1 is focused on Lecture 1 and Lecture 3.":"Lecture drill mode uses only the selected lecture."} Answer up to 20 questions, then review every explanation.</p>
     ${currentQuiz.map((q,ix)=>`<div class="question" data-q="${q.id}">
       <h4>${ix+1}. ${q.q}</h4>
       <div class="answers">${q.a.map((ans,ai)=>`<label><input type="radio" name="q_${q.id}" value="${ai}"><span>${String.fromCharCode(65+ai)}. ${ans}</span></label>`).join("")}</div>
@@ -1768,6 +1879,7 @@ renderList();
 renderSession();
 renderLearningStudio();
 renderMastery();
+const quizScope=$("#quizScope"); if(quizScope) quizScope.onchange=()=>{renderMastery(); currentQuiz=[]; $("#quizBox").innerHTML="";};
 renderCases();
 $("#startQuiz").onclick=()=>pickQuiz(false);
 $("#startQuizHero").onclick=()=>{setMode("quiz");pickQuiz(false);};

@@ -1,5 +1,5 @@
-const CACHE = "mba512-learning-space-v5";
-const APP_SHELL = ["./", "./index.html", "./manifest.webmanifest", "./assets/study-hero.png"];
+const CACHE = "mba512-learning-space-v6";
+const APP_SHELL = ["./", "./index.html", "./manifest.webmanifest", "./assets/study-hero.png", "./assets/finance-bg.png"];
 
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(APP_SHELL)));
