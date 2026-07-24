@@ -639,6 +639,55 @@ body.dark .mini-card{background:#171a20;border-color:#2b3038}
   .coach-grid{grid-template-columns:minmax(0,1fr) 380px}
 }
 
+
+
+/* ============ image-led homepage ============ */
+.hero.course-section{display:block}
+.hero.course-section.hidden{display:none!important}
+.home-hero{
+  display:grid;grid-template-columns:1fr;gap:16px;align-items:stretch;
+  background:#fff;border:1px solid var(--rule);border-radius:8px;padding:18px;
+}
+.home-copy{display:grid;align-content:center;gap:12px}
+.home-copy h2{
+  margin:0;color:var(--ink);font-size:38px;line-height:1.02;letter-spacing:0;font-weight:820;
+  max-width:650px;
+}
+.home-copy p{margin:0;color:var(--dim);font-size:16px;line-height:1.55;max-width:610px}
+.home-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}
+.home-photo{
+  margin:0;min-height:290px;border-radius:8px;overflow:hidden;position:relative;background:#edf1f5;
+}
+.home-photo:after{
+  content:"";position:absolute;inset:0;background:
+    linear-gradient(90deg,rgba(255,255,255,.35),transparent 42%),
+    linear-gradient(0deg,rgba(15,23,42,.18),transparent 44%);
+  pointer-events:none;
+}
+.home-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.home-path{
+  display:grid;grid-template-columns:1fr;gap:10px;margin-top:12px;
+}
+.home-path .quick{min-height:92px}
+.home-path .qi{
+  font-family:var(--mono);font-size:12px;color:#0f766e;background:#edf7f4;border:1px solid #cfeae2;
+  width:max-content;border-radius:999px;padding:3px 7px;margin-bottom:8px;
+}
+.dock{grid-template-columns:repeat(5,1fr);width:min(calc(100% - 18px),520px)}
+.dock button{font-size:9px}
+body.dark .home-hero{background:#171a20;border-color:#2b3038}
+body.dark .home-photo{background:#1d2128}
+body.dark .home-photo:after{background:linear-gradient(90deg,rgba(23,26,32,.28),transparent 42%),linear-gradient(0deg,rgba(0,0,0,.28),transparent 44%)}
+@media (min-width:840px){
+  .home-hero{grid-template-columns:minmax(0,.88fr) minmax(420px,1.12fr);min-height:430px;padding:22px}
+  .home-photo{min-height:386px}
+  .home-path{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+@media (max-width:520px){
+  .home-copy h2{font-size:31px}
+  .home-photo{min-height:250px}
+}
+
 </style>
 </head>
 <body>
@@ -659,61 +708,40 @@ body.dark .mini-card{background:#171a20;border-color:#2b3038}
   </div>
 </header>
 
-<section class="hero" aria-label="Quick start">
-  <div class="startcard">
-    <div class="starttop">
-      <div>
-        <h2>Master Lecture 1 and 2</h2>
-        <p>Start with quizzes, review cases, then use the calculator for workings.</p>
-      </div>
-      <span class="formula-count">Learning mode</span>
-    </div>
-    <div class="start-layout">
-      <div class="quickgrid">
-        <button class="quick" data-id="pv1"><span class="qi">↓</span><b>Value today</b><small>Present value</small></button>
-        <button class="quick" data-id="fv1"><span class="qi">↑</span><b>Value later</b><small>Future value</small></button>
-        <button class="quick" data-id="pva"><span class="qi">≋</span><b>Equal payments</b><small>Annuities</small></button>
-        <button class="quick" id="quickGuide"><span class="qi">✦</span><b>Not sure?</b><small>Use the formula guide</small></button>
-      </div>
-      <div class="finance-visual" aria-hidden="true">
-        <svg viewBox="0 0 360 190" role="img">
-          <defs>
-            <linearGradient id="flowGrad" x1="0" x2="1">
-              <stop offset="0" stop-color="#0f766e"/>
-              <stop offset="1" stop-color="#2563eb"/>
-            </linearGradient>
-          </defs>
-          <path d="M34 142 C96 88 133 154 188 96 S284 47 326 73" fill="none" stroke="url(#flowGrad)" stroke-width="10" stroke-linecap="round"/>
-          <g fill="#fff" stroke="#d9dee7">
-            <circle cx="45" cy="137" r="18"/><circle cx="184" cy="99" r="18"/><circle cx="318" cy="74" r="18"/>
-          </g>
-          <g fill="#15171a" font-family="ui-monospace,Menlo,monospace" font-size="12" font-weight="800">
-            <text x="36" y="142">PV</text><text x="176" y="104">r</text><text x="309" y="79">FV</text>
-          </g>
-          <rect x="34" y="28" width="292" height="32" rx="8" fill="#f8fafc" stroke="#d9dee7"/>
-          <rect x="52" y="46" width="72" height="78" rx="8" fill="#edf7f4" stroke="#cfeae2"/>
-          <rect x="144" y="77" width="72" height="47" rx="8" fill="#f1f4f8" stroke="#d9dee7"/>
-          <rect x="236" y="58" width="72" height="66" rx="8" fill="#eff6ff" stroke="#cbdcfb"/>
-        </svg>
-        <div>
-          <b>Quiz 1 map</b>
-          <span>Governance → markets → ratios → TVM</span>
-        </div>
+<section id="homeSection" class="hero course-section" aria-label="MBA512 home">
+  <div class="home-hero">
+    <div class="home-copy">
+      <span class="formula-count">Quiz 1 · Lecture 1 and 2</span>
+      <h2>Study Managerial Finance like a decision-maker.</h2>
+      <p>Move from guided lecture notes to formative checks, case analysis, timed quiz practice, and step-by-step calculator support.</p>
+      <div class="home-actions">
+        <button class="primary-action" data-mode-jump="learn" type="button">Start learning</button>
+        <button class="secondary-action" data-mode-jump="quiz" type="button">Take Quiz 1 practice</button>
       </div>
     </div>
+    <figure class="home-photo">
+      <img src="assets/study-hero.png" alt="MBA students studying finance together with charts and notes">
+    </figure>
+  </div>
+  <div class="home-path">
+    <button class="quick" data-mode-jump="learn" type="button"><span class="qi">01</span><b>Learn</b><small>Pick a lecture topic and get coaching.</small></button>
+    <button class="quick" data-mode-jump="quiz" type="button"><span class="qi">02</span><b>Quiz</b><small>20 questions from the Quiz 1 bank.</small></button>
+    <button class="quick" data-mode-jump="cases" type="button"><span class="qi">03</span><b>Cases</b><small>Attempt first, then reveal analysis.</small></button>
+    <button class="quick" data-mode-jump="calc" type="button"><span class="qi">04</span><b>Calculator</b><small>Check formulas and workings.</small></button>
   </div>
 </section>
 
 <div class="wrap">
 
   <div class="course-nav" role="tablist" aria-label="MBA512 sections">
-    <button class="course-tab active" data-mode="learn" type="button">Learn</button>
+    <button class="course-tab active" data-mode="home" type="button">Home</button>
+    <button class="course-tab" data-mode="learn" type="button">Learn</button>
     <button class="course-tab" data-mode="quiz" type="button">Quiz</button>
     <button class="course-tab" data-mode="cases" type="button">Cases</button>
     <button class="course-tab" data-mode="calc" type="button">Calculator</button>
   </div>
 
-  <section id="learnSection" class="course-section">
+  <section id="learnSection" class="course-section hidden">
     <div class="learning-band">
       <h2>MBA512 learning space</h2>
       <p>Focused prep for Lecture 1 and Lecture 2. Next quiz target: Sunday, July 26, 2026.</p>
@@ -805,7 +833,8 @@ body.dark .mini-card{background:#171a20;border-color:#2b3038}
 </div>
 
 <nav class="dock" aria-label="Mobile navigation">
-  <button data-mode="learn" class="active" type="button"><span>◫</span>Learn</button>
+  <button data-mode="home" class="active" type="button"><span>⌂</span>Home</button>
+  <button data-mode="learn" type="button"><span>◫</span>Learn</button>
   <button data-mode="quiz" type="button"><span>?</span>Quiz</button>
   <button data-mode="cases" type="button"><span>§</span>Cases</button>
   <button data-mode="calc" type="button"><span>ƒx</span>Calc</button>
@@ -1682,6 +1711,7 @@ function renderCases(){
 
 function setMode(mode){
   document.querySelectorAll(".course-tab").forEach(b=>b.classList.toggle("active",b.dataset.mode===mode));
+  $("#homeSection").classList.toggle("hidden",mode!=="home");
   $("#learnSection").classList.toggle("hidden",mode!=="learn");
   $("#quizSection").classList.toggle("hidden",mode!=="quiz");
   $("#casesSection").classList.toggle("hidden",mode!=="cases");
@@ -1692,6 +1722,8 @@ function setMode(mode){
 }
 
 document.addEventListener("click",e=>{
+  const jump=e.target.closest("[data-mode-jump]");
+  if(jump){setMode(jump.dataset.modeJump);return;}
   const tab=e.target.closest(".course-tab,.dock button[data-mode]");
   if(tab && tab.dataset.mode){setMode(tab.dataset.mode);return;}
   const c=e.target.closest("[data-case]");
@@ -1711,7 +1743,7 @@ $("#search").addEventListener("input",e=>{
 });
 $("#search").addEventListener("keydown",e=>{ if(e.key==="Enter") e.target.blur(); });
 $("#wizOpen").onclick=()=>{wizPath=[];renderWiz("start");};
-$("#quickGuide").onclick=()=>{wizPath=[];renderWiz("start");};
+const quickGuideBtn=$("#quickGuide"); if(quickGuideBtn) quickGuideBtn.onclick=()=>{wizPath=[];renderWiz("start");};
 const legacyDockGuide=$("#dockGuide"); if(legacyDockGuide) legacyDockGuide.onclick=()=>{wizPath=[];renderWiz("start");};
 const legacyDockBrowse=$("#dockBrowse"); if(legacyDockBrowse) legacyDockBrowse.onclick=()=>{
   wizPath=[];wizView.classList.add("hidden");detailView.classList.add("hidden");
