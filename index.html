@@ -582,6 +582,63 @@ body.dark .pick:hover,body.dark .quick:hover,body.dark .opt:hover,body.dark .ans
   #listView{gap:10px}
 }
 
+
+
+/* ============ learning experience upgrade ============ */
+.start-layout{display:grid;grid-template-columns:1fr;gap:14px;align-items:stretch}
+.finance-visual{
+  border:1px solid var(--rule);border-radius:8px;background:
+    linear-gradient(160deg,#ffffff 0%,#f8fafc 62%,#edf7f4 100%);
+  padding:12px;display:grid;grid-template-columns:1fr;gap:6px;min-height:156px;
+}
+.finance-visual svg{width:100%;height:auto;display:block}
+.finance-visual b{display:block;font-size:13px;color:var(--ink)}
+.finance-visual span{display:block;font-size:12px;color:var(--dim)}
+.session-band{display:grid;grid-template-columns:1fr;gap:12px;align-items:center}
+.session-controls{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center}
+.session-controls input,.learn-picker select{
+  min-height:42px;border:1px solid var(--rule);border-radius:7px;background:#fff;color:var(--ink);
+  padding:0 11px;font:inherit;font-size:14px;
+}
+#sessionIdTag{
+  grid-column:1/-1;font-family:var(--mono);font-size:11px;color:var(--dim);
+  background:#f8fafc;border:1px solid var(--rule);border-radius:999px;padding:7px 10px;width:max-content;
+}
+.learn-picker{display:grid;grid-template-columns:1fr;gap:10px;margin-top:12px}
+.learn-picker label{margin:0;font-size:12px;color:var(--dim);display:grid;gap:5px}
+.topic-coach{margin-top:14px}
+.coach-grid{display:grid;grid-template-columns:1fr;gap:12px}
+.coach-note{
+  border:1px solid var(--rule);border-radius:8px;background:#f8fafc;padding:14px;
+}
+.coach-note h4,.mini-card h4{margin:0 0 8px;font-size:15px;color:var(--ink)}
+.coach-note p{margin:0 0 9px;color:var(--ink);font-size:14px}
+.coach-note ul{margin:0;padding-left:18px;color:var(--ink);font-size:14px}
+.coach-note li{margin:5px 0}
+.mini-card{border:1px solid var(--rule);border-radius:8px;background:#fff;padding:14px}
+.mini-result{margin-top:10px;font-size:13px;color:var(--dim)}
+.topic-card{position:relative;overflow:hidden}
+.topic-card:before{
+  content:"";position:absolute;right:12px;top:12px;width:38px;height:38px;border-radius:8px;
+  background:linear-gradient(135deg,rgba(15,118,110,.16),rgba(37,99,235,.12));
+}
+.quiz-card>h3:after,.learning-band>h2:after{
+  content:"";display:block;width:46px;height:3px;background:#0f766e;border-radius:999px;margin-top:8px;
+}
+body.dark .finance-visual{background:linear-gradient(160deg,#171a20 0%,#1d2128 64%,#10251f 100%);border-color:#2b3038}
+body.dark .finance-visual svg rect:first-of-type{fill:#1d2128;stroke:#303743}
+body.dark .finance-visual svg text{fill:#f4f6f8}
+body.dark .session-controls input,body.dark .learn-picker select{background:#11141a;border-color:#2b3038;color:#f4f6f8}
+body.dark #sessionIdTag,body.dark .coach-note{background:#1d2128;border-color:#2b3038}
+body.dark .mini-card{background:#171a20;border-color:#2b3038}
+@media (min-width:840px){
+  .start-layout{grid-template-columns:minmax(0,1.35fr) minmax(280px,.65fr)}
+  .quickgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .session-band{grid-template-columns:minmax(0,.9fr) minmax(420px,1.1fr)}
+  .learn-picker{grid-template-columns:170px minmax(260px,1fr) auto;align-items:end}
+  .coach-grid{grid-template-columns:minmax(0,1fr) 380px}
+}
+
 </style>
 </head>
 <body>
@@ -611,11 +668,38 @@ body.dark .pick:hover,body.dark .quick:hover,body.dark .opt:hover,body.dark .ans
       </div>
       <span class="formula-count">Learning mode</span>
     </div>
-    <div class="quickgrid">
-      <button class="quick" data-id="pv1"><span class="qi">↓</span><b>Value today</b><small>Present value</small></button>
-      <button class="quick" data-id="fv1"><span class="qi">↑</span><b>Value later</b><small>Future value</small></button>
-      <button class="quick" data-id="pva"><span class="qi">≋</span><b>Equal payments</b><small>Annuities</small></button>
-      <button class="quick" id="quickGuide"><span class="qi">✦</span><b>Not sure?</b><small>Use the formula guide</small></button>
+    <div class="start-layout">
+      <div class="quickgrid">
+        <button class="quick" data-id="pv1"><span class="qi">↓</span><b>Value today</b><small>Present value</small></button>
+        <button class="quick" data-id="fv1"><span class="qi">↑</span><b>Value later</b><small>Future value</small></button>
+        <button class="quick" data-id="pva"><span class="qi">≋</span><b>Equal payments</b><small>Annuities</small></button>
+        <button class="quick" id="quickGuide"><span class="qi">✦</span><b>Not sure?</b><small>Use the formula guide</small></button>
+      </div>
+      <div class="finance-visual" aria-hidden="true">
+        <svg viewBox="0 0 360 190" role="img">
+          <defs>
+            <linearGradient id="flowGrad" x1="0" x2="1">
+              <stop offset="0" stop-color="#0f766e"/>
+              <stop offset="1" stop-color="#2563eb"/>
+            </linearGradient>
+          </defs>
+          <path d="M34 142 C96 88 133 154 188 96 S284 47 326 73" fill="none" stroke="url(#flowGrad)" stroke-width="10" stroke-linecap="round"/>
+          <g fill="#fff" stroke="#d9dee7">
+            <circle cx="45" cy="137" r="18"/><circle cx="184" cy="99" r="18"/><circle cx="318" cy="74" r="18"/>
+          </g>
+          <g fill="#15171a" font-family="ui-monospace,Menlo,monospace" font-size="12" font-weight="800">
+            <text x="36" y="142">PV</text><text x="176" y="104">r</text><text x="309" y="79">FV</text>
+          </g>
+          <rect x="34" y="28" width="292" height="32" rx="8" fill="#f8fafc" stroke="#d9dee7"/>
+          <rect x="52" y="46" width="72" height="78" rx="8" fill="#edf7f4" stroke="#cfeae2"/>
+          <rect x="144" y="77" width="72" height="47" rx="8" fill="#f1f4f8" stroke="#d9dee7"/>
+          <rect x="236" y="58" width="72" height="66" rx="8" fill="#eff6ff" stroke="#cbdcfb"/>
+        </svg>
+        <div>
+          <b>Quiz 1 map</b>
+          <span>Governance → markets → ratios → TVM</span>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -638,6 +722,28 @@ body.dark .pick:hover,body.dark .quick:hover,body.dark .opt:hover,body.dark .ans
         <button class="primary-action" id="startQuizHero" type="button">Take 20-question quiz</button>
         <button class="secondary-action" id="jumpCases" type="button">Review case studies</button>
       </div>
+    </div>
+    <div class="learning-band session-band">
+      <div>
+        <h3>Your study session</h3>
+        <p>Progress is tied to this browser session. Classmates can use the app at the same time on their own devices without mixing results.</p>
+      </div>
+      <div class="session-controls">
+        <input id="learnerName" type="text" placeholder="Name or nickname" aria-label="Name or nickname">
+        <button class="secondary-action" id="saveSession" type="button">Save</button>
+        <button class="secondary-action" id="newSession" type="button">New session</button>
+        <span id="sessionIdTag"></span>
+      </div>
+    </div>
+    <div class="learning-band">
+      <h3>Learn by lecture</h3>
+      <p>Select a lecture topic, get a plain-language coaching note, then answer a short formative quiz before moving on.</p>
+      <div class="learn-picker">
+        <label>Lecture<select id="lectureSelect"></select></label>
+        <label>Topic<select id="topicSelect"></select></label>
+        <button class="primary-action" id="helpTopic" type="button">Help me learn this topic</button>
+      </div>
+      <div id="topicCoach" class="topic-coach"></div>
     </div>
     <div class="learning-band">
       <h3>Quiz guide</h3>
@@ -1391,13 +1497,43 @@ const CASES = [
   {title:"Firm X performance ratios",tag:"Lecture 2 practice",caseText:"Use Firm X values from Lecture 2 to estimate market value, EVA, returns, turnover, leverage, liquidity, and sustainable growth.",analysis:["Start with the formula category before calculation: value added, profitability, efficiency, leverage, liquidity, or growth.","Use averages for receivables and inventory where required. Use NOPAT for operating return measures and net income for ROE/profit margin.","Interpretation matters: ratios are useful only against benchmarks, trends, and comparable competitors."]}
 ];
 
+const LECTURES = [
+  {id:"lecture1",title:"Lecture 1 - Introduction & Financial Markets",topics:[
+    {id:"decisions",title:"Investment, financing and payout decisions",explain:"Finance managers create value by choosing good real-asset investments, raising money at sensible cost, and deciding how much cash to return to shareholders. The fastest way to classify a question is to ask: are we buying/choosing an asset, raising money, or distributing profit?",tips:["Capital budgeting means real assets and projects.","Financing means debt, equity, or internally generated funds.","Payout means dividends or share repurchases.","A project is attractive when its value exceeds its cost."]},
+    {id:"governance",title:"Corporate form, goals and agency problems",explain:"Corporations separate owners from managers. That gives permanence, limited liability, and access to capital, but it creates agency problems when managers pursue personal goals instead of shareholder value.",tips:["The board represents shareholders and monitors managers.","The goal is maximizing current market value, not short-term accounting profit.","Agency problems include perks, avoiding risky positive-value projects, and empire building.","Compensation, boards, takeovers, analysts, and shareholder pressure reduce agency costs."]},
+    {id:"markets",title:"Financial markets and intermediaries",explain:"Markets and intermediaries move savings from investors to firms that need capital. Primary markets raise new cash for issuers; secondary markets let investors trade existing securities and discover prices.",tips:["Money markets are short term; capital markets are long term.","Stock markets are equity markets; bond markets are fixed-income or debt markets.","Intermediaries include banks, mutual funds, ETFs, pension funds, and insurance companies.","Markets provide liquidity, diversification, payments, risk transfer, and information."]}
+  ]},
+  {id:"lecture2",title:"Lecture 2 - Measuring Corporate Performance",topics:[
+    {id:"performance",title:"MVA, EVA, ROA, ROC and ROE",explain:"Performance analysis asks whether the firm is creating value after considering the capital invested. MVA uses market values; EVA deducts the cost of capital; accounting returns show profitability from different investor viewpoints.",tips:["MVA = market value of equity minus book value of equity.","EVA = NOPAT minus cost of capital times total capitalization.","ROA and ROC use NOPAT because they measure return to all investors.","ROE uses net income because it measures return to shareholders."]},
+    {id:"ratios",title:"Efficiency, leverage, liquidity and DuPont",explain:"Ratios turn financial statements into diagnostic signals. They are most useful when compared against the same firm over time and against competitors. DuPont connects profitability to asset use and leverage.",tips:["Efficiency: asset turnover, receivables turnover, inventory turnover.","Leverage: debt ratios, debt-to-equity, times interest earned, cash coverage.","Liquidity: net working capital, current ratio, quick ratio, cash ratio.","DuPont ROA = asset turnover x operating profit margin; sustainable growth = plowback x ROE."]},
+    {id:"tvm",title:"Time value foundations for Quiz 1",explain:"The sample quiz includes TVM, annuities and perpetuities. Before calculating, identify the cash-flow pattern: one amount, equal payments that stop, payments forever, or first payment today.",tips:["Lump sum: move one cash flow with (1+r)^t.","Ordinary annuity: first payment one period from now.","Annuity due: first payment today, so multiply ordinary annuity value by (1+r).","Perpetuity: PV = C/r and the value sits one period before the first payment."]}
+  ]}
+];
+
 let currentQuiz = [];
 let quizMode = "standard";
 let quizGraded = false;
+const SESSION_KEY = "mba512-active-session";
+function makeSession(name=""){
+  return {id:"S-"+Math.random().toString(36).slice(2,7).toUpperCase()+"-"+Date.now().toString(36).slice(-4).toUpperCase(),name,createdAt:new Date().toISOString()};
+}
+function getSession(){
+  try{
+    const saved=JSON.parse(localStorage.getItem(SESSION_KEY)||"null");
+    if(saved && saved.id) return saved;
+  }catch(_){}
+  const fresh=makeSession("");
+  try{localStorage.setItem(SESSION_KEY,JSON.stringify(fresh));}catch(_){}
+  return fresh;
+}
+let learnerSession=getSession();
 let mastery = {};
-try{mastery=JSON.parse(localStorage.getItem("mba512-mastery")||"{}");}catch(_){mastery={};}
-
-function saveMastery(){try{localStorage.setItem("mba512-mastery",JSON.stringify(mastery));}catch(_){}}
+function masteryStorageKey(){return "mba512-mastery-"+learnerSession.id;}
+function loadMastery(){
+  try{mastery=JSON.parse(localStorage.getItem(masteryStorageKey())||"{}");}catch(_){mastery={};}
+}
+function saveMastery(){try{localStorage.setItem(masteryStorageKey(),JSON.stringify(mastery));}catch(_){}}
+loadMastery();
 function topicName(id){return (TOPICS.find(t=>t[0]===id)||[id,id])[1];}
 function shuffle(arr){return [...arr].sort(()=>Math.random()-.5);}
 function topicScore(topic){
@@ -1406,6 +1542,68 @@ function topicScore(topic){
   const earned=qs.reduce((sum,q)=>sum+Math.min((mastery[q.id]?.streak||0),2),0);
   return Math.round((earned/(qs.length*2))*100);
 }
+function renderSession(){
+  const input=$("#learnerName"), tag=$("#sessionIdTag");
+  if(input) input.value=learnerSession.name||"";
+  if(tag) tag.textContent=`Session ${learnerSession.id}${learnerSession.name?` · ${learnerSession.name}`:""}`;
+}
+
+function renderLearningStudio(){
+  const lectureSel=$("#lectureSelect"), topicSel=$("#topicSelect");
+  if(!lectureSel || !topicSel) return;
+  lectureSel.innerHTML=LECTURES.map(l=>`<option value="${l.id}">${l.title}</option>`).join("");
+  function fillTopics(){
+    const lecture=LECTURES.find(l=>l.id===lectureSel.value)||LECTURES[0];
+    topicSel.innerHTML=lecture.topics.map(t=>`<option value="${t.id}">${t.title}</option>`).join("");
+  }
+  lectureSel.onchange=fillTopics;
+  fillTopics();
+}
+
+function selectedLearningTopic(){
+  const lecture=LECTURES.find(l=>l.id===$("#lectureSelect")?.value)||LECTURES[0];
+  const topic=lecture.topics.find(t=>t.id===$("#topicSelect")?.value)||lecture.topics[0];
+  return {lecture,topic};
+}
+
+function renderTopicCoach(){
+  const box=$("#topicCoach"); if(!box) return;
+  const {lecture,topic}=selectedLearningTopic();
+  const mini=shuffle(Q_BANK.filter(q=>q.topic===topic.id)).slice(0,3);
+  box.innerHTML=`<div class="coach-grid">
+    <div class="coach-note">
+      <h4>${topic.title}</h4>
+      <p>${topic.explain}</p>
+      <ul>${topic.tips.map(t=>`<li>${t}</li>`).join("")}</ul>
+    </div>
+    <div class="mini-card">
+      <h4>Formative check</h4>
+      <p class="blurb">${lecture.title}. Answer these now, then review the feedback before taking the main quiz.</p>
+      ${mini.map((q,ix)=>`<div class="question" data-mini="${q.id}">
+        <h4>${ix+1}. ${q.q}</h4>
+        <div class="answers">${q.a.map((ans,ai)=>`<label><input type="radio" name="mini_${q.id}" value="${ai}"><span>${String.fromCharCode(65+ai)}. ${ans}</span></label>`).join("")}</div>
+        <div class="feedback hidden"></div>
+      </div>`).join("")}
+      <button class="primary-action" id="gradeMini" type="button">Check understanding</button>
+      <div class="mini-result" id="miniResult"></div>
+    </div>
+  </div>`;
+  $("#gradeMini").onclick=()=>gradeMiniQuiz(mini);
+}
+
+function gradeMiniQuiz(items){
+  let correct=0;
+  items.forEach(q=>{
+    const picked=document.querySelector(`input[name="mini_${q.id}"]:checked`);
+    const ok=picked && Number(picked.value)===q.c;
+    if(ok) correct++;
+    const fb=document.querySelector(`.question[data-mini="${q.id}"] .feedback`);
+    fb.className=`feedback ${ok?"ok":"no"}`;
+    fb.innerHTML=`<b>${ok?"Correct":"Review"}.</b> ${q.e}`;
+  });
+  $("#miniResult").textContent=`${correct}/${items.length}. ${correct===items.length?"Move to the main quiz or choose another topic.":"Reread the note, then retry this topic."}`;
+}
+
 function renderMastery(){
   const attempts=Object.values(mastery).reduce((s,m)=>s+(m.seen||0),0);
   const correct=Object.values(mastery).reduce((s,m)=>s+(m.correct||0),0);
@@ -1439,8 +1637,8 @@ function pickQuiz(weakOnly=false){
 function renderQuiz(){
   const box=$("#quizBox"); if(!box) return;
   box.innerHTML=`<div class="learning-band quiz-card">
-    <h3>${quizMode==="weak"?"Weak-topic drill":"20-question quiz"}</h3>
-    <p>Answer all questions, then grade. Missed items show the explanation immediately after scoring.</p>
+    <h3>${quizMode==="weak"?"Weak-topic drill":"Quiz 1: Lecture 1 and 2"}</h3>
+    <p>Answer all 20 questions, then grade. Quiz 1 is locked to Lecture 1 and Lecture 2 until the next course update.</p>
     ${currentQuiz.map((q,ix)=>`<div class="question" data-q="${q.id}">
       <h4>${ix+1}. ${q.q}</h4>
       <div class="answers">${q.a.map((ans,ai)=>`<label><input type="radio" name="q_${q.id}" value="${ai}"><span>${String.fromCharCode(65+ai)}. ${ans}</span></label>`).join("")}</div>
@@ -1535,12 +1733,25 @@ themeBtn.onclick=()=>{
   try{localStorage.setItem("mba512-theme",document.body.classList.contains("dark")?"dark":"light");}catch(_){}
 };
 renderList();
+renderSession();
+renderLearningStudio();
 renderMastery();
 renderCases();
 $("#startQuiz").onclick=()=>pickQuiz(false);
 $("#startQuizHero").onclick=()=>{setMode("quiz");pickQuiz(false);};
 $("#weakQuiz").onclick=()=>pickQuiz(true);
 $("#jumpCases").onclick=()=>setMode("cases");
+$("#helpTopic").onclick=renderTopicCoach;
+$("#saveSession").onclick=()=>{
+  learnerSession.name=$("#learnerName").value.trim();
+  try{localStorage.setItem(SESSION_KEY,JSON.stringify(learnerSession));}catch(_){}
+  renderSession();
+};
+$("#newSession").onclick=()=>{
+  learnerSession=makeSession($("#learnerName").value.trim());
+  try{localStorage.setItem(SESSION_KEY,JSON.stringify(learnerSession));}catch(_){}
+  loadMastery(); renderSession(); renderMastery(); renderTopicCoach();
+};
 if("serviceWorker" in navigator && location.protocol.startsWith("http")){
   addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
 }

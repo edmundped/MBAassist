@@ -1,4 +1,4 @@
-const CACHE = "mba512-learning-space-v3";
+const CACHE = "mba512-learning-space-v4";
 const APP_SHELL = ["./", "./index.html", "./manifest.webmanifest"];
 
 self.addEventListener("install", event => {
