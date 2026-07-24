@@ -1,0 +1,10 @@
+{
+  "name": "MBA512 Finance Calculator",
+  "short_name": "MBA512",
+  "description": "A mobile-first managerial finance calculator with guided formula selection and step-by-step workings.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f5f6fb",
+  "theme_color": "#18264a",
+  "icons": []
+}

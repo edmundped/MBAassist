@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1F3864">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="MBA512">
+<meta name="description" content="A mobile-first MBA 512 finance calculator with 35 formulas, guided formula selection and step-by-step workings.">
+<link rel="manifest" href="manifest.webmanifest">
+<title>MBA512 Finance Calculator</title>
+<style>
+:root{
+  --ink:#161B22; --slate:#1F3864; --blue:#2E5496; --rule:#C9D2E0;
+  --paper:#EEF1F6; --card:#FFFFFF; --amber:#B45309; --moss:#276749; --dim:#5C6674;
+  --chip:#F4F7FB; --resultbg:#EEF6F0; --resultrule:#B9D8C4;
+  --symbg:#FFF8EF; --symrule:#EBD4B4; --symink:#5A3A12;
+  --mono: ui-monospace,"SF Mono","Menlo","Consolas",monospace;
+  --sans: ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
+  --safe: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --ink:#E7ECF3; --slate:#0F1620; --blue:#7FA6E0; --rule:#2C3644;
+    --paper:#11161D; --card:#1A212B; --amber:#E0A458; --moss:#6FBF8B; --dim:#98A4B4;
+    --chip:#222B37; --resultbg:#16261D; --resultrule:#2F5C41;
+    --symbg:#241D12; --symrule:#4A3A20; --symink:#E7C79A;
+  }
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-size:16px;line-height:1.5;
+  padding-bottom:calc(28px + var(--safe));
+  overscroll-behavior-y:contain;
+}
+.wrap{max-width:720px;margin:0 auto;padding:0 14px}
+
+/* masthead */
+header{background:var(--slate);color:#fff;padding:14px 0 13px;border-bottom:3px solid var(--amber)}
+@media (prefers-color-scheme: dark){header{color:#E7ECF3;border-bottom-color:var(--amber)}}
+.eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#A9BBDB;margin:0 0 3px}
+h1{font-size:20px;line-height:1.15;margin:0;font-weight:650;letter-spacing:-.01em}
+.tagline{margin:4px 0 0;font-size:12.5px;color:#C3D0E6}
+
+/* sticky search */
+.bar{position:sticky;top:0;z-index:30;background:var(--paper);padding:10px 0 8px;border-bottom:1px solid var(--rule)}
+.searchrow{display:flex;gap:8px}
+input,button{font-family:inherit}
+input[type=search],input[type=text]{
+  width:100%;font-size:16px;padding:12px;border:1px solid var(--rule);
+  border-radius:10px;background:var(--card);color:var(--ink);
+}
+input:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--blue);outline-offset:1px}
+.wizbtn{flex:0 0 auto;background:var(--amber);color:#fff;border:0;border-radius:10px;
+  padding:0 15px;font-size:15px;font-weight:650;cursor:pointer;white-space:nowrap;min-height:46px}
+@media (prefers-color-scheme: dark){.wizbtn{color:#11161D}}
+.wizbtn:active{transform:translateY(1px)}
+
+/* recents */
+.recents{margin-top:10px}
+.recents .rlbl{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:6px}
+.chips{display:flex;gap:7px;overflow-x:auto;padding-bottom:3px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;background:var(--chip);border:1px solid var(--rule);border-radius:999px;
+  padding:9px 14px;font-size:13.5px;color:var(--ink);cursor:pointer;min-height:40px}
+
+/* category accordion */
+details.cat{margin-top:10px;background:var(--card);border:1px solid var(--rule);border-radius:10px;overflow:hidden}
+details.cat summary{
+  list-style:none;cursor:pointer;padding:14px 14px;min-height:52px;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  font-size:14.5px;font-weight:650;color:var(--slate);
+}
+@media (prefers-color-scheme: dark){details.cat summary{color:var(--blue)}}
+details.cat summary::-webkit-details-marker{display:none}
+.count{font-family:var(--mono);font-size:11px;color:var(--dim);font-weight:400}
+.arrow{transition:transform .18s ease;color:var(--dim);flex:0 0 auto}
+details[open] .arrow{transform:rotate(90deg)}
+.catbody{padding:0 10px 10px}
+.pick{display:block;width:100%;text-align:left;background:transparent;border:0;
+  border-top:1px solid var(--rule);padding:13px 4px;cursor:pointer;min-height:56px}
+.pick b{display:block;font-weight:600;font-size:15.5px;color:var(--ink)}
+.pick i{display:block;font-style:normal;font-size:13px;color:var(--dim);margin-top:2px;line-height:1.35}
+
+/* detail */
+.back{background:none;border:0;color:var(--blue);font-size:15px;font-weight:650;padding:12px 2px;cursor:pointer;min-height:46px}
+.panel{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:15px}
+h3{margin:0 0 4px;font-size:19px;color:var(--ink);letter-spacing:-.01em;line-height:1.25}
+.blurb{margin:0 0 12px;font-size:14px;color:var(--dim)}
+.symbol{font-family:var(--mono);font-size:13px;line-height:1.6;white-space:pre;
+  background:var(--symbg);border:1px solid var(--symrule);border-left:3px solid var(--amber);
+  border-radius:8px;padding:10px 12px;margin:0 0 14px;color:var(--symink);overflow-x:auto}
+.field{margin-bottom:12px}
+label{display:block;font-size:14.5px;font-weight:600;margin-bottom:5px}
+.hint{display:block;font-weight:400;font-size:12.5px;color:var(--dim);margin-top:2px;line-height:1.35}
+.field input{width:100%;font-size:16px;padding:13px 12px;border:1px solid var(--rule);
+  border-radius:10px;background:var(--paper);color:var(--ink);min-height:48px}
+.chk{display:flex;align-items:center;gap:11px;background:var(--chip);border:1px solid var(--rule);
+  border-radius:10px;padding:12px;min-height:52px}
+.chk input{width:22px;height:22px;margin:0;flex:0 0 auto;accent-color:var(--blue)}
+.chk label{margin:0;font-size:14.5px}
+
+/* sticky calculate bar */
+.actions{position:sticky;bottom:0;z-index:25;background:linear-gradient(to top,var(--paper) 72%,transparent);
+  padding:10px 0 calc(10px + var(--safe));margin-top:12px}
+.go{width:100%;background:var(--slate);color:#fff;border:0;border-radius:12px;
+  padding:16px;font-size:17px;font-weight:700;cursor:pointer;min-height:56px;
+  box-shadow:0 2px 10px rgba(15,22,32,.18)}
+@media (prefers-color-scheme: dark){.go{background:var(--blue);color:#0F1620}}
+.go:active{transform:translateY(1px)}
+
+/* working strip */
+.work{margin-top:16px;animation:rise .2s ease-out}
+@keyframes rise{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.work{animation:none}}
+.work h4{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin:0 0 8px}
+.line{border-left:2px solid var(--rule);padding:0 0 11px 12px;margin-left:2px}
+.lbl{font-size:12.5px;color:var(--dim);margin-bottom:3px}
+.math{font-family:var(--mono);font-size:13.5px;white-space:pre-wrap;word-break:break-word;color:var(--ink);line-height:1.55}
+.result{margin-top:10px;background:var(--resultbg);border:1px solid var(--resultrule);
+  border-left:4px solid var(--moss);border-radius:10px;padding:13px 15px}
+.result .lbl{color:var(--moss);font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:10.5px;font-family:var(--mono)}
+.result .val{font-family:var(--mono);font-size:23px;font-weight:650;color:var(--moss);line-height:1.3;word-break:break-word;
+  -webkit-user-select:all;user-select:all}
+.why{margin-top:12px;font-size:13.5px;color:var(--dim);border-top:1px dashed var(--rule);padding-top:10px;line-height:1.45}
+.why b{color:var(--amber)}
+.err{background:#FDF1F1;border:1px solid #E9BFBF;border-left:4px solid #A93B3B;border-radius:10px;
+  padding:12px 14px;font-size:14.5px;color:#7C2727;margin-top:14px}
+@media (prefers-color-scheme: dark){.err{background:#2A1618;border-color:#5C2A2A;color:#F0B4B4}}
+
+/* wizard */
+.wiz{background:var(--card);border:1px solid var(--rule);border-top:3px solid var(--amber);border-radius:12px;padding:15px}
+.q{font-size:17.5px;font-weight:650;color:var(--ink);margin:0 0 13px;line-height:1.3}
+.opt{display:block;width:100%;text-align:left;background:var(--chip);border:1px solid var(--rule);
+  border-radius:10px;padding:14px;margin-bottom:9px;cursor:pointer;min-height:58px}
+.opt b{display:block;font-weight:650;font-size:15.5px;color:var(--ink)}
+.opt i{display:block;font-style:normal;font-size:13px;color:var(--dim);margin-top:2px;line-height:1.35}
+.crumb{font-family:var(--mono);font-size:11px;color:var(--dim);margin-bottom:11px;letter-spacing:.03em;line-height:1.5}
+.hidden{display:none}
+.empty{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:15px;margin-top:12px;font-size:14.5px}
+footer{margin-top:24px;padding-top:12px;border-top:1px solid var(--rule);font-size:12.5px;color:var(--dim);line-height:1.5}
+@media (min-width:640px){
+  h1{font-size:23px} .tagline{font-size:13.5px}
+  .actions{position:static;background:none;padding:0;margin-top:14px}
+  .go{box-shadow:none}
+}
+
+/* ============ 2026 mobile-first redesign ============ */
+:root{
+  --ink:#172033;--slate:#18264a;--blue:#5b63e8;--blue2:#7c5ce7;
+  --paper:#f5f6fb;--card:#ffffff;--amber:#f0a848;--moss:#16856a;
+  --dim:#69728a;--rule:#e3e6f0;--chip:#f4f3ff;--resultbg:#ecfbf6;
+  --resultrule:#bde8d9;--symbg:#f7f6ff;--symrule:#ddd9ff;--symink:#34327a;
+  --shadow:0 18px 50px rgba(29,37,74,.09);
+  --shadow-sm:0 7px 20px rgba(29,37,74,.08);
+}
+html{scroll-behavior:smooth}
+body{
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 96% 2%,rgba(124,92,231,.11),transparent 25rem),
+    radial-gradient(circle at 0 38%,rgba(55,184,171,.08),transparent 23rem),
+    var(--paper);
+  padding-bottom:calc(96px + var(--safe));
+}
+.wrap{max-width:1060px;padding:0 18px}
+.hidden{display:none!important}
+header{
+  position:relative;overflow:hidden;border:0;padding:18px 0 58px;
+  background:linear-gradient(130deg,#121d3d 0%,#263a73 60%,#5b50b4 130%);
+  box-shadow:0 12px 35px rgba(18,29,61,.18);
+}
+header:before,header:after{
+  content:"";position:absolute;border-radius:50%;pointer-events:none
+}
+header:before{
+  width:280px;height:280px;right:-105px;top:-168px;
+  background:linear-gradient(145deg,rgba(255,255,255,.15),rgba(255,255,255,.01));
+  border:1px solid rgba(255,255,255,.12)
+}
+header:after{
+  width:150px;height:150px;right:20%;bottom:-128px;
+  background:rgba(104,226,207,.12);filter:blur(2px)
+}
+.brandrow{display:flex;align-items:center;justify-content:space-between;gap:16px;position:relative;z-index:1}
+.brand{display:flex;align-items:center;gap:12px}
+.brandmark{
+  width:42px;height:42px;display:grid;place-items:center;border-radius:14px;
+  background:linear-gradient(145deg,#7b72ff,#59d3c1);color:#fff;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 8px 24px rgba(0,0,0,.22);
+  font-size:17px;font-weight:850;letter-spacing:-.06em
+}
+.brandcopy{min-width:0}
+.eyebrow{color:#9fc7dc;font-size:10px;margin-bottom:4px}
+h1{font-size:21px;font-weight:760;letter-spacing:-.025em}
+.tagline{color:#d8dded;font-size:12.5px;margin-top:3px}
+.themebtn{
+  width:42px;height:42px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.2);
+  border-radius:14px;color:white;background:rgba(255,255,255,.09);backdrop-filter:blur(12px);
+  cursor:pointer;font-size:18px
+}
+.hero{
+  position:relative;z-index:5;margin:-38px auto 4px;padding:0 18px;max-width:1060px
+}
+.startcard{
+  background:rgba(255,255,255,.94);border:1px solid rgba(255,255,255,.8);
+  box-shadow:var(--shadow);border-radius:22px;padding:18px;backdrop-filter:blur(18px)
+}
+.starttop{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:14px}
+.starttop h2{font-size:17px;line-height:1.25;margin:0;color:var(--ink);letter-spacing:-.015em}
+.starttop p{margin:4px 0 0;color:var(--dim);font-size:12.5px}
+.formula-count{
+  flex:none;background:#eeedff;color:#5750c9;border-radius:999px;padding:7px 10px;
+  font-size:11px;font-weight:750;white-space:nowrap
+}
+.quickgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.quick{
+  min-height:64px;text-align:left;padding:11px;border:1px solid var(--rule);border-radius:14px;
+  background:#fafaff;color:var(--ink);cursor:pointer;transition:.18s ease
+}
+.quick:active{transform:scale(.98)}
+.quick .qi{display:block;font-size:17px;margin-bottom:2px}
+.quick b{display:block;font-size:13px;line-height:1.2}
+.quick small{display:block;font-size:10.5px;color:var(--dim);margin-top:3px}
+.bar{
+  top:0;margin:10px -2px 0;padding:10px 2px;background:rgba(245,246,251,.9);
+  backdrop-filter:blur(16px);border:0
+}
+.searchrow{
+  background:var(--card);border:1px solid var(--rule);border-radius:16px;
+  padding:5px;box-shadow:var(--shadow-sm)
+}
+input[type=search]{
+  border:0;border-radius:12px;background:transparent;padding:12px 10px 12px 14px;
+  font-weight:540
+}
+input[type=search]:focus-visible{outline:none}
+.wizbtn{
+  background:linear-gradient(135deg,var(--blue),var(--blue2));border-radius:12px;
+  padding:0 13px;font-size:13px;box-shadow:0 8px 17px rgba(91,99,232,.23)
+}
+.recents{margin:10px 0 2px}
+.recents .rlbl{font-weight:750;color:var(--dim);margin-left:4px}
+.chip{
+  background:white;border-color:var(--rule);box-shadow:0 3px 10px rgba(29,37,74,.04);
+  font-size:12.5px;padding:8px 13px
+}
+#listView{padding-top:1px}
+details.cat{
+  margin-top:11px;border:1px solid rgba(224,227,238,.95);border-radius:18px;
+  box-shadow:0 5px 18px rgba(29,37,74,.045);transition:.2s ease
+}
+details.cat[open]{box-shadow:var(--shadow-sm);border-color:#d8d9f4}
+details.cat summary{padding:15px 16px;min-height:62px;color:var(--ink)}
+.cat-icon{
+  width:36px;height:36px;display:grid;place-items:center;border-radius:12px;
+  background:linear-gradient(145deg,#eeedff,#f7f6ff);color:#5d57cf;
+  font-size:16px;flex:none
+}
+.cat-title{display:block;line-height:1.2}
+.cat-sub{display:block;font-size:10.5px;color:var(--dim);font-weight:500;margin-top:4px}
+.count{background:#f1f2f7;border-radius:999px;padding:4px 8px}
+.catbody{padding:2px 10px 10px}
+.pick{
+  position:relative;border:0;border-radius:13px;padding:12px 34px 12px 10px;
+  margin-top:3px;transition:.18s ease
+}
+.pick:after{content:"›";position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:23px;color:#b1b5c5}
+.pick:hover{background:#f8f8ff}
+.pick b{font-size:14.5px}
+.pick i{font-size:12px}
+.back{margin-top:4px;color:#565fcf}
+.panel{
+  border:1px solid rgba(224,227,238,.95);border-radius:22px;padding:18px;
+  box-shadow:var(--shadow);overflow:hidden
+}
+.panel h3{font-size:21px}
+.symbol{
+  border:0;border-left:0;border-radius:14px;padding:13px 14px;
+  background:linear-gradient(135deg,#f2f0ff,#f8f9ff);
+  box-shadow:inset 0 0 0 1px #e5e1ff;color:#3d398d
+}
+.field{margin-bottom:15px}
+.field input{
+  background:#fafbfe;border-color:#dfe3ec;border-radius:13px;padding:13px 14px;
+  transition:.18s ease
+}
+.field input:focus{border-color:#6a69df;background:#fff;box-shadow:0 0 0 4px rgba(91,99,232,.11);outline:none}
+.chk{border-radius:13px;background:#f8f8fd}
+.go{
+  border-radius:15px;background:linear-gradient(135deg,var(--blue),var(--blue2));
+  box-shadow:0 10px 24px rgba(91,99,232,.28)
+}
+.work h4{color:#5c61c6}
+.line{border-left-color:#d9daf1}
+.result{
+  border:0;border-left:0;border-radius:16px;padding:15px 16px;
+  box-shadow:inset 0 0 0 1px var(--resultrule)
+}
+.result .val{font-size:26px;letter-spacing:-.025em}
+.why{background:#fffaf1;border:0;border-radius:13px;padding:11px 12px;color:#735a32}
+.wiz{
+  border:0;border-radius:22px;padding:18px;box-shadow:var(--shadow)
+}
+.opt{border-radius:14px;background:#fafaff;transition:.18s ease}
+.opt:hover{border-color:#b8b8ef;background:#f5f4ff}
+.dock{
+  position:fixed;z-index:60;left:50%;bottom:calc(12px + var(--safe));transform:translateX(-50%);
+  width:min(calc(100% - 24px),440px);height:66px;display:grid;grid-template-columns:repeat(4,1fr);
+  gap:3px;padding:6px;border:1px solid rgba(224,227,238,.88);border-radius:22px;
+  background:rgba(255,255,255,.92);backdrop-filter:blur(18px);
+  box-shadow:0 14px 42px rgba(25,32,65,.2)
+}
+.dock button{
+  border:0;background:transparent;border-radius:16px;color:var(--dim);font-size:9.5px;
+  font-weight:700;cursor:pointer
+}
+.dock button span{display:block;font-size:18px;line-height:1.1;margin-bottom:3px}
+.dock button.active,.dock button:hover{background:#eeedff;color:#5650ca}
+footer{margin-bottom:8px;text-align:center}
+
+body.dark{
+  --ink:#edf0fb;--slate:#11182c;--paper:#101321;--card:#191e30;--dim:#a5adc1;
+  --rule:#2b3248;--chip:#22283c;--resultbg:#162a28;--resultrule:#28534b;
+  --symbg:#23233b;--symrule:#37375c;--symink:#cac7ff;
+  background:
+    radial-gradient(circle at 96% 2%,rgba(124,92,231,.14),transparent 25rem),
+    radial-gradient(circle at 0 38%,rgba(55,184,171,.07),transparent 23rem),
+    var(--paper)
+}
+body.dark .startcard,body.dark .dock{background:rgba(25,30,48,.94);border-color:#303750}
+body.dark .formula-count{background:#2a2951;color:#c8c4ff}
+body.dark .quick,body.dark .opt{background:#20263a}
+body.dark .bar{background:rgba(16,19,33,.9)}
+body.dark .searchrow,body.dark .chip{background:var(--card)}
+body.dark .cat-icon{background:#272747;color:#b7b3ff}
+body.dark .count{background:#252b3e}
+body.dark .pick:hover{background:#22283c}
+body.dark .field input{background:#141929;border-color:#31384e;color:var(--ink)}
+body.dark .field input:focus{background:#181e31}
+body.dark .symbol{background:#23233b;box-shadow:inset 0 0 0 1px #37375c}
+body.dark .why{background:#29251f;color:#d9bf95}
+
+@media (min-width:760px){
+  body{padding-bottom:40px}
+  header{padding:24px 0 68px}
+  h1{font-size:25px}.tagline{font-size:13.5px}
+  .hero{margin-top:-45px}
+  .startcard{padding:22px 24px}
+  .quickgrid{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .quick{min-height:76px;padding:13px}
+  .quick b{font-size:14px}
+  .bar{margin-top:14px;padding-top:12px}
+  #listView{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-items:start}
+  details.cat{margin-top:0}
+  .dock{display:none}
+  #detailView,#wizView{max-width:760px;margin:0 auto}
+}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="brandrow">
+      <div class="brand">
+        <div class="brandmark" aria-hidden="true">ƒx</div>
+        <div class="brandcopy">
+          <p class="eyebrow">MBA512 · Managerial Finance</p>
+          <h1>Finance Calculator</h1>
+          <p class="tagline">Understand the formula. See every step.</p>
+        </div>
+      </div>
+      <button class="themebtn" id="themeBtn" aria-label="Switch colour theme" title="Switch colour theme">◐</button>
+    </div>
+  </div>
+</header>
+
+<section class="hero" aria-label="Quick start">
+  <div class="startcard">
+    <div class="starttop">
+      <div>
+        <h2>What is the question asking for?</h2>
+        <p>Start with the wording—not the formula.</p>
+      </div>
+      <span class="formula-count">35 calculators</span>
+    </div>
+    <div class="quickgrid">
+      <button class="quick" data-id="pv1"><span class="qi">↓</span><b>Value today</b><small>Present value</small></button>
+      <button class="quick" data-id="fv1"><span class="qi">↑</span><b>Value later</b><small>Future value</small></button>
+      <button class="quick" data-id="pva"><span class="qi">≋</span><b>Equal payments</b><small>Annuities</small></button>
+      <button class="quick" id="quickGuide"><span class="qi">✦</span><b>Not sure?</b><small>Use the formula guide</small></button>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="bar">
+    <div class="searchrow">
+      <input type="search" id="search" placeholder="Search: annuity, EAR, bond…" aria-label="Search formulas"
+             autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="search">
+      <button class="wizbtn" id="wizOpen">Which formula?</button>
+    </div>
+  </div>
+
+  <div id="recentsBox" class="recents hidden"></div>
+  <div id="wizView" class="hidden"></div>
+  <div id="listView"></div>
+  <div id="detailView" class="hidden"></div>
+
+  <footer>
+    Type <b>11</b> for 11%. Tap an answer to select and copy it.<br>
+    Your calculations stay on this device and the calculator works offline once loaded.
+  </footer>
+</div>
+
+<nav class="dock" aria-label="Mobile navigation">
+  <button id="dockBrowse" class="active"><span>⌂</span>Browse</button>
+  <button id="dockGuide"><span>✦</span>Guide</button>
+  <button id="dockRecent"><span>↻</span>Recent</button>
+  <button id="dockTop"><span>↑</span>Top</button>
+</nav>
+
+<script>
+/* ============ helpers ============ */
+
+const money = (x,d=2) => !isFinite(x) ? "—" :
+  x.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
+const pctS = (x,d=4) => money(x*100,d)+"%";
+const r6 = x => money(x,6);
+const PVIFA = (r,n) => r===0 ? n : (1-Math.pow(1+r,-n))/r;
+const FVIFA = (r,n) => r===0 ? n : (Math.pow(1+r,n)-1)/r;
+const nums = s => String(s).split(/[,;\s]+/).filter(x=>x!=="").map(Number);
+
+/* ============ formula library ============ */
+const F = [
+
+/* ---- 1. single amounts ---- */
+{id:"fv1", cat:"Single amounts (one cash flow)", name:"Future value of a lump sum",
+ blurb:"One amount today → what it grows to.", key:"grow compound future lump",
+ sym:"FV = PV × (1 + r)^t",
+ in:[{k:"pv",l:"Amount today (PV)",h:"e.g. 247000"},{k:"r",l:"Interest rate per period (%)",h:"e.g. 11"},{k:"t",l:"Number of periods (t)",h:"e.g. 9"}],
+ run:v=>{const f=Math.pow(1+v.r,v.t), fv=v.pv*f; return {
+   steps:[{l:"Growth factor",m:`(1 + ${money(v.r*100,4)}%)^${v.t} = ${r6(f)}`},
+          {l:"Multiply",m:`${money(v.pv)} × ${r6(f)}`}],
+   ans:money(fv), why:"One cash flow pushed forward in time."};}},
+
+{id:"pv1", cat:"Single amounts (one cash flow)", name:"Present value of a lump sum",
+ blurb:"One future amount → what it's worth today.", key:"discount present lump today",
+ sym:"PV = FV / (1 + r)^t",
+ in:[{k:"fv",l:"Future amount (FV)",h:"e.g. 140000"},{k:"r",l:"Discount rate per period (%)",h:"e.g. 14"},{k:"t",l:"Number of periods (t)",h:"e.g. 13"}],
+ run:v=>{const f=Math.pow(1+v.r,v.t), pv=v.fv/f; return {
+   steps:[{l:"Discount factor",m:`(1 + ${money(v.r*100,4)}%)^${v.t} = ${r6(f)}`},
+          {l:"Divide",m:`${money(v.fv)} ÷ ${r6(f)}`}],
+   ans:money(pv), why:"One future cash flow pulled back to today."};}},
+
+{id:"fvm", cat:"Single amounts (one cash flow)", name:"Lump sum, compounded m times a year",
+ blurb:"Quoted annual rate but monthly / quarterly / daily compounding.", key:"monthly quarterly semi annual compounding frequency",
+ sym:"FV = PV × (1 + APR/m)^(m×t)     period rate = APR/m,  n = m×t",
+ in:[{k:"pv",l:"Amount today (PV)",h:"e.g. 153000"},{k:"r",l:"Quoted annual rate, APR (%)",h:"e.g. 10"},
+     {k:"t",l:"Number of YEARS",h:"e.g. 13"},{k:"m",l:"Compounding periods per year (m)",h:"12 monthly · 4 quarterly · 2 semi-annual · 365 daily"}],
+ run:v=>{const i=v.r/v.m, n=v.m*v.t, f=Math.pow(1+i,n); return {
+   steps:[{l:"Period rate",m:`${money(v.r*100,4)}% ÷ ${v.m} = ${pctS(i,6)}`},
+          {l:"Number of periods",m:`${v.m} × ${v.t} = ${n}`},
+          {l:"Growth factor",m:`(1 + ${pctS(i,6)})^${n} = ${r6(f)}`},
+          {l:"Multiply",m:`${money(v.pv)} × ${r6(f)}`}],
+   ans:money(v.pv*f), why:"Split the year to match the compounding: divide the rate, multiply the periods."};}},
+
+{id:"pvm", cat:"Single amounts (one cash flow)", name:"PV with m compounding periods a year",
+ blurb:"How much to deposit today, with intra-year compounding.", key:"deposit today semi annual quarterly monthly present",
+ sym:"PV = FV / (1 + APR/m)^(m×t)",
+ in:[{k:"fv",l:"Future amount needed (FV)",h:"e.g. 197000"},{k:"r",l:"Quoted annual rate, APR (%)",h:"e.g. 13"},
+     {k:"t",l:"Number of YEARS",h:"e.g. 5"},{k:"m",l:"Compounding periods per year (m)",h:"e.g. 2"}],
+ run:v=>{const i=v.r/v.m, n=v.m*v.t, f=Math.pow(1+i,n); return {
+   steps:[{l:"Period rate",m:`${money(v.r*100,4)}% ÷ ${v.m} = ${pctS(i,6)}`},
+          {l:"Number of periods",m:`${v.m} × ${v.t} = ${n}`},
+          {l:"Discount factor",m:`(1 + ${pctS(i,6)})^${n} = ${r6(f)}`},
+          {l:"Divide",m:`${money(v.fv)} ÷ ${r6(f)}`}],
+   ans:money(v.fv/f), why:"Same split, but discounting instead of growing."};}},
+
+{id:"chain", cat:"Single amounts (one cash flow)", name:"Lump sum when the rate CHANGES",
+ blurb:"Different rate in different stretches of years — chain the factors.", key:"changing varying rate blocks chain stages",
+ sym:"FV = PV × (1+r₁)^t₁ × (1+r₂)^t₂ × …",
+ in:[{k:"pv",l:"Amount today (PV)",h:"e.g. 100000"},
+     {k:"blocks",l:"Rate% and years, in order",t:"text",h:"e.g. 15,4; 12,4; 9,2  →  15% for 4 yrs, then 12% for 4, then 9% for 2"}],
+ run:v=>{
+   const parts=String(v.blocks).split(";").map(s=>s.trim()).filter(Boolean);
+   if(!parts.length) throw "Enter at least one rate,years pair.";
+   let fv=v.pv, steps=[];
+   parts.forEach(p=>{
+     const [rr,yy]=nums(p);
+     if(!isFinite(rr)||!isFinite(yy)) throw "Each block needs rate,years — e.g. 15,4";
+     const f=Math.pow(1+rr/100,yy);
+     steps.push({l:`${rr}% for ${yy} year(s)`,m:`× (1 + ${rr}%)^${yy} = × ${r6(f)}`});
+     fv*=f;
+   });
+   steps.unshift({l:"Start with",m:money(v.pv)});
+   return {steps, ans:money(fv), why:"When the rate changes, break the timeline into blocks and multiply the growth factors."};}},
+
+/* ---- 2. solving for rate / time ---- */
+{id:"solr", cat:"Solving for rate or time", name:"Solve for the interest rate (r)",
+ blurb:"You know PV, FV and how long — find the rate.", key:"rate return implied solve r",
+ sym:"r = (FV / PV)^(1/t) − 1",
+ in:[{k:"pv",l:"Amount today (PV)",h:"e.g. 137000"},{k:"fv",l:"Amount later (FV)",h:"e.g. 475000"},{k:"t",l:"Number of periods (t)",h:"e.g. 14"}],
+ run:v=>{if(v.pv<=0) throw "PV must be greater than zero.";
+   const ratio=v.fv/v.pv, r=Math.pow(ratio,1/v.t)-1; return {
+   steps:[{l:"Ratio",m:`${money(v.fv)} ÷ ${money(v.pv)} = ${r6(ratio)}`},
+          {l:"Take the t-th root",m:`${r6(ratio)}^(1/${v.t}) = ${r6(Math.pow(ratio,1/v.t))}`},
+          {l:"Subtract 1",m:`${r6(Math.pow(ratio,1/v.t))} − 1 = ${r6(r)}`}],
+   ans:pctS(r), why:"Three of the four variables known, solving for rate."};}},
+
+{id:"solt", cat:"Solving for rate or time", name:"Solve for the number of periods (t)",
+ blurb:"How long until the money reaches a target.", key:"how long years time solve t doubling",
+ sym:"t = ln(FV / PV) / ln(1 + r)",
+ in:[{k:"pv",l:"Amount today (PV)",h:"e.g. 136000"},{k:"fv",l:"Target amount (FV)",h:"e.g. 468000"},{k:"r",l:"Rate per period (%)",h:"e.g. 8"}],
+ run:v=>{if(v.pv<=0) throw "PV must be greater than zero.";
+   const ratio=v.fv/v.pv, t=Math.log(ratio)/Math.log(1+v.r); return {
+   steps:[{l:"Ratio",m:`${money(v.fv)} ÷ ${money(v.pv)} = ${r6(ratio)}`},
+          {l:"Logs",m:`ln(${r6(ratio)}) ÷ ln(1 + ${money(v.r*100,4)}%)\n= ${r6(Math.log(ratio))} ÷ ${r6(Math.log(1+v.r))}`}],
+   ans:money(t,2)+" periods", why:"Solving for time always uses natural logs."};}},
+
+{id:"r72", cat:"Solving for rate or time", name:"Rule of 72 (quick doubling check)",
+ blurb:"Rough years to double — handy for a sanity check in class.", key:"rule 72 double quick estimate",
+ sym:"years to double ≈ 72 / interest rate in %",
+ in:[{k:"r",l:"Interest rate (%)",h:"e.g. 10",raw:true}],
+ run:v=>{const t=72/v.r; return {
+   steps:[{l:"Divide",m:`72 ÷ ${v.r} = ${money(t,2)}`},
+          {l:"Exact answer for comparison",m:`ln(2) ÷ ln(1 + ${v.r}%) = ${money(Math.log(2)/Math.log(1+v.r/100),2)} years`}],
+   ans:money(t,2)+" years", why:"An estimate only — but it's usually within a few months."};}},
+
+/* ---- 3. annuities ---- */
+{id:"pva", cat:"Annuities (equal payments that STOP)", name:"PV of an annuity",
+ blurb:"Equal payments for a fixed number of periods → value today.", key:"annuity present value pvifa instalments lease",
+ sym:"PV = C × [ 1/r − 1/(r(1+r)^t) ]        (annuity due: × (1+r))",
+ in:[{k:"c",l:"Payment each period (C)",h:"e.g. 24000"},{k:"r",l:"Rate per period (%)",h:"e.g. 13"},
+     {k:"t",l:"Number of payments (t)",h:"e.g. 11"},{k:"due",l:"First payment is TODAY (annuity due)",t:"bool"}],
+ run:v=>{const a=PVIFA(v.r,v.t); let pv=v.c*a; const s=[
+   {l:"Annuity factor PVIFA(r,t)",m:`(1 − 1/(1+${money(v.r*100,4)}%)^${v.t}) ÷ ${money(v.r*100,4)}% = ${r6(a)}`},
+   {l:"Multiply",m:`${money(v.c)} × ${r6(a)} = ${money(pv)}`}];
+   if(v.due){ s.push({l:"Annuity due — shift one period earlier",m:`${money(pv)} × (1 + ${money(v.r*100,4)}%) = ${money(pv*(1+v.r))}`}); pv*=1+v.r; }
+   return {steps:s, ans:money(pv), why: v.due ? "\"First payment today\" is the tell-tale for an annuity due — one extra ×(1+r)." : "Equal payments, fixed number, valued today."};}},
+
+{id:"fva", cat:"Annuities (equal payments that STOP)", name:"FV of an annuity (savings pot)",
+ blurb:"Equal deposits → what the pot is worth at the end.", key:"annuity future value fvifa savings deposits accumulate",
+ sym:"FV = C × [ ((1+r)^t − 1) / r ]        (annuity due: × (1+r))",
+ in:[{k:"c",l:"Deposit each period (C)",h:"e.g. 16000"},{k:"r",l:"Rate per period (%)",h:"e.g. 14"},
+     {k:"t",l:"Number of deposits (t)",h:"e.g. 12"},{k:"due",l:"Deposits at the BEGINNING of each period",t:"bool"}],
+ run:v=>{const a=FVIFA(v.r,v.t); let fv=v.c*a; const s=[
+   {l:"Annuity factor FVIFA(r,t)",m:`((1+${money(v.r*100,4)}%)^${v.t} − 1) ÷ ${money(v.r*100,4)}% = ${r6(a)}`},
+   {l:"Multiply",m:`${money(v.c)} × ${r6(a)} = ${money(fv)}`}];
+   if(v.due){ s.push({l:"Annuity due — each deposit earns one more period",m:`${money(fv)} × (1 + ${money(v.r*100,4)}%) = ${money(fv*(1+v.r))}`}); fv*=1+v.r; }
+   return {steps:s, ans:money(fv), why: v.due ? "Beginning-of-period deposits compound one period longer." : "Equal deposits, want the pot at the end."};}},
+
+{id:"pmtpv", cat:"Annuities (equal payments that STOP)", name:"Find the payment from a PV (loan / instalment)",
+ blurb:"You know the amount borrowed — find the repayment.", key:"loan payment instalment repay mortgage pmt borrow",
+ sym:"PMT = PV / PVIFA(r,t)        (annuity due: ÷ (1+r) as well)",
+ in:[{k:"pv",l:"Amount borrowed / value today (PV)",h:"e.g. 389000"},{k:"r",l:"Rate per period (%)",h:"e.g. 14"},
+     {k:"t",l:"Number of payments (t)",h:"e.g. 25"},{k:"due",l:"First payment is TODAY (annuity due)",t:"bool"}],
+ run:v=>{let a=PVIFA(v.r,v.t); const s=[{l:"Annuity factor PVIFA(r,t)",m:r6(a)}];
+   if(v.due){ s.push({l:"Annuity due adjustment",m:`${r6(a)} × (1 + ${money(v.r*100,4)}%) = ${r6(a*(1+v.r))}`}); a*=1+v.r; }
+   s.push({l:"Divide",m:`${money(v.pv)} ÷ ${r6(a)}`});
+   return {steps:s, ans:money(v.pv/a)+" per period", why:"A loan is the PV; solve for the payment."};}},
+
+{id:"pmtfv", cat:"Annuities (equal payments that STOP)", name:"Find the deposit needed to hit a target (FV)",
+ blurb:"You know the pot you want — find the yearly saving.", key:"save target goal deposit sinking fund retirement how much save",
+ sym:"PMT = FV / FVIFA(r,t)        (annuity due: ÷ (1+r) as well)",
+ in:[{k:"fv",l:"Target amount (FV)",h:"e.g. 450000"},{k:"r",l:"Rate per period (%)",h:"e.g. 9"},
+     {k:"t",l:"Number of deposits (t)",h:"e.g. 12"},{k:"due",l:"Deposits at the BEGINNING of each period",t:"bool"}],
+ run:v=>{let a=FVIFA(v.r,v.t); const s=[{l:"Annuity factor FVIFA(r,t)",m:r6(a)}];
+   if(v.due){ s.push({l:"Annuity due adjustment",m:`${r6(a)} × (1 + ${money(v.r*100,4)}%) = ${r6(a*(1+v.r))}`}); a*=1+v.r; }
+   s.push({l:"Divide",m:`${money(v.fv)} ÷ ${r6(a)}`});
+   return {steps:s, ans:money(v.fv/a)+" per period", why:"Target pot ÷ annuity factor = the deposit."};}},
+
+{id:"gann", cat:"Annuities (equal payments that STOP)", name:"PV of a GROWING annuity",
+ blurb:"Payments rise by a fixed % each period, then stop.", key:"growing annuity rising payments escalating salary rent",
+ sym:"PV = C₁/(r − g) × [ 1 − ((1+g)/(1+r))^t ]",
+ in:[{k:"c",l:"FIRST payment (C₁, at end of period 1)",h:"e.g. 20000"},{k:"r",l:"Discount rate (%)",h:"e.g. 10"},
+     {k:"g",l:"Growth rate of the payment (%)",h:"e.g. 5"},{k:"t",l:"Number of payments (t)",h:"e.g. 20"}],
+ run:v=>{if(v.r===v.g) throw "r and g cannot be equal — use PV = C × t / (1+r) instead.";
+   const ratio=Math.pow((1+v.g)/(1+v.r),v.t), pv=v.c/(v.r-v.g)*(1-ratio); return {
+   steps:[{l:"r − g",m:`${money(v.r*100,4)}% − ${money(v.g*100,4)}% = ${money((v.r-v.g)*100,4)}%`},
+          {l:"Bracket",m:`1 − ((1+g)/(1+r))^${v.t} = 1 − ${r6(ratio)} = ${r6(1-ratio)}`},
+          {l:"Combine",m:`${money(v.c)} ÷ ${money(v.r-v.g,6)} × ${r6(1-ratio)}`}],
+   ans:money(pv), why:"Payments grow but still stop after t periods."};}},
+
+/* ---- 4. perpetuities ---- */
+{id:"perp", cat:"Perpetuities (payments FOREVER)", name:"PV of a perpetuity",
+ blurb:"The same payment forever.", key:"perpetuity forever consol endowment preferred",
+ sym:"PV = C / r          (value sits ONE period before the first payment)",
+ in:[{k:"c",l:"Payment each period (C)",h:"e.g. 100000"},{k:"r",l:"Discount rate (%)",h:"e.g. 10"}],
+ run:v=>({steps:[{l:"Divide",m:`${money(v.c)} ÷ ${money(v.r*100,4)}%  =  ${money(v.c)} ÷ ${r6(v.r)}`}],
+   ans:money(v.c/v.r), why:"Equal payment with no end date."}) },
+
+{id:"perpr", cat:"Perpetuities (payments FOREVER)", name:"Rate of return on a perpetuity",
+ blurb:"You know the price and the payment — find the yield.", key:"perpetuity rate yield return consol price",
+ sym:"r = C / PV",
+ in:[{k:"c",l:"Payment each period (C)",h:"e.g. 105"},{k:"pv",l:"Price paid today (PV)",h:"e.g. 1500"}],
+ run:v=>({steps:[{l:"Divide",m:`${money(v.c)} ÷ ${money(v.pv)} = ${r6(v.c/v.pv)}`}],
+   ans:pctS(v.c/v.pv), why:"Just the perpetuity formula rearranged."}) },
+
+{id:"dperp", cat:"Perpetuities (payments FOREVER)", name:"Delayed perpetuity",
+ blurb:"Forever, but the first payment comes some years from now.", key:"delayed deferred perpetuity starts later",
+ sym:"Step 1: value at (k−1) = C / r        Step 2: PV = that / (1+r)^(k−1)",
+ in:[{k:"c",l:"Payment each period (C)",h:"e.g. 100000"},{k:"r",l:"Discount rate (%)",h:"e.g. 10"},
+     {k:"k",l:"Year of the FIRST payment (k)",h:"e.g. 4"}],
+ run:v=>{const at=v.c/v.r, back=Math.pow(1+v.r,v.k-1), pv=at/back; return {
+   steps:[{l:`Step 1 — value at end of year ${v.k-1}`,m:`${money(v.c)} ÷ ${r6(v.r)} = ${money(at)}`},
+          {l:`Step 2 — discount back ${v.k-1} year(s)`,m:`${money(at)} ÷ (1 + ${money(v.r*100,4)}%)^${v.k-1} = ${money(at)} ÷ ${r6(back)}`}],
+   ans:money(pv), why:`C/r always lands ONE period before the first payment — so it sits at year ${v.k-1}, not year ${v.k}.`};}},
+
+{id:"gperp", cat:"Perpetuities (payments FOREVER)", name:"PV of a GROWING perpetuity",
+ blurb:"Forever, and rising by a fixed % each period.", key:"growing perpetuity gordon dividend forever growth",
+ sym:"PV = C₁ / (r − g)          (needs r > g)",
+ in:[{k:"c",l:"FIRST payment (C₁, one period from now)",h:"e.g. 5"},{k:"r",l:"Discount rate (%)",h:"e.g. 12"},{k:"g",l:"Growth rate (%)",h:"e.g. 4"}],
+ run:v=>{if(v.r<=v.g) throw "The formula needs r greater than g.";
+   return {steps:[{l:"r − g",m:`${money(v.r*100,4)}% − ${money(v.g*100,4)}% = ${money((v.r-v.g)*100,4)}%`},
+          {l:"Divide",m:`${money(v.c)} ÷ ${r6(v.r-v.g)}`}],
+   ans:money(v.c/(v.r-v.g)), why:"This is also the constant-growth dividend model."};}},
+
+/* ---- 5. rates & compounding ---- */
+{id:"ear", cat:"Rates & compounding (EAR / APR)", name:"EAR from a quoted APR",
+ blurb:"Convert a quoted rate into the true annual rate.", key:"ear effective annual rate apr convert compounding",
+ sym:"EAR = (1 + APR/m)^m − 1",
+ in:[{k:"r",l:"Quoted annual rate, APR (%)",h:"e.g. 13"},{k:"m",l:"Compounding periods per year (m)",h:"12 monthly · 4 quarterly · 2 semi-annual · 365 daily"}],
+ run:v=>{const i=v.r/v.m, e=Math.pow(1+i,v.m)-1; return {
+   steps:[{l:"Period rate",m:`${money(v.r*100,4)}% ÷ ${v.m} = ${pctS(i,6)}`},
+          {l:"Compound for a year",m:`(1 + ${pctS(i,6)})^${v.m} = ${r6(1+e)}`},
+          {l:"Subtract 1",m:`${r6(1+e)} − 1 = ${r6(e)}`}],
+   ans:pctS(e), why:"Always compare loans and investments on EAR, never on the quoted APR."};}},
+
+{id:"earp", cat:"Rates & compounding (EAR / APR)", name:"EAR from a PERIOD rate",
+ blurb:"They quoted you \"2.75% per month\" — what's that a year?", key:"per month period rate effective annual susu moneylender",
+ sym:"EAR = (1 + period rate)^m − 1",
+ in:[{k:"i",l:"Rate per PERIOD (%)",h:"e.g. 2.75 for 2.75% a month"},{k:"m",l:"Periods per year (m)",h:"e.g. 12"}],
+ run:v=>{const e=Math.pow(1+v.i,v.m)-1; return {
+   steps:[{l:"Compound for a year",m:`(1 + ${money(v.i*100,4)}%)^${v.m} = ${r6(1+e)}`},
+          {l:"Subtract 1",m:`${r6(1+e)} − 1 = ${r6(e)}`}],
+   ans:pctS(e), why:"This is how a small-sounding monthly rate turns into a very large annual one."};}},
+
+{id:"emr", cat:"Rates & compounding (EAR / APR)", name:"Period rate from an EAR",
+ blurb:"You're given a true annual rate but pay monthly.", key:"effective monthly rate emr from ear split annual",
+ sym:"period rate = (1 + EAR)^(1/m) − 1",
+ in:[{k:"e",l:"Effective annual rate, EAR (%)",h:"e.g. 8"},{k:"m",l:"Periods per year (m)",h:"e.g. 12"}],
+ run:v=>{const i=Math.pow(1+v.e,1/v.m)-1; return {
+   steps:[{l:"Take the m-th root",m:`(1 + ${money(v.e*100,4)}%)^(1/${v.m}) = ${r6(1+i)}`},
+          {l:"Subtract 1",m:`${r6(1+i)} − 1 = ${r6(i)}`}],
+   ans:pctS(i,6), why:"Use this when the rate given is already effective — do NOT just divide by m."};}},
+
+{id:"apr", cat:"Rates & compounding (EAR / APR)", name:"APR from an EAR",
+ blurb:"Work back to the quoted rate.", key:"apr from ear quoted nominal rate back out",
+ sym:"APR = m × [ (1 + EAR)^(1/m) − 1 ]",
+ in:[{k:"e",l:"Effective annual rate, EAR (%)",h:"e.g. 12.68"},{k:"m",l:"Compounding periods per year (m)",h:"e.g. 12"}],
+ run:v=>{const i=Math.pow(1+v.e,1/v.m)-1; return {
+   steps:[{l:"Period rate",m:`(1 + ${money(v.e*100,4)}%)^(1/${v.m}) − 1 = ${pctS(i,6)}`},
+          {l:"Multiply by m",m:`${pctS(i,6)} × ${v.m} = ${pctS(i*v.m)}`}],
+   ans:pctS(i*v.m), why:"The APR is just the period rate scaled up — it ignores compounding."};}},
+
+/* ---- 6. loans ---- */
+{id:"loan", cat:"Loans & amortisation", name:"Loan payment (monthly / periodic)",
+ blurb:"Car loan, mortgage, hire purchase.", key:"loan mortgage car monthly payment amortise emi",
+ sym:"period rate i = APR/m,  n = years×m,  PMT = Loan / PVIFA(i,n)",
+ in:[{k:"pv",l:"Amount borrowed",h:"e.g. 22102"},{k:"r",l:"Quoted annual rate, APR (%)",h:"e.g. 8"},
+     {k:"t",l:"Term in YEARS",h:"e.g. 5"},{k:"m",l:"Payments per year (m)",h:"12 monthly · 4 quarterly · 1 annual"}],
+ run:v=>{const i=v.r/v.m, n=v.t*v.m, a=PVIFA(i,n), pmt=v.pv/a; return {
+   steps:[{l:"Period rate",m:`${money(v.r*100,4)}% ÷ ${v.m} = ${pctS(i,6)}`},
+          {l:"Number of payments",m:`${v.t} × ${v.m} = ${n}`},
+          {l:"Annuity factor",m:`PVIFA(${pctS(i,4)}, ${n}) = ${r6(a)}`},
+          {l:"Divide",m:`${money(v.pv)} ÷ ${r6(a)}`},
+          {l:"Total repaid over the term",m:`${money(pmt)} × ${n} = ${money(pmt*n)}  (interest = ${money(pmt*n-v.pv)})`}],
+   ans:money(pmt)+" per period", why:"The loan is the PV of all the future payments."};}},
+
+{id:"bal", cat:"Loans & amortisation", name:"Balance & interest paid after k payments",
+ blurb:"How much you still owe part-way through a loan.", key:"balance outstanding remaining principal interest paid amortisation schedule",
+ sym:"Balance = PMT × PVIFA(i, n − k)",
+ in:[{k:"pv",l:"Original amount borrowed",h:"e.g. 200000"},{k:"r",l:"Quoted annual rate, APR (%)",h:"e.g. 6"},
+     {k:"t",l:"Term in YEARS",h:"e.g. 25"},{k:"m",l:"Payments per year (m)",h:"e.g. 12"},
+     {k:"k",l:"Payments already made (k)",h:"e.g. 60"}],
+ run:v=>{const i=v.r/v.m, n=v.t*v.m;
+   if(v.k>n) throw "Payments made cannot exceed the total number of payments.";
+   const pmt=v.pv/PVIFA(i,n), bal=pmt*PVIFA(i,n-v.k), paid=pmt*v.k, princ=v.pv-bal; return {
+   steps:[{l:"Payment",m:`${money(v.pv)} ÷ PVIFA(${pctS(i,4)}, ${n}) = ${money(pmt)}`},
+          {l:`Balance after ${v.k} payments`,m:`${money(pmt)} × PVIFA(${pctS(i,4)}, ${n-v.k}) = ${money(bal)}`},
+          {l:"Total paid so far",m:money(paid)},
+          {l:"Of which principal",m:`${money(v.pv)} − ${money(bal)} = ${money(princ)}`},
+          {l:"Of which interest",m:`${money(paid)} − ${money(princ)} = ${money(paid-princ)}`}],
+   ans:money(bal)+" still owed", why:"The balance is always the PV of the payments that remain."};}},
+
+/* ---- 7. uneven cash flows ---- */
+{id:"unpv", cat:"Uneven cash flows", name:"PV of uneven cash flows",
+ blurb:"Different amounts each year — value each one and add.", key:"uneven mixed stream npv different amounts project",
+ sym:"PV = Σ  CFₜ / (1 + r)^t",
+ in:[{k:"cfs",l:"Cash flows from year 1 onward",t:"text",h:"e.g. 5000, 8000, 12000, 12000"},
+     {k:"r",l:"Discount rate (%)",h:"e.g. 10"},
+     {k:"cf0",l:"Amount at year 0 (optional — enter a cost as negative)",h:"e.g. -20000 · leave blank for none",opt:true}],
+ run:v=>{const cf=nums(v.cfs); if(!cf.length) throw "Enter at least one cash flow.";
+   let tot=isFinite(v.cf0)?v.cf0:0; const s=[];
+   if(isFinite(v.cf0)&&v.cf0!==0) s.push({l:"Year 0",m:`${money(v.cf0)} (no discounting)`});
+   cf.forEach((c,idx)=>{const t=idx+1, d=Math.pow(1+v.r,t), pv=c/d; tot+=pv;
+     s.push({l:`Year ${t}`,m:`${money(c)} ÷ (1+${money(v.r*100,4)}%)^${t} = ${money(c)} ÷ ${r6(d)} = ${money(pv)}`});});
+   s.push({l:"Add them up",m:money(tot)});
+   return {steps:s, ans:money(tot), why:"No shortcut with uneven amounts — value each one separately, then add."};}},
+
+{id:"unfv", cat:"Uneven cash flows", name:"FV of uneven cash flows",
+ blurb:"Push each different amount forward to a target year.", key:"uneven future value target year accumulate different deposits",
+ sym:"FV = Σ  CFₜ × (1 + r)^(T − t)",
+ in:[{k:"cfs",l:"Cash flows from year 1 onward",t:"text",h:"e.g. 4000, 4000, 6000"},
+     {k:"r",l:"Rate (%)",h:"e.g. 9"},{k:"T",l:"Target year (T)",h:"e.g. 5"}],
+ run:v=>{const cf=nums(v.cfs); if(!cf.length) throw "Enter at least one cash flow.";
+   let tot=0; const s=[];
+   cf.forEach((c,idx)=>{const t=idx+1, yrs=v.T-t;
+     if(yrs<0) throw `Year ${t} is after your target year ${v.T}.`;
+     const f=Math.pow(1+v.r,yrs), fv=c*f; tot+=fv;
+     s.push({l:`Year ${t} → year ${v.T}`,m:`${money(c)} × (1+${money(v.r*100,4)}%)^${yrs} = ${money(c)} × ${r6(f)} = ${money(fv)}`});});
+   s.push({l:"Add them up",m:money(tot)});
+   return {steps:s, ans:money(tot), why:"Each amount grows for however many years remain until the target date."};}},
+
+/* ---- 8. bonds ---- */
+{id:"bond", cat:"Bonds", name:"Bond price",
+ blurb:"PV of the coupons plus PV of the face value.", key:"bond price value coupon face par semi annual valuation",
+ sym:"Price = coupon × PVIFA(i,n) + Face / (1+i)^n",
+ in:[{k:"face",l:"Face (par) value",h:"e.g. 1000"},{k:"cr",l:"Coupon rate per YEAR (%)",h:"e.g. 8"},
+     {k:"y",l:"Yield to maturity, annual (%)",h:"e.g. 7"},{k:"t",l:"Years to maturity",h:"e.g. 5"},
+     {k:"m",l:"Coupons per year (m)",h:"2 semi-annual · 1 annual"}],
+ run:v=>{const i=v.y/v.m, n=v.t*v.m, cpn=v.face*v.cr/v.m,
+   pvc=cpn*PVIFA(i,n), pvf=v.face/Math.pow(1+i,n), price=pvc+pvf;
+   const tag = price>v.face+0.005 ? "PREMIUM bond (coupon rate > yield)" :
+               price<v.face-0.005 ? "DISCOUNT bond (coupon rate < yield)" : "PAR bond (coupon rate = yield)";
+   return {steps:[{l:"Coupon per period",m:`${money(v.face)} × ${money(v.cr*100,4)}% ÷ ${v.m} = ${money(cpn)}`},
+          {l:"Yield per period",m:`${money(v.y*100,4)}% ÷ ${v.m} = ${pctS(i,6)}`},
+          {l:"Periods",m:`${v.t} × ${v.m} = ${n}`},
+          {l:"PV of the coupons",m:`${money(cpn)} × PVIFA(${pctS(i,4)}, ${n}) = ${money(cpn)} × ${r6(PVIFA(i,n))} = ${money(pvc)}`},
+          {l:"PV of the face value",m:`${money(v.face)} ÷ (1+${pctS(i,4)})^${n} = ${money(pvf)}`},
+          {l:"Add",m:`${money(pvc)} + ${money(pvf)}`},
+          {l:"Type",m:tag}],
+   ans:money(price), why:"A bond is just an annuity (the coupons) plus a lump sum (the face value)."};}},
+
+{id:"ytm", cat:"Bonds", name:"Yield to maturity (YTM)",
+ blurb:"You know the price — find the return if you hold to maturity.", key:"ytm yield to maturity solve rate bond return",
+ sym:"Find i such that Price = coupon × PVIFA(i,n) + Face/(1+i)^n   (solved by trial)",
+ in:[{k:"price",l:"Current market price",h:"e.g. 1038.05"},{k:"face",l:"Face (par) value",h:"e.g. 1000"},
+     {k:"cr",l:"Coupon rate per YEAR (%)",h:"e.g. 8"},{k:"t",l:"Years to maturity",h:"e.g. 5"},
+     {k:"m",l:"Coupons per year (m)",h:"e.g. 2"}],
+ run:v=>{const n=v.t*v.m, cpn=v.face*v.cr/v.m;
+   const price=i=> cpn*PVIFA(i,n)+v.face/Math.pow(1+i,n);
+   let lo=-0.9, hi=3, mid=0;
+   for(let k=0;k<200;k++){ mid=(lo+hi)/2; (price(mid)>v.price)? lo=mid : hi=mid; }
+   const annual=mid*v.m, cy=v.face*v.cr/v.price;
+   return {steps:[{l:"Coupon per period",m:money(cpn)},
+          {l:"Periods",m:`${v.t} × ${v.m} = ${n}`},
+          {l:"Solve for the period yield",m:`i = ${pctS(mid,6)}  (check: price at this i = ${money(price(mid))})`},
+          {l:"Annualise",m:`${pctS(mid,6)} × ${v.m} = ${pctS(annual)}`},
+          {l:"Current yield for comparison",m:`annual coupon ÷ price = ${money(v.face*v.cr)} ÷ ${money(v.price)} = ${pctS(cy)}`}],
+   ans:pctS(annual), why:"YTM has no clean algebraic solution — it is always found by trial and error."};}},
+
+{id:"hpr", cat:"Bonds", name:"Rate of return over a holding period",
+ blurb:"Income plus price change, over what you paid.", key:"holding period return rate of return capital gain income yield",
+ sym:"return = (income + price change) / starting price",
+ in:[{k:"inc",l:"Income received (coupon or dividend)",h:"e.g. 80"},{k:"p0",l:"Price at the start",h:"e.g. 1000"},{k:"p1",l:"Price at the end",h:"e.g. 1020"}],
+ run:v=>{const g=v.p1-v.p0, tot=(v.inc+g)/v.p0; return {
+   steps:[{l:"Capital gain",m:`${money(v.p1)} − ${money(v.p0)} = ${money(g)}`},
+          {l:"Income + gain",m:`${money(v.inc)} + ${money(g)} = ${money(v.inc+g)}`},
+          {l:"Over the starting price",m:`${money(v.inc+g)} ÷ ${money(v.p0)}`},
+          {l:"Split it up",m:`income yield ${pctS(v.inc/v.p0)} + capital gain ${pctS(g/v.p0)}`}],
+   ans:pctS(tot), why:"Total return is always income yield plus capital gain yield."};}},
+
+{id:"atax", cat:"Bonds", name:"After-tax return",
+ blurb:"What you actually keep.", key:"after tax return net of tax",
+ sym:"after-tax = pre-tax × (1 − tax rate)",
+ in:[{k:"r",l:"Pre-tax return (%)",h:"e.g. 8"},{k:"tx",l:"Tax rate (%)",h:"e.g. 25"}],
+ run:v=>({steps:[{l:"Keep this share",m:`1 − ${money(v.tx*100,4)}% = ${r6(1-v.tx)}`},
+          {l:"Multiply",m:`${money(v.r*100,4)}% × ${r6(1-v.tx)}`}],
+   ans:pctS(v.r*(1-v.tx)), why:"Compare investments after tax when the tax treatment differs."}) },
+
+/* ---- 9. stocks ---- */
+{id:"ddm", cat:"Stocks", name:"Share price — constant growth (Gordon model)",
+ blurb:"Dividends growing at a steady rate forever.", key:"stock price dividend discount model gordon constant growth valuation share",
+ sym:"P₀ = D₁ / (r − g)          D₁ = D₀ × (1 + g)",
+ in:[{k:"d",l:"Dividend amount",h:"e.g. 3"},{k:"isD0",l:"That figure is the dividend JUST PAID (D₀), not next year's",t:"bool"},
+     {k:"r",l:"Required return (%)",h:"e.g. 12"},{k:"g",l:"Dividend growth rate (%)",h:"e.g. 4"}],
+ run:v=>{if(v.r<=v.g) throw "The model needs r greater than g.";
+   const d1 = v.isD0 ? v.d*(1+v.g) : v.d; const s=[];
+   if(v.isD0) s.push({l:"Step up to next year's dividend",m:`D₁ = ${money(v.d)} × (1 + ${money(v.g*100,4)}%) = ${money(d1)}`});
+   s.push({l:"r − g",m:`${money(v.r*100,4)}% − ${money(v.g*100,4)}% = ${money((v.r-v.g)*100,4)}%`});
+   s.push({l:"Divide",m:`${money(d1)} ÷ ${r6(v.r-v.g)}`});
+   return {steps:s, ans:money(d1/(v.r-v.g)), why:"The numerator must be NEXT year's dividend — this is the most common slip."};}},
+
+{id:"nogrow", cat:"Stocks", name:"Share price — no growth",
+ blurb:"The same dividend forever (a perpetuity).", key:"stock no growth zero constant dividend preferred share",
+ sym:"P₀ = D / r",
+ in:[{k:"d",l:"Dividend each year (D)",h:"e.g. 3"},{k:"r",l:"Required return (%)",h:"e.g. 8"}],
+ run:v=>({steps:[{l:"Divide",m:`${money(v.d)} ÷ ${r6(v.r)}`}],
+   ans:money(v.d/v.r), why:"With g = 0 the Gordon model collapses to a plain perpetuity."}) },
+
+{id:"nonconst", cat:"Stocks", name:"Share price — non-constant growth",
+ blurb:"A few unusual years, then steady growth forever.", key:"non constant supernormal two stage growth stock terminal value horizon",
+ sym:"P₀ = Σ Dₜ/(1+r)^t  +  Pₙ/(1+r)ⁿ     where  Pₙ = Dₙ(1+g)/(r−g)",
+ in:[{k:"ds",l:"Dividends for the unusual years, in order",t:"text",h:"e.g. 1.00, 2.00, 2.50"},
+     {k:"r",l:"Required return (%)",h:"e.g. 12"},{k:"g",l:"Steady growth AFTER those years (%)",h:"e.g. 5"}],
+ run:v=>{const d=nums(v.ds); if(!d.length) throw "Enter at least one dividend.";
+   if(v.r<=v.g) throw "The model needs r greater than g.";
+   let tot=0; const s=[];
+   d.forEach((x,idx)=>{const t=idx+1, f=Math.pow(1+v.r,t), pv=x/f; tot+=pv;
+     s.push({l:`Dividend year ${t}`,m:`${money(x)} ÷ (1+${money(v.r*100,4)}%)^${t} = ${money(pv)}`});});
+   const n=d.length, dn=d[n-1], pn=dn*(1+v.g)/(v.r-v.g), pvpn=pn/Math.pow(1+v.r,n);
+   s.push({l:`Horizon price at year ${n}`,m:`${money(dn)} × (1+${money(v.g*100,4)}%) ÷ (${money(v.r*100,4)}% − ${money(v.g*100,4)}%) = ${money(pn)}`});
+   s.push({l:`Discount that back ${n} year(s)`,m:`${money(pn)} ÷ ${r6(Math.pow(1+v.r,n))} = ${money(pvpn)}`});
+   tot+=pvpn; s.push({l:"Add everything",m:money(tot)});
+   return {steps:s, ans:money(tot), why:"Value the odd years one by one, then use Gordon once growth settles down."};}},
+
+{id:"exret", cat:"Stocks", name:"Expected return on a share",
+ blurb:"Dividend yield plus growth.", key:"expected return required rate dividend yield capital gain stock",
+ sym:"r = D₁/P₀ + g",
+ in:[{k:"d",l:"Next year's dividend (D₁)",h:"e.g. 3"},{k:"p",l:"Current price (P₀)",h:"e.g. 37.50"},{k:"g",l:"Growth rate (%)",h:"e.g. 4"}],
+ run:v=>{const dy=v.d/v.p; return {
+   steps:[{l:"Dividend yield",m:`${money(v.d)} ÷ ${money(v.p)} = ${pctS(dy)}`},
+          {l:"Add growth (the capital gain yield)",m:`${pctS(dy)} + ${money(v.g*100,4)}%`}],
+   ans:pctS(dy+v.g), why:"Return comes from two places: the dividend you receive and the price rise."};}},
+
+{id:"sgr", cat:"Stocks", name:"Sustainable growth rate",
+ blurb:"How fast a firm can grow from its own retained profit.", key:"sustainable growth plowback retention roe payout g",
+ sym:"g = ROE × plowback ratio          plowback = 1 − payout ratio",
+ in:[{k:"roe",l:"Return on equity, ROE (%)",h:"e.g. 18"},
+     {k:"po",l:"Payout ratio (%)",h:"e.g. 19.4 — the share of profit paid as dividends"}],
+ run:v=>{const pb=1-v.po, g=v.roe*pb; return {
+   steps:[{l:"Plowback ratio",m:`1 − ${money(v.po*100,4)}% = ${r6(pb)}`},
+          {l:"Multiply",m:`${money(v.roe*100,4)}% × ${r6(pb)}`}],
+   ans:pctS(g), why:"Growth is funded by the profit the firm keeps rather than pays out."};}},
+
+{id:"pvgo", cat:"Stocks", name:"PVGO (value of growth opportunities)",
+ blurb:"How much of the price is future growth rather than today's earnings.", key:"pvgo growth opportunities pe ratio no growth value",
+ sym:"PVGO = P₀ − EPS₁ / r",
+ in:[{k:"p",l:"Current share price (P₀)",h:"e.g. 75"},{k:"eps",l:"Next year's earnings per share (EPS₁)",h:"e.g. 4"},{k:"r",l:"Required return (%)",h:"e.g. 10"}],
+ run:v=>{const noG=v.eps/v.r, pvgo=v.p-noG; return {
+   steps:[{l:"Value if it never grew",m:`${money(v.eps)} ÷ ${r6(v.r)} = ${money(noG)}`},
+          {l:"Subtract from the price",m:`${money(v.p)} − ${money(noG)}`},
+          {l:"Share of price that is growth",m:`${money(pvgo)} ÷ ${money(v.p)} = ${pctS(pvgo/v.p,2)}`}],
+   ans:money(pvgo), why:"A high P/E usually means investors are paying for growth, not current earnings."};}}
+];
+
+
+/* ============ views ============ */
+const $ = s => document.querySelector(s);
+const listView=$("#listView"), detailView=$("#detailView"), wizView=$("#wizView"), recentsBox=$("#recentsBox");
+let recents=[];
+try{recents=JSON.parse(localStorage.getItem("mba512-recents")||"[]");}catch(_){recents=[];}
+const CHEV='<span class="arrow">&#9656;</span>';
+const CAT_META={
+  "Single amounts (one cash flow)":["↗","Move one amount through time"],
+  "Solving for rate or time":["⌁","Find the missing variable"],
+  "Annuities (equal payments that STOP)":["≋","Equal payments for a fixed period"],
+  "Perpetuities (payments FOREVER)":["∞","Payments that do not stop"],
+  "Rates & compounding (EAR / APR)":["%","Compare stated and effective rates"],
+  "Loans & amortisation":["▤","Payments, balances and interest"],
+  "Uneven cash flows":["⋮","Different amounts across time"],
+  "Bonds":["◈","Price, yield and return"],
+  "Stocks":["▥","Dividends, growth and value"]
+};
+
+function renderRecents(){
+  if(!recents.length){ recentsBox.classList.add("hidden"); return; }
+  recentsBox.classList.remove("hidden");
+  recentsBox.innerHTML =
+    `<div class="rlbl">Just used</div><div class="chips">` +
+    recents.map(id=>{const f=F.find(x=>x.id===id);
+      return `<button class="chip" data-id="${f.id}">${f.name}</button>`;}).join("") + `</div>`;
+}
+function noteRecent(id){
+  recents = [id, ...recents.filter(x=>x!==id)].slice(0,5);
+  try{localStorage.setItem("mba512-recents",JSON.stringify(recents));}catch(_){}
+  renderRecents();
+}
+
+function renderList(filter=""){
+  const q=filter.trim().toLowerCase();
+  const hits=F.filter(f=> !q || (f.name+" "+f.blurb+" "+f.key+" "+f.cat).toLowerCase().includes(q));
+  if(!hits.length){
+    listView.innerHTML=`<div class="empty">Nothing matches “<b>${filter}</b>”. Try <b>annuity</b>, <b>EAR</b>, <b>loan</b>,
+      <b>bond</b> or <b>perpetuity</b> — or tap <b>Which formula?</b> above.</div>`;
+    return;
+  }
+  const cats=[...new Set(hits.map(f=>f.cat))];
+  listView.innerHTML = cats.map((c,ix)=>{
+    const items=hits.filter(f=>f.cat===c);
+    const open = q ? " open" : "";          // searching expands the matches
+    const meta=CAT_META[c]||["•","Finance tools"];
+    return `<details class="cat"${open}>
+      <summary><span class="cat-icon">${meta[0]}</span><span style="flex:1"><span class="cat-title">${c}</span><span class="cat-sub">${meta[1]}</span></span><span class="count">${items.length}</span>${CHEV}</summary>
+      <div class="catbody">` +
+      items.map(f=>`<button class="pick" data-id="${f.id}"><b>${f.name}</b><i>${f.blurb}</i></button>`).join("") +
+      `</div></details>`;
+  }).join("");
+}
+
+/* ============ detail ============ */
+const PCTKEYS=new Set(["r","g","y","cr","tx","e","i","roe","po"]);
+
+function openFormula(id){
+  const f=F.find(x=>x.id===id); if(!f) return;
+  noteRecent(id);
+  listView.classList.add("hidden"); wizView.classList.add("hidden"); recentsBox.classList.add("hidden");
+  detailView.classList.remove("hidden");
+
+  const fields=f.in.map((i,ix)=>{
+    const last = ix===f.in.length-1;
+    if(i.t==="bool")
+      return `<div class="field"><div class="chk"><input type="checkbox" id="i_${i.k}"><label for="i_${i.k}">${i.l}</label></div></div>`;
+    return `<div class="field">
+      <label for="i_${i.k}">${i.l}${i.h?`<span class="hint">${i.h}</span>`:""}</label>
+      <input id="i_${i.k}" type="text"
+             inputmode="${i.t==="text"?"text":"decimal"}"
+             enterkeyhint="${last?"go":"next"}"
+             autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></div>`;
+  }).join("");
+
+  detailView.innerHTML =
+    `<button class="back" id="back">&#8592; All formulas</button>
+     <div class="panel">
+       <h3>${f.name}</h3>
+       <p class="blurb">${f.blurb}</p>
+       <div class="symbol">${f.sym}</div>
+       <form id="form" novalidate autocomplete="off">${fields}</form>
+       <div id="out"></div>
+     </div>
+     <div class="actions"><button class="go" id="calc" type="button">Calculate</button></div>`;
+
+  $("#back").onclick=()=>{
+    detailView.classList.add("hidden");
+    listView.classList.remove("hidden"); renderRecents();
+    window.scrollTo(0,0);
+  };
+  $("#calc").onclick=()=>compute(f);
+  $("#form").onsubmit=e=>{e.preventDefault();compute(f);};
+
+  // Enter/Next hops to the next box; on the last one it calculates
+  const boxes=[...detailView.querySelectorAll('.field input:not([type=checkbox])')];
+  boxes.forEach((b,ix)=>b.addEventListener("keydown",e=>{
+    if(e.key!=="Enter") return;
+    e.preventDefault();
+    if(ix<boxes.length-1) boxes[ix+1].focus(); else compute(f);
+  }));
+  window.scrollTo(0,0);
+}
+
+function compute(f){
+  const out=$("#out"); const v={};
+  try{
+    for(const inp of f.in){
+      const el=$("#i_"+inp.k);
+      if(inp.t==="bool"){ v[inp.k]=el.checked; continue; }
+      const raw=el.value.trim();
+      if(inp.t==="text"){ if(!raw) throw `Please fill in “${inp.l}”.`; v[inp.k]=raw; continue; }
+      if(raw===""){ if(inp.opt){ v[inp.k]=NaN; continue; } throw `Please fill in “${inp.l}”.`; }
+      let n=Number(raw.replace(/,/g,"").replace(/%/g,""));   // tolerate 1,000 and 11%
+      if(!isFinite(n)) throw `“${inp.l}” must be a number.`;
+      if(PCTKEYS.has(inp.k) && !inp.raw) n=n/100;
+      v[inp.k]=n;
+    }
+    const res=f.run(v);
+    out.innerHTML=
+      `<div class="work">
+         <h4>Working</h4>
+         ${res.steps.map(s=>`<div class="line"><div class="lbl">${s.l}</div><div class="math">${s.m}</div></div>`).join("")}
+         <div class="result"><div class="lbl">Answer</div><div class="val">${res.ans}</div></div>
+         ${res.why?`<p class="why"><b>Why this formula:</b> ${res.why}</p>`:""}
+       </div>`;
+    if(document.activeElement && document.activeElement.blur) document.activeElement.blur(); // drop the keyboard
+    setTimeout(()=>out.querySelector(".result").scrollIntoView({behavior:"smooth",block:"center"}),60);
+  }catch(err){
+    out.innerHTML=`<div class="err">${typeof err==="string"?err:"Check the numbers — something doesn’t compute."}</div>`;
+    setTimeout(()=>out.querySelector(".err").scrollIntoView({behavior:"smooth",block:"center"}),60);
+  }
+}
+
+/* ============ wizard ============ */
+
+const WIZ={
+  start:{q:"How many cash flows are there?",o:[
+    {t:"Just one amount",d:"A single deposit, a single future sum",go:"one"},
+    {t:"Several EQUAL amounts",d:"The same payment repeating",go:"equal"},
+    {t:"Several DIFFERENT amounts",d:"Varies year to year",go:"uneven"},
+    {t:"It's a bond or a share",d:"Coupons, or dividends",go:"secur"}]},
+  one:{q:"What are you looking for?",o:[
+    {t:"The value TODAY",d:"Pull a future amount back",f:"pv1"},
+    {t:"The value LATER",d:"Grow an amount forward",f:"fv1"},
+    {t:"The RATE",d:"You know both amounts and the time",f:"solr"},
+    {t:"The TIME",d:"You know both amounts and the rate",f:"solt"}]},
+  equal:{q:"Do the payments ever stop?",o:[
+    {t:"Yes — a fixed number of them",d:"Loan, lease, savings plan",go:"ann"},
+    {t:"No — they go on forever",d:"\"in perpetuity\", \"forever\", a consol",go:"perp"}]},
+  ann:{q:"What do you need?",o:[
+    {t:"Value TODAY of the payments",d:"What is this stream worth now?",f:"pva"},
+    {t:"Value at the END",d:"What will my deposits add up to?",f:"fva"},
+    {t:"The PAYMENT, from an amount borrowed",d:"Loan repayment",f:"pmtpv"},
+    {t:"The PAYMENT, to reach a target",d:"How much must I save?",f:"pmtfv"}]},
+  perp:{q:"Do the payments grow?",o:[
+    {t:"No — same amount forever",d:"",f:"perp"},
+    {t:"Yes — rising by a fixed %",d:"",f:"gperp"},
+    {t:"They start in a few years' time",d:"Delayed perpetuity",f:"dperp"}]},
+  uneven:{q:"Which direction?",o:[
+    {t:"Value them TODAY",d:"Discount each one back",f:"unpv"},
+    {t:"Value them at a FUTURE date",d:"Grow each one forward",f:"unfv"},
+    {t:"The rate changes over time on ONE amount",d:"Chain the growth factors",f:"chain"}]},
+  secur:{q:"Which one?",o:[
+    {t:"Price of a bond",d:"",f:"bond"},
+    {t:"Yield on a bond",d:"",f:"ytm"},
+    {t:"Price of a share, steady growth",d:"",f:"ddm"},
+    {t:"Price of a share, growth changes",d:"",f:"nonconst"}]}
+};
+let wizPath=[];
+function renderWiz(node="start"){
+  const w=WIZ[node];
+  listView.classList.add("hidden"); detailView.classList.add("hidden"); recentsBox.classList.add("hidden");
+  wizView.classList.remove("hidden");
+  wizView.innerHTML=
+    `<button class="back" id="wizBack">&#8592; All formulas</button>
+     <div class="wiz">
+       ${wizPath.length?`<div class="crumb">${wizPath.join("  &rsaquo;  ")}</div>`:""}
+       <p class="q">${w.q}</p>
+       ${w.o.map((o,ix)=>`<button class="opt" data-ix="${ix}"><b>${o.t}</b>${o.d?`<i>${o.d}</i>`:""}</button>`).join("")}
+     </div>`;
+  $("#wizBack").onclick=()=>{wizPath=[];wizView.classList.add("hidden");listView.classList.remove("hidden");renderRecents();};
+  wizView.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{
+    const o=w.o[+b.dataset.ix];
+    wizPath.push(o.t);
+    if(o.f){ wizPath=[]; openFormula(o.f); } else renderWiz(o.go);
+  });
+  window.scrollTo(0,0);
+}
+
+/* ============ wiring ============ */
+document.addEventListener("click",e=>{
+  const p=e.target.closest(".pick,.chip,.quick");
+  if(p && p.dataset.id) openFormula(p.dataset.id);
+});
+$("#search").addEventListener("input",e=>{
+  wizView.classList.add("hidden"); detailView.classList.add("hidden");
+  listView.classList.remove("hidden"); renderRecents();
+  renderList(e.target.value);
+});
+$("#search").addEventListener("keydown",e=>{ if(e.key==="Enter") e.target.blur(); });
+$("#wizOpen").onclick=()=>{wizPath=[];renderWiz("start");};
+$("#quickGuide").onclick=()=>{wizPath=[];renderWiz("start");};
+$("#dockGuide").onclick=()=>{wizPath=[];renderWiz("start");};
+$("#dockBrowse").onclick=()=>{
+  wizPath=[];wizView.classList.add("hidden");detailView.classList.add("hidden");
+  listView.classList.remove("hidden");renderRecents();window.scrollTo({top:document.querySelector(".bar").offsetTop-8,behavior:"smooth"});
+};
+$("#dockRecent").onclick=()=>{
+  wizPath=[];wizView.classList.add("hidden");detailView.classList.add("hidden");
+  listView.classList.remove("hidden");renderRecents();
+  if(recents.length) recentsBox.scrollIntoView({behavior:"smooth",block:"center"});
+  else document.querySelector(".bar").scrollIntoView({behavior:"smooth",block:"start"});
+};
+$("#dockTop").onclick=()=>window.scrollTo({top:0,behavior:"smooth"});
+const themeBtn=$("#themeBtn");
+let savedTheme=null;
+try{savedTheme=localStorage.getItem("mba512-theme");}catch(_){}
+if(savedTheme==="dark" || (!savedTheme && matchMedia("(prefers-color-scheme: dark)").matches)) document.body.classList.add("dark");
+themeBtn.onclick=()=>{
+  document.body.classList.toggle("dark");
+  try{localStorage.setItem("mba512-theme",document.body.classList.contains("dark")?"dark":"light");}catch(_){}
+};
+renderList();
+if("serviceWorker" in navigator && location.protocol.startsWith("http")){
+  addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+}
+</script>
+</body>
+</html>
