@@ -732,6 +732,60 @@ body.dark:before{
 }
 @media (min-width:840px){.module-strip{grid-template-columns:repeat(3,minmax(0,1fr))}}
 
+
+
+/* ============ app launcher homepage ============ */
+.app-home{
+  min-height:calc(100vh - 170px);
+  display:grid;align-content:center;gap:18px;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.82),rgba(255,255,255,.94)),
+    url("assets/finance-bg.png") center/cover no-repeat;
+  border:1px solid var(--rule);border-radius:10px;padding:22px;
+}
+.app-home-top{display:grid;gap:10px;max-width:760px}
+.app-home-top h2{
+  margin:0;color:var(--ink);font-size:46px;line-height:1;letter-spacing:0;font-weight:840;
+}
+.app-home-top p{margin:0;color:var(--dim);font-size:17px;line-height:1.5}
+.app-cubes{display:grid;grid-template-columns:1fr;gap:12px}
+.app-cube{
+  position:relative;min-height:190px;border:1px solid var(--rule);border-radius:10px;
+  padding:18px;text-align:left;cursor:pointer;overflow:hidden;color:var(--ink);
+  background:#fff;background-size:cover;background-position:center;
+  display:grid;align-content:end;gap:8px;transition:transform .18s ease,border-color .18s ease;
+}
+.app-cube:hover{transform:translateY(-2px);border-color:#7b8794}
+.app-cube:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,.94));z-index:0}
+.app-cube>*{position:relative;z-index:1}
+.cube-kicker{
+  width:max-content;font-family:var(--mono);font-size:12px;color:#0f766e;background:#edf7f4;
+  border:1px solid #cfeae2;border-radius:999px;padding:4px 8px;
+}
+.app-cube b{font-size:28px;line-height:1;color:var(--ink)}
+.app-cube small{font-size:13px;color:var(--dim);max-width:330px;line-height:1.4}
+.cube-learn{background-image:url("assets/study-hero.png")}
+.cube-quiz{background-image:linear-gradient(135deg,#eff6ff,#edf7f4)}
+.cube-cases{background-image:linear-gradient(135deg,#fff8ed,#f8fafc)}
+.cube-calc{background-image:linear-gradient(135deg,#f8fafc,#eef2ff)}
+.home-hero,.home-path,.module-strip{display:none!important}
+body.dark .app-home{background:linear-gradient(180deg,rgba(23,26,32,.88),rgba(23,26,32,.96)),url("assets/finance-bg.png") center/cover no-repeat;border-color:#2b3038}
+body.dark .app-cube{background-color:#171a20;border-color:#2b3038}
+body.dark .app-cube:before{background:linear-gradient(180deg,rgba(23,26,32,.25),rgba(23,26,32,.94))}
+@media (min-width:760px){
+  .app-cubes{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .app-cube{min-height:220px}
+}
+@media (min-width:1060px){
+  .app-cubes{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .app-cube{min-height:310px}
+}
+@media (max-width:520px){
+  .app-home{min-height:auto;padding:16px}
+  .app-home-top h2{font-size:36px}
+  .app-cube{min-height:160px}
+}
+
 </style>
 </head>
 <body>
@@ -753,30 +807,34 @@ body.dark:before{
 </header>
 
 <section id="homeSection" class="hero course-section" aria-label="MBA512 home">
-  <div class="home-hero">
-    <div class="home-copy">
+  <div class="app-home">
+    <div class="app-home-top">
       <span class="formula-count">Quiz 1 · Lecture 1 and 3</span>
-      <h2>Study Managerial Finance like a decision-maker.</h2>
-      <p>Move from guided lecture notes to formative checks, case analysis, timed quiz practice, and step-by-step calculator support.</p>
-      <div class="home-actions">
-        <button class="primary-action" data-mode-jump="learn" type="button">Start learning</button>
-        <button class="secondary-action" data-mode-jump="quiz" type="button">Take Quiz 1 practice</button>
-      </div>
+      <h2>Choose your workspace.</h2>
+      <p>One portable app for learning, practice, cases, and finance calculations.</p>
     </div>
-    <figure class="home-photo">
-      <img src="assets/study-hero.png" alt="MBA students studying finance together with charts and notes">
-    </figure>
-  </div>
-  <div class="home-path">
-    <button class="quick" data-mode-jump="learn" type="button"><span class="qi">01</span><b>Learn</b><small>Lecture modules with coaching and checks.</small></button>
-    <button class="quick" data-mode-jump="quiz" type="button"><span class="qi">02</span><b>Quiz</b><small>Quiz 1, lecture drills, and mastery sets.</small></button>
-    <button class="quick" data-mode-jump="cases" type="button"><span class="qi">03</span><b>Cases</b><small>Attempt first, then reveal analysis.</small></button>
-    <button class="quick" data-mode-jump="calc" type="button"><span class="qi">04</span><b>Calculator</b><small>Check formulas and workings.</small></button>
-  </div>
-  <div class="module-strip" aria-label="Released modules">
-    <div class="module-chip"><b>Quiz 1 Ready</b><span>Lecture 1 + Lecture 3 practice bank</span></div>
-    <div class="module-chip"><b>Portable Sessions</b><span>Progress stays with this browser/device</span></div>
-    <div class="module-chip"><b>Offline App Shell</b><span>Core app and hero image cache after first load</span></div>
+    <div class="app-cubes" aria-label="MBA512 tools">
+      <button class="app-cube cube-learn" data-mode-jump="learn" type="button">
+        <span class="cube-kicker">01</span>
+        <b>Learn</b>
+        <small>Lecture modules, coaching notes, and formative checks.</small>
+      </button>
+      <button class="app-cube cube-quiz" data-mode-jump="quiz" type="button">
+        <span class="cube-kicker">02</span>
+        <b>Quiz</b>
+        <small>Quiz 1 plus lecture-specific practice sets.</small>
+      </button>
+      <button class="app-cube cube-cases" data-mode-jump="cases" type="button">
+        <span class="cube-kicker">03</span>
+        <b>Cases</b>
+        <small>Try the analysis first, then reveal the worked logic.</small>
+      </button>
+      <button class="app-cube cube-calc" data-mode-jump="calc" type="button">
+        <span class="cube-kicker">04</span>
+        <b>Calculator</b>
+        <small>Formula finder, inputs, and step-by-step workings.</small>
+      </button>
+    </div>
   </div>
 </section>
 
@@ -1372,7 +1430,7 @@ function renderList(filter=""){
 const PCTKEYS=new Set(["r","g","y","cr","tx","e","i","roe","po"]);
 
 function openFormula(id){
-  if(typeof setMode === "function" && document.getElementById("calcShell")) setMode("calc");
+  if(typeof navigateMode === "function" && document.getElementById("calcShell")) navigateMode("calc");
   const f=F.find(x=>x.id===id); if(!f) return;
   noteRecent(id);
   listView.classList.add("hidden"); wizView.classList.add("hidden"); recentsBox.classList.add("hidden");
@@ -1486,7 +1544,7 @@ const WIZ={
 };
 let wizPath=[];
 function renderWiz(node="start"){
-  if(typeof setMode === "function" && document.getElementById("calcShell")) setMode("calc");
+  if(typeof navigateMode === "function" && document.getElementById("calcShell")) navigateMode("calc");
   const w=WIZ[node];
   listView.classList.add("hidden"); detailView.classList.add("hidden"); recentsBox.classList.add("hidden");
   wizView.classList.remove("hidden");
@@ -1821,6 +1879,7 @@ function renderCases(){
 }
 
 function setMode(mode){
+  mode = ["home","learn","quiz","cases","calc"].includes(mode) ? mode : "home";
   document.querySelectorAll(".course-tab").forEach(b=>b.classList.toggle("active",b.dataset.mode===mode));
   $("#homeSection").classList.toggle("hidden",mode!=="home");
   $("#learnSection").classList.toggle("hidden",mode!=="learn");
@@ -1831,12 +1890,17 @@ function setMode(mode){
   if(mode==="calc"){listView.classList.remove("hidden");detailView.classList.add("hidden");wizView.classList.add("hidden");renderRecents();}
   window.scrollTo({top:0,behavior:"smooth"});
 }
+function navigateMode(mode){
+  setMode(mode);
+  const nextHash = mode==="home" ? "" : "#"+mode;
+  if(location.hash !== nextHash) history.pushState(null,"",nextHash || location.pathname);
+}
 
 document.addEventListener("click",e=>{
   const jump=e.target.closest("[data-mode-jump]");
-  if(jump){setMode(jump.dataset.modeJump);return;}
+  if(jump){navigateMode(jump.dataset.modeJump);return;}
   const tab=e.target.closest(".course-tab,.dock button[data-mode]");
-  if(tab && tab.dataset.mode){setMode(tab.dataset.mode);return;}
+  if(tab && tab.dataset.mode){navigateMode(tab.dataset.mode);return;}
   const c=e.target.closest("[data-case]");
   if(c){const panel=c.parentElement.querySelector(".analysis");panel.classList.toggle("hidden");c.textContent=panel.classList.contains("hidden")?"Show analysis":"Hide analysis";}
 });
@@ -1882,9 +1946,9 @@ renderMastery();
 const quizScope=$("#quizScope"); if(quizScope) quizScope.onchange=()=>{renderMastery(); currentQuiz=[]; $("#quizBox").innerHTML="";};
 renderCases();
 $("#startQuiz").onclick=()=>pickQuiz(false);
-$("#startQuizHero").onclick=()=>{setMode("quiz");pickQuiz(false);};
+$("#startQuizHero").onclick=()=>{navigateMode("quiz");pickQuiz(false);};
 $("#weakQuiz").onclick=()=>pickQuiz(true);
-$("#jumpCases").onclick=()=>setMode("cases");
+$("#jumpCases").onclick=()=>navigateMode("cases");
 $("#helpTopic").onclick=renderTopicCoach;
 $("#saveSession").onclick=()=>{
   learnerSession.name=$("#learnerName").value.trim();
@@ -1896,6 +1960,9 @@ $("#newSession").onclick=()=>{
   try{localStorage.setItem(SESSION_KEY,JSON.stringify(learnerSession));}catch(_){}
   loadMastery(); renderSession(); renderMastery(); renderTopicCoach();
 };
+function modeFromHash(){return (location.hash||"#home").replace("#","") || "home";}
+addEventListener("hashchange",()=>setMode(modeFromHash()));
+setMode(modeFromHash());
 if("serviceWorker" in navigator && location.protocol.startsWith("http")){
   addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
 }

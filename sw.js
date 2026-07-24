@@ -1,4 +1,4 @@
-const CACHE = "mba512-learning-space-v6";
+const CACHE = "mba512-learning-space-v7";
 const APP_SHELL = ["./", "./index.html", "./manifest.webmanifest", "./assets/study-hero.png", "./assets/finance-bg.png"];
 
 self.addEventListener("install", event => {
