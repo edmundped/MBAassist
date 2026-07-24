@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#1F3864">
+<meta name="theme-color" content="#f7f8fa">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -427,6 +427,159 @@ body.dark .meter{background:#2b3248}
   .statgrid{grid-template-columns:repeat(3,1fr)}
   .topicgrid{grid-template-columns:repeat(2,1fr)}
   .casegrid{grid-template-columns:repeat(2,1fr)}
+}
+
+
+
+/* ============ minimal interface refresh ============ */
+:root{
+  --ink:#15171a;--slate:#15171a;--blue:#2563eb;--blue2:#0f766e;
+  --paper:#f7f8fa;--card:#ffffff;--amber:#b45309;--moss:#0f766e;
+  --dim:#667085;--rule:#d9dee7;--chip:#f1f4f8;--resultbg:#eefbf6;
+  --resultrule:#b7ead8;--symbg:#f5f7fb;--symrule:#d9dee7;--symink:#26313f;
+  --shadow:none;--shadow-sm:none;
+}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  padding-bottom:calc(86px + var(--safe));
+}
+.wrap{max-width:1120px;padding:0 20px}
+header{
+  background:var(--card);
+  color:var(--ink);
+  border-bottom:1px solid var(--rule);
+  box-shadow:none;
+  padding:20px 0 42px;
+}
+header:before,header:after{display:none}
+.brandrow{align-items:center}
+.brandmark{
+  width:40px;height:40px;border-radius:8px;
+  background:#15171a;color:#fff;box-shadow:none;font-size:16px;
+}
+.eyebrow{color:#667085;letter-spacing:.12em}
+h1{color:var(--ink);font-size:23px;font-weight:760;letter-spacing:0}
+.tagline{color:#667085}
+.themebtn{
+  width:40px;height:40px;border-radius:8px;border:1px solid var(--rule);
+  background:#fff;color:#15171a;box-shadow:none;backdrop-filter:none;
+}
+.hero{margin:-24px auto 0;padding:0 20px}
+.startcard{
+  border-radius:8px;border:1px solid var(--rule);background:#fff;box-shadow:none;
+  padding:18px;
+}
+.starttop{align-items:center}
+.starttop h2{font-size:18px;letter-spacing:0}
+.formula-count{
+  border-radius:999px;background:#edf7f4;color:#0f766e;border:1px solid #cfeae2;
+}
+.quickgrid{gap:8px}
+.quick{
+  border-radius:8px;background:#fff;border:1px solid var(--rule);min-height:70px;
+  display:grid;align-content:center;box-shadow:none;
+}
+.quick:hover,.pick:hover,.opt:hover,.answers label:hover{
+  border-color:#9aa4b2;background:#f8fafc;
+}
+.quick .qi{font-size:16px;color:#0f766e}
+.quick b,.pick b,.opt b{letter-spacing:0}
+.course-nav{
+  border-radius:8px;background:#fff;border:1px solid var(--rule);box-shadow:none;
+  padding:4px;gap:4px;margin:14px 0;
+}
+.course-nav button{
+  border-radius:6px;min-height:40px;font-size:12px;font-weight:720;color:#667085;
+}
+.course-nav button.active{background:#15171a;color:#fff}
+.learning-band,.panel,.wiz{
+  border-radius:8px;background:#fff;border:1px solid var(--rule);box-shadow:none;
+  padding:18px;margin:12px 0;
+}
+.learning-band h2{font-size:22px;letter-spacing:0}
+.learning-band h3,.panel h3{letter-spacing:0}
+.stat,.topic-card,.case-card,.quiz-card,.question{
+  border-radius:8px;background:#fff;border:1px solid var(--rule);box-shadow:none;
+}
+.stat b{font-size:24px}
+.meter{height:7px;background:#edf1f5}
+.meter i{background:#0f766e}
+.primary-action,.secondary-action,.go,.wizbtn{
+  border-radius:8px;box-shadow:none;font-weight:760;
+}
+.primary-action,.go,.wizbtn{background:#15171a;color:#fff}
+.secondary-action{background:#fff;color:#15171a;border:1px solid var(--rule)}
+.bar{
+  background:rgba(247,248,250,.92);backdrop-filter:blur(14px);
+  margin:8px 0 0;padding:8px 0;border-bottom:0;
+}
+.searchrow{
+  border-radius:8px;background:#fff;border:1px solid var(--rule);box-shadow:none;padding:4px;
+}
+input[type=search],input[type=text],.field input{
+  border-radius:7px;background:#fff;border:1px solid var(--rule);
+}
+input[type=search]{border:0}
+.field input:focus{
+  border-color:#15171a;box-shadow:0 0 0 3px rgba(21,23,26,.08);
+}
+details.cat{
+  border-radius:8px;background:#fff;border:1px solid var(--rule);box-shadow:none;
+}
+details.cat[open]{border-color:#a9b2bf;box-shadow:none}
+details.cat summary{min-height:58px}
+.cat-icon{
+  border-radius:7px;background:#edf7f4;color:#0f766e;
+}
+.count{background:#f1f4f8;border-radius:999px}
+.pick{border-radius:7px}
+.symbol{
+  border-radius:8px;background:#f8fafc;box-shadow:inset 0 0 0 1px var(--rule);
+  color:#26313f;
+}
+.chk{border-radius:8px;background:#f8fafc}
+.result{
+  border-radius:8px;background:#eefbf6;box-shadow:inset 0 0 0 1px #b7ead8;
+}
+.result .val{font-size:25px;letter-spacing:0}
+.why{border-radius:8px;background:#fff8ed;color:#65451b}
+.opt,.answers label{border-radius:8px;background:#fff}
+.feedback{border-radius:8px}
+.dock{
+  width:min(calc(100% - 24px),460px);height:62px;border-radius:12px;
+  background:rgba(255,255,255,.96);border:1px solid var(--rule);box-shadow:0 10px 30px rgba(15,23,42,.12);
+  padding:5px;
+}
+.dock button{border-radius:8px}
+.dock button.active,.dock button:hover{background:#15171a;color:#fff}
+footer{text-align:left;border-top:1px solid var(--rule)}
+body.dark{
+  --ink:#f4f6f8;--slate:#f4f6f8;--paper:#0f1115;--card:#171a20;--dim:#a0a7b3;
+  --rule:#2b3038;--chip:#1f232b;--resultbg:#10251f;--resultrule:#214d43;
+  --symbg:#1d2128;--symrule:#303743;--symink:#d8dee8;
+  background:#0f1115;
+}
+body.dark header,body.dark .startcard,body.dark .course-nav,body.dark .learning-band,
+body.dark .panel,body.dark .wiz,body.dark .stat,body.dark .topic-card,
+body.dark .case-card,body.dark .quiz-card,body.dark .question,
+body.dark .searchrow,body.dark .dock{background:#171a20;border-color:#2b3038}
+body.dark .themebtn,body.dark .secondary-action,body.dark .quick,
+body.dark .opt,body.dark .answers label{background:#171a20;color:#f4f6f8;border-color:#2b3038}
+body.dark .brandmark,body.dark .course-nav button.active,body.dark .primary-action,
+body.dark .go,body.dark .wizbtn,body.dark .dock button.active{background:#f4f6f8;color:#0f1115}
+body.dark .bar{background:rgba(15,17,21,.9)}
+body.dark .formula-count,body.dark .cat-icon{background:#10251f;color:#67d8be;border-color:#214d43}
+body.dark .symbol{background:#1d2128;color:#d8dee8;box-shadow:inset 0 0 0 1px #303743}
+body.dark .field input{background:#11141a;border-color:#2b3038;color:#f4f6f8}
+body.dark .pick:hover,body.dark .quick:hover,body.dark .opt:hover,body.dark .answers label:hover{background:#1d2128;border-color:#475060}
+@media (min-width:760px){
+  header{padding:24px 0 46px}
+  h1{font-size:28px}
+  .hero{margin-top:-22px}
+  .startcard{padding:20px}
+  .course-nav{max-width:680px}
+  #listView{gap:10px}
 }
 
 </style>
