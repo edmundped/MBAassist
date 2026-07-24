@@ -8,9 +8,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="MBA512">
-<meta name="description" content="A mobile-first MBA 512 finance calculator with 35 formulas, guided formula selection and step-by-step workings.">
+<meta name="description" content="A mobile-first MBA512 learning space with finance calculators, case studies, quiz prep and mastery tracking.">
 <link rel="manifest" href="manifest.webmanifest">
-<title>MBA512 Finance Calculator</title>
+<title>MBA512 Finance Learning Space</title>
 <style>
 :root{
   --ink:#161B22; --slate:#1F3864; --blue:#2E5496; --rule:#C9D2E0;
@@ -361,6 +361,74 @@ body.dark .why{background:#29251f;color:#d9bf95}
   #detailView,#wizView{max-width:760px;margin:0 auto}
 }
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+
+
+/* ============ MBA512 learning space ============ */
+.course-nav{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin:14px 0 12px;
+  background:rgba(255,255,255,.72);border:1px solid var(--rule);border-radius:18px;padding:6px;
+  box-shadow:var(--shadow-sm)
+}
+.course-nav button{
+  border:0;border-radius:13px;background:transparent;color:var(--dim);font-weight:760;
+  font-size:12px;min-height:42px;cursor:pointer
+}
+.course-nav button.active{background:#eeedff;color:#5650ca}
+.course-section{display:block}
+.course-section.hidden{display:none!important}
+.learning-band{
+  background:var(--card);border:1px solid var(--rule);border-radius:20px;padding:17px;margin:12px 0;
+  box-shadow:var(--shadow-sm)
+}
+.learning-band h2,.learning-band h3{margin:0 0 7px;color:var(--ink);line-height:1.2}
+.learning-band h2{font-size:21px}.learning-band h3{font-size:17px}
+.learning-band p{margin:0 0 10px;color:var(--dim);font-size:14px}
+.statgrid,.topicgrid,.casegrid{display:grid;grid-template-columns:1fr;gap:10px}
+.stat,.topic-card,.case-card,.quiz-card{
+  border:1px solid var(--rule);border-radius:14px;background:#fafbfe;padding:13px
+}
+.stat b{display:block;font-size:22px;color:var(--ink);line-height:1.1}
+.stat span,.topic-card span,.case-card span{display:block;color:var(--dim);font-size:12px;margin-top:3px}
+.topic-card strong,.case-card strong{display:block;color:var(--ink);font-size:14px;margin-bottom:4px}
+.meter{height:9px;border-radius:999px;background:#e8ebf3;overflow:hidden;margin-top:9px}
+.meter i{display:block;height:100%;background:linear-gradient(90deg,#37b8ab,#5b63e8);width:0%}
+.study-list{margin:8px 0 0;padding-left:18px;color:var(--ink);font-size:14px}
+.study-list li{margin:5px 0}
+.primary-action,.secondary-action{
+  border:0;border-radius:13px;min-height:46px;padding:0 16px;font-size:14px;font-weight:780;cursor:pointer
+}
+.primary-action{background:linear-gradient(135deg,var(--blue),var(--blue2));color:white;box-shadow:0 8px 18px rgba(91,99,232,.22)}
+.secondary-action{background:#eef0f8;color:#30374f}
+.quiz-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
+.quiz-meta{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 12px}
+.quiz-meta span{font-size:11px;font-weight:760;color:#5650ca;background:#eeedff;border-radius:999px;padding:6px 9px}
+.question{
+  border:1px solid var(--rule);background:var(--card);border-radius:15px;padding:14px;margin:10px 0
+}
+.question h4{margin:0 0 10px;font-size:14.5px;line-height:1.35;color:var(--ink)}
+.answers{display:grid;gap:7px}
+.answers label{
+  display:flex;gap:9px;align-items:flex-start;border:1px solid var(--rule);border-radius:12px;
+  padding:10px;background:#fafbfe;font-size:13.5px;font-weight:500;cursor:pointer
+}
+.answers input{margin-top:2px;accent-color:var(--blue)}
+.feedback{margin-top:9px;border-radius:12px;padding:10px;font-size:13px;line-height:1.4}
+.feedback.ok{background:#ecfbf6;color:#176b59}.feedback.no{background:#fff3ec;color:#814313}
+.case-card button{margin-top:9px}
+.analysis{margin-top:10px;border-top:1px dashed var(--rule);padding-top:10px;color:var(--ink);font-size:13.5px}
+.calc-shell.hidden{display:none!important}
+body.dark .course-nav{background:rgba(25,30,48,.86)}
+body.dark .course-nav button.active,body.dark .quiz-meta span{background:#2a2951;color:#c8c4ff}
+body.dark .stat,body.dark .topic-card,body.dark .case-card,body.dark .quiz-card,body.dark .answers label{background:#20263a}
+body.dark .secondary-action{background:#252b3e;color:#edf0fb}
+body.dark .meter{background:#2b3248}
+@media (min-width:760px){
+  .course-nav{max-width:760px;margin:16px auto 14px}
+  .statgrid{grid-template-columns:repeat(3,1fr)}
+  .topicgrid{grid-template-columns:repeat(2,1fr)}
+  .casegrid{grid-template-columns:repeat(2,1fr)}
+}
+
 </style>
 </head>
 <body>
@@ -372,8 +440,8 @@ body.dark .why{background:#29251f;color:#d9bf95}
         <div class="brandmark" aria-hidden="true">ƒx</div>
         <div class="brandcopy">
           <p class="eyebrow">MBA512 · Managerial Finance</p>
-          <h1>Finance Calculator</h1>
-          <p class="tagline">Understand the formula. See every step.</p>
+          <h1>Finance Learning Space</h1>
+          <p class="tagline">Quiz practice, case analysis, and formula support.</p>
         </div>
       </div>
       <button class="themebtn" id="themeBtn" aria-label="Switch colour theme" title="Switch colour theme">◐</button>
@@ -385,10 +453,10 @@ body.dark .why{background:#29251f;color:#d9bf95}
   <div class="startcard">
     <div class="starttop">
       <div>
-        <h2>What is the question asking for?</h2>
-        <p>Start with the wording—not the formula.</p>
+        <h2>Master Lecture 1 and 2</h2>
+        <p>Start with quizzes, review cases, then use the calculator for workings.</p>
       </div>
-      <span class="formula-count">35 calculators</span>
+      <span class="formula-count">Learning mode</span>
     </div>
     <div class="quickgrid">
       <button class="quick" data-id="pv1"><span class="qi">↓</span><b>Value today</b><small>Present value</small></button>
@@ -400,6 +468,62 @@ body.dark .why{background:#29251f;color:#d9bf95}
 </section>
 
 <div class="wrap">
+
+  <div class="course-nav" role="tablist" aria-label="MBA512 sections">
+    <button class="course-tab active" data-mode="learn" type="button">Learn</button>
+    <button class="course-tab" data-mode="quiz" type="button">Quiz</button>
+    <button class="course-tab" data-mode="cases" type="button">Cases</button>
+    <button class="course-tab" data-mode="calc" type="button">Calculator</button>
+  </div>
+
+  <section id="learnSection" class="course-section">
+    <div class="learning-band">
+      <h2>MBA512 learning space</h2>
+      <p>Focused prep for Lecture 1 and Lecture 2. Next quiz target: Sunday, July 26, 2026.</p>
+      <div class="statgrid" id="masteryStats"></div>
+      <div class="quiz-actions">
+        <button class="primary-action" id="startQuizHero" type="button">Take 20-question quiz</button>
+        <button class="secondary-action" id="jumpCases" type="button">Review case studies</button>
+      </div>
+    </div>
+    <div class="learning-band">
+      <h3>Quiz guide</h3>
+      <ul class="study-list">
+        <li>Classify decisions first: capital budgeting invests in real assets; financing raises money through debt or equity; payout returns cash to owners.</li>
+        <li>For Lecture 1, master shareholders, board oversight, agency problems, real vs financial assets, primary vs secondary markets, and intermediaries.</li>
+        <li>For Lecture 2, master ratio purpose, MVA/EVA, ROC/ROA/ROE, efficiency ratios, leverage, liquidity, DuPont, and sustainable growth.</li>
+        <li>For TVM sample questions, identify whether the cash flow is a lump sum, annuity, annuity due, perpetuity, or delayed/growing stream before calculating.</li>
+      </ul>
+    </div>
+    <div class="learning-band">
+      <h3>Mastery by topic</h3>
+      <div class="topicgrid" id="topicMastery"></div>
+    </div>
+  </section>
+
+  <section id="quizSection" class="course-section hidden">
+    <div class="learning-band">
+      <h2>Quiz trainer</h2>
+      <p>Each attempt serves 20 questions from the stash, including the lecturer sample set. Grade the attempt, review every explanation, then retake weak topics.</p>
+      <div class="quiz-meta" id="quizMeta"></div>
+      <div class="quiz-actions">
+        <button class="primary-action" id="startQuiz" type="button">Take quiz</button>
+        <button class="secondary-action" id="weakQuiz" type="button">Drill weak topics</button>
+      </div>
+    </div>
+    <div id="quizBox"></div>
+  </section>
+
+  <section id="casesSection" class="course-section hidden">
+    <div class="learning-band">
+      <h2>Case studies and analysis</h2>
+      <p>Cases are kept separate from analysis so students can attempt the decision first, then compare their reasoning.</p>
+      <div class="casegrid" id="caseGrid"></div>
+    </div>
+  </section>
+
+  <div id="calcShell" class="calc-shell hidden">
+
   <div class="bar">
     <div class="searchrow">
       <input type="search" id="search" placeholder="Search: annuity, EAR, bond…" aria-label="Search formulas"
@@ -413,6 +537,8 @@ body.dark .why{background:#29251f;color:#d9bf95}
   <div id="listView"></div>
   <div id="detailView" class="hidden"></div>
 
+  </div>
+
   <footer>
     Type <b>11</b> for 11%. Tap an answer to select and copy it.<br>
     Your calculations stay on this device and the calculator works offline once loaded.
@@ -420,10 +546,10 @@ body.dark .why{background:#29251f;color:#d9bf95}
 </div>
 
 <nav class="dock" aria-label="Mobile navigation">
-  <button id="dockBrowse" class="active"><span>⌂</span>Browse</button>
-  <button id="dockGuide"><span>✦</span>Guide</button>
-  <button id="dockRecent"><span>↻</span>Recent</button>
-  <button id="dockTop"><span>↑</span>Top</button>
+  <button data-mode="learn" class="active" type="button"><span>◫</span>Learn</button>
+  <button data-mode="quiz" type="button"><span>?</span>Quiz</button>
+  <button data-mode="cases" type="button"><span>§</span>Cases</button>
+  <button data-mode="calc" type="button"><span>ƒx</span>Calc</button>
 </nav>
 
 <script>
@@ -900,6 +1026,7 @@ function renderList(filter=""){
 const PCTKEYS=new Set(["r","g","y","cr","tx","e","i","roe","po"]);
 
 function openFormula(id){
+  if(typeof setMode === "function" && document.getElementById("calcShell")) setMode("calc");
   const f=F.find(x=>x.id===id); if(!f) return;
   noteRecent(id);
   listView.classList.add("hidden"); wizView.classList.add("hidden"); recentsBox.classList.add("hidden");
@@ -1013,6 +1140,7 @@ const WIZ={
 };
 let wizPath=[];
 function renderWiz(node="start"){
+  if(typeof setMode === "function" && document.getElementById("calcShell")) setMode("calc");
   const w=WIZ[node];
   listView.classList.add("hidden"); detailView.classList.add("hidden"); recentsBox.classList.add("hidden");
   wizView.classList.remove("hidden");
@@ -1032,6 +1160,194 @@ function renderWiz(node="start"){
   window.scrollTo(0,0);
 }
 
+
+
+/* ============ course learning space ============ */
+const TOPICS = [
+  ["governance","Lecture 1: Governance & agency"],
+  ["decisions","Lecture 1: Finance decisions"],
+  ["markets","Lecture 1: Markets & intermediaries"],
+  ["tvm","Quiz 1: TVM foundations"],
+  ["performance","Lecture 2: Performance measures"],
+  ["ratios","Lecture 2: Ratios & DuPont"]
+];
+
+const Q_BANK = [
+{id:"s1",topic:"governance",sample:true,q:"A board of directors is elected as a representative of the corporation's:",a:["Top management","Stakeholders","Shareholders","Customers"],c:2,e:"Shareholders elect the board to monitor management on their behalf."},
+{id:"s2",topic:"governance",sample:true,q:"Corporate managers are expected to make corporate decisions that are in the best interest of:",a:["Top corporate management","The board of directors","The corporation's shareholders","All corporate employees"],c:2,e:"The finance objective is shareholder wealth or market value maximization, while respecting legal and ethical constraints."},
+{id:"s3",topic:"governance",sample:true,q:"For large companies, separation of ownership and management is:",a:["A practical necessity","Not a necessity","A liability","A fraudulent move"],c:0,e:"Large corporations need professional managers even though that separation can create agency issues."},
+{id:"s4",topic:"decisions",sample:true,q:"Which is a capital budgeting decision?",a:["Issue common stock rather than preferred stock","Expand into a new product line at a cost of $5 million","Repurchase common stock","Issue long-term bonds"],c:1,e:"Capital budgeting is about which real assets or projects the firm should invest in."},
+{id:"s5",topic:"decisions",sample:true,q:"A financial manager facing a capital budgeting decision must decide whether to:",a:["Issue stock or debt securities","Use the money market or capital market","Use primary or secondary markets","Buy new machinery or repair the old"],c:3,e:"The decision is about investing in operating assets, not how to finance them."},
+{id:"s6",topic:"decisions",sample:true,q:"The overall goal of capital budgeting projects should be to:",a:["Decrease reliance on debt","Increase sales","Increase shares outstanding","Increase shareholder wealth"],c:3,e:"Accept projects that add value to the firm and therefore shareholder wealth."},
+{id:"s7",topic:"decisions",sample:true,q:"Capital structure refers primarily to:",a:["How much debt the firm has relative to equity","The level of current assets","The risk of project cash flows","Which real assets to buy"],c:0,e:"Capital structure is the mix of long-term debt and equity used to finance the firm."},
+{id:"s8",topic:"decisions",sample:true,q:"The term capital structure refers to:",a:["How a firm obtains long-term funding","The length of time needed to repay debt","Whether the firm invests in projects","Which specific assets to acquire"],c:0,e:"It is the long-term financing mix, especially debt versus equity."},
+{id:"s9",topic:"decisions",sample:true,q:"Issuing long-term debt to pay for real assets is a:",a:["Capital budgeting decision","Financing decision","Money market decision","Secondary market decision"],c:1,e:"Borrowing through long-term debt is a financing decision."},
+{id:"s10",topic:"decisions",sample:true,q:"Which represents a financing decision?",a:["Borrow $10 million through a bank loan","Invest in another corporation's common stock","Buy a new mainframe computer","Pay $1 million of accounts payable"],c:0,e:"The bank loan raises funds; that is financing."},
+{id:"s11",topic:"governance",sample:true,q:"Which is least likely to represent an agency problem?",a:["Lavish expense accounts","Plush executive suite remodeling","Excessive investment in safe projects","Executive incentive compensation plans"],c:3,e:"Good incentive plans are a remedy for agency problems, not usually the problem itself."},
+{id:"s12",topic:"tvm",sample:true,q:"Compound interest refers to:",a:["Earning interest only on the original investment","Payment of interest on previously earned interest","Investing for many years","Determining the APR"],c:1,e:"Compounding means interest earns additional interest."},
+{id:"s13",topic:"tvm",sample:true,q:"The present value of a perpetuity is found by:",a:["Multiplying payment by interest rate","Dividing interest rate by payment","Multiplying payment by number of payments","Dividing payment by interest rate"],c:3,e:"For level cash flows forever, PV = C / r."},
+{id:"s14",topic:"tvm",sample:true,q:"About how much was needed 21 years ago to cover $20,000 today at 8% annually?",a:["$952","$1,600","$1,728","$3,973"],c:3,e:"PV = 20,000 / 1.08^21 = about $3,973."},
+{id:"s15",topic:"tvm",sample:true,q:"Give $5,000 today and receive $20,000 in five years. Nearest annual return?",a:["25%","29%","32%","60%"],c:2,e:"(20,000/5,000)^(1/5)-1 = 31.95%, about 32%."},
+{id:"s16",topic:"tvm",sample:true,q:"How much more is a $1,000 perpetuity worth than a 20-year $1,000 annuity at 10%?",a:["$297.29","$1,486.44","$1,635.08","$2,000.00"],c:1,e:"Perpetuity value is $10,000; annuity value is $8,513.56; difference is $1,486.44."},
+{id:"s17",topic:"tvm",sample:true,q:"A $500 annual perpetuity beginning today offers 10%. What is its PV?",a:["$3,333.33","$5,500.00","$3,833.33","$6,521.73"],c:1,e:"Payment today plus ordinary perpetuity value: 500 + 500/.10 = $5,500."},
+{id:"s18",topic:"tvm",sample:true,q:"How much must be invested today for a 5-year $1,000 annuity, first payment in one year, at 12%?",a:["$3,604.78","$3,746.25","$4,037.35","$4,604.78"],c:0,e:"PV = 1,000 x PVIFA(12%,5) = $3,604.78."},
+{id:"s19",topic:"tvm",sample:true,q:"Which increases the present value of an annuity, other things equal?",a:["Increasing the interest rate","Decreasing the interest rate","Decreasing payments","Decreasing the payment amount"],c:1,e:"Lower discount rates make future payments worth more today."},
+{id:"s20",topic:"tvm",sample:true,q:"PV of a 5-period $3,000 annuity at 12% when the first payment is today?",a:["$9,655.65","$10,814.33","$12,112.05","$13,200.00"],c:2,e:"This is an annuity due: 3,000 x PVIFA(12%,5) x 1.12 = about $12,112."},
+{id:"l1a",topic:"decisions",q:"A firm buying a patent to produce a new drug is making which decision?",a:["Capital budgeting","Financing","Payout","Secondary market"],c:0,e:"The patent is a real asset used to generate operating cash flows."},
+{id:"l1b",topic:"decisions",q:"A public debt offering that replaces existing debt at a lower cost is mainly a:",a:["Capital budgeting decision","Financing decision","Working capital decision","Dividend decision"],c:1,e:"It changes how the firm is financed and the cost of that financing."},
+{id:"l1c",topic:"decisions",q:"Dividend payments and share repurchases are examples of:",a:["Payout policy","Capital structure","Primary market trading","Capital budgeting"],c:0,e:"Payout policy decides how much cash is returned to shareholders and how."},
+{id:"l1d",topic:"decisions",q:"A blast furnace in a steel factory is a:",a:["Financial asset","Real asset","Derivative security","Primary security"],c:1,e:"It is a productive asset used to make goods."},
+{id:"l1e",topic:"decisions",q:"A share of stock issued by a bank is a:",a:["Real asset","Financial asset","Current liability","Operating asset"],c:1,e:"Shares are financial claims on the income generated by real assets."},
+{id:"l1f",topic:"governance",q:"The treasurer is most directly associated with:",a:["Cash management and raising capital","Preparing tax returns only","Auditing external competitors","Setting accounting standards"],c:0,e:"Treasurers handle cash, capital raising, capital expenditures, and investor/bank relationships."},
+{id:"l1g",topic:"governance",q:"The controller is most directly associated with:",a:["Financial statements, accounting, and taxes","Issuing new shares","Managing stock exchange trading","Approving takeovers"],c:0,e:"The controller is the internal accounting and reporting role."},
+{id:"l1h",topic:"governance",q:"Profit maximization is weaker than market value maximization because profit can ignore:",a:["Timing, risk, and reinvestment needs","Only taxes","Only product pricing","The legal form of the firm"],c:0,e:"Market value reflects expected cash flows, timing, and risk more completely."},
+{id:"l1i",topic:"governance",q:"Which mechanism can reduce agency problems?",a:["Employee stock options","Separating managers from owners even more","Removing boards","Avoiding shareholder votes"],c:0,e:"Stock-based compensation can align manager incentives with shareholder value."},
+{id:"l1j",topic:"governance",q:"Empire building is an agency problem because managers may:",a:["Grow firm size for prestige rather than value","Always choose the highest NPV project","Reduce all expenses","Return too much cash to investors"],c:0,e:"The manager may prefer size and control even if the expansion does not add value."},
+{id:"l1k",topic:"markets",q:"The first public sale of shares by a company is called:",a:["A secondary offering","An IPO","A money market trade","A repurchase agreement"],c:1,e:"An Initial Public Offering is the first sale of shares to the public."},
+{id:"l1l",topic:"markets",q:"When investors trade existing shares with each other, the trade occurs in the:",a:["Primary market","Secondary market","Internal capital market","Payout market"],c:1,e:"Secondary markets provide liquidity and price discovery for existing securities."},
+{id:"l1m",topic:"markets",q:"The money market trades securities that are usually:",a:["Longer than one year","Short term, less than one year","Only common equity","Only commodities"],c:1,e:"Money markets are for short-term securities."},
+{id:"l1n",topic:"markets",q:"The capital market is mainly for:",a:["Long-term debt and equity","Only daily bank deposits","Consumer payments","Inventory purchases"],c:0,e:"Capital markets supply long-term funds through debt and equity securities."},
+{id:"l1o",topic:"markets",q:"A mutual fund helps investors primarily by:",a:["Pooling savings into a diversified portfolio","Guaranteeing high returns","Eliminating all risk","Issuing corporate tax bills"],c:0,e:"Mutual funds pool investor money and invest in portfolios of securities."},
+{id:"l1p",topic:"markets",q:"Which is a function of financial markets and intermediaries?",a:["Provide liquidity and price information","Prevent all losses","Set corporate strategy directly","Eliminate taxes"],c:0,e:"Markets support liquidity, payments, risk transfer, diversification, and information."},
+{id:"l1q",topic:"markets",q:"A bank that accepts deposits and lends to firms is acting as a:",a:["Financial intermediary","Stock exchange","Commodity producer","Real asset"],c:0,e:"Intermediaries channel savings from investors/savers to borrowers."},
+{id:"l1r",topic:"markets",q:"A fixed-income market is also known as a:",a:["Debt market","Equity market","Foreign exchange market","Commodity market"],c:0,e:"Bonds and similar fixed-payment securities trade in debt or fixed-income markets."},
+{id:"l2a",topic:"performance",q:"Market capitalization equals:",a:["Share price x shares outstanding","Book equity minus debt","Sales divided by assets","NOPAT minus capital charge"],c:0,e:"Market capitalization is the market value of equity."},
+{id:"l2b",topic:"performance",q:"Market Value Added (MVA) equals:",a:["Market value of equity minus book value of equity","NOPAT divided by sales","Debt divided by equity","Cash divided by current liabilities"],c:0,e:"MVA measures value added over shareholders' book investment."},
+{id:"l2c",topic:"performance",q:"Economic Value Added recognizes that value is created only when the firm:",a:["Earns more than its cost of capital","Has high sales","Issues more shares","Avoids debt entirely"],c:0,e:"EVA deducts a charge for the capital employed."},
+{id:"l2d",topic:"performance",q:"EVA can be written as:",a:["NOPAT - cost of capital x total capitalization","Sales / total assets","Net income / equity","Current assets / current liabilities"],c:0,e:"EVA is operating profit after tax less the capital charge."},
+{id:"l2e",topic:"performance",q:"NOPAT is best described as:",a:["What the company would earn if it had no debt","Cash divided by current liabilities","Book equity minus market equity","Dividend divided by earnings"],c:0,e:"NOPAT adds back after-tax financing expense to focus on operations."},
+{id:"l2f",topic:"performance",q:"Return on equity (ROE) equals:",a:["Net income / equity","NOPAT / total assets","Sales / receivables","EBIT / interest"],c:0,e:"ROE measures net income earned per dollar of shareholders' equity."},
+{id:"l2g",topic:"performance",q:"Return on assets (ROA) equals:",a:["NOPAT / total assets","Net income / sales","Debt / equity","Inventory / current liabilities"],c:0,e:"ROA is a return to all capital providers based on total assets."},
+{id:"l2h",topic:"ratios",q:"Asset turnover measures:",a:["Revenue generated per dollar of assets","Debt per dollar of equity","Profit per dollar of sales","Cash per dollar of liabilities"],c:0,e:"Asset turnover = revenues / total assets."},
+{id:"l2i",topic:"ratios",q:"Inventory turnover equals:",a:["Cost of sales / average inventory","Sales / total assets","Average inventory / daily cost of sales","Cash / current liabilities"],c:0,e:"Inventory turnover shows how often inventory value turns over in the period."},
+{id:"l2j",topic:"ratios",q:"Average collection period is based on:",a:["Average receivables / average daily revenues","Cash / current liabilities","EBIT / interest","Dividends / earnings"],c:0,e:"It estimates how long customers take to pay."},
+{id:"l2k",topic:"ratios",q:"The DuPont breakdown of ROA is:",a:["Asset turnover x operating profit margin","Debt ratio x current ratio","Payout x ROE","Cash ratio x TIE"],c:0,e:"ROA = Sales/assets x NOPAT/sales."},
+{id:"l2l",topic:"ratios",q:"Times interest earned equals:",a:["EBIT / interest expense","EBITDA / sales","Debt / assets","Current assets / current liabilities"],c:0,e:"TIE measures how many times EBIT covers interest obligations."},
+{id:"l2m",topic:"ratios",q:"The current ratio equals:",a:["Current assets / current liabilities","Cash / current liabilities","Debt / equity","Sales / total assets"],c:0,e:"It measures coverage of short-term obligations with current assets."},
+{id:"l2n",topic:"ratios",q:"The quick ratio excludes which current asset?",a:["Inventory","Trade receivables","Cash","Short-term investments"],c:0,e:"Quick ratio uses cash, current investments, and receivables, not inventory."},
+{id:"l2o",topic:"ratios",q:"Sustainable growth rate equals:",a:["Plowback ratio x ROE","Dividend payout x sales","MVA x EVA","Debt ratio x asset turnover"],c:0,e:"Growth from retained earnings depends on retention and return on equity."},
+{id:"l2p",topic:"ratios",q:"The plowback ratio equals:",a:["1 - payout ratio","Dividends / earnings","Debt / equity","Sales / assets"],c:0,e:"The firm either pays earnings out or retains them."},
+{id:"l2q",topic:"ratios",q:"Ratio analysis is most useful when compared with:",a:["Trends and competitors","Only the CEO's target","Only the tax rate","Only share par value"],c:0,e:"Ratios need benchmarks: time trends and peer comparisons."},
+{id:"l2r",topic:"performance",q:"A drawback of market value measures is that stock price may move because of:",a:["Economic events outside management control","The number of accountants","The par value of shares only","Inventory count frequency only"],c:0,e:"Market prices reflect expectations and external events, not just manager performance."}
+];
+
+const CASES = [
+  {title:"The MBA Decision minicase",tag:"Time value of money",caseText:"A student must compare the cost of earning an MBA now with the salary path they expect with and without the degree. The key decision is whether the incremental future earnings justify tuition, fees, living costs, foregone salary, and risk.",analysis:["Treat the MBA as an investment project: the initial outflow includes tuition and opportunity cost of salary while studying.","Forecast incremental after-tax salary benefits against the no-MBA path, then discount them at a rate that reflects risk.","Decision rule: accept the MBA financially if NPV is positive; also discuss qualitative benefits such as mobility, network, and career option value."]},
+  {title:"Capital budgeting vs financing",tag:"Lecture 1 breakout",caseText:"Classify real examples such as developing a hydrogen fuel cell, raising a bank loan, constructing a pipeline, issuing shares, or buying a license.",analysis:["Capital budgeting: hydrogen fuel cell, pipeline, license. These involve real assets or productive projects.","Financing: bank loan, public debt offering, issuing shares. These raise money or change the capital structure.","A quick test: if the firm is choosing an asset/project, it is investment; if it is choosing the source of cash, it is financing."]},
+  {title:"Financial vs real assets",tag:"Lecture 1 breakout",caseText:"Separate productive assets from financial claims: patents, shares, furnaces, mortgage loans, bonds, cash securities, equipment, and inventory.",analysis:["Real assets produce goods or services: factories, equipment, patents, inventory used in operations.","Financial assets are claims: shares, bonds, mortgage loans, deposits, and marketable securities.","The firm issues financial assets to raise cash, then uses that cash to buy real assets."]},
+  {title:"Firm X performance ratios",tag:"Lecture 2 practice",caseText:"Use Firm X values from Lecture 2 to estimate market value, EVA, returns, turnover, leverage, liquidity, and sustainable growth.",analysis:["Start with the formula category before calculation: value added, profitability, efficiency, leverage, liquidity, or growth.","Use averages for receivables and inventory where required. Use NOPAT for operating return measures and net income for ROE/profit margin.","Interpretation matters: ratios are useful only against benchmarks, trends, and comparable competitors."]}
+];
+
+let currentQuiz = [];
+let quizMode = "standard";
+let quizGraded = false;
+let mastery = {};
+try{mastery=JSON.parse(localStorage.getItem("mba512-mastery")||"{}");}catch(_){mastery={};}
+
+function saveMastery(){try{localStorage.setItem("mba512-mastery",JSON.stringify(mastery));}catch(_){}}
+function topicName(id){return (TOPICS.find(t=>t[0]===id)||[id,id])[1];}
+function shuffle(arr){return [...arr].sort(()=>Math.random()-.5);}
+function topicScore(topic){
+  const qs=Q_BANK.filter(q=>q.topic===topic);
+  if(!qs.length) return 0;
+  const earned=qs.reduce((sum,q)=>sum+Math.min((mastery[q.id]?.streak||0),2),0);
+  return Math.round((earned/(qs.length*2))*100);
+}
+function renderMastery(){
+  const attempts=Object.values(mastery).reduce((s,m)=>s+(m.seen||0),0);
+  const correct=Object.values(mastery).reduce((s,m)=>s+(m.correct||0),0);
+  const overall=TOPICS.length?Math.round(TOPICS.reduce((s,t)=>s+topicScore(t[0]),0)/TOPICS.length):0;
+  const stats=$("#masteryStats");
+  if(stats) stats.innerHTML=[
+    ["Question stash",Q_BANK.length+" items","Lecturer samples included"],
+    ["Attempt accuracy",attempts?Math.round(correct/attempts*100)+"%":"0%","Across graded attempts"],
+    ["Total mastery",overall+"%","Two correct streaks per item"]
+  ].map(s=>`<div class="stat"><b>${s[1]}</b><span>${s[0]} · ${s[2]}</span></div>`).join("");
+  const grid=$("#topicMastery");
+  if(grid) grid.innerHTML=TOPICS.map(([id,name])=>{
+    const pct=topicScore(id);
+    const weak=pct<70?"Focus next":"On track";
+    return `<div class="topic-card"><strong>${name}</strong><span>${weak} · ${pct}% mastered</span><div class="meter"><i style="width:${pct}%"></i></div></div>`;
+  }).join("");
+  const meta=$("#quizMeta");
+  if(meta) meta.innerHTML=`<span>${Q_BANK.filter(q=>q.sample).length} lecturer sample questions</span><span>${Q_BANK.length} total questions</span><span>${overall}% total mastery</span>`;
+}
+
+function pickQuiz(weakOnly=false){
+  quizMode=weakOnly?"weak":"standard"; quizGraded=false;
+  const weakTopics=TOPICS.filter(t=>topicScore(t[0])<70).map(t=>t[0]);
+  let pool=weakOnly && weakTopics.length ? Q_BANK.filter(q=>weakTopics.includes(q.topic)) : Q_BANK;
+  const sample=shuffle(pool.filter(q=>q.sample)).slice(0, weakOnly?4:8);
+  const rest=shuffle(pool.filter(q=>!sample.includes(q))).slice(0,20-sample.length);
+  currentQuiz=shuffle([...sample,...rest]).slice(0,20);
+  renderQuiz();
+}
+
+function renderQuiz(){
+  const box=$("#quizBox"); if(!box) return;
+  box.innerHTML=`<div class="learning-band quiz-card">
+    <h3>${quizMode==="weak"?"Weak-topic drill":"20-question quiz"}</h3>
+    <p>Answer all questions, then grade. Missed items show the explanation immediately after scoring.</p>
+    ${currentQuiz.map((q,ix)=>`<div class="question" data-q="${q.id}">
+      <h4>${ix+1}. ${q.q}</h4>
+      <div class="answers">${q.a.map((ans,ai)=>`<label><input type="radio" name="q_${q.id}" value="${ai}"><span>${String.fromCharCode(65+ai)}. ${ans}</span></label>`).join("")}</div>
+      <div class="feedback hidden"></div>
+    </div>`).join("")}
+    <div class="quiz-actions"><button class="primary-action" id="gradeQuiz" type="button">Grade quiz</button><button class="secondary-action" id="newQuiz" type="button">New 20</button></div>
+  </div>`;
+  $("#gradeQuiz").onclick=gradeQuiz;
+  $("#newQuiz").onclick=()=>pickQuiz(false);
+}
+
+function gradeQuiz(){
+  if(!currentQuiz.length) return;
+  let correct=0;
+  currentQuiz.forEach(q=>{
+    const picked=document.querySelector(`input[name="q_${q.id}"]:checked`);
+    const val=picked?Number(picked.value):-1;
+    const ok=val===q.c; if(ok) correct++;
+    const m=mastery[q.id]||{seen:0,correct:0,streak:0};
+    m.seen++; if(ok){m.correct++;m.streak=(m.streak||0)+1;} else m.streak=0;
+    mastery[q.id]=m;
+    const card=document.querySelector(`.question[data-q="${q.id}"]`);
+    const fb=card.querySelector(".feedback");
+    fb.className=`feedback ${ok?"ok":"no"}`;
+    fb.innerHTML=`<b>${ok?"Correct":"Review"}.</b> Answer: ${String.fromCharCode(65+q.c)}. ${q.a[q.c]}<br>${q.e}<br><small>${topicName(q.topic)}</small>`;
+  });
+  saveMastery(); renderMastery(); quizGraded=true;
+  const pct=Math.round(correct/currentQuiz.length*100);
+  $("#quizBox").insertAdjacentHTML("afterbegin",`<div class="learning-band"><h2>Score: ${correct}/${currentQuiz.length} (${pct}%)</h2><p>${pct>=90?"Mastery level for this attempt. Keep rotating sets until every topic meter is high.":"Review the explanations below, then use Weak-topic drill before retaking."}</p></div>`);
+  window.scrollTo({top:document.querySelector("#quizSection").offsetTop-8,behavior:"smooth"});
+}
+
+function renderCases(){
+  const grid=$("#caseGrid"); if(!grid) return;
+  grid.innerHTML=CASES.map((c,ix)=>`<article class="case-card">
+    <strong>${c.title}</strong><span>${c.tag}</span><p>${c.caseText}</p>
+    <button class="secondary-action" data-case="${ix}" type="button">Show analysis</button>
+    <div class="analysis hidden">${c.analysis.map(x=>`<p>${x}</p>`).join("")}</div>
+  </article>`).join("");
+}
+
+function setMode(mode){
+  document.querySelectorAll(".course-tab").forEach(b=>b.classList.toggle("active",b.dataset.mode===mode));
+  $("#learnSection").classList.toggle("hidden",mode!=="learn");
+  $("#quizSection").classList.toggle("hidden",mode!=="quiz");
+  $("#casesSection").classList.toggle("hidden",mode!=="cases");
+  $("#calcShell").classList.toggle("hidden",mode!=="calc");
+  document.querySelectorAll(".dock button").forEach(b=>b.classList.toggle("active",b.dataset.mode===mode));
+  if(mode==="calc"){listView.classList.remove("hidden");detailView.classList.add("hidden");wizView.classList.add("hidden");renderRecents();}
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+document.addEventListener("click",e=>{
+  const tab=e.target.closest(".course-tab,.dock button[data-mode]");
+  if(tab && tab.dataset.mode){setMode(tab.dataset.mode);return;}
+  const c=e.target.closest("[data-case]");
+  if(c){const panel=c.parentElement.querySelector(".analysis");panel.classList.toggle("hidden");c.textContent=panel.classList.contains("hidden")?"Show analysis":"Hide analysis";}
+});
+
+
 /* ============ wiring ============ */
 document.addEventListener("click",e=>{
   const p=e.target.closest(".pick,.chip,.quick");
@@ -1045,18 +1361,18 @@ $("#search").addEventListener("input",e=>{
 $("#search").addEventListener("keydown",e=>{ if(e.key==="Enter") e.target.blur(); });
 $("#wizOpen").onclick=()=>{wizPath=[];renderWiz("start");};
 $("#quickGuide").onclick=()=>{wizPath=[];renderWiz("start");};
-$("#dockGuide").onclick=()=>{wizPath=[];renderWiz("start");};
-$("#dockBrowse").onclick=()=>{
+const legacyDockGuide=$("#dockGuide"); if(legacyDockGuide) legacyDockGuide.onclick=()=>{wizPath=[];renderWiz("start");};
+const legacyDockBrowse=$("#dockBrowse"); if(legacyDockBrowse) legacyDockBrowse.onclick=()=>{
   wizPath=[];wizView.classList.add("hidden");detailView.classList.add("hidden");
   listView.classList.remove("hidden");renderRecents();window.scrollTo({top:document.querySelector(".bar").offsetTop-8,behavior:"smooth"});
 };
-$("#dockRecent").onclick=()=>{
+const legacyDockRecent=$("#dockRecent"); if(legacyDockRecent) legacyDockRecent.onclick=()=>{
   wizPath=[];wizView.classList.add("hidden");detailView.classList.add("hidden");
   listView.classList.remove("hidden");renderRecents();
   if(recents.length) recentsBox.scrollIntoView({behavior:"smooth",block:"center"});
   else document.querySelector(".bar").scrollIntoView({behavior:"smooth",block:"start"});
 };
-$("#dockTop").onclick=()=>window.scrollTo({top:0,behavior:"smooth"});
+const legacyDockTop=$("#dockTop"); if(legacyDockTop) legacyDockTop.onclick=()=>window.scrollTo({top:0,behavior:"smooth"});
 const themeBtn=$("#themeBtn");
 let savedTheme=null;
 try{savedTheme=localStorage.getItem("mba512-theme");}catch(_){}
@@ -1066,6 +1382,12 @@ themeBtn.onclick=()=>{
   try{localStorage.setItem("mba512-theme",document.body.classList.contains("dark")?"dark":"light");}catch(_){}
 };
 renderList();
+renderMastery();
+renderCases();
+$("#startQuiz").onclick=()=>pickQuiz(false);
+$("#startQuizHero").onclick=()=>{setMode("quiz");pickQuiz(false);};
+$("#weakQuiz").onclick=()=>pickQuiz(true);
+$("#jumpCases").onclick=()=>setMode("cases");
 if("serviceWorker" in navigator && location.protocol.startsWith("http")){
   addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
 }

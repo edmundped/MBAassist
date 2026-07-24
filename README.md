@@ -1,6 +1,12 @@
-# MBA512 Finance Calculator
+# MBA512 Finance Learning Space
 
-A mobile-first managerial finance calculator with 35 formulas, a guided formula finder, step-by-step workings, recent calculators, and light/dark themes.
+A mobile-first MBA512 learning app for Lecture 1 and Lecture 2. It includes:
+
+- A 35-formula managerial finance calculator with step-by-step workings.
+- A quiz trainer that serves 20 questions at a time and scores attempts.
+- A question bank seeded with the lecturer's Quiz 1 sample questions.
+- Mastery tracking by topic using local browser storage.
+- Separate case-study prompts and analysis notes.
 
 ## Use it locally
 
@@ -8,18 +14,13 @@ Open `index.html` in a browser. No installation or build step is required.
 
 ## Publish with GitHub Pages
 
-1. Create a new GitHub repository.
-2. Upload everything in this folder to the repository root.
-3. In the repository, open **Settings → Pages**.
-4. Under **Build and deployment**, choose **Deploy from a branch**.
-5. Select the `main` branch and `/ (root)`, then save.
-
-GitHub will display the public site address after deployment finishes.
+1. Push this folder to the repository root.
+2. In GitHub, open **Settings -> Pages**.
+3. Choose **Deploy from a branch**.
+4. Select `main` and `/ (root)`.
 
 ## Notes
 
-- Enter rates as percentages: type `11` for 11%.
-- Calculations run entirely in the browser and no financial data is transmitted.
-- The interface is responsive for phones, tablets, and desktop computers.
+- Quiz progress and recently used calculators stay on the current device.
 - The app shell is cached for offline use after the first online visit.
-- Recently used calculators and theme preference are stored only on the current device.
+- Enter rates as percentages in the calculator: type `11` for 11%.

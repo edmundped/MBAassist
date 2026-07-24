@@ -1,4 +1,4 @@
-const CACHE = "mba512-finance-calculator-v1";
+const CACHE = "mba512-learning-space-v2";
 const APP_SHELL = ["./", "./index.html", "./manifest.webmanifest"];
 
 self.addEventListener("install", event => {
