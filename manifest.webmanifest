@@ -1,10 +1,12 @@
 {
-  "name": "MBA512 Finance Calculator",
+  "name": "MBA512 Mastery",
   "short_name": "MBA512",
-  "description": "A mobile-first managerial finance calculator with guided formula selection and step-by-step workings.",
+  "description": "Modular mastery trainer for MBA512 Managerial Finance: 385 drill questions across five lectures, case analysis, and a 35-formula calculator.",
   "start_url": "./",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#f5f6fb",
-  "theme_color": "#18264a",
+  "orientation": "portrait",
+  "background_color": "#F1F2F5",
+  "theme_color": "#0E1014",
   "icons": []
 }

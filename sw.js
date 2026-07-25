@@ -1,32 +1,36 @@
-const CACHE = "mba512-learning-space-v7";
-const APP_SHELL = ["./", "./index.html", "./manifest.webmanifest", "./assets/study-hero.png", "./assets/finance-bg.png"];
+const CACHE = "mba512-mastery-v1";
+const SHELL = ["./", "./index.html", "./manifest.webmanifest"];
 
-self.addEventListener("install", event => {
-  event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(APP_SHELL)));
+self.addEventListener("install", e => {
+  e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)));
   self.skipWaiting();
 });
 
-self.addEventListener("activate", event => {
-  event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.filter(key => key !== CACHE).map(key => caches.delete(key)))
-    )
-  );
+self.addEventListener("activate", e => {
+  e.waitUntil(caches.keys().then(keys =>
+    Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
+  ));
   self.clients.claim();
 });
 
-self.addEventListener("fetch", event => {
-  if (event.request.method !== "GET") return;
-  event.respondWith(
-    caches.match(event.request).then(cached =>
-      cached ||
-      fetch(event.request)
-        .then(response => {
-          const copy = response.clone();
-          caches.open(CACHE).then(cache => cache.put(event.request, copy));
-          return response;
-        })
-        .catch(() => caches.match("./index.html"))
+/* Network-first for the page itself so a redeploy is picked up straight away;
+   cache-first for everything else. Falls back to cache when offline.        */
+self.addEventListener("fetch", e => {
+  if (e.request.method !== "GET") return;
+  const isPage = e.request.mode === "navigate" || e.request.destination === "document";
+  if (isPage) {
+    e.respondWith(
+      fetch(e.request)
+        .then(r => { const c = r.clone(); caches.open(CACHE).then(x => x.put(e.request, c)); return r; })
+        .catch(() => caches.match(e.request).then(r => r || caches.match("./index.html")))
+    );
+    return;
+  }
+  e.respondWith(
+    caches.match(e.request).then(cached => cached ||
+      fetch(e.request).then(r => {
+        const c = r.clone(); caches.open(CACHE).then(x => x.put(e.request, c)); return r;
+      }).catch(() => cached)
     )
   );
 });
