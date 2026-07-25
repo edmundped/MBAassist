@@ -5,7 +5,7 @@ self-contained `index.html` — no build step, no dependencies, works offline.
 
 ## What it does
 
-Seven modules on the home screen. Tap a cube to enter it.
+Eight modules on the home screen. Tap a card to enter it.
 
 | Module | Source | Questions |
 |---|---|---|
@@ -14,6 +14,7 @@ Seven modules on the home screen. Tap a cube to enter it.
 | Time value | Lecture 3 — time value of money & applications | 97 |
 | Bonds | Lecture 4 — bond valuation & analysis | 76 |
 | Stocks | Lecture 5 — stock valuation & market efficiency | 76 |
+| Formula map | Framework for selecting the right formula | — |
 | Case room | The MBA Decision + three lecture breakouts | — |
 | Calculator | 35 formulas with step-by-step workings | — |
 
@@ -27,6 +28,12 @@ Inside a lecture module there are up to three tabs:
   after every answer. Students can flag a question locally if the wording,
   answer, or explanation looks faulty.
 - **Formulas** — the calculator, filtered to the formulas that lecture uses.
+- **Formula map** — a decision framework for choosing the right formula before
+  opening the calculator.
+
+Because formula sheets are usually provided, drill questions should emphasise
+setup, computation, and interpretation rather than asking students to identify
+or recite formulas.
 
 ## Academic integrity notice
 

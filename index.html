@@ -238,6 +238,19 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .flagbtn.on{border-color:#B7791F;background:#FFF7E6;color:#7A4D00}
 body.dark .flagbtn.on{background:#2D2413;color:#F3C46B;border-color:#8A6A24}
 .flag-note{font-size:12px;color:var(--ink-3);line-height:1.45;margin-top:8px}
+.formula-map{display:flex;flex-direction:column;gap:10px}
+.map-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:15px}
+.map-card h3{font-size:16px;margin-bottom:7px}
+.map-card p{font-size:14px;color:var(--ink-2);line-height:1.5}
+.map-card ul{margin:10px 0 0;padding-left:18px}
+.map-card li{font-size:13.5px;color:var(--ink-2);margin-bottom:6px;line-height:1.45}
+.map-chip{
+  display:inline-block;margin:0 6px 7px 0;padding:5px 8px;border-radius:8px;
+  background:var(--raised);border:1px solid var(--line);font-family:var(--mono);
+  font-size:11px;color:var(--ink-2);
+}
+.map-grid{display:grid;grid-template-columns:1fr;gap:10px}
+@media (min-width:620px){.map-grid{grid-template-columns:1fr 1fr}}
 
 /* ---------- calculator (reused engine) ---------- */
 .bar-search{display:flex;gap:9px;margin-bottom:14px}
@@ -417,6 +430,7 @@ body.dark .flagbtn.on{background:#2D2413;color:#F3C46B;border-color:#8A6A24}
   <div class="seg" id="worldSeg"></div>
   <div id="learnPane"></div>
   <div id="drillPane" class="hidden"></div>
+  <div id="frameworkPane" class="hidden"></div>
   <div id="casePane" class="hidden"></div>
   <div id="calcPane" class="hidden">
     <div class="bar-search">
@@ -1113,8 +1127,8 @@ QB.push(
 
 /* ===== Module 2 ===== */
 QB.push(
-{i:"v01",t:"t_val",q:"Market capitalisation equals:",a:["Sales divided by assets","NOPAT minus the capital charge","Share price x shares outstanding","Book equity minus debt"],c:2,e:"Market capitalisation is the market value of equity."},
-{i:"v02",t:"t_val",q:"Market Value Added (MVA) equals:",a:["Cash divided by current liabilities","Market value of equity minus book value of equity","NOPAT divided by sales","Debt divided by equity"],c:1,e:"MVA measures value added over the shareholders' book investment."},
+{i:"v01",t:"t_val",q:"A firm has 40 million shares trading at $15. Its market capitalisation is:",a:["$375m","$600m","$55m","$40m"],c:1,e:"Market value of equity = 40 million x $15 = $600m."},
+{i:"v02",t:"t_val",q:"A firm's market value of equity is $900m and book equity is $640m. Its MVA is:",a:["$260m","$1,540m","$640m","-$260m"],c:0,e:"MVA = market value of equity - book value of equity = 900 - 640 = $260m."},
 {i:"v03",t:"t_val",q:"Economic Value Added recognises that value is created only when the firm:",a:["Earns more than its cost of capital","Reports high sales","Issues more shares","Avoids debt entirely"],c:0,e:"EVA deducts a charge for the capital employed."},
 {i:"v04",t:"t_val",q:"EVA can be written as:",a:["Sales / total assets","Net income / equity","Current assets / current liabilities","NOPAT minus (cost of capital x total capitalisation)"],c:3,e:"EVA is after-tax operating profit less the capital charge."},
 {i:"v05",t:"t_val",q:"NOPAT is best described as:",a:["Book equity minus market equity","Dividends divided by earnings","What the company would earn if it had no debt","Cash divided by current liabilities"],c:2,e:"NOPAT adds back after-tax financing costs so the measure reflects operations only."},
@@ -1124,21 +1138,21 @@ QB.push(
 {i:"v09",t:"t_val",q:"A negative MVA tells you that:",a:["The firm pays no dividends","Sales have fallen","The market values the firm below the book capital shareholders put in","The firm is bankrupt"],c:2,e:"Investors expect the firm to earn less than its cost of capital on that book investment."},
 {i:"v10",t:"t_val",q:"An advantage of EVA over simple accounting profit is that EVA:",a:["Uses only market prices","Charges for the capital tied up in the business","Requires no estimates","Ignores the cost of capital"],c:1,e:"Accounting profit is silent on whether the capital employed earned its required return."},
 {i:"v11",t:"t_val",q:"A drawback of market value measures is that stock price may move because of:",a:["Economic events outside management's control","The number of accountants employed","The par value of shares","How often inventory is counted"],c:0,e:"Market prices respond to expectations and macro news, not just managerial effort."},
-{i:"v12",t:"t_val",q:"Total capitalisation in the EVA formula usually means:",a:["Current liabilities only","Total sales","Cash and equivalents","Long-term debt plus shareholders' equity"],c:3,e:"It is the long-term capital on which investors expect a return."},
+{i:"v12",t:"t_val",q:"A firm has long-term debt of $180m and equity of $420m. If its cost of capital is 10%, the capital charge used in EVA is:",a:["$18m","$42m","$60m","$600m"],c:2,e:"Total capitalisation = 180 + 420 = $600m; capital charge = 10% x 600 = $60m."},
 {i:"v13",t:"t_val",q:"Comparing MVA across firms is difficult mainly because:",a:["Market prices are unavailable","MVA ignores share price","Larger firms can show a bigger MVA simply through scale","Book values are always identical"],c:2,e:"Absolute value added favours large firms, so a ratio such as market-to-book is often used alongside it."},
 {i:"v14",t:"t_val",q:"If NOPAT exactly equals the capital charge, EVA is:",a:["Undefined","Zero, so the firm earns precisely its cost of capital","Positive","Negative"],c:1,e:"Zero EVA means investors got exactly the return they required — no more, no less."},
 {i:"v15",t:"t_val",q:"A market-to-book ratio above 1 generally suggests:",a:["Investors expect the firm to earn above its cost of capital","The firm is insolvent","Assets are overvalued in the accounts","Dividends have been suspended"],c:0,e:"The market pays a premium over book capital when it expects value-adding investment."},
 {i:"v16",t:"t_val",q:"With NOPAT of $18m, capital of $150m and a 10% cost of capital, the EVA is:",a:["$18m","$15m","-$3m","$3m"],c:3,e:"EVA = 18 - 0.10 x 150 = 18 - 15 = $3m."},
 {i:"v17",t:"t_val",q:"Which measure explicitly uses market prices rather than accounting figures?",a:["ROE","Inventory turnover","MVA","EVA"],c:2,e:"MVA depends on the market value of equity; EVA and the accounting ratios use book data."},
 {i:"v18",t:"t_val",q:"A manager wants to raise EVA without new investment. She should:",a:["Increase total assets","Increase NOPAT or release capital that is not earning its cost","Issue more shares","Raise the cost of capital"],c:1,e:"EVA rises when operating profit improves or when idle capital is returned or redeployed."},
-{i:"r01",t:"t_ret",q:"Return on equity (ROE) equals:",a:["Net income / equity","NOPAT / total assets","Sales / receivables","EBIT / interest"],c:0,e:"ROE measures net income earned per unit of shareholders' equity."},
-{i:"r02",t:"t_ret",q:"Return on assets (ROA) equals:",a:["Net income / sales","Debt / equity","Inventory / current liabilities","NOPAT / total assets"],c:3,e:"ROA uses NOPAT because assets are financed by all capital providers, not just shareholders."},
+{i:"r01",t:"t_ret",q:"Net income is $36m and average equity is $240m. ROE is:",a:["15%","6.7%","24%","36%"],c:0,e:"ROE = 36 / 240 = 15%."},
+{i:"r02",t:"t_ret",q:"NOPAT is $72m and total assets are $900m. ROA is:",a:["12.5%","8%","7.2%","20%"],c:1,e:"ROA = 72 / 900 = 8%."},
 {i:"r03",t:"t_ret",q:"ROA and ROC use NOPAT rather than net income because:",a:["Net income is not available","Interest is tax free","They measure the return to all investors, before financing costs","NOPAT is always larger"],c:2,e:"Deducting interest first would confuse operating performance with financing choices."},
 {i:"r04",t:"t_ret",q:"Return on capital (ROC) uses which denominator?",a:["Inventory","Long-term debt plus equity","Current liabilities","Sales"],c:1,e:"ROC measures the return on long-term capital employed."},
 {i:"r05",t:"t_ret",q:"Net income is $30m and equity is $200m. ROE is:",a:["15%","6.7%","30%","20%"],c:0,e:"ROE = 30 / 200 = 15%."},
 {i:"r06",t:"t_ret",q:"NOPAT is $48m and total assets are $600m. ROA is:",a:["12.5%","4.8%","6%","8%"],c:3,e:"ROA = 48 / 600 = 8%."},
-{i:"r07",t:"t_ret",q:"Operating profit margin equals:",a:["Net income / equity","EBIT / interest","NOPAT / sales","Sales / total assets"],c:2,e:"It shows after-tax operating profit earned per unit of sales."},
-{i:"r08",t:"t_ret",q:"Net profit margin equals:",a:["Dividends / earnings","Net income / sales","NOPAT / assets","Sales / equity"],c:1,e:"It is the bottom-line profit per unit of revenue."},
+{i:"r07",t:"t_ret",q:"NOPAT is $54m on sales of $900m. Operating profit margin is:",a:["6%","16.7%","9%","54%"],c:0,e:"Operating profit margin = 54 / 900 = 6%."},
+{i:"r08",t:"t_ret",q:"Net income is $45m on sales of $750m. Net profit margin is:",a:["16.7%","6%","45%","7.5%"],c:1,e:"Net profit margin = 45 / 750 = 6%."},
 {i:"r09",t:"t_ret",q:"A firm with sales of $500m and NOPAT of $40m has an operating profit margin of:",a:["8%","12.5%","4%","40%"],c:0,e:"40 / 500 = 8%."},
 {i:"r10",t:"t_ret",q:"If ROE substantially exceeds ROA, the most likely explanation is:",a:["The firm has no debt","Sales are falling","Inventory is rising","The firm uses financial leverage"],c:3,e:"Borrowing at a cost below the return on assets magnifies the return to equity."},
 {i:"r11",t:"t_ret",q:"Which measure would a shareholder look at first to judge the return on their own stake?",a:["Asset turnover","Inventory turnover","ROE","ROA"],c:2,e:"ROE is the return attributable to shareholders' equity."},
@@ -1150,12 +1164,12 @@ QB.push(
 {i:"r17",t:"t_ret",q:"Accounting return measures can be distorted because:",a:["Book values reflect historical cost, not current value","They use market prices","They ignore net income","They cannot be calculated"],c:0,e:"Depreciated historical cost can understate the real capital employed, flattering the ratio."},
 {i:"r18",t:"t_ret",q:"A firm reports ROE of 18% while its cost of equity is 20%. This suggests:",a:["Value is being created","The firm is highly liquid","Leverage is zero","Shareholder value is being destroyed on that capital"],c:3,e:"Earning less than the required return destroys value even though the accounting return is positive."},
 {i:"e01",t:"t_eff",q:"Asset turnover measures:",a:["Profit per unit of sales","Cash per unit of liabilities","Revenue generated per unit of assets","Debt per unit of equity"],c:2,e:"Asset turnover = sales / total assets."},
-{i:"e02",t:"t_eff",q:"Inventory turnover equals:",a:["Cash / current liabilities","Cost of sales / average inventory","Sales / total assets","Average inventory / daily cost of sales"],c:1,e:"It shows how many times inventory is used up and replaced during the period."},
+{i:"e02",t:"t_eff",q:"Cost of sales is $480m and average inventory is $80m. Inventory turnover is:",a:["0.17 times","6 times","8 times","12 times"],c:1,e:"Inventory turnover = 480 / 80 = 6 times."},
 {i:"e03",t:"t_eff",q:"Average collection period is based on:",a:["Average receivables / average daily sales","Cash / current liabilities","EBIT / interest","Dividends / earnings"],c:0,e:"It estimates how many days customers take to pay."},
-{i:"e04",t:"t_eff",q:"The current ratio equals:",a:["Cash / current liabilities","Debt / equity","Sales / total assets","Current assets / current liabilities"],c:3,e:"It measures coverage of short-term obligations by short-term assets."},
+{i:"e04",t:"t_eff",q:"Current assets are $220m and current liabilities are $110m. The current ratio is:",a:["0.5","1.5","2.0","3.0"],c:2,e:"Current ratio = 220 / 110 = 2.0."},
 {i:"e05",t:"t_eff",q:"The quick ratio excludes which current asset?",a:["Cash","Short-term investments","Inventory","Trade receivables"],c:2,e:"Inventory is the least liquid current asset, so the quick ratio leaves it out."},
 {i:"e06",t:"t_eff",q:"The cash ratio is the most conservative liquidity measure because it counts only:",a:["Total assets","Cash and marketable securities against current liabilities","All current assets","Inventory and receivables"],c:1,e:"It asks what could be paid immediately."},
-{i:"e07",t:"t_eff",q:"Net working capital equals:",a:["Current assets minus current liabilities","Total assets minus total debt","Sales minus cost of sales","Equity minus dividends"],c:0,e:"It is the short-term liquidity buffer."},
+{i:"e07",t:"t_eff",q:"Current assets are $310m and current liabilities are $190m. Net working capital is:",a:["$120m","$500m","$190m","$310m"],c:0,e:"Net working capital = 310 - 190 = $120m."},
 {i:"e08",t:"t_eff",q:"Sales are $800m and total assets $400m. Asset turnover is:",a:["0.5 times","4.0 times","1.5 times","2.0 times"],c:3,e:"800 / 400 = 2.0."},
 {i:"e09",t:"t_eff",q:"Cost of sales is $600m and average inventory $75m. Inventory turnover is:",a:["12.5 times","0.125 times","8 times","6 times"],c:2,e:"600 / 75 = 8 times."},
 {i:"e10",t:"t_eff",q:"With inventory turnover of 8 times, days in inventory is approximately:",a:["365 days","46 days","8 days","73 days"],c:1,e:"365 / 8 = 45.6, about 46 days."},
@@ -1164,28 +1178,28 @@ QB.push(
 {i:"e13",t:"t_eff",q:"Current assets are $180m, inventory $60m and current liabilities $90m. The quick ratio is:",a:["0.67","1.0","1.33","2.0"],c:2,e:"(180 - 60) / 90 = 120 / 90 = 1.33."},
 {i:"e14",t:"t_eff",q:"A rising average collection period usually signals:",a:["Leverage has fallen","Customers are paying more slowly","Sales are more profitable","Inventory is turning faster"],c:1,e:"It can indicate weaker credit control or customers under strain."},
 {i:"e15",t:"t_eff",q:"A very high current ratio may be a warning that:",a:["Cash or inventory is sitting idle and earning nothing","The firm cannot pay its bills","Sales are growing fast","Debt is too high"],c:0,e:"Excess liquidity has an opportunity cost, so more is not always better."},
-{i:"e16",t:"t_eff",q:"Receivables turnover equals:",a:["Cost of sales / receivables","Receivables / sales","Sales / inventory","Sales / average receivables"],c:3,e:"It shows how many times receivables are collected in the period."},
+{i:"e16",t:"t_eff",q:"Sales are $960m and average receivables are $120m. Receivables turnover is:",a:["0.125 times","8 times","12 times","80 days"],c:1,e:"Receivables turnover = 960 / 120 = 8 times."},
 {i:"e17",t:"t_eff",q:"Which ratio group answers 'can the firm meet obligations falling due soon'?",a:["Profitability ratios","Growth ratios","Liquidity ratios","Efficiency ratios"],c:2,e:"Current, quick and cash ratios and net working capital address short-term solvency."},
 {i:"e18",t:"t_eff",q:"A supermarket typically shows a high asset turnover and a low margin because:",a:["It borrows nothing","It sells large volumes at small mark-ups","It has very few assets","It has no inventory"],c:1,e:"Business models trade off margin against turnover; both routes can give a similar ROA."},
 {i:"e19",t:"t_eff",q:"Ratio analysis is most useful when compared with:",a:["Trends over time and comparable competitors","Only the CEO's target","Only the tax rate","Only share par value"],c:0,e:"Ratios need benchmarks before they mean anything."},
 {i:"e20",t:"t_eff",q:"Using year-end rather than average inventory in a turnover ratio can distort the result when:",a:["Sales are constant","The firm has no debt","Margins are stable","Inventory is seasonal or changed sharply during the year"],c:3,e:"A single-date figure may not represent the level held through the period."},
-{i:"l01",t:"t_lev",q:"Times interest earned equals:",a:["Debt / assets","Current assets / current liabilities","EBIT / interest expense","EBITDA / sales"],c:2,e:"TIE measures how many times operating profit covers the interest bill."},
-{i:"l02",t:"t_lev",q:"The DuPont breakdown of ROA is:",a:["Cash ratio x TIE","Asset turnover x operating profit margin","Debt ratio x current ratio","Payout x ROE"],c:1,e:"ROA = (sales/assets) x (NOPAT/sales)."},
-{i:"l03",t:"t_lev",q:"Sustainable growth rate equals:",a:["Plowback ratio x ROE","Dividend payout x sales","MVA x EVA","Debt ratio x asset turnover"],c:0,e:"Growth funded from retained earnings depends on how much is retained and how well it is reinvested."},
-{i:"l04",t:"t_lev",q:"The plowback ratio equals:",a:["Dividends / earnings","Debt / equity","Sales / assets","1 - payout ratio"],c:3,e:"Earnings are either paid out or retained."},
-{i:"l05",t:"t_lev",q:"The debt-to-equity ratio equals:",a:["EBIT / interest","Sales / debt","Total debt / shareholders' equity","Equity / total assets"],c:2,e:"It expresses borrowings relative to owners' funds."},
+{i:"l01",t:"t_lev",q:"EBIT is $84m and interest expense is $21m. Times interest earned is:",a:["4.0","0.25","63","105"],c:0,e:"TIE = 84 / 21 = 4.0 times."},
+{i:"l02",t:"t_lev",q:"Asset turnover is 1.8 and operating profit margin is 7%. DuPont ROA is:",a:["25.7%","12.6%","8.8%","1.26%"],c:1,e:"ROA = 1.8 x 7% = 12.6%."},
+{i:"l03",t:"t_lev",q:"A firm retains 45% of earnings and earns ROE of 18%. Its sustainable growth rate is:",a:["8.1%","45%","18%","63%"],c:0,e:"Sustainable growth = plowback x ROE = 0.45 x 18% = 8.1%."},
+{i:"l04",t:"t_lev",q:"A firm pays out 35% of earnings. Its plowback ratio is:",a:["35%","65%","135%","0%"],c:1,e:"Plowback = 1 - payout = 1 - 35% = 65%."},
+{i:"l05",t:"t_lev",q:"Total debt is $300m and shareholders' equity is $500m. Debt-to-equity is:",a:["0.60","1.67","0.38","$800m"],c:0,e:"Debt-to-equity = 300 / 500 = 0.60."},
 {i:"l06",t:"t_lev",q:"A firm with ROE of 15% that pays out 40% of earnings has a sustainable growth rate of:",a:["3.75%","9%","6%","15%"],c:1,e:"Plowback = 1 - 0.40 = 0.60; g = 0.60 x 15% = 9%."},
 {i:"l07",t:"t_lev",q:"EBIT is $60m and interest expense $15m. Times interest earned is:",a:["4.0","0.25","45","75"],c:0,e:"60 / 15 = 4.0 times."},
 {i:"l08",t:"t_lev",q:"Sales are $600m, assets $300m and NOPAT $30m. ROA via DuPont is:",a:["5%","20%","2%","10%"],c:3,e:"Turnover = 2.0, margin = 5%; ROA = 2.0 x 5% = 10%."},
 {i:"l09",t:"t_lev",q:"A firm with ROE of 20% and a payout ratio of 25% can sustainably grow at:",a:["20%","25%","15%","5%"],c:2,e:"Plowback = 0.75; g = 0.75 x 20% = 15%."},
 {i:"l10",t:"t_lev",q:"Higher financial leverage generally:",a:["Always lowers ROE","Raises expected ROE but also raises risk","Lowers both return and risk","Has no effect on ROE"],c:1,e:"Debt magnifies returns to equity in both directions."},
 {i:"l11",t:"t_lev",q:"A low times interest earned ratio suggests:",a:["The firm may struggle to service its debt","The firm has no debt","Profit margins are high","Liquidity is excellent"],c:0,e:"Thin interest cover leaves little room if operating profit falls."},
-{i:"l12",t:"t_lev",q:"The long-term debt ratio is usually calculated as:",a:["Total assets / debt","Interest / EBIT","Sales / equity","Long-term debt / (long-term debt + equity)"],c:3,e:"It shows the share of long-term capital supplied by lenders."},
+{i:"l12",t:"t_lev",q:"Long-term debt is $240m and equity is $560m. The long-term debt ratio is:",a:["30%","42.9%","70%","240%"],c:0,e:"Long-term debt ratio = 240 / (240 + 560) = 240 / 800 = 30%."},
 {i:"l13",t:"t_lev",q:"Cash coverage ratio differs from times interest earned because it:",a:["Ignores interest","Uses only current assets","Adds depreciation back to EBIT","Uses net income instead of EBIT"],c:2,e:"Depreciation is a non-cash charge, so adding it back better reflects cash available to pay interest."},
 {i:"l14",t:"t_lev",q:"If a firm wants to grow faster than its sustainable growth rate without new equity, it must:",a:["Raise the payout ratio","Raise ROE, retain more, or increase leverage","Cut sales","Reduce total assets only"],c:1,e:"Faster growth needs more funding, from better returns, higher retention, or more borrowing."},
 {i:"l15",t:"t_lev",q:"A firm pays no dividends and earns an ROE of 12%. Its sustainable growth rate is:",a:["12%","0%","6%","24%"],c:0,e:"Plowback is 1.0, so g = 1.0 x 12% = 12%."},
 {i:"l16",t:"t_lev",q:"The extended DuPont identity expresses ROE as:",a:["Payout x plowback x sales","Debt ratio x current ratio","EVA x MVA","Net profit margin x asset turnover x equity multiplier"],c:3,e:"It separates profitability, efficiency and leverage as three drivers of ROE."},
-{i:"l17",t:"t_lev",q:"The equity multiplier is:",a:["Debt / sales","Sales / equity","Total assets / equity","Equity / total assets"],c:2,e:"A higher multiplier means more of the assets are funded by liabilities."},
+{i:"l17",t:"t_lev",q:"Total assets are $900m and equity is $300m. The equity multiplier is:",a:["0.33","3.0","600","1.5"],c:1,e:"Equity multiplier = 900 / 300 = 3.0."},
 {i:"l18",t:"t_lev",q:"Net profit margin is 5%, asset turnover 1.6 and the equity multiplier 2.0. ROE is:",a:["3.2%","16%","8%","10%"],c:1,e:"ROE = 0.05 x 1.6 x 2.0 = 0.16, or 16%."},
 {i:"l19",t:"t_lev",q:"A payout ratio of 100% implies a sustainable growth rate of:",a:["Zero, since nothing is retained","Equal to ROE","Equal to the asset turnover","Negative"],c:0,e:"With no retained earnings there is no internally funded growth."},
 {i:"l20",t:"t_lev",q:"Which change would raise the sustainable growth rate, holding all else constant?",a:["Raising the payout ratio","Reducing ROE","Selling profitable assets","Cutting the dividend payout ratio"],c:3,e:"Retaining more earnings funds more growth at the same ROE."}
@@ -1198,9 +1212,9 @@ QB.push(
 {i:"s03",t:"t_sing",q:"Finding present value is often called:",a:["Compounding","Payout","Diversifying","Discounting"],c:3,e:"Discounting moves future money back to today's value."},
 {i:"s04",t:"t_sing",q:"Simple interest differs from compound interest because simple interest:",a:["Requires monthly compounding","Always gives a higher ending value","Is earned only on the original principal","Is earned on previous interest too"],c:2,e:"Simple interest pays nothing on accumulated interest."},
 {i:"s05",t:"t_sing",q:"If $1,000 earns 6% simple interest for 5 years, the ending balance is:",a:["$1,500","$1,060","$1,300","$1,338.23"],c:2,e:"Interest = 1,000 x 6% x 5 = $300, so the balance is $1,300."},
-{i:"s06",t:"t_sing",q:"If $1,000 earns 6% compound interest for 5 years, the correct expression is:",a:["1,000 x (1.06)^5","1,000 + 6 x 5","1,000 / (1.06)^5","1,000 x 5 / 0.06"],c:0,e:"Future value of a lump sum is PV x (1+r)^t."},
-{i:"s07",t:"t_sing",q:"To solve for the rate when PV, FV and t are known, use:",a:["r = FV x PV x t","r = PV/FV - t","r = t/(FV/PV)","r = (FV/PV)^(1/t) - 1"],c:3,e:"Rearranging FV = PV(1+r)^t isolates r."},
-{i:"s08",t:"t_sing",q:"To solve for time when PV, FV and r are known, use:",a:["t = r / ln(FV)","t = PV / FV","t = ln(FV/PV) / ln(1+r)","t = FV/PV x r"],c:2,e:"Solving for an exponent requires logarithms."},
+{i:"s06",t:"t_sing",q:"If $1,000 earns 6% compound interest for 5 years, the ending balance is closest to:",a:["$1,338","$1,300","$1,060","$1,500"],c:0,e:"FV = 1,000 x (1.06)^5 = $1,338.23."},
+{i:"s07",t:"t_sing",q:"An investment grows from $2,000 to $3,000 over 5 years. The annual compound return is closest to:",a:["8.4%","10.0%","50.0%","6.7%"],c:0,e:"r = (3,000/2,000)^(1/5) - 1 = 8.45%."},
+{i:"s08",t:"t_sing",q:"At 10% per year, about how long does it take $1,000 to grow to $2,000?",a:["5.0 years","7.3 years","10.0 years","20.0 years"],c:1,e:"t = ln(2,000/1,000) / ln(1.10) = 7.27 years."},
 {i:"s09",t:"t_sing",q:"The Rule of 72 estimates:",a:["The payout ratio","Years to double, as 72 divided by the rate in percent","The PV of a perpetuity","The tax rate"],c:1,e:"It is a quick approximation of doubling time."},
 {i:"s10",t:"t_sing",q:"About how much was needed 21 years ago to cover $20,000 today at 8% a year?",a:["$952","$1,600","$1,728","$3,973"],c:3,e:"PV = 20,000 / 1.08^21 = about $3,973."},
 {i:"s11",t:"t_sing",q:"You give $5,000 today and receive $20,000 in five years. The nearest annual return is:",a:["29%","32%","60%","25%"],c:1,e:"(20,000/5,000)^(1/5) - 1 = 31.95%, about 32%."},
@@ -1212,8 +1226,8 @@ QB.push(
 {i:"s17",t:"t_sing",q:"Holding PV and r constant, a longer horizon makes future value:",a:["Negative","Higher","Lower","Unchanged"],c:1,e:"More periods of compounding means more growth."},
 {i:"s18",t:"t_sing",q:"How many years does $1,000 take to reach $2,000 at 8% compounded annually?",a:["About 9.0 years","About 12.5 years","About 6.5 years","About 15.0 years"],c:0,e:"t = ln(2)/ln(1.08) = 0.6931/0.07696 = 9.01 years."},
 {i:"s19",t:"t_sing",q:"$8,000 grows to $12,000 in 6 years. The annual rate is closest to:",a:["5.0%","8.3%","10.0%","7.0%"],c:3,e:"(12,000/8,000)^(1/6) - 1 = 1.5^(1/6) - 1 = 6.99%."},
-{i:"s20",t:"t_sing",q:"The discount factor for year t at rate r is:",a:["r x t","1 - r x t","1 / (1+r)^t","(1+r)^t"],c:2,e:"Multiplying a future cash flow by this factor gives its present value."},
-{i:"s21",t:"t_sing",q:"Which pair of values would you need to find the present value of a single future sum?",a:["Sales and total assets","The rate and the number of periods","The payout ratio and the tax rate","The coupon and the par value"],c:1,e:"PV = FV / (1+r)^t requires only r and t once FV is known."},
+{i:"s20",t:"t_sing",q:"At 8%, the discount factor for a cash flow in year 3 is closest to:",a:["0.794","1.260","0.926","0.240"],c:0,e:"Discount factor = 1 / (1.08)^3 = 0.794."},
+{i:"s21",t:"t_sing",q:"A single $5,000 cash flow arrives in 4 years. At 8%, its present value is closest to:",a:["$3,675","$5,400","$6,802","$4,630"],c:0,e:"PV = 5,000 / (1.08)^4 = $3,675."},
 {i:"s22",t:"t_sing",q:"Two investments offer the same future value at the same date, but one is riskier. The riskier one should be:",a:["Discounted at a higher rate, giving a lower present value","Discounted at a lower rate","Valued identically","Ignored"],c:0,e:"The discount rate must reflect the opportunity cost of capital for that level of risk."},
 {i:"c01",t:"t_comp",q:"With an APR of 12% compounded monthly, the periodic rate is:",a:["12%","0.12%","6%","1%"],c:3,e:"Periodic rate = APR / m = 12% / 12 = 1% per month."},
 {i:"c02",t:"t_comp",q:"With an APR of 12% compounded monthly, the effective annual rate is closest to:",a:["1.00%","13.50%","12.68%","12.00%"],c:2,e:"EAR = (1 + 0.12/12)^12 - 1 = 1.01^12 - 1 = 12.68%."},
@@ -1223,10 +1237,10 @@ QB.push(
 {i:"c06",t:"t_comp",q:"$5,000 invested for 3 years at 8% APR compounded quarterly grows to approximately:",a:["$6,000","$5,400","$6,341","$6,299"],c:2,e:"Periodic rate = 2%, n = 12; 5,000 x 1.02^12 = 5,000 x 1.26824 = $6,341."},
 {i:"c07",t:"t_comp",q:"How many compounding periods are there in 7 years with monthly compounding?",a:["28","84","7","12"],c:1,e:"n = m x t = 12 x 7 = 84."},
 {i:"c08",t:"t_comp",q:"An APR of 18% compounded monthly has an EAR of approximately:",a:["19.56%","18.00%","1.50%","21.00%"],c:0,e:"(1.015)^12 - 1 = 19.56%."},
-{i:"c09",t:"t_comp",q:"With continuous compounding, future value is calculated as:",a:["PV x (1+r)^t","PV x r x t","PV / (1+r)^t","PV x e^(r x t)"],c:3,e:"Continuous compounding is the limit as the number of periods becomes infinite."},
+{i:"c09",t:"t_comp",q:"With continuous compounding at 8% for 3 years, $1,000 grows to closest to:",a:["$1,240","$1,271","$1,260","$1,080"],c:1,e:"FV = 1,000 x e^(0.08 x 3) = $1,271."},
 {i:"c10",t:"t_comp",q:"The nominal or quoted annual rate is also called the:",a:["Real rate","Coupon rate","Annual percentage rate (APR)","Effective annual rate"],c:2,e:"The APR is the periodic rate multiplied by the number of periods per year, ignoring compounding."},
 {i:"c11",t:"t_comp",q:"Which is the correct relationship between APR and EAR when compounding is annual?",a:["EAR is zero","They are equal","EAR is always larger","APR is always larger"],c:1,e:"With one compounding period a year there is no interest-on-interest within the year."},
-{i:"c12",t:"t_comp",q:"To find the deposit needed today for $20,000 in 5 years at 9% APR compounded semi-annually, you would use:",a:["20,000 / (1.045)^10","20,000 / (1.09)^5","20,000 x (1.045)^10","20,000 / (1.09)^10"],c:0,e:"Halve the rate and double the periods: 4.5% for 10 half-years."},
+{i:"c12",t:"t_comp",q:"How much should be deposited today to have $20,000 in 5 years at 9% APR compounded semi-annually?",a:["$12,878","$13,168","$31,059","$12,994"],c:0,e:"Semiannual rate = 4.5%, periods = 10; PV = 20,000 / (1.045)^10 = about $12,878."},
 {i:"c13",t:"t_comp",q:"A credit card quotes 2% per month. Its EAR is closest to:",a:["24.0%","2.0%","12.0%","26.8%"],c:3,e:"(1.02)^12 - 1 = 26.82%, well above the 24% APR."},
 {i:"c14",t:"t_comp",q:"The monthly rate equivalent to an 8% effective annual rate is closest to:",a:["8.000%","1.000%","0.643%","0.667%"],c:2,e:"(1.08)^(1/12) - 1 = 0.6434% per month."},
 {i:"c15",t:"t_comp",q:"Daily compounding of a 6% APR over one year gives an EAR closest to:",a:["7.00%","6.18%","6.00%","6.09%"],c:1,e:"(1 + 0.06/365)^365 - 1 = 6.183%."},
@@ -1238,12 +1252,12 @@ QB.push(
 {i:"u03",t:"t_multi",q:"A dealer offers $15,500 cash today or $8,000 today plus $4,000 at the end of years 1 and 2. To choose, compare:",a:["Book values","Market-to-book ratios","Coupon rates","Present values today"],c:3,e:"Both options must be expressed at the same date, most naturally today."},
 {i:"u04",t:"t_multi",q:"At 10%, the present value of $1,000 in year 1 and $2,000 in year 2 is closest to:",a:["$2,727","$2,480","$2,562","$3,000"],c:2,e:"1,000/1.1 + 2,000/1.21 = 909.09 + 1,652.89 = $2,561.98."},
 {i:"u05",t:"t_multi",q:"At 8%, the present value of $500 a year at the end of years 1, 2 and 3 is closest to:",a:["$1,157","$1,289","$1,500","$1,340"],c:1,e:"500 x PVIFA(8%,3) = 500 x 2.5771 = $1,288.55."},
-{i:"u06",t:"t_multi",q:"A timeline is drawn before choosing a formula because it:",a:["Shows when each cash flow occurs and how many periods separate them","Calculates the answer automatically","Replaces the discount rate","Removes the need for compounding"],c:0,e:"Most TVM errors come from mis-dating cash flows, not from the arithmetic."},
+{i:"u06",t:"t_multi",q:"A project pays $100 in year 1 and $200 in year 3. At 10%, the present value is closest to:",a:["$241","$300","$273","$225"],c:0,e:"PV = 100/1.10 + 200/(1.10)^3 = 90.91 + 150.26 = $241.17."},
 {i:"u07",t:"t_multi",q:"Two cash flow streams have the same total nominal amount but different timing. The one with earlier cash flows has:",a:["A lower present value","The same present value","A negative present value","A higher present value"],c:3,e:"Money received sooner can be reinvested sooner, so it is worth more today."},
 {i:"u08",t:"t_multi",q:"At 12%, the future value at year 3 of $1,000 deposited today and $1,000 deposited at the end of year 1 is closest to:",a:["$2,254","$3,000","$2,659","$2,000"],c:2,e:"1,000 x 1.12^3 + 1,000 x 1.12^2 = 1,404.93 + 1,254.40 = $2,659.33."},
-{i:"u09",t:"t_multi",q:"Net present value of a project equals:",a:["Sales minus costs","PV of inflows minus the initial investment","Total inflows minus total outflows, undiscounted","The internal rate of return"],c:1,e:"NPV compares discounted benefits with the cost, both measured today."},
+{i:"u09",t:"t_multi",q:"A project costs $500 today and pays $300 in year 1 and $300 in year 2. At 10%, NPV is closest to:",a:["$21","$100","-$21","$45"],c:0,e:"PV inflows = 300/1.10 + 300/(1.10)^2 = $520.66; NPV = 520.66 - 500 = $20.66."},
 {i:"u10",t:"t_multi",q:"A project costs $10,000 today and returns $6,000 at the end of years 1 and 2. At 10%, the NPV is closest to:",a:["$414","$2,000","-$414","$1,000"],c:0,e:"PV = 6,000 x PVIFA(10%,2) = 6,000 x 1.73554 = 10,413.2; NPV = $413.2."},
-{i:"u11",t:"t_multi",q:"When cash flows are uneven, the annuity formula:",a:["Still applies exactly","Applies only to the first flow","Gives the future value only","Cannot be used directly"],c:3,e:"The annuity shortcut requires equal payments at regular intervals."},
+{i:"u11",t:"t_multi",q:"Cash flows are $100, $140 and $180 at the end of years 1-3. At 10%, their PV is closest to:",a:["$420","$341","$382","$300"],c:1,e:"PV = 100/1.10 + 140/(1.10)^2 + 180/(1.10)^3 = about $341."},
 {i:"u12",t:"t_multi",q:"Discounting a stream of cash flows one period at a time and adding gives:",a:["Only the future value","An undefined result","The same answer as discounting each flow directly to today","A different answer"],c:2,e:"Value is additive; the route through time does not change the answer."},
 {i:"u13",t:"t_multi",q:"An offer of $9,000 today versus $10,000 in two years is preferable today when the discount rate is:",a:["Any rate at all","Above about 5.4%","Below about 5.4%","Exactly zero"],c:1,e:"Break-even rate: (10,000/9,000)^(1/2) - 1 = 5.41%. Above that, cash now wins."},
 {i:"u14",t:"t_multi",q:"The value additivity principle says that:",a:["The value of a bundle of cash flows equals the sum of their separate values","Values can only be added if they are equal","Cash flows must be averaged","Only the largest cash flow matters"],c:0,e:"This is why complex streams can be broken into simple pieces."},
@@ -1251,11 +1265,11 @@ QB.push(
 {i:"a01",t:"t_ann",q:"An annuity is:",a:["A single future payment","A stock dividend","Equal cash flows for a limited number of periods","Unequal cash flows forever"],c:2,e:"Annuities are level cash flows that stop after a finite number of payments."},
 {i:"a02",t:"t_ann",q:"A perpetuity is:",a:["A debt ratio","Equal cash flows forever","Equal cash flows for three years","A single cash flow"],c:1,e:"Perpetuities continue indefinitely."},
 {i:"a03",t:"t_ann",q:"The present value of a perpetuity is found by:",a:["Multiplying the payment by the interest rate","Dividing the interest rate by the payment","Multiplying the payment by the number of payments","Dividing the payment by the interest rate"],c:3,e:"For level cash flows forever, PV = C / r."},
-{i:"a04",t:"t_ann",q:"PV of a regular perpetuity starting one period from now is:",a:["C x r","C x t","C / (r - g) only","C / r"],c:3,e:"A level perpetuity is valued as the payment divided by the rate."},
-{i:"a05",t:"t_ann",q:"A delayed perpetuity whose first payment arrives in year 4 has its C/r value located at:",a:["End of year 4","End of year 5","End of year 3","Today"],c:2,e:"The perpetuity formula gives a value one period before the first payment."},
+{i:"a04",t:"t_ann",q:"A level perpetuity pays $600 each year starting next year. At a 12% discount rate, its PV is:",a:["$7,200","$5,000","$600","$50"],c:1,e:"PV = 600 / 0.12 = $5,000."},
+{i:"a05",t:"t_ann",q:"A perpetuity pays $1,000 per year starting in year 4. At 10%, its value at the end of year 3 is:",a:["$10,000","$6,830","$9,091","$1,000"],c:0,e:"The perpetuity value one period before the first payment is 1,000 / 0.10 = $10,000 at year 3."},
 {i:"a06",t:"t_ann",q:"An annuity due differs from an ordinary annuity because payments:",a:["Never earn interest","Start immediately","Are unequal","Last forever"],c:1,e:"An annuity due begins today, so each cash flow gets one extra period of interest."},
-{i:"a07",t:"t_ann",q:"PV of an annuity due equals the ordinary annuity PV:",a:["Multiplied by (1+r)","Divided by (1+r)","Multiplied by t","Minus the first payment"],c:0,e:"Earlier payments make the annuity due more valuable by exactly one period of interest."},
-{i:"a08",t:"t_ann",q:"A growing perpetuity formula requires which condition?",a:["g greater than r","r equal to g","No discount rate","r greater than g"],c:3,e:"PV = C / (r - g) is only valid when the discount rate exceeds the growth rate."},
+{i:"a07",t:"t_ann",q:"An ordinary annuity PV is $4,000 at 8%. If the same payments are made as an annuity due, the PV is:",a:["$3,704","$4,000","$4,320","$4,080"],c:2,e:"Annuity due PV = ordinary PV x (1+r) = 4,000 x 1.08 = $4,320."},
+{i:"a08",t:"t_ann",q:"A growing perpetuity pays $200 next year and grows at 4%. At a 9% discount rate, its value is:",a:["$2,222","$4,000","$5,000","Cannot be valued because g exceeds r"],c:1,e:"PV = 200 / (0.09 - 0.04) = $4,000."},
 {i:"a09",t:"t_ann",q:"Which increases the present value of an annuity, other things equal?",a:["Decreasing the payment","Shortening the term","Increasing the interest rate","Decreasing the interest rate"],c:3,e:"Lower discount rates make future payments worth more today."},
 {i:"a10",t:"t_ann",q:"How much is needed today for a 5-year $1,000 annuity, first payment in one year, at 12%?",a:["$4,604.78","$3,604.78","$3,746.25","$4,037.35"],c:1,e:"PV = 1,000 x PVIFA(12%,5) = 1,000 x 3.60478 = $3,604.78."},
 {i:"a11",t:"t_ann",q:"PV of a 5-period $3,000 annuity at 12% when the first payment is today is closest to:",a:["$9,655.65","$10,814.33","$12,112.05","$13,200.00"],c:2,e:"Annuity due: 3,000 x 3.60478 x 1.12 = $12,112.05."},
@@ -1264,8 +1278,8 @@ QB.push(
 {i:"a14",t:"t_ann",q:"The future value of a 10-year $2,000 ordinary annuity at 7% is closest to:",a:["$29,567","$27,633","$20,000","$14,047"],c:1,e:"2,000 x FVIFA(7%,10) = 2,000 x 13.8164 = $27,632.9."},
 {i:"a15",t:"t_ann",q:"A perpetuity paying $800 a year is worth $10,000. The implied discount rate is:",a:["8%","12.5%","0.8%","80%"],c:0,e:"r = C / PV = 800 / 10,000 = 8%."},
 {i:"a16",t:"t_ann",q:"A growing perpetuity pays $100 next year, grows at 3% and is discounted at 9%. Its value is:",a:["$1,111","$3,333","$833","$1,667"],c:3,e:"PV = 100 / (0.09 - 0.03) = 100 / 0.06 = $1,666.67."},
-{i:"a17",t:"t_ann",q:"The future value of an annuity due equals the ordinary annuity future value:",a:["Minus one payment","Plus the discount rate","Multiplied by (1+r)","Divided by (1+r)"],c:2,e:"Every payment sits one period earlier, so it compounds one extra period."},
-{i:"a18",t:"t_ann",q:"To find the payment on a 20-year loan of $190,000 at 17%, you would use:",a:["PMT = 190,000 / 20","PMT = 190,000 / PVIFA(17%,20)","PMT = 190,000 x PVIFA(17%,20)","PMT = 190,000 x 0.17"],c:1,e:"Dividing the loan amount by the annuity factor gives the level payment."},
+{i:"a17",t:"t_ann",q:"An ordinary annuity has FV of $12,000 at 6%. If the payments are an annuity due instead, FV is:",a:["$11,321","$12,000","$12,720","$12,060"],c:2,e:"Annuity due FV = ordinary FV x (1+r) = 12,000 x 1.06 = $12,720."},
+{i:"a18",t:"t_ann",q:"A 20-year loan of $190,000 at 17% has an annual payment closest to:",a:["$32,300","$9,500","$31,819","$14,092"],c:2,e:"PVIFA(17%,20) is about 5.971; payment = 190,000 / 5.971 = about $31,819."},
 {i:"a19",t:"t_ann",q:"The annual payment on a $190,000, 20-year loan at 17% is closest to:",a:["$33,761","$9,500","$32,300","$40,000"],c:0,e:"PVIFA(17%,20) = 5.62776; PMT = 190,000 / 5.62776 = $33,761."},
 {i:"a20",t:"t_ann",q:"Saving $2,000 a year for 10 years at 7%, the balance at the end of year 10 is closest to:",a:["$20,000","$14,047","$39,343","$27,633"],c:3,e:"2,000 x FVIFA(7%,10) = $27,632.9."},
 {i:"a21",t:"t_ann",q:"An ordinary annuity's first payment occurs at:",a:["The end of period 2","The maturity date","The end of period 1","Today"],c:2,e:"By convention, ordinary annuity payments fall at the end of each period."},
@@ -1296,7 +1310,7 @@ QB.push(
 QB.push(
 {i:"b01",t:"t_bbasic",q:"The fixed interest payment made to a bondholder is called the:",a:["Coupon","Face value","Yield to maturity","Discount"],c:0,e:"The coupon is set when the bond is issued and does not change."},
 {i:"b02",t:"t_bbasic",q:"The payment made at the bond's maturity is the:",a:["Coupon","Current yield","Credit spread","Face value, also called par or maturity value"],c:3,e:"The face value is the principal repaid at maturity."},
-{i:"b03",t:"t_bbasic",q:"The coupon rate equals:",a:["Face value / price","Price / earnings","Annual coupon payment / face value","Annual coupon / current price"],c:2,e:"The coupon rate is always calculated on the face value, not the market price."},
+{i:"b03",t:"t_bbasic",q:"A bond pays an annual coupon of $75 on $1,000 face value. Its coupon rate is:",a:["7.5%","13.3%","75%","6.5%"],c:0,e:"Coupon rate = 75 / 1,000 = 7.5%."},
 {i:"b04",t:"t_bbasic",q:"A bond with a $1,000 face value and a 6.5% coupon rate pays annual interest of:",a:["$1,065","$65","$650","$6.50"],c:1,e:"0.065 x 1,000 = $65 a year."},
 {i:"b05",t:"t_bbasic",q:"The clean price of a bond is the price:",a:["Excluding accrued interest","Including accrued interest","At maturity","At issue only"],c:0,e:"Accrued interest is added to the clean price to get the dirty price actually paid."},
 {i:"b06",t:"t_bbasic",q:"The dirty price of a bond is the price:",a:["Excluding accrued interest","Net of tax","After default","Including accrued interest"],c:3,e:"It is what the buyer actually hands over between coupon dates."},
@@ -1312,34 +1326,34 @@ QB.push(
 {i:"b16",t:"t_bbasic",q:"A strip bond is created by:",a:["Shortening the maturity","Separating a bond's coupons and principal into individual securities","Adding a conversion option","Guaranteeing the coupon"],c:1,e:"Each stripped piece then behaves like a zero-coupon bond."},
 {i:"b17",t:"t_bbasic",q:"The market interest rate used to discount a bond's cash flows should reflect:",a:["The current return on similar-risk investments","The original coupon rate","The issuer's tax rate","The face value"],c:0,e:"The discount rate is the bond's opportunity cost of capital."},
 {i:"b18",t:"t_bbasic",q:"Coupon payments are fixed at issue, but bond prices still move because:",a:["The coupon is renegotiated","The face value changes","Maturity is extended","The market interest rate changes daily"],c:3,e:"Changing discount rates change the present value of a fixed stream."},
-{i:"n01",t:"t_bprice",q:"The value of a bond is:",a:["The face value only","The coupon rate times maturity","The present value of its coupons plus its face value","The sum of the coupons undiscounted"],c:2,e:"A bond is just a stream of cash flows to be discounted."},
+{i:"n01",t:"t_bprice",q:"A 2-year annual coupon bond pays $80 per year and $1,000 face value. At a 10% required return, price is closest to:",a:["$965","$1,000","$1,080","$1,145"],c:0,e:"Price = 80/1.10 + 1,080/(1.10)^2 = $965.29."},
 {i:"n02",t:"t_bprice",q:"Bond price can be written as:",a:["coupon rate x price","(coupon x annuity factor) + (face value x discount factor)","coupon x maturity","face value / coupon rate"],c:1,e:"Coupons form an annuity; the face value is a single lump sum."},
 {i:"n03",t:"t_bprice",q:"A 3-year, 6.5% annual coupon bond with $1,000 face value, required return 5.1%, is worth approximately:",a:["$1,038","$1,000","$806","$935"],c:0,e:"Discounting $65, $65 and $1,065 at 5.1% gives about $1,038."},
 {i:"n04",t:"t_bprice",q:"A 3-year, 6.5% annual coupon bond with $1,000 face value and a required return of 6.5% is worth:",a:["$1,038","$806","$1,065","$1,000"],c:3,e:"When the discount rate equals the coupon rate, the bond sells at par."},
 {i:"n05",t:"t_bprice",q:"A 3-year, 6.5% annual coupon bond with $1,000 face value and a required return of 15% is worth approximately:",a:["$1,038","$650","$806","$1,000"],c:2,e:"A high discount rate pushes the price well below par, to about $805.93."},
 {i:"n06",t:"t_bprice",q:"When the market interest rate is above the coupon rate, the bond sells:",a:["Above face value","At a discount, below face value","At a premium","At par"],c:1,e:"Investors will only accept a below-market coupon if they pay less than par."},
 {i:"n07",t:"t_bprice",q:"When the market interest rate is below the coupon rate, the bond sells:",a:["At a premium, above face value","At a discount","At par","Below face value"],c:0,e:"An above-market coupon is worth paying extra for."},
-{i:"n08",t:"t_bprice",q:"When the market interest rate equals the coupon rate, the bond sells:",a:["At a premium","At a discount","At zero","At par"],c:3,e:"The coupon exactly satisfies the required return, so price equals face value."},
+{i:"n08",t:"t_bprice",q:"A $1,000 face value bond has an 8% coupon and the market required return is also 8%. The price should be closest to:",a:["$920","$1,000","$1,080","$1,160"],c:1,e:"When coupon rate equals required return, the bond is priced at par: about $1,000."},
 {i:"n09",t:"t_bprice",q:"The relationship between bond prices and interest rates is:",a:["Unrelated","Always proportional","Inverse","Direct"],c:2,e:"Higher discount rates lower present values, so prices fall."},
-{i:"n10",t:"t_bprice",q:"For a bond paying semi-annual coupons, you should:",a:["Leave the annual figures unchanged","Halve the coupon and the rate, and double the number of periods","Halve everything","Double everything"],c:1,e:"The timeline must be in six-month periods."},
+{i:"n10",t:"t_bprice",q:"A 6% annual coupon bond pays semiannual coupons on $1,000 face value. Each coupon payment is:",a:["$60","$30","$6","$120"],c:1,e:"Annual coupon = 6% x 1,000 = $60; semiannual payment = $30."},
 {i:"n11",t:"t_bprice",q:"A 6.5% semi-annual coupon bond with $1,000 face value pays each half-year:",a:["$32.50","$65.00","$16.25","$1,032.50"],c:0,e:"Annual coupon $65 divided by two."},
 {i:"n12",t:"t_bprice",q:"A 3-year bond with semi-annual coupons has how many coupon payments?",a:["3","12","2","6"],c:3,e:"3 years x 2 payments a year = 6 periods."},
 {i:"n13",t:"t_bprice",q:"A bond pays 10% semi-annually, has $1,000 face value, matures in 8 years, and similar bonds yield 14%. Its price is closest to:",a:["$1,189","$714","$811","$1,000"],c:2,e:"$50 for 16 periods discounted at 7%, plus $1,000 discounted 16 periods, gives about $811.07."},
-{i:"n14",t:"t_bprice",q:"For a semi-annual bond yielding 6% a year, the per-period discount rate is:",a:["1.5%","3%","6%","12%"],c:1,e:"Divide the annual required return by two."},
+{i:"n14",t:"t_bprice",q:"For a semiannual bond quoted at 6% annual yield, the six-month discount rate is:",a:["1.5%","3%","6%","12%"],c:1,e:"Semiannual periods use half the annual quoted yield: 6% / 2 = 3%."},
 {i:"n15",t:"t_bprice",q:"As a bond approaches maturity, its price moves towards:",a:["Face value","Zero","Twice face value","The coupon rate"],c:0,e:"At maturity the only remaining cash flow is the face value plus final coupon."},
 {i:"n16",t:"t_bprice",q:"Two bonds are identical except one has a lower coupon. At the same yield, the lower-coupon bond will have:",a:["A higher price","The same price","No price","A lower price"],c:3,e:"Smaller cash flows discounted at the same rate give a smaller present value."},
 {i:"n17",t:"t_bprice",q:"A perpetual bond paying $80 a year, valued at a 10% yield, is worth:",a:["$80","$1,000","$800","$8,000"],c:2,e:"With no maturity date, price = C/r = 80 / 0.10 = $800."},
 {i:"n18",t:"t_bprice",q:"A 5-year zero-coupon bond with $1,000 face value at a 7% yield is worth approximately:",a:["$935","$713","$1,000","$650"],c:1,e:"1,000 / 1.07^5 = 1,000 / 1.40255 = $713."},
 {i:"n19",t:"t_bprice",q:"If the required return on a bond falls after issue, the bondholder experiences:",a:["A capital gain","A capital loss","No change","A coupon increase"],c:0,e:"Lower yields mean higher prices for an existing fixed-coupon bond."},
 {i:"n20",t:"t_bprice",q:"To value a bond you need the coupon, face value, maturity and:",a:["The issuer's ROE","The dividend yield","The payout ratio","The market discount rate"],c:3,e:"The yield on comparable-risk bonds is the missing input."},
-{i:"y01",t:"t_byield",q:"Current yield equals:",a:["Price / coupon","Coupon rate x maturity","Annual coupon payment / current bond price","Annual coupon / face value"],c:2,e:"Current yield uses the market price, so it changes as the price changes."},
+{i:"y01",t:"t_byield",q:"A bond pays $90 annual coupon and trades for $1,125. Its current yield is:",a:["8%","9%","12.5%","10%"],c:0,e:"Current yield = 90 / 1,125 = 8%."},
 {i:"y02",t:"t_byield",q:"A bond paying $100 a year sells for $1,136.16. Its current yield is closest to:",a:["11.4%","8.8%","10.0%","5.0%"],c:1,e:"100 / 1,136.16 = 0.0880, or 8.8%."},
 {i:"y03",t:"t_byield",q:"Yield to maturity is best defined as:",a:["The discount rate that equates the PV of the bond's cash flows with its price","The coupon rate","The current yield","The default premium"],c:0,e:"YTM is the internal rate of return on the bond held to maturity."},
 {i:"y04",t:"t_byield",q:"A 3-year, 10% annual coupon, $1,000 face value bond sells for $1,136.16. Its YTM is:",a:["10%","8.8%","13.6%","5%"],c:3,e:"Solving for r gives 5%; the bond trades at a premium because the coupon beats the market rate."},
 {i:"y05",t:"t_byield",q:"Current yield ignores:",a:["The current price","The face value entirely","Capital gains or losses on the bond","The coupon payment"],c:2,e:"It captures income only, so it is not a total return measure."},
 {i:"y06",t:"t_byield",q:"For a bond selling at a premium, the ordering of yields is:",a:["Current yield > coupon rate > YTM","Coupon rate > current yield > YTM","YTM > current yield > coupon rate","All three are equal"],c:1,e:"A premium bond delivers a capital loss to maturity, dragging YTM below the current yield."},
 {i:"y07",t:"t_byield",q:"For a bond selling at a discount, the ordering of yields is:",a:["YTM > current yield > coupon rate","Coupon rate > current yield > YTM","All three are equal","Current yield > YTM > coupon rate"],c:0,e:"A discount bond delivers a capital gain to maturity, lifting YTM above the current yield."},
-{i:"y08",t:"t_byield",q:"Rate of return on a bond over a holding period equals:",a:["Coupon / face value","YTM always","Price change only","(coupon income + price change) / initial investment"],c:3,e:"Total income per period per unit invested includes both income and price movement."},
+{i:"y08",t:"t_byield",q:"You buy a bond for $980, receive a $70 coupon, and sell it for $1,010. The holding-period return is:",a:["7.1%","10.2%","3.1%","4.1%"],c:1,e:"Return = (70 + 1,010 - 980) / 980 = 100 / 980 = 10.2%."},
 {i:"y09",t:"t_byield",q:"You buy a 3-year, 10% annual coupon, $1,000 par bond for $1,136.16 and sell it a year later for $1,130. Your rate of return is closest to:",a:["5.0%","-0.5%","8.3%","10.0%"],c:2,e:"(100 + (1,130 - 1,136.16)) / 1,136.16 = 93.84 / 1,136.16 = 8.26%."},
 {i:"y10",t:"t_byield",q:"If a bond's yield to maturity is unchanged over a holding period, the rate of return will:",a:["Be zero","Equal the yield to maturity","Exceed the YTM","Be below the YTM"],c:1,e:"Prices drift along the path implied by the unchanged yield, so total return equals YTM."},
 {i:"y11",t:"t_byield",q:"You buy a 3-year 10% coupon bond at $1,136.16. If the YTM stays at 5%, the price after one year is $1,092.97 and the return is:",a:["5%","10%","8.8%","3.8%"],c:0,e:"(100 + (1,092.97 - 1,136.16)) / 1,136.16 = 0.05, exactly the YTM."},
@@ -1378,11 +1392,11 @@ QB.push(
 {i:"t02",t:"t_sbasic",q:"An Initial Public Offering (IPO) is:",a:["A bond issue","A dividend payment","The first offering of stock to the general public","A sale of shares between two investors"],c:2,e:"An IPO is a primary market transaction that raises new cash for the firm."},
 {i:"t03",t:"t_sbasic",q:"A seasoned issue (SEO) is:",a:["A bond redemption","The sale of additional stock by an already-public company","The first sale of shares","A share buyback"],c:1,e:"It is a further primary issue by a listed firm."},
 {i:"t04",t:"t_sbasic",q:"The Ghana Stock Exchange is an example of a:",a:["Secondary market","Primary market only","Money market only","Commodity market"],c:0,e:"Investors trade already-issued securities among themselves there."},
-{i:"t05",t:"t_sbasic",q:"The price-earnings (P/E) ratio equals:",a:["Earnings / price","Dividend / price","Price / dividend","Price per share / earnings per share"],c:3,e:"It shows what investors pay for each unit of current earnings."},
-{i:"t06",t:"t_sbasic",q:"Dividend yield equals:",a:["Price / dividend","Earnings / price","Cash dividend per share / current price","Dividend / earnings"],c:2,e:"It measures the income component of a share's return."},
+{i:"t05",t:"t_sbasic",q:"A share trades at $30 and EPS is $2.50. Its P/E ratio is:",a:["12.0","8.3","0.083","30.0"],c:0,e:"P/E = 30 / 2.50 = 12.0."},
+{i:"t06",t:"t_sbasic",q:"A share pays a $1.80 cash dividend and trades at $45. Its dividend yield is:",a:["2.5%","4.0%","6.0%","25.0%"],c:1,e:"Dividend yield = 1.80 / 45 = 4.0%."},
 {i:"t07",t:"t_sbasic",q:"Retained earnings are:",a:["Taxes owed","Profits kept in the firm and reinvested","Profits paid out as dividends","Interest paid to lenders"],c:1,e:"Retention funds future growth without raising external finance."},
 {i:"t08",t:"t_sbasic",q:"Preferred stock differs from common stock because it:",a:["Takes priority over common stock for dividends","Always carries more votes","Has a maturity date like a bond","Never pays dividends"],c:0,e:"Preferred dividends must be paid before common dividends."},
-{i:"t09",t:"t_sbasic",q:"The expected return on a share over one year equals:",a:["Div1 / Earnings","P0 / Div1","(P1 - P0) x Div1","(Div1 + P1 - P0) / P0"],c:3,e:"It combines dividend income and capital gain, relative to the starting price."},
+{i:"t09",t:"t_sbasic",q:"A share costs $40, pays a $2 dividend, and is expected to sell for $44 in one year. Expected return is:",a:["5%","10%","15%","20%"],c:2,e:"Return = (2 + 44 - 40) / 40 = 6 / 40 = 15%."},
 {i:"t10",t:"t_sbasic",q:"Expected return can be split into:",a:["Payout ratio plus plowback ratio","P/E plus dividend yield","Dividend yield plus capital gains yield","Coupon yield plus current yield"],c:2,e:"r = Div1/P0 + (P1 - P0)/P0."},
 {i:"t11",t:"t_sbasic",q:"Blue Sky shares sell for $75, are expected to pay $3 in dividends and to be worth $81 in a year. The expected return is:",a:["16%","12%","4%","8%"],c:1,e:"(3 + 81 - 75) / 75 = 9 / 75 = 12%."},
 {i:"t12",t:"t_sbasic",q:"For Blue Sky above, the dividend yield and capital gains yield are:",a:["4% and 8%","8% and 4%","12% and 0%","3% and 9%"],c:0,e:"Dividend yield = 3/75 = 4%; capital gains yield = 6/75 = 8%."},
@@ -1392,19 +1406,19 @@ QB.push(
 {i:"t16",t:"t_sbasic",q:"If a share's price is above the level that gives investors their required return, investors will:",a:["Sell, pushing the price down","Buy, pushing the price up","Do nothing","Demand a lower return"],c:0,e:"Competition drives the price to the level where expected return matches the required return for that risk."},
 {i:"w01",t:"t_ddm",q:"The dividend discount model values a share as:",a:["The sum of past dividends","Book equity per share","The coupon divided by the yield","The present value of all expected future dividends"],c:3,e:"Over a long horizon the terminal price term becomes negligible, leaving only dividends."},
 {i:"w02",t:"t_ddm",q:"For a one-year horizon, the dividend discount model gives the price today as:",a:["Div1 / r x P1","(Div1 - P1) / r","(Div1 + P1) / (1 + r)","Div1 x (1 + r)"],c:2,e:"Discount next year's dividend and expected price back one period."},
-{i:"w03",t:"t_ddm",q:"With no growth in dividends, the share price is:",a:["Div1 x (1 + r)","Div1 / r","Div1 x r","Div1 / (r - g)"],c:1,e:"A constant dividend forever is a level perpetuity."},
-{i:"w04",t:"t_ddm",q:"With constant growth, the share price is:",a:["Div1 / (r - g)","Div1 / (r + g)","Div0 / (r - g)","Div1 x (r - g)"],c:0,e:"This is the growing perpetuity formula applied to dividends."},
-{i:"w05",t:"t_ddm",q:"The constant-growth DDM is valid only when:",a:["g is greater than r","g equals r","r is zero","g is less than r"],c:3,e:"Otherwise the formula gives a negative or infinite value, which is meaningless."},
+{i:"w03",t:"t_ddm",q:"A share pays a constant $4 dividend forever and investors require 10%. Its price is:",a:["$44","$40","$4","$400"],c:1,e:"No-growth value = 4 / 0.10 = $40."},
+{i:"w04",t:"t_ddm",q:"A share pays $5 next year, dividends grow at 3%, and investors require 11%. Its price is:",a:["$45.45","$62.50","$71.43","$55.00"],c:1,e:"P0 = 5 / (0.11 - 0.03) = $62.50."},
+{i:"w05",t:"t_ddm",q:"A stock's dividend grows at 7% forever. Which required return gives a meaningful constant-growth value?",a:["5%","7%","6%","10%"],c:3,e:"The required return must exceed growth; 10% is the only option above 7%."},
 {i:"w06",t:"t_ddm",q:"Sky shares pay a $3 dividend next year with no growth and a 10% discount rate. The price is:",a:["$33","$300","$30","$37.50"],c:2,e:"P0 = 3 / 0.10 = $30."},
 {i:"w07",t:"t_ddm",q:"Sky shares pay $3 next year, grow at 2% forever, and the discount rate is 10%. The price is:",a:["$150.00","$37.50","$30.00","$25.00"],c:1,e:"P0 = 3 / (0.10 - 0.02) = 3 / 0.08 = $37.50."},
 {i:"w08",t:"t_ddm",q:"Unilever will pay a GHc 20 dividend in one year, growing at 5%, with a required return of 20%. The price today is:",a:["GHc 133.33","GHc 100.00","GHc 400.00","GHc 80.00"],c:0,e:"20 / (0.20 - 0.05) = 20 / 0.15 = GHc 133.33."},
 {i:"w09",t:"t_ddm",q:"If the CURRENT dividend is GHc 20 and it grows at 5% with r = 20%, the price today is:",a:["GHc 133.33","GHc 100.00","GHc 420.00","GHc 140.00"],c:3,e:"Div1 = 20 x 1.05 = 21; P0 = 21 / 0.15 = GHc 140."},
-{i:"w10",t:"t_ddm",q:"Rearranging the constant-growth DDM gives the expected return as:",a:["r = P0/Div1 + g","r = g - Div1/P0","r = Div1/P0 + g","r = Div1/P0 - g"],c:2,e:"Expected return equals the dividend yield plus the growth rate."},
+{i:"w10",t:"t_ddm",q:"A share sells for $50, will pay a $2 dividend next year, and grows at 5%. The expected return is:",a:["4%","7%","9%","10%"],c:2,e:"r = 2/50 + 5% = 4% + 5% = 9%."},
 {i:"w11",t:"t_ddm",q:"Sky pays $3 next year, grows at 2%, and sells for $37.50. The required return is:",a:["2%","10%","8%","12%"],c:1,e:"r = 3/37.50 + 0.02 = 0.08 + 0.02 = 10%."},
 {i:"w12",t:"t_ddm",q:"A share pays $2 next year, grows at 4%, and sells for $40. The required return is:",a:["9%","5%","4%","13%"],c:0,e:"r = 2/40 + 0.04 = 0.05 + 0.04 = 9%."},
 {i:"w13",t:"t_ddm",q:"In the DDM, the horizon price PH is itself:",a:["The book value at that date","The par value","Always zero","The present value of dividends received after the horizon date"],c:3,e:"That is why the model collapses to the present value of all future dividends."},
 {i:"w14",t:"t_ddm",q:"For a firm with non-constant growth, the correct approach is to:",a:["Ignore the early dividends","Use the P/E ratio only","Discount each dividend separately until growth settles, then apply the DDM for the terminal value","Use constant growth from year one"],c:2,e:"Value the irregular phase piece by piece, then value the stable phase as a growing perpetuity."},
-{i:"w15",t:"t_ddm",q:"In a two-stage valuation, the terminal value calculated as Div(n+1)/(r - g) sits at:",a:["The end of year n-1","The end of year n","Today","The end of year n+1"],c:1,e:"The growing perpetuity formula always values cash flows one period before the first payment."},
+{i:"w15",t:"t_ddm",q:"Div3 is expected to be $4.20, then dividends grow at 5% forever with r = 12%. The terminal value at year 3 is:",a:["$60.00","$63.00","$35.00","$50.40"],c:1,e:"Div4 = 4.20 x 1.05 = 4.41; P3 = 4.41 / (0.12 - 0.05) = $63.00."},
 {i:"w16",t:"t_ddm",q:"A firm's last dividend was GHc 10, growing 20% in year 1 and 15% in year 2. Div2 equals:",a:["GHc 13.80","GHc 11.50","GHc 13.50","GHc 12.00"],c:0,e:"Div1 = 10 x 1.20 = 12; Div2 = 12 x 1.15 = GHc 13.80."},
 {i:"w17",t:"t_ddm",q:"Continuing that example, if growth then settles at 5% forever, Div3 equals:",a:["GHc 13.80","GHc 15.87","GHc 12.60","GHc 14.49"],c:3,e:"Div3 = 13.80 x 1.05 = GHc 14.49."},
 {i:"w18",t:"t_ddm",q:"With r = 20% and g = 5%, the terminal value at the end of year 2 from Div3 of GHc 14.49 is:",a:["GHc 289.80","GHc 82.80","GHc 96.60","GHc 72.45"],c:2,e:"P2 = 14.49 / (0.20 - 0.05) = 14.49 / 0.15 = GHc 96.60."},
@@ -1414,9 +1428,9 @@ QB.push(
 {i:"w22",t:"t_ddm",q:"Raising the required return r, holding dividends and growth constant, makes the share price:",a:["Unchanged","Negative","Fall","Rise"],c:2,e:"A larger denominator in Div1/(r - g) gives a smaller value."},
 {i:"z01",t:"t_growth",q:"Investors buy growth stocks mainly for:",a:["Tax exemption","Expected capital gains","Current dividend income","Guaranteed coupons"],c:1,e:"Growth firms reinvest rather than pay out, so the return comes through price appreciation."},
 {i:"z02",t:"t_growth",q:"Investors buy income stocks mainly for:",a:["Cash dividends","Capital gains","Voting control","Conversion rights"],c:0,e:"Income stocks distribute a high share of earnings."},
-{i:"z03",t:"t_growth",q:"The plowback ratio is:",a:["The fraction paid as dividends","Dividends divided by price","Earnings divided by price","The fraction of earnings retained by the firm"],c:3,e:"It is also called the retention ratio."},
-{i:"z04",t:"t_growth",q:"The payout ratio is:",a:["Price divided by earnings","Earnings divided by equity","The fraction of earnings paid out as dividends","The fraction retained"],c:2,e:"Payout and plowback sum to one."},
-{i:"z05",t:"t_growth",q:"The sustainable growth rate equals:",a:["Payout / ROE","ROE x plowback ratio","ROE x payout ratio","ROE / plowback"],c:1,e:"It is the growth a firm can fund from reinvested earnings without changing leverage."},
+{i:"z03",t:"t_growth",q:"A firm earns $5 per share and pays $2 as dividends. Its plowback ratio is:",a:["40%","60%","250%","20%"],c:1,e:"Payout = 2/5 = 40%, so plowback = 60%."},
+{i:"z04",t:"t_growth",q:"A firm earns $4 per share and pays $1.20 as dividends. Its payout ratio is:",a:["30%","70%","40%","3.33%"],c:0,e:"Payout = 1.20 / 4 = 30%."},
+{i:"z05",t:"t_growth",q:"A firm has ROE of 16% and plowback of 50%. Its sustainable growth rate is:",a:["16%","8%","32%","50%"],c:1,e:"Sustainable growth = 16% x 50% = 8%."},
 {i:"z06",t:"t_growth",q:"A firm with ROE of 20% that ploughs back 40% of earnings can grow at:",a:["8%","12%","20%","40%"],c:0,e:"g = 0.20 x 0.40 = 0.08, or 8%."},
 {i:"z07",t:"t_growth",q:"MJ Company would pay a $5 dividend next year (100% of earnings) with r = 12%. Its value with no growth is:",a:["$75.00","$60.00","$33.33","$41.67"],c:3,e:"P0 = 5 / 0.12 = $41.67."},
 {i:"z08",t:"t_growth",q:"MJ then ploughs back 40% at an ROE of 20%. Its new dividend next year is:",a:["$2.00","$4.00","$3.00","$5.00"],c:2,e:"Div1 = (1 - 0.40) x 5 = $3.00."},
@@ -1625,6 +1639,7 @@ const MODULES=[
   ex:"If prices already reflect the information you have, no amount of analysis on that information will earn you an abnormal return.",
   tips:["Weak form: past prices and volumes — repudiates technical analysis.","Semi-strong: all public information — repudiates fundamental analysis.","Strong form: all information, public and private — least supported by evidence.","Anomalies: earnings announcement drift, the new issues puzzle, the January effect."]}
 ]},
+{id:"mf",n:"Formula map",lec:"Selection framework",hue:"#7A5A2B",cats:[],topics:[],frameworkOnly:true},
 {id:"mc",n:"Case room",lec:"Cases & analysis",hue:"#5C6B33",cats:[],topics:[],caseOnly:true},
 {id:"m0",n:"Calculator",lec:"All formulas",hue:"#4A5058",cats:null,topics:[],calcOnly:true}
 ];
@@ -1719,6 +1734,7 @@ function moduleIcon(id,pct,hue){
     m3:`<svg ${common}><circle cx="31" cy="32" r="22" ${base}/><circle cx="31" cy="32" r="18" ${stroke}/><path d="M31 21v12l9 6" ${stroke}/><path d="M15 54l32-44" ${stroke} opacity=".32"/>${progress}</svg>`,
     m4:`<svg ${common}><rect x="12" y="14" width="40" height="36" rx="6" ${base}/><rect x="14" y="16" width="36" height="32" rx="5" ${stroke}/><path d="M21 26h22M21 34h15M21 42h22" ${stroke}/><circle cx="43" cy="38" r="5" fill="${hue}" opacity=".35"/>${progress}</svg>`,
     m5:`<svg ${common}><path d="M12 48h42" ${stroke}/><path d="M17 43l9-12 8 6 13-19" ${stroke}/><path d="M17 43l9-12 8 6 13-19v30H17z" fill="${hue}" opacity=".12"/><path d="M43 18h4v4" ${stroke}/>${progress}</svg>`,
+    mf:`<svg ${common}><circle cx="15" cy="16" r="6" ${stroke}/><circle cx="49" cy="16" r="6" ${stroke}/><circle cx="32" cy="48" r="6" ${stroke}/><path d="M21 16h22M18 21l10 21M46 21L36 42" ${stroke}/><path d="M12 38h12v12H12zM40 38h12v12H40z" fill="${hue}" opacity=".12"/></svg>`,
     mc:`<svg ${common}><rect x="14" y="10" width="34" height="44" rx="6" ${base}/><path d="M22 10h20l6 6v38H16V10h6z" ${stroke}/><path d="M42 10v8h8M23 28h18M23 36h18M23 44h11" ${stroke}/></svg>`,
     m0:`<svg ${common}><rect x="14" y="10" width="36" height="44" rx="8" ${base}/><rect x="16" y="12" width="32" height="40" rx="7" ${stroke}/><path d="M23 22h18M23 32h4M31 32h4M39 32h4M23 40h4M31 40h4M39 40h4" ${stroke}/></svg>`
   };
@@ -1748,6 +1764,14 @@ function renderHome(){
         <div class="tbar"><i style="width:100%;background:${m.hue};opacity:.35"></i></div>
       </button>`;
     }
+    if(m.frameworkOnly){
+      return `<button class="cube-card" data-mod="${m.id}" style="--mod:${m.hue}">
+        <div class="top">${moduleIcon(m.id,100,m.hue)}</div>
+        <h3>${m.n}</h3>
+        <div class="meta">choose the method</div>
+        <div class="tbar"><i style="width:100%;background:${m.hue};opacity:.35"></i></div>
+      </button>`;
+    }
     const s=statsFor(modIds(m));
     return `<button class="cube-card${s.pct===100?" done":""}" data-mod="${m.id}" style="--mod:${m.hue}">
       <div class="top">${moduleIcon(m.id,s.pct,m.hue)}<span class="pct">${s.pct}%</span></div>
@@ -1758,7 +1782,7 @@ function renderHome(){
   }).join("");
 
   /* focus strip: the three weakest topics with work left */
-  const weak=MODULES.filter(m=>!m.calcOnly&&!m.caseOnly).flatMap(m=>m.topics.map(t=>{
+  const weak=MODULES.filter(m=>!m.calcOnly&&!m.caseOnly&&!m.frameworkOnly).flatMap(m=>m.topics.map(t=>{
     const s=statsFor([t.id]); return {t,m,s};
   })).filter(x=>x.s.retired<x.s.total).sort((a,b)=>a.s.pct-b.s.pct||a.t.id.localeCompare(b.t.id)).slice(0,3);
 
@@ -1811,7 +1835,7 @@ function openWorld(id,pane){
   location.hash=id+(initial?"/"+initial:"");
 }
 function worldTabs(m){
-  return m.caseOnly?["cases"]:m.calcOnly?["calc"]:(m.cats&&m.cats.length?["learn","drill","calc"]:["learn","drill"]);
+  return m.caseOnly?["cases"]:m.calcOnly?["calc"]:m.frameworkOnly?["framework"]:(m.cats&&m.cats.length?["learn","drill","calc"]:["learn","drill"]);
 }
 function renderModuleNav(){
   if(!WORLD) return;
@@ -1832,9 +1856,11 @@ function setPane(p){
   document.querySelectorAll("#worldSeg button").forEach(b=>b.classList.toggle("on",b.dataset.pane===p));
   $("#learnPane").classList.toggle("hidden",p!=="learn");
   $("#drillPane").classList.toggle("hidden",p!=="drill");
+  $("#frameworkPane").classList.toggle("hidden",p!=="framework");
   $("#calcPane").classList.toggle("hidden",p!=="calc");
   $("#casePane").classList.toggle("hidden",p!=="cases");
   if(p==="cases") renderCases();
+  if(p==="framework") renderFramework();
   if(p==="learn") renderLearn();
   if(p==="drill" && !DRILL) renderDrillIntro();
   if(p==="calc"){
@@ -1867,6 +1893,74 @@ function renderLearn(){
       </div>
     </div>`;
   }).join("");
+}
+
+/* ============ formula framework ============ */
+function renderFramework(){
+  $("#frameworkPane").innerHTML=`
+    <div class="formula-map">
+      <div class="notice">
+        <b>Formula selection framework</b>
+        <p>Use this as a reference framework, especially because formula sheets are usually provided. The drills should build setup, computation, and interpretation skill rather than formula memorisation.</p>
+      </div>
+      <div class="map-grid">
+        <div class="map-card">
+          <h3>1. Draw the timeline</h3>
+          <p>Mark today as time 0, place every cash flow on the line, and check whether payments arrive at the beginning or end of each period.</p>
+          <ul>
+            <li>Same date values can be added or compared.</li>
+            <li>Different date values must be moved first.</li>
+            <li>Rate period and cash-flow period must match.</li>
+          </ul>
+        </div>
+        <div class="map-card">
+          <h3>2. Identify the pattern</h3>
+          <span class="map-chip">single sum</span><span class="map-chip">equal payments</span><span class="map-chip">uneven stream</span><span class="map-chip">forever</span>
+          <p>A shortcut only works when the pattern fits. If cash flows differ, value each one separately.</p>
+        </div>
+      </div>
+      <div class="map-card">
+        <h3>Time value formulas</h3>
+        <ul>
+          <li><b>One cash flow:</b> use lump-sum PV/FV. If PV, FV and time are known, solve for rate; if PV, FV and rate are known, solve for time.</li>
+          <li><b>Equal payments that stop:</b> use annuity PV/FV. If the first payment is today, use annuity due.</li>
+          <li><b>Equal payments forever:</b> use perpetuity. If payments grow forever at constant g, use growing perpetuity and require r &gt; g.</li>
+          <li><b>Uneven payments:</b> discount or compound each cash flow individually, then add.</li>
+          <li><b>Loans:</b> use annuity logic. The loan amount is usually PV, and the payment is the annuity cash flow.</li>
+        </ul>
+      </div>
+      <div class="map-grid">
+        <div class="map-card">
+          <h3>Bond valuation</h3>
+          <p>A bond price is the PV of two parts: coupon annuity plus face-value lump sum.</p>
+          <ul>
+            <li>Use semiannual periods when coupons are paid twice a year.</li>
+            <li>Use YTM when the unknown is the market discount rate.</li>
+            <li>Use rate of return when you know buy price, coupon, and sell price.</li>
+          </ul>
+        </div>
+        <div class="map-card">
+          <h3>Stock valuation</h3>
+          <p>Choose based on the dividend pattern and the unknown return.</p>
+          <ul>
+            <li>No growth: P = Div / r.</li>
+            <li>Constant growth: P = Div1 / (r - g).</li>
+            <li>Non-constant growth: value early dividends one by one, then use terminal growing perpetuity.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="map-card">
+        <h3>Performance ratios</h3>
+        <p>Name the question first, then formula:</p>
+        <ul>
+          <li><b>Value created?</b> MVA or EVA.</li>
+          <li><b>Return to all investors?</b> ROA or ROC, using NOPAT.</li>
+          <li><b>Return to shareholders?</b> ROE, using net income.</li>
+          <li><b>Asset use?</b> turnover ratios. <b>Short-term safety?</b> liquidity ratios. <b>Debt pressure?</b> leverage ratios.</li>
+        </ul>
+      </div>
+      <button class="next" data-mod="m0" type="button">Open calculator</button>
+    </div>`;
 }
 
 /* ============ drill ============ */
