@@ -122,6 +122,19 @@ button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
   color:var(--ink-2);letter-spacing:-.01em;
 }
 .seg button.on{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.07)}
+.module-nav{margin:0 0 12px}
+.module-nav .nav-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:9px}
+.nav-mini{
+  min-height:40px;border:1px solid var(--line);background:var(--surface);border-radius:10px;
+  padding:9px 10px;font-size:12.5px;font-weight:560;color:var(--ink-2);
+}
+.nav-mini:disabled{opacity:.42;cursor:default}
+.module-scroll{display:flex;gap:7px;overflow-x:auto;padding-bottom:5px;-webkit-overflow-scrolling:touch}
+.module-chip{
+  flex:none;border:1px solid var(--line);background:var(--surface);border-radius:999px;
+  padding:8px 11px;font-size:12.5px;font-weight:560;color:var(--ink-2);white-space:nowrap;
+}
+.module-chip.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 
 /* ---------- learn cards ---------- */
 .topic{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
@@ -211,6 +224,20 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .kv:first-of-type{border-top:0}
 .kv span:last-child{font-family:var(--mono);color:var(--ink-2)}
 .warn{font-size:12.5px;color:var(--ink-3);line-height:1.5;margin-top:12px}
+.notice{
+  background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);
+  border-radius:var(--r);padding:13px 14px;margin:0 0 18px;
+}
+.notice b{display:block;font-size:13px;margin-bottom:3px;letter-spacing:-.01em}
+.notice p{font-size:12.5px;color:var(--ink-2);line-height:1.5}
+.flagbar{display:flex;justify-content:flex-end;margin-top:14px}
+.flagbtn{
+  border:1px solid var(--line);background:var(--raised);border-radius:10px;padding:9px 11px;
+  font-size:12.5px;font-weight:560;color:var(--ink-2);
+}
+.flagbtn.on{border-color:#B7791F;background:#FFF7E6;color:#7A4D00}
+body.dark .flagbtn.on{background:#2D2413;color:#F3C46B;border-color:#8A6A24}
+.flag-note{font-size:12px;color:var(--ink-3);line-height:1.45;margin-top:8px}
 
 /* ---------- calculator (reused engine) ---------- */
 .bar-search{display:flex;gap:9px;margin-bottom:14px}
@@ -340,6 +367,11 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
     <div class="bar"><i id="railBar" style="width:0%"></i></div>
   </div>
 
+  <div class="notice">
+    <b>Learning use only</b>
+    <p>This app is for private study and practice before graded work. MBA512 bars AI chatbots for quizzes, assignments, case analysis, and exams; use this to learn the material, then complete deliverables on your own.</p>
+  </div>
+
   <div class="grid" id="moduleGrid"></div>
 
   <p class="eyebrow sec-label">Next up</p>
@@ -360,8 +392,14 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
       <div class="kv"><span>Questions in bank</span><span id="sessTotal">—</span></div>
       <div class="kv"><span>Drills completed</span><span id="sessDrills">—</span></div>
       <div class="kv"><span>Answer accuracy</span><span id="sessAcc">—</span></div>
+      <div class="kv"><span>Flagged questions</span><span id="sessFlags">—</span></div>
     </div>
     <p class="warn">Progress is stored on this device only, under this session. A question retires once you answer it correctly twice in a row, and retired questions stop appearing until everything else is retired.</p>
+  </div>
+  <div class="panel hidden" id="flagPanel">
+    <p class="eyebrow" style="margin-bottom:10px">Question flags</p>
+    <div id="flagList"></div>
+    <p class="warn">Flags stay on this device. Use them to identify questions that may need review before sharing feedback with the class or instructor.</p>
   </div>
   <div class="panel">
     <p class="eyebrow" style="margin-bottom:10px">Start over</p>
@@ -369,12 +407,13 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
     <p class="warn">This clears every mastery record and starts the question rotation from the beginning.</p>
   </div>
   <div class="panel">
-    <p class="warn" style="margin:0">Your syllabus bars AI tools on graded work. Use this to drill beforehand, then sit the quiz on your own.</p>
+    <p class="warn" style="margin:0">AI tools are not allowed for MBA512 graded deliverables, including quizzes, assignments, case analysis, and the final exam. This app is for learning and revision only.</p>
   </div>
 </main>
 
 <!-- ============ WORLD ============ -->
 <main id="worldView" class="wrap hidden">
+  <div class="module-nav" id="moduleNav"></div>
   <div class="seg" id="worldSeg"></div>
   <div id="learnPane"></div>
   <div id="drillPane" class="hidden"></div>
@@ -812,6 +851,7 @@ const F = [
 
 /* ============ views ============ */
 const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
 const listView=$("#listView"), detailView=$("#detailView"), wizView=$("#wizView"), recentsBox=$("#recentsBox");
 let recents=[];
 try{recents=JSON.parse(localStorage.getItem("mba512-recents")||"[]");}catch(_){recents=[];}
@@ -1606,14 +1646,19 @@ function readSession(){
   return s;
 }
 let SESSION=readSession();
-let M={}, DRILLNO=0;
+let M={}, DRILLNO=0, FLAGS={};
 function pkey(){return "mba512-progress-"+SESSION.id;}
+function fkey(){return "mba512-flags-"+SESSION.id;}
 function loadProgress(){
   try{const d=JSON.parse(localStorage.getItem(pkey())||"null");
     M=(d&&d.m)||{}; DRILLNO=(d&&d.drill)||0;}catch(_){M={};DRILLNO=0;}
+  try{FLAGS=JSON.parse(localStorage.getItem(fkey())||"{}")||{};}catch(_){FLAGS={};}
 }
 function saveProgress(){
   try{localStorage.setItem(pkey(),JSON.stringify({m:M,drill:DRILLNO}));}catch(_){}
+}
+function saveFlags(){
+  try{localStorage.setItem(fkey(),JSON.stringify(FLAGS));}catch(_){}
 }
 loadProgress();
 function rec(id){return M[id]||{n:0,k:0,s:0,d:-999};}
@@ -1756,13 +1801,32 @@ function openWorld(id,pane){
   $("#worldEyebrow").textContent=WORLD.lec;
   $("#worldTitle").textContent=WORLD.n;
   CALC_CATS=WORLD.cats;
-  const tabs=WORLD.caseOnly?["cases"]:WORLD.calcOnly?["calc"]:(WORLD.cats&&WORLD.cats.length?["learn","drill","calc"]:["learn","drill"]);
+  const tabs=worldTabs(WORLD);
   const LBL={learn:"Learn",drill:"Drill",calc:"Formulas",cases:"Cases"};
   $("#worldSeg").innerHTML=tabs.map(t=>`<button data-pane="${t}">${LBL[t]}</button>`).join("");
   $("#worldSeg").classList.toggle("hidden",tabs.length<2);
-  setPane(pane||tabs[0]);
+  renderModuleNav();
+  const initial=tabs.includes(pane)?pane:tabs[0];
+  setPane(initial);
   show("world");
-  location.hash=id+(pane?"/"+pane:"");
+  location.hash=id+(initial?"/"+initial:"");
+}
+function worldTabs(m){
+  return m.caseOnly?["cases"]:m.calcOnly?["calc"]:(m.cats&&m.cats.length?["learn","drill","calc"]:["learn","drill"]);
+}
+function renderModuleNav(){
+  if(!WORLD) return;
+  const idx=MODULES.findIndex(m=>m.id===WORLD.id);
+  const prev=MODULES[idx-1], next=MODULES[idx+1];
+  $("#moduleNav").innerHTML=`
+    <div class="nav-row">
+      <button class="nav-mini" data-goto="home" type="button">Home</button>
+      <button class="nav-mini" ${prev?`data-mod="${prev.id}"`:"disabled"} type="button">‹ ${prev?prev.n:"Previous"}</button>
+      <button class="nav-mini" ${next?`data-mod="${next.id}"`:"disabled"} type="button">${next?next.n:"Next"} ›</button>
+    </div>
+    <div class="module-scroll" aria-label="Module navigation">
+      ${MODULES.map(m=>`<button class="module-chip${m.id===WORLD.id?" on":""}" data-mod="${m.id}" type="button">${m.n}</button>`).join("")}
+    </div>`;
 }
 function setPane(p){
   PANE=p;
@@ -1778,6 +1842,9 @@ function setPane(p){
     listView.classList.remove("hidden"); detailView.classList.add("hidden"); wizView.classList.add("hidden");
     $("#search").value=""; renderList(); renderRecents();
   }
+}
+function syncHash(){
+  if(WORLD) location.hash=WORLD.id+(PANE?"/"+PANE:"");
 }
 
 /* ============ learn pane ============ */
@@ -1836,6 +1903,7 @@ function shuffled(n){
 function renderQ(){
   const d=DRILL, q=d.q[d.i];
   d.order=shuffled(q.a.length);            // display slot -> original option index
+  const flag=FLAGS[q.i];
   const dots=d.q.map((_,ix)=>{
     const r=d.res[ix];
     return `<i class="${r===undefined?(ix===d.i?"now":""):(r?"ok":"no")}"></i>`;
@@ -1852,9 +1920,23 @@ function renderQ(){
       <div class="opts">${d.order.map((orig,slot)=>
         `<button class="optbtn" data-pick="${slot}"><span class="k">${String.fromCharCode(65+slot)}</span><span>${q.a[orig]}</span></button>`
       ).join("")}</div>
+      <div class="flagbar">
+        <button class="flagbtn${flag?" on":""}" data-flag="${q.i}" type="button">${flag?"Flagged":"Flag question"}</button>
+      </div>
+      <p class="flag-note">${flag?`Flag note: ${esc(flag.note||"Needs review.")}`:"If a question, answer, or explanation seems faulty, flag it for review."}</p>
       <div id="verdictBox"></div>
     </div>`;
   d.answered=false;
+}
+function toggleFlag(id){
+  const q=QMAP[id]; if(!q) return;
+  if(FLAGS[id]){
+    delete FLAGS[id];
+  } else {
+    FLAGS[id]={note:"Needs review.",at:Date.now(),topic:q.t,text:q.q};
+  }
+  saveFlags();
+  if(DRILL && DRILL.q[DRILL.i] && DRILL.q[DRILL.i].i===id) renderQ();
 }
 function answer(slot){
   const d=DRILL; if(d.answered) return; d.answered=true;
@@ -1919,12 +2001,19 @@ let DRILL_LAST=null;
 function renderSession(){
   const all=statsFor(allIds());
   let n=0,k=0; Object.values(M).forEach(r=>{n+=r.n;k+=r.k;});
+  const flags=Object.entries(FLAGS);
   $("#learnerName").value=SESSION.name||"";
   $("#sessId").textContent=SESSION.id;
   $("#sessRetired").textContent=all.retired;
   $("#sessTotal").textContent=all.total;
   $("#sessDrills").textContent=DRILLNO;
   $("#sessAcc").textContent=n?Math.round(k/n*100)+"%":"—";
+  $("#sessFlags").textContent=flags.length;
+  $("#flagPanel").classList.toggle("hidden",!flags.length);
+  $("#flagList").innerHTML=flags.length?flags.map(([id,f])=>{
+    const t=TOPIC[f.topic];
+    return `<div class="kv"><span>${id} · ${t?t.n:"Question"}</span><span>${esc(f.note||"Needs review.")}</span></div>`;
+  }).join(""):"";
 }
 
 /* ============ events ============ */
@@ -1953,8 +2042,11 @@ document.addEventListener("click",e=>{
   const pk=e.target.closest("[data-pick]");
   if(pk&&DRILL){ answer(Number(pk.dataset.pick)); return; }
 
+  const fl=e.target.closest("[data-flag]");
+  if(fl){ toggleFlag(fl.dataset.flag); return; }
+
   const seg=e.target.closest("#worldSeg button");
-  if(seg){ setPane(seg.dataset.pane); return; }
+  if(seg){ setPane(seg.dataset.pane); syncHash(); return; }
 
   const goto=e.target.closest("[data-goto]");
   if(goto){ DRILL=null; show(goto.dataset.goto); if(goto.dataset.goto==="home") renderHome(); return; }
@@ -1979,7 +2071,7 @@ $("#newSess").onclick=()=>{
   if(!confirm("Start a fresh session? All mastery progress on this device will be cleared.")) return;
   SESSION=newSession($("#learnerName").value.trim());
   try{localStorage.setItem(SKEY,JSON.stringify(SESSION));}catch(_){}
-  M={}; DRILLNO=0; saveProgress(); renderSession(); renderHome(); show("home");
+  M={}; DRILLNO=0; FLAGS={}; saveProgress(); saveFlags(); renderSession(); renderHome(); show("home");
 };
 
 /* calculator search */

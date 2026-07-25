@@ -24,8 +24,16 @@ Inside a lecture module there are up to three tabs:
 - **Learn** — a short coaching note and four key points per topic, then a
   button to drill that topic on its own.
 - **Drill** — ten questions at a time, one per screen, with an explanation
-  after every answer.
+  after every answer. Students can flag a question locally if the wording,
+  answer, or explanation looks faulty.
 - **Formulas** — the calculator, filtered to the formulas that lecture uses.
+
+## Academic integrity notice
+
+This app is for learning and revision only. The MBA512 syllabus does not allow
+ChatGPT, Claude, or any other AI chatbot for graded deliverables, including
+quizzes, assignments, case analysis, and the final exam. Use the app to prepare
+beforehand, then complete course deliverables on your own.
 
 ## How the question rotation works
 
@@ -56,6 +64,9 @@ Progress lives in this browser under a session ID, shown in the ☰ menu. It
 survives closing the tab and reloading. **Begin a fresh session** clears every
 mastery record and restarts the rotation. Classmates using the app on their own
 devices keep separate progress.
+
+Question flags also stay local to the current browser session. They are meant
+as a review aid for suspected faulty questions, not as automatic submissions.
 
 ## Use it locally
 
