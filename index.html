@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0E1014">
+<meta name="theme-color" content="#14110C">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -13,11 +13,11 @@
 <link rel="manifest" href="./manifest.webmanifest">
 <style>
 :root{
-  --bg:#F1F2F5; --surface:#FFFFFF; --raised:#FAFAFC;
-  --ink:#14161B; --ink-2:#4B525C; --ink-3:#858C97;
-  --line:#E1E3E9; --line-2:#CDD1DA;
-  --ok:#1E6E4E; --ok-bg:#E9F4EE; --no:#A03327; --no-bg:#FBECEA;
-  --accent:#4A4FA0;
+  --bg:#F4F1EA; --surface:#FFFDF9; --raised:#FAF6EE;
+  --ink:#1C1712; --ink-2:#5A5044; --ink-3:#8C8274;
+  --line:#E7DFD1; --line-2:#D7CDBB;
+  --ok:#2A6A46; --ok-bg:#E9F2E9; --no:#9A3324; --no-bg:#F8ECE7;
+  --accent:#8A2E3B; --gold:#B07A2E;
   --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
   --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,system-ui,sans-serif;
   --safe-b:env(safe-area-inset-bottom,0px);
@@ -25,10 +25,11 @@
   --r:14px;
 }
 body.dark{
-  --bg:#0E1014; --surface:#171A20; --raised:#1E222A;
-  --ink:#E9EBEF; --ink-2:#A2AAB6; --ink-3:#727A87;
-  --line:#262B34; --line-2:#333A45;
-  --ok:#6FCF97; --ok-bg:#152A20; --no:#EA8C7E; --no-bg:#2C1917;
+  --bg:#14110C; --surface:#1D1912; --raised:#26211A;
+  --ink:#F0EBE1; --ink-2:#B7AD9A; --ink-3:#867C6C;
+  --line:#2E271D; --line-2:#3C3327;
+  --ok:#7BC894; --ok-bg:#18271C; --no:#E79079; --no-bg:#2C1A14;
+  --accent:#D98A63; --gold:#D9A441;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{-webkit-text-size-adjust:100%}
@@ -112,8 +113,63 @@ button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
 .cube-card .tbar i{display:block;height:100%;border-radius:3px}
 .cube-card.done{border-color:var(--mod)}
 
+/* ---------- hero ---------- */
+.hero{
+  position:relative;border-radius:18px;overflow:hidden;margin:6px 0 22px;
+  min-height:198px;display:flex;flex-direction:column;justify-content:flex-end;
+  border:1px solid var(--line);
+}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 38%}
+.hero .veil{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(20,14,10,.10) 0%,rgba(20,14,10,.30) 46%,rgba(20,14,10,.82) 100%);
+}
+.hero .hbody{position:relative;z-index:2;padding:18px 18px 16px;color:#FCF8F1}
+.hero .eyebrow{color:#F0D9B0}
+.hero h2{font-size:23px;letter-spacing:-.02em;margin:2px 0 12px;color:#FFFDF9}
+.hero .hbar{height:6px;border-radius:6px;background:rgba(255,255,255,.24);overflow:hidden}
+.hero .hbar i{display:block;height:100%;border-radius:6px;background:var(--gold);transition:width .5s ease}
+.hero .hmeta{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px}
+.hero .hmeta b{font-family:var(--mono);font-size:15px;color:#FFFDF9}
+.hero .hmeta span{font-size:12px;color:#E8D8BE}
+
 /* ---------- sections ---------- */
+.sec-head{display:flex;align-items:baseline;gap:8px;margin:26px 0 12px}
+.sec-head .eyebrow{color:var(--ink-3)}
+.sec-head .sub{font-size:12px;color:var(--ink-3);margin-left:auto}
 .sec-label{margin:26px 0 10px}
+
+/* ---------- study tools (not cubes) ---------- */
+.tools{display:flex;flex-direction:column;gap:9px}
+.tool-row{
+  width:100%;text-align:left;display:flex;align-items:center;gap:13px;
+  background:var(--surface);border:1px solid var(--line);border-radius:12px;
+  padding:12px 14px;transition:transform .16s ease,border-color .16s ease;
+}
+.tool-row:active{transform:scale(.99);border-color:var(--line-2)}
+.tool-row .ti{width:40px;height:40px;flex:none;border-radius:10px;display:grid;place-items:center;background:color-mix(in srgb,var(--tc) 15%,transparent)}
+.tool-row .tbody{flex:1;min-width:0}
+.tool-row b{display:block;font-size:14.5px;font-weight:620;letter-spacing:-.01em}
+.tool-row span{display:block;font-size:12.5px;color:var(--ink-3);margin-top:1px}
+.tool-row .arrow{color:var(--ink-3);font-size:16px;flex:none}
+.tool-row .ti .concept-icon{width:30px;height:30px}
+
+/* drill length picker */
+.len-pick{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px}
+.lenbtn{
+  background:var(--raised);border:1px solid var(--line);border-radius:11px;
+  padding:12px 6px;font-family:var(--mono);font-size:19px;font-weight:600;color:var(--ink);
+  display:flex;flex-direction:column;align-items:center;gap:2px;transition:transform .15s ease,border-color .15s ease;
+}
+.lenbtn span{font-family:var(--sans);font-size:11px;font-weight:500;color:var(--ink-3);letter-spacing:0}
+.lenbtn:active{transform:scale(.96)}
+.lenbtn:hover{border-color:var(--accent)}
+
+/* learning objectives */
+.objbox{background:var(--raised);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:10px;padding:11px 13px;margin:12px 0}
+.objbox .eyebrow{color:var(--gold);margin-bottom:6px}
+.objlist{margin:0;padding-left:18px}
+.objlist li{font-size:13px;color:var(--ink-2);margin:3px 0}
 .panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px}
 .panel + .panel{margin-top:10px}
 .stack{display:flex;flex-direction:column;gap:10px}
@@ -428,12 +484,15 @@ body.dark .flagbtn.on{background:#2D2413;color:#F3C46B;border-color:#8A6A24}
 
 <!-- ============ MANAGERIAL FINANCE HOME ============ -->
 <main id="homeView" class="wrap">
-  <div class="rail">
-    <div class="rail-head">
-      <span class="eyebrow">Course mastery</span>
-      <b class="num" id="railPct">0%</b>
+  <div class="hero">
+    <img src="./assets/study-hero.png" alt="MBA students studying finance together on a hillside campus terrace">
+    <div class="veil"></div>
+    <div class="hbody">
+      <p class="eyebrow" id="heroGreet">Akwaaba</p>
+      <h2 id="heroTitle">Managerial Finance</h2>
+      <div class="hmeta"><b class="num" id="railPct">0%</b><span id="heroStreak"></span></div>
+      <div class="hbar"><i id="railBar" style="width:0%"></i></div>
     </div>
-    <div class="bar"><i id="railBar" style="width:0%"></i></div>
   </div>
 
   <div class="notice">
@@ -441,7 +500,11 @@ body.dark .flagbtn.on{background:#2D2413;color:#F3C46B;border-color:#8A6A24}
     <p>This app is for private study and practice before graded work. MBA512 bars AI chatbots for quizzes, assignments, case analysis, and exams; use this to learn the material, then complete deliverables on your own.</p>
   </div>
 
+  <div class="sec-head"><span class="eyebrow">Lectures</span><span class="sub">learn &amp; drill each week</span></div>
   <div class="grid" id="moduleGrid"></div>
+
+  <div class="sec-head"><span class="eyebrow">Study tools</span><span class="sub">use across every lecture</span></div>
+  <div class="tools" id="toolsList"></div>
 
   <p class="eyebrow sec-label">Next up</p>
   <div class="stack" id="focusStack"></div>
@@ -469,6 +532,15 @@ body.dark .flagbtn.on{background:#2D2413;color:#F3C46B;border-color:#8A6A24}
     <p class="eyebrow" style="margin-bottom:10px">Question flags</p>
     <div id="flagList"></div>
     <p class="warn">Flags stay on this device. Use them to identify questions that may need review before sharing feedback with the class or instructor.</p>
+  </div>
+  <div class="panel">
+    <p class="eyebrow" style="margin-bottom:10px">Back up your progress</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="ghost" id="exportProg">Save a backup file</button>
+      <button class="ghost" id="importProg">Restore from a file</button>
+      <input type="file" id="importFile" accept="application/json,.json" class="hidden">
+    </div>
+    <p class="warn">Your progress lives only in this browser. Clearing site data or switching device will erase it. A backup lets you restore your mastery and flags anywhere.</p>
   </div>
   <div class="panel">
     <p class="eyebrow" style="margin-bottom:10px">Start over</p>
@@ -1522,6 +1594,146 @@ QB.push(
 {i:"x19",t:"t_emh",q:"If markets are efficient, an actively managed fund should on average:",a:["Have zero risk","Fail to beat a comparable index after costs","Always beat the index","Never lose money"],c:1,e:"Without a reliable pricing edge, trading costs and fees erode returns."},
 {i:"x20",t:"t_emh",q:"Prices react to new information almost instantly rather than gradually. This supports:",a:["Market efficiency","Technical analysis","The January effect","Loss aversion"],c:0,e:"Rapid, complete adjustment is the central prediction of the efficient market hypothesis."}
 );
+/* ===== Lecture 6 + targeted additions (110 items, numerically verified) ===== */
+QB.push(
+/* ===================== LECTURE 6 ===================== */
+/* ---- t_coc: Cost of capital & components (prefix h) ---- */
+{i:"h01",t:"t_coc",q:"The cost of capital is best described as the:",a:["Coupon rate on the firm's newest bond","Minimum required return on new projects of average risk","Average interest rate charged by commercial banks","Dividend the firm paid last year"],c:1,e:"It is the market-determined minimum return a firm must earn on average-risk investments to satisfy its investors."},
+{i:"h02",t:"t_coc",q:"A project's required return and its appropriate discount rate are:",a:["The same thing, both set by the risk of the cash flows","Unrelated concepts","Always equal to the risk-free rate","Set by the tax authority"],c:0,e:"The required return IS the discount rate, and both depend on the risk of the project's cash flows."},
+{i:"h03",t:"t_coc",q:"Why does the choice of discount rate matter most for large, long-lived projects?",a:["Small projects have no cash flows","Long horizons and big outlays make the NPV very sensitive to the rate","The tax rate changes yearly","Short projects cannot be discounted"],c:1,e:"A small error in the rate compounds over many years and large sums, so it can flip the accept/reject decision."},
+{i:"h04",t:"t_coc",q:"The return an investor earns on a security is, from the firm's side, the:",a:["Cost to the company of that financing","Firm's accounting profit","Dividend payout ratio","Book value of equity"],c:0,e:"One party's required return is the other party's cost of capital — they are two views of the same number."},
+{i:"h05",t:"t_coc",q:"Which three components typically make up a firm's cost of capital?",a:["Cash, inventory and receivables","Sales, costs and taxes","Debt, preferred stock and common equity","Assets, liabilities and equity"],c:2,e:"The capital structure — the financing mix — is made of debt, preferred shares and common equity."},
+{i:"h06",t:"t_coc",q:"When measuring the cost of capital, the weights should be based on:",a:["Book values from the balance sheet","Market values of the financing","Par values set at issue","Historical cost of assets"],c:1,e:"Market values reflect current required returns; book values reflect past funding at historic rates."},
+{i:"h07",t:"t_coc",q:"The firm's overall cost of capital gives an indication of how the market views the firm's:",a:["Tax bracket","Asset risk","Dividend history only","Number of employees"],c:1,e:"A higher cost of capital signals that the market sees the firm's assets as riskier."},
+{i:"h08",t:"t_coc",q:"Put the WACC steps in order: (1) required return on each security, (2) market value of each, (3) market weights, (4) weighted average. The correct sequence is:",a:["4, 3, 2, 1","1, 2, 3, 4","2, 1, 4, 3","3, 1, 2, 4"],c:1,e:"Find each cost, then each market value, then each weight, then combine into the weighted average."},
+{i:"h09",t:"t_coc",q:"Capital structure refers to the firm's mix of:",a:["Current and fixed assets","Debt and equity financing","Cash and marketable securities","Products and services"],c:1,e:"Capital structure is the long-term financing mix of debt, preferred and common equity."},
+{i:"h10",t:"t_coc",q:"We need the required return on an investment before we can:",a:["Pay a dividend","Compute its NPV and decide whether to accept it","File the firm's taxes","Issue new shares"],c:1,e:"Without a discount rate there is no NPV, and so no accept/reject signal."},
+{i:"h11",t:"t_coc",q:"A firm that consistently earns less than its cost of capital will, over time:",a:["Create value for shareholders","Destroy shareholder value","Pay no taxes","Automatically go bankrupt"],c:1,e:"Earning below the required return means investors are not compensated for their risk, so value falls."},
+{i:"h12",t:"t_coc",q:"The cost of capital is described as an opportunity cost because it reflects:",a:["The return investors could earn elsewhere at the same risk","The firm's electricity bill","The coupon on government bills only","Past accounting depreciation"],c:0,e:"Capital has an opportunity cost: the return foregone on the next-best investment of equal risk."},
+{i:"h13",t:"t_coc",q:"Using the book value of equity to weight the cost of capital is discouraged because book value:",a:["Is always larger than market value","Reflects past funding and historic returns, not current ones","Cannot be found in the accounts","Equals the share price"],c:1,e:"Book equity records what was raised historically; the market value captures today's required return."},
+{i:"h14",t:"t_coc",q:"For an average-risk project, the firm's WACC is used as the:",a:["Growth rate of dividends","Discount rate","Tax rate","Coupon rate"],c:1,e:"For a project with the same risk as the firm, the WACC is the correct discount rate."},
+{i:"h15",t:"t_coc",q:"A higher required return on a firm's securities implies the market believes the firm's cash flows are:",a:["Riskier","Tax-exempt","Guaranteed","Falling to zero"],c:0,e:"Investors demand a higher return only when they perceive greater risk."},
+
+/* ---- t_ce: Cost of equity — DGM & CAPM (prefix j) ---- */
+{i:"j01",t:"t_ce",q:"The cost of equity is the return required by:",a:["The firm's lenders","Equity investors, given the risk of the firm's cash flows","The government","Preferred shareholders only"],c:1,e:"It is the return common shareholders demand for bearing the risk of the firm's residual cash flows."},
+{i:"j02",t:"t_ce",q:"Rearranged, the dividend growth model gives the cost of equity as:",a:["RE = D1/P0 + g","RE = P0/D1 − g","RE = D1 × P0","RE = g − D1/P0"],c:0,e:"From P0 = D1/(RE − g), solving for RE gives RE = D1/P0 + g."},
+{i:"j03",t:"t_ce",q:"A share is expected to pay a $1.50 dividend next year, the price is $25 and dividends grow at 5.1%. The cost of equity is closest to:",a:["6.0%","11.1%","5.1%","15.0%"],c:1,e:"RE = 1.50/25 + 0.051 = 0.06 + 0.051 = 11.1%."},
+{i:"j04",t:"t_ce",q:"Using retention and ROE, the dividend growth rate g equals:",a:["Payout ratio × ROE","(1 − payout ratio) × ROE","ROE / payout ratio","Dividend / price"],c:1,e:"g = retention ratio × ROE = (1 − payout) × ROE."},
+{i:"j05",t:"t_ce",q:"A firm has ROE of 15% and a payout ratio of 35%. Its sustainable growth rate is:",a:["5.25%","15.0%","9.75%","35.0%"],c:2,e:"g = (1 − 0.35) × 15% = 0.65 × 15% = 9.75%."},
+{i:"j06",t:"t_ce",q:"The CAPM (SML) estimates the cost of equity as:",a:["RE = Rf + β(E(Rm) − Rf)","RE = Rf × β","RE = E(Rm) − Rf","RE = D1/P0"],c:0,e:"CAPM: required return = risk-free rate plus beta times the market risk premium."},
+{i:"j07",t:"t_ce",q:"A firm has beta 0.58, the risk-free rate is 6.1% and the market risk premium is 8.6%. The CAPM cost of equity is closest to:",a:["8.6%","14.7%","11.1%","6.1%"],c:2,e:"RE = 6.1% + 0.58 × 8.6% = 6.1% + 4.99% ≈ 11.1%."},
+{i:"j08",t:"t_ce",q:"A stock has beta 1.5, the risk-free rate is 6% and the market risk premium is 9%. Its cost of equity by CAPM is:",a:["13.5%","19.5%","15.0%","9.0%"],c:1,e:"RE = 6% + 1.5 × 9% = 6% + 13.5% = 19.5%."},
+{i:"j09",t:"t_ce",q:"A limitation of the dividend growth model is that it:",a:["Explicitly adjusts for systematic risk","Only applies to firms paying reasonably steady, growing dividends","Requires an estimate of beta","Works for firms paying no dividends"],c:1,e:"The DGM breaks down for non-dividend payers or erratic dividends, and it ignores risk directly."},
+{i:"j10",t:"t_ce",q:"An advantage of the CAPM approach over the dividend growth model is that CAPM:",a:["Needs no estimates","Explicitly adjusts for systematic risk and applies even to non-dividend payers","Ignores the market risk premium","Always gives a lower answer"],c:1,e:"CAPM prices systematic risk directly and works for any firm whose beta can be estimated."},
+{i:"j11",t:"t_ce",q:"A disadvantage shared by CAPM estimates is that they rely on:",a:["The coupon rate","Estimates of beta and the market risk premium, both of which vary over time","The firm's book value","The dividend payout ratio only"],c:1,e:"Beta and the expected market risk premium must be estimated and shift over time, using the past to predict the future."},
+{i:"j12",t:"t_ce",q:"If the DGM and CAPM give different costs of equity, a common practical response is to:",a:["Always use the higher one","Take an average of the estimates","Discard both","Use the risk-free rate"],c:1,e:"When methods disagree, analysts often average the estimates rather than trust a single figure."},
+{i:"j13",t:"t_ce",q:"In CAPM, the term β(E(Rm) − Rf) represents the:",a:["Risk-free return","Risk premium for the stock's systematic risk","Dividend yield","After-tax cost of debt"],c:1,e:"Beta scales the market risk premium into the extra return demanded for that stock's systematic risk."},
+{i:"j14",t:"t_ce",q:"Dividends of $1.23, $1.30, $1.36, $1.43 and $1.50 over five years give an average historical growth rate of about:",a:["2.5%","5.1%","10.0%","1.5%"],c:1,e:"The year-on-year changes average roughly 5.1%, a common way to estimate g for the DGM."},
+{i:"j15",t:"t_ce",q:"The g = retention × ROE shortcut assumes the firm has:",a:["A stable ROE and dividend policy and raises no new external capital","No retained earnings","A rising tax rate","Only debt financing"],c:0,e:"The formula holds when ROE and payout are stable and growth is funded internally."},
+{i:"j16",t:"t_ce",q:"A stock sells for $15.65, its last dividend was $2, dividends grow at 6%. The DGM cost of equity is closest to:",a:["12.8%","19.6%","6.0%","13.6%"],c:1,e:"D1 = 2 × 1.06 = 2.12; RE = 2.12/15.65 + 0.06 ≈ 0.1355 + 0.06 ≈ 19.6%."},
+
+/* ---- t_cd: Cost of debt & preferred (prefix o) ---- */
+{i:"o01",t:"t_cd",q:"The cost of debt is best estimated by the:",a:["Coupon rate on the bond","Yield to maturity on the firm's existing debt","Book value of the debt","Dividend yield"],c:1,e:"The YTM reflects the current market return on the debt; the coupon is a historic contractual rate."},
+{i:"o02",t:"t_cd",q:"The cost of debt is NOT the same as the:",a:["Yield to maturity","Required return on the debt","Coupon rate","Market rate on similar bonds"],c:2,e:"The coupon was fixed at issue; the cost of debt is today's required return, i.e. the YTM."},
+{i:"o03",t:"t_cd",q:"For a rated but untraded bond, the cost of debt can be estimated as:",a:["Risk-free rate + default risk premium for that rating","Coupon rate ÷ face value","Dividend ÷ price","Book value ÷ interest"],c:0,e:"kd = rf + default spread appropriate to the bond's rating."},
+{i:"o04",t:"t_cd",q:"The 10-year Treasury note yields 12% and the default spread for a BBB rating is 3%. The cost of BBB debt is:",a:["9%","12%","15%","3%"],c:2,e:"kd = rf + default spread = 12% + 3% = 15%."},
+{i:"o05",t:"t_cd",q:"A firm paid GHc 400,000 interest on bank debt of GHc 2,500,000 and is neither traded nor rated. Its cost of debt is:",a:["16%","6.25%","4%","40%"],c:0,e:"kd = interest ÷ book value of debt = 400,000 / 2,500,000 = 16%."},
+{i:"o06",t:"t_cd",q:"If a bond is not traded but is rated, the preferred estimation method is:",a:["Interest expense ÷ book value","The default-risk-premium (rf + spread) method","The coupon rate","The dividend growth model"],c:1,e:"For rated, untraded debt use rf plus the rating's default spread; the interest/book method is the last resort."},
+{i:"o07",t:"t_cd",q:"The interest-over-book-value method is used only when the firm is:",a:["Neither traded nor rated","Highly rated","Publicly listed","Paying dividends"],c:0,e:"It is the fallback when there is no market yield and no rating to supply a spread."},
+{i:"o08",t:"t_cd",q:"Because interest is tax-deductible, the after-tax cost of debt is:",a:["RD × (1 + TC)","RD × (1 − TC)","RD ÷ TC","RD + TC"],c:1,e:"The tax shield lowers the effective cost to RD(1 − TC)."},
+{i:"o09",t:"t_cd",q:"A firm's pre-tax cost of debt is 10% and its tax rate is 40%. The after-tax cost of debt is:",a:["10%","4%","6%","14%"],c:2,e:"RD(1 − TC) = 10% × (1 − 0.40) = 10% × 0.60 = 6%."},
+{i:"o10",t:"t_cd",q:"Preferred stock is valued as a perpetuity, so its cost is:",a:["Dividend ÷ price of preferred","Dividend × price","Price ÷ dividend","Coupon ÷ face"],c:0,e:"A level perpetual dividend gives rP = D / Ppreferred."},
+{i:"o11",t:"t_cd",q:"A preferred share pays a $3 annual dividend and trades at $25. Its cost is:",a:["8.3%","12%","3%","25%"],c:1,e:"rP = 3 / 25 = 12%."},
+{i:"o12",t:"t_cd",q:"Why is there no tax adjustment on the cost of preferred or common equity?",a:["Equity has no cost","Dividends are not tax-deductible","Equity is risk-free","Preferred is short-term"],c:1,e:"Only interest is deductible; dividends are paid from after-tax profit, so there is no shield to subtract."},
+{i:"o13",t:"t_cd",q:"A preferred stock pays $6 per year on a $50 par value and trades at par. Its cost is:",a:["6%","3%","12%","50%"],c:2,e:"rP = D / price = 6 / 50 = 12%."},
+{i:"o14",t:"t_cd",q:"Using the coupon rate instead of the YTM as the cost of debt would:",a:["Always be correct","Misstate the current required return on the debt","Only matter for equity","Remove the tax shield"],c:1,e:"The coupon is a historic rate; only the YTM reflects the return the market currently requires."},
+{i:"o15",t:"t_cd",q:"A firm can issue debt at a 3% premium over a 3% risk-free rate. Its pre-tax cost of debt is:",a:["3%","6%","9%","0%"],c:1,e:"kd = 3% + 3% = 6% before tax."},
+
+/* ---- t_wacc: WACC & when to use it (prefix f) ---- */
+{i:"f01",t:"t_wacc",q:"With no preferred stock, the WACC is:",a:["wE·RE + wD·RD(1 − TC)","wE·RE + wD·RD","RE + RD","wE·RE − wD·RD"],c:0,e:"Equity weight times cost of equity, plus debt weight times the after-tax cost of debt."},
+{i:"f02",t:"t_wacc",q:"The capital-structure weights in the WACC are based on:",a:["Book values","Market values of debt and equity","Par values","Face values of bonds"],c:1,e:"wE = E/V and wD = D/V, where E and D are market values and V = D + E."},
+{i:"f03",t:"t_wacc",q:"Only the debt term in the WACC carries a (1 − TC) factor because:",a:["Debt is riskier","Interest is tax-deductible but dividends are not","Equity has no cost","Debt is short-term"],c:1,e:"The interest tax shield reduces the effective cost of debt; equity gets no such deduction."},
+{i:"f04",t:"t_wacc",q:"A firm is 60% equity and 40% debt. Cost of equity is 15%, pre-tax cost of debt 8%, tax rate 25%. WACC is:",a:["11.4%","13.4%","9.0%","12.2%"],c:0,e:"WACC = 0.6×15% + 0.4×8%×(1−0.25) = 9% + 0.4×6% = 9% + 2.4% = 11.4%."},
+{i:"f05",t:"t_wacc",q:"Equity is worth GHc 500m and debt GHc 475m. The equity weight wE is closest to:",a:["48.7%","51.3%","95.0%","40.0%"],c:1,e:"V = 500 + 475 = 975; wE = 500/975 ≈ 51.3%."},
+{i:"f06",t:"t_wacc",q:"The WACC is the appropriate discount rate for a new project only if the project:",a:["Is larger than any past project","Has the same risk as the firm and similar financing","Is financed entirely with debt","Pays a dividend"],c:1,e:"WACC fits a project that is essentially a carbon copy of the firm's existing business."},
+{i:"f07",t:"t_wacc",q:"If a project's return exactly equals the WACC, then:",a:["Value is destroyed","Each security holder gets exactly the return they require","The firm must reject it","Shareholders gain a windfall"],c:1,e:"At return = WACC the cash flows just cover every investor's required return, adding no extra value."},
+{i:"f08",t:"t_wacc",q:"A project whose return exceeds the WACC will, if accepted:",a:["Reduce firm value","Increase the value of shareholders' equity","Leave value unchanged","Raise the tax rate"],c:1,e:"Returns above the required return leave a surplus that accrues to shareholders."},
+{i:"f09",t:"t_wacc",q:"Using a single company-wide WACC for every division tends to:",a:["Accept risky projects it should reject and reject safe ones it should accept","Always maximise value","Eliminate all risk","Remove the need for NPV"],c:0,e:"A flat rate over-rewards risky divisions and penalises safe ones, distorting decisions."},
+{i:"f10",t:"t_wacc",q:"Under the subjective approach, a project riskier than the firm should be discounted at:",a:["A rate below the WACC","The risk-free rate","A rate above the WACC","Exactly the WACC"],c:2,e:"Higher-risk projects get WACC plus a premium; lower-risk projects get WACC minus an adjustment."},
+{i:"f11",t:"t_wacc",q:"Flotation costs should be treated as:",a:["An increase in the WACC","A negative cash flow added to the project's cost","A reduction in the tax rate","Part of the coupon"],c:1,e:"The required return depends on risk, not on how funds are raised, so flotation is a cash outflow, not a WACC add-on."},
+{i:"f12",t:"t_wacc",q:"Do flotation costs change the WACC?",a:["Yes, they raise it","No — they are handled as a cash flow in the project's cost","Yes, they lower it","Only for equity"],c:1,e:"Flotation costs do not affect WACC; they are added to the total cost of the project instead."},
+{i:"f13",t:"t_wacc",q:"With preferred stock present, the WACC adds the term:",a:["wPF·RPF","wPF·RPF(1 − TC)","−wPF·RPF","wPF ÷ RPF"],c:0,e:"Preferred enters as its weight times its cost, with no tax adjustment (dividends are not deductible)."},
+{i:"f14",t:"t_wacc",q:"A firm has WACC 15%. A project with the firm's risk returns 12%. It should be:",a:["Accepted, since 12% is positive","Rejected, since its return is below the WACC","Accepted, since it uses debt","Deferred until rates fall"],c:1,e:"A same-risk project returning below the WACC fails to cover investors' required return and destroys value."},
+{i:"f15",t:"t_wacc",q:"Two conditions must hold to apply the firm's WACC to a project: similar risk to the firm, and:",a:["A larger project size","No material change in the firm's financing policy","A higher coupon rate","A dividend increase"],c:1,e:"WACC is valid only when project risk matches the firm and the financing mix is unchanged."},
+
+/* ===================== TARGETED ADDITIONS ===================== */
+/* ---- t_multi (u): multiple & uneven cash flows ---- */
+{i:"u16",t:"t_multi",q:"At 10%, the present value of $100 received in one year plus $100 received in two years is closest to:",a:["$200.00","$173.55","$181.82","$165.29"],c:1,e:"PV = 100/1.1 + 100/1.21 = 90.91 + 82.64 = $173.55."},
+{i:"u17",t:"t_multi",q:"You receive $200 at year 1 and $300 at year 2. At 8%, the present value is closest to:",a:["$442.39","$500.00","$450.00","$428.67"],c:0,e:"PV = 200/1.08 + 300/1.08² = 185.19 + 257.20 = $442.39."},
+{i:"u18",t:"t_multi",q:"Cash flows of $500 now, $500 at year 1 and $500 at year 2 (10%) have a present value closest to:",a:["$1,500.00","$1,367.77","$1,240.00","$1,433.88"],c:1,e:"PV = 500 + 500/1.1 + 500/1.21 = 500 + 454.55 + 413.22 = $1,367.77."},
+{i:"u19",t:"t_multi",q:"When cash flows differ each year, the only reliable approach is to:",a:["Use the ordinary annuity formula","Discount each flow separately to a common date and add","Average the cash flows","Ignore the timing"],c:1,e:"With uneven flows there is no shortcut; value each dated flow and sum, since value is additive."},
+{i:"u20",t:"t_multi",q:"At 12%, the future value at year 2 of $1,000 invested today plus $1,000 at year 1 is closest to:",a:["$2,374.40","$2,000.00","$2,120.00","$2,254.40"],c:0,e:"FV = 1,000×1.12² + 1,000×1.12 = 1,254.40 + 1,120 = $2,374.40."},
+{i:"u21",t:"t_multi",q:"The principle that a stream of cash flows can be split into simpler pieces and valued separately is called:",a:["Value additivity","Compounding","Amortisation","Arbitrage"],c:0,e:"Value is additive: the PV of a bundle equals the sum of the PVs of its parts."},
+
+/* ---- t_sbasic (t): stock market & returns ---- */
+{i:"t17",t:"t_sbasic",q:"A stock bought at $40 pays a $2 dividend and rises to $44. The total return is:",a:["10%","15%","5%","20%"],c:1,e:"r = (2 + 44 − 40)/40 = 6/40 = 15%."},
+{i:"t18",t:"t_sbasic",q:"For the same stock ($40 → $44, $2 dividend), the dividend yield is:",a:["5%","10%","15%","2%"],c:0,e:"Dividend yield = 2/40 = 5%; the remaining 10% is the capital gains yield."},
+{i:"t19",t:"t_sbasic",q:"A share earns $5 EPS and trades at $60. Its P/E ratio is:",a:["5","12","8.3","300"],c:1,e:"P/E = price ÷ EPS = 60 / 5 = 12."},
+{i:"t20",t:"t_sbasic",q:"Total return on a share splits cleanly into:",a:["Coupon yield and current yield","Dividend yield and capital gains yield","Interest and principal","Growth and inflation"],c:1,e:"r = (Div1 + P1 − P0)/P0 = dividend yield + capital gains yield."},
+{i:"t21",t:"t_sbasic",q:"A seasoned equity offering (SEO) and an IPO are both:",a:["Secondary market trades","Primary market issues that raise cash for the firm","Share repurchases","Money market instruments"],c:1,e:"Both are primary issues; the IPO is the first, the SEO a later one."},
+{i:"t22",t:"t_sbasic",q:"A stock's intrinsic value is defined as the:",a:["Par value at incorporation","Present value of expected future cash flows","Last traded price","Book value of equity"],c:1,e:"Intrinsic value discounts expected future dividends (or cash flows) to today."},
+
+/* ---- t_comp (c): compounding, APR & EAR ---- */
+{i:"c19",t:"t_comp",q:"An APR of 12% compounded monthly gives a periodic rate of:",a:["12%","1%","6%","0.12%"],c:1,e:"Period rate = APR/m = 12%/12 = 1% per month."},
+{i:"c20",t:"t_comp",q:"An APR of 12% compounded monthly has an EAR closest to:",a:["12.00%","12.68%","12.36%","13.00%"],c:1,e:"EAR = (1 + 0.12/12)^12 − 1 = 1.01^12 − 1 ≈ 12.68%."},
+{i:"c21",t:"t_comp",q:"An APR of 10% compounded semi-annually has an EAR of:",a:["10.00%","10.25%","10.50%","5.00%"],c:1,e:"EAR = (1 + 0.10/2)² − 1 = 1.05² − 1 = 10.25%."},
+{i:"c22",t:"t_comp",q:"For a given APR, more frequent compounding makes the EAR:",a:["Higher","Lower","Unchanged","Negative"],c:0,e:"Each extra compounding period earns interest on interest, so the EAR rises with frequency."},
+{i:"c23",t:"t_comp",q:"When comparing two loans quoted with different compounding frequencies, the fair basis is the:",a:["APR","Effective annual rate (EAR)","Coupon rate","Periodic rate"],c:1,e:"Only the EAR puts differently-compounded rates on a common annual footing."},
+
+/* ---- t_ret (r): returns ROA/ROC/ROE ---- */
+{i:"r19",t:"t_ret",q:"A firm with net income of $60m and equity of $400m has an ROE of:",a:["6.7%","15.0%","24.0%","1.5%"],c:1,e:"ROE = net income ÷ equity = 60 / 400 = 15%."},
+{i:"r20",t:"t_ret",q:"NOPAT is $90m and total assets are $600m. ROA is:",a:["6.7%","15.0%","54.0%","10.0%"],c:1,e:"ROA = NOPAT ÷ total assets = 90 / 600 = 15%."},
+{i:"r21",t:"t_ret",q:"NOPAT is $50m against long-term debt of $200m plus equity of $300m. ROC is:",a:["10%","16.7%","25%","5%"],c:0,e:"ROC = NOPAT ÷ (LT debt + equity) = 50 / 500 = 10%."},
+{i:"r22",t:"t_ret",q:"ROE that sits well above ROA usually signals:",a:["Low risk","The use of leverage","No debt","Falling sales"],c:1,e:"Debt lifts ROE above ROA, but it raises financial risk as well as return."},
+{i:"r23",t:"t_ret",q:"ROA differs from ROE mainly because ROA measures the return to:",a:["Shareholders only","All investors (debt and equity)","Creditors only","The government"],c:1,e:"ROA uses NOPAT over total assets — the return to every provider of capital; ROE isolates shareholders."},
+{i:"r24",t:"t_ret",q:"A firm has net income $84m and equity $560m. Its ROE is:",a:["15%","12%","18%","6.7%"],c:0,e:"ROE = 84 / 560 = 15%."},
+
+/* ---- t_val (v): MVA & EVA ---- */
+{i:"v19",t:"t_val",q:"NOPAT is $120m, capital employed $700m and the cost of capital 12%. EVA is:",a:["$36m","$84m","−$36m","$120m"],c:0,e:"EVA = 120 − 0.12×700 = 120 − 84 = $36m."},
+{i:"v20",t:"t_val",q:"A firm's market value of equity is $1,300m and book equity $900m. MVA is:",a:["$2,200m","$400m","−$400m","$900m"],c:1,e:"MVA = market value − book value of equity = 1,300 − 900 = $400m."},
+{i:"v21",t:"t_val",q:"NOPAT is $70m, total capitalisation $650m, cost of capital 12%. EVA is closest to:",a:["−$8m","$8m","$70m","$78m"],c:0,e:"EVA = 70 − 0.12×650 = 70 − 78 = −$8m; value was destroyed."},
+{i:"v22",t:"t_val",q:"30 million shares trade at $28 with book equity of $650m. MVA is:",a:["$190m","$840m","$650m","$1,490m"],c:0,e:"Market value = 28×30 = $840m; MVA = 840 − 650 = $190m."},
+{i:"v23",t:"t_val",q:"EVA improves on accounting profit chiefly because it:",a:["Ignores the cost of capital","Charges for the capital tied up in the business","Uses only sales figures","Requires no estimates"],c:1,e:"EVA subtracts a capital charge, so it reveals whether the capital earned its required return."},
+
+/* ---- t_growth (z): growth, income stocks & PVGO ---- */
+{i:"z19",t:"t_growth",q:"A firm with ROE 20% and a plowback ratio of 40% has a growth rate of:",a:["8%","12%","20%","40%"],c:0,e:"g = ROE × plowback = 20% × 0.40 = 8%."},
+{i:"z20",t:"t_growth",q:"If a firm pays out 70% of earnings, its plowback ratio is:",a:["70%","30%","100%","7%"],c:1,e:"Plowback = 1 − payout = 1 − 0.70 = 30%."},
+{i:"z21",t:"t_growth",q:"EPS is $4 and the required return 10%. The no-growth value is $40. If the share trades at $50, PVGO is:",a:["$40","$10","$50","$4"],c:1,e:"PVGO = price − no-growth value = 50 − 40 = $10."},
+{i:"z22",t:"t_growth",q:"Reinvesting earnings adds value only when the reinvested funds earn:",a:["More than shareholders require","Exactly the risk-free rate","Less than the growth rate","Any positive return"],c:0,e:"Growth creates value only if ROE on new investment exceeds the required return."},
+{i:"z23",t:"t_growth",q:"A firm with ROE 25% retains 60% of earnings. Its sustainable growth rate is:",a:["15%","25%","10%","60%"],c:0,e:"g = ROE × plowback = 25% × 0.60 = 15%."},
+{i:"z24",t:"t_growth",q:"A high P/E ratio most often signals that the market expects:",a:["Falling earnings","Strong future growth opportunities","No dividends ever","Immediate liquidation"],c:1,e:"Investors pay a high multiple when they expect valuable growth (a large PVGO)."},
+
+/* ---- t_bbasic (b): bond market & terms ---- */
+{i:"b19",t:"t_bbasic",q:"A bond's coupon rate is always calculated on its:",a:["Market price","Face (par) value","Yield to maturity","Current yield"],c:1,e:"Coupon = coupon rate × face value; the rate is fixed against par, never the price."},
+{i:"b20",t:"t_bbasic",q:"The clean price of a bond differs from the dirty price because it:",a:["Includes accrued interest","Excludes accrued interest","Uses par value","Ignores the coupon"],c:1,e:"Clean price excludes accrued interest; the dirty (invoice) price adds it back."},
+{i:"b21",t:"t_bbasic",q:"A bond that pays no periodic coupon and is sold below face value is a:",a:["Convertible bond","Zero-coupon bond","Floating-rate note","Callable bond"],c:1,e:"A zero-coupon bond pays only face value at maturity and trades at a discount."},
+{i:"b22",t:"t_bbasic",q:"A bond that lets the issuer repay early is described as:",a:["Convertible","Callable","Zero-coupon","Floating"],c:1,e:"A callable bond gives the issuer the right to redeem before maturity, usually when rates fall."},
+{i:"b23",t:"t_bbasic",q:"The discount rate used to price a bond is the return available on:",a:["The firm's equity","Investments of similar risk and maturity","Short-term bank deposits","The coupon rate"],c:1,e:"A bond is discounted at the market yield on comparable-risk, comparable-maturity instruments."},
+
+/* ---- t_brisk (k): interest-rate risk, tax & ratings ---- */
+{i:"k19",t:"t_brisk",q:"Holding coupon constant, a longer maturity makes a bond's price:",a:["Less sensitive to rate changes","More sensitive to rate changes","Immune to rate changes","Always higher"],c:1,e:"Longer maturity means greater interest-rate risk — larger price swings for a given yield change."},
+{i:"k20",t:"t_brisk",q:"For two bonds of equal maturity, the one with the lower coupon has:",a:["Lower interest-rate risk","Higher interest-rate risk","No interest-rate risk","A higher coupon yield"],c:1,e:"Lower coupons push more value to the distant maturity, raising price sensitivity to rates."},
+{i:"k21",t:"t_brisk",q:"A corporate bond yields 9% and a government bond of equal coupon and maturity yields 6%. The default premium is:",a:["3%","15%","1.5%","9%"],c:0,e:"Default premium = corporate yield − government yield = 9% − 6% = 3%."},
+{i:"k22",t:"t_brisk",q:"Which rating is the boundary between investment grade and junk?",a:["AAA vs AA","BBB vs BB","A vs AAA","C vs D"],c:1,e:"BBB and above is investment grade; BB and below is speculative (junk)."},
+{i:"k23",t:"t_brisk",q:"To compute an after-tax return on a bond, you first convert the cash flows to:",a:["Pre-tax values","After-tax values","Book values","Par values"],c:1,e:"Apply the investor's tax rate to coupon (and any taxable gain) before computing the return."},
+
+/* ---- t_app (p): applications ---- */
+{i:"p19",t:"t_app",q:"The first step in almost any retirement or loan problem is to:",a:["Pick a formula at random","Draw the timeline of cash flows","Compute the tax first","Assume zero interest"],c:1,e:"A timeline shows when each cash flow occurs and which formula the pattern calls for."},
+{i:"p20",t:"t_app",q:"Salary you give up to attend an MBA full time is best treated as:",a:["An irrelevant sunk cost","A real opportunity cost in the analysis","A financing decision","A tax deduction"],c:1,e:"Foregone earnings are an opportunity cost and belong in the cash-flow analysis even though no cheque is written."},
+{i:"p21",t:"t_app",q:"Savings you already hold should, in a retirement calculation, first be:",a:["Ignored","Compounded forward to the target date","Subtracted from income","Taxed twice"],c:1,e:"Existing balances grow with interest, so compound them to the horizon before comparing to the goal."},
+{i:"p22",t:"t_app",q:"In the MBA decision case, tuition paid at the start of each year and salary received at year-end differ by:",a:["Nothing","One compounding period, which matters at a positive discount rate","The tax rate","The inflation rate"],c:1,e:"Beginning-of-year and end-of-year timing are one period apart, and at a positive rate that gap changes the PV."},
+{i:"p23",t:"t_app",q:"A cost that is identical under both options being compared can be:",a:["Ignored, since it nets out of the comparison","Counted twice","Used as the discount rate","Treated as income"],c:0,e:"Equal costs cancel in a like-for-like comparison, though you should state that you have excluded them."}
+);
 
 /* ===== Case room ===== */
 const CASES=[
@@ -1696,6 +1908,24 @@ const MODULES=[
   ex:"If prices already reflect the information you have, no amount of analysis on that information will earn you an abnormal return.",
   tips:["Weak form: past prices and volumes — repudiates technical analysis.","Semi-strong: all public information — repudiates fundamental analysis.","Strong form: all information, public and private — least supported by evidence.","Anomalies: earnings announcement drift, the new issues puzzle, the January effect."]}
 ]},
+{id:"m6",n:"Cost of Capital",lec:"Lecture 6",hue:"#B07A2E",cats:[],topics:[
+ {id:"t_coc",n:"Cost of capital & components",
+  obj:["Explain what the cost of capital is and why the discount rate matters.","Name the three financing components and why market weights are used.","List the four steps in building the WACC."],
+  ex:"The cost of capital is the minimum return a firm must earn on an average-risk project to keep every investor happy. It is set by the market's view of the firm's risk, not by the accountants.",
+  tips:["Required return and discount rate are the same number, driven by risk.","Components: debt, preferred stock, common equity.","Always weight by market value, never book value.","WACC steps: cost of each security → its market value → its weight → weighted average."]},
+ {id:"t_ce",n:"Cost of equity: DGM & CAPM",
+  obj:["Estimate the cost of equity with the dividend growth model.","Estimate the cost of equity with the CAPM (SML).","State the strengths and limits of each method."],
+  ex:"Shareholders bear the residual risk, so their required return is the hardest cost to pin down. Two methods dominate: the dividend growth model and the CAPM.",
+  tips:["DGM: RE = D₁/P₀ + g.","Growth shortcut: g = (1 − payout) × ROE.","CAPM: RE = Rf + β(E(Rm) − Rf).","If the two disagree, take an average — neither is exact."]},
+ {id:"t_cd",n:"Cost of debt & preferred",
+  obj:["Estimate the cost of debt three ways and pick the right one.","Apply the tax shield to get the after-tax cost of debt.","Compute the cost of preferred stock as a perpetuity."],
+  ex:"Debt is cheaper and easier to price than equity, but the coupon is a trap — what matters is the return the market requires today, and what tax does to it.",
+  tips:["Cost of debt = YTM, not the coupon rate.","Rated but untraded: kd = rf + default spread.","Neither traded nor rated: interest ÷ book value of debt.","After-tax cost of debt = RD(1 − TC); preferred = D ÷ price, with no tax adjustment."]},
+ {id:"t_wacc",n:"WACC & when to use it",
+  obj:["Combine component costs into the WACC using market-value weights.","Judge when the WACC is and is not the right discount rate.","Treat flotation costs and differential project risk correctly."],
+  ex:"The WACC blends the component costs into one required return for the firm. It is the right discount rate only when a project is a carbon copy of the firm's existing business.",
+  tips:["WACC = wE·RE + wD·RD(1 − TC) + wPF·RPF.","Weights use market values; V = D + E (+ P).","Same-risk, same-financing projects only — adjust up for risky divisions, down for safe ones.","Flotation costs never enter the WACC; add them as a cash outflow to the project's cost."]}
+]},
 {id:"mt",n:"Teach mode",lec:"Guided computation",hue:"#1F7A8C",cats:[],topics:[],teachOnly:true},
 {id:"mf",n:"Formula map",lec:"Selection framework",hue:"#7A5A2B",cats:[],topics:[],frameworkOnly:true},
 {id:"mc",n:"Case room",lec:"Cases & analysis",hue:"#5C6B33",cats:[],topics:[],caseOnly:true},
@@ -1734,6 +1964,21 @@ function saveFlags(){
   try{localStorage.setItem(fkey(),JSON.stringify(FLAGS));}catch(_){}
 }
 loadProgress();
+
+/* study streak — consecutive days the app is opened (device-local, all sessions) */
+const DKEY="mba512-streak";
+function touchStreak(){
+  const today=new Date().toISOString().slice(0,10);
+  let s=null; try{s=JSON.parse(localStorage.getItem(DKEY)||"null");}catch(_){}
+  if(!s||!s.last){ s={last:today,streak:1}; }
+  else if(s.last!==today){
+    const diff=Math.round((new Date(today)-new Date(s.last))/86400000);
+    s={last:today, streak: diff===1 ? (s.streak||1)+1 : 1};
+  }
+  try{localStorage.setItem(DKEY,JSON.stringify(s));}catch(_){}
+  return s.streak;
+}
+
 function rec(id){return M[id]||{n:0,k:0,s:0,d:-999};}
 function isRetired(id){return rec(id).s>=RETIRE;}
 
@@ -1801,50 +2046,44 @@ function moduleIcon(id,pct,hue){
 }
 
 /* ============ home ============ */
+const TOOL_DESC={
+  mt:"Work a problem step by step with hints",
+  mf:"Not sure which formula? Answer a few questions",
+  mc:()=>`${CASES.length} worked cases, including the MBA decision`,
+  m0:"35 worked calculators, every step shown"
+};
 function renderHome(){
   const all=statsFor(allIds());
   $("#railPct").textContent=all.pct+"%";
   $("#railBar").style.width=all.pct+"%";
 
-  $("#moduleGrid").innerHTML=MODULES.map(m=>{
-    if(m.caseOnly){
-      return `<button class="cube-card" data-mod="${m.id}" style="--mod:${m.hue}">
-        <div class="top">${moduleIcon(m.id,100,m.hue)}</div>
-        <h3>${m.n}</h3>
-        <div class="meta">${CASES.length} cases</div>
-        <div class="tbar"><i style="width:100%;background:${m.hue};opacity:.35"></i></div>
-      </button>`;
-    }
-    if(m.calcOnly){
-      return `<button class="cube-card" data-mod="${m.id}" style="--mod:${m.hue}">
-        <div class="top">${moduleIcon(m.id,100,m.hue)}</div>
-        <h3>${m.n}</h3>
-        <div class="meta">35 formulas</div>
-        <div class="tbar"><i style="width:100%;background:${m.hue};opacity:.35"></i></div>
-      </button>`;
-    }
-    if(m.frameworkOnly){
-      return `<button class="cube-card" data-mod="${m.id}" style="--mod:${m.hue}">
-        <div class="top">${moduleIcon(m.id,100,m.hue)}</div>
-        <h3>${m.n}</h3>
-        <div class="meta">choose the method</div>
-        <div class="tbar"><i style="width:100%;background:${m.hue};opacity:.35"></i></div>
-      </button>`;
-    }
-    if(m.teachOnly){
-      return `<button class="cube-card" data-mod="${m.id}" style="--mod:${m.hue}">
-        <div class="top">${moduleIcon(m.id,100,m.hue)}</div>
-        <h3>${m.n}</h3>
-        <div class="meta">guided practice</div>
-        <div class="tbar"><i style="width:100%;background:${m.hue};opacity:.35"></i></div>
-      </button>`;
-    }
+  /* greeting + streak */
+  const nm=(SESSION.name||"").trim();
+  $("#heroGreet").textContent=nm?("Akwaaba, "+nm.split(/\s+/)[0]):"Akwaaba";
+  const st=touchStreak();
+  $("#heroStreak").textContent = all.pct===100 ? "All questions retired" : st>1 ? st+"-day streak" : "Course mastery";
+
+  /* lectures only — these carry progress */
+  const lectures=MODULES.filter(m=>!m.calcOnly&&!m.caseOnly&&!m.frameworkOnly&&!m.teachOnly);
+  $("#moduleGrid").innerHTML=lectures.map(m=>{
     const s=statsFor(modIds(m));
     return `<button class="cube-card${s.pct===100?" done":""}" data-mod="${m.id}" style="--mod:${m.hue}">
       <div class="top">${moduleIcon(m.id,s.pct,m.hue)}<span class="pct">${s.pct}%</span></div>
       <h3>${m.n}</h3>
       <div class="meta">${s.retired}/${s.total} retired</div>
       <div class="tbar"><i style="width:${s.pct}%;background:${m.hue}"></i></div>
+    </button>`;
+  }).join("");
+
+  /* study tools — utilities, not masterable, so not cubes */
+  const tools=MODULES.filter(m=>m.calcOnly||m.caseOnly||m.frameworkOnly||m.teachOnly);
+  const order={mt:0,mf:1,mc:2,m0:3};
+  $("#toolsList").innerHTML=tools.sort((a,b)=>order[a.id]-order[b.id]).map(m=>{
+    const d=TOOL_DESC[m.id]; const desc=typeof d==="function"?d():d;
+    return `<button class="tool-row" data-mod="${m.id}" style="--tc:${m.hue}">
+      <span class="ti">${moduleIcon(m.id,100,m.hue)}</span>
+      <span class="tbody"><b>${m.n}</b><span>${desc}</span></span>
+      <span class="arrow">›</span>
     </button>`;
   }).join("");
 
@@ -1959,6 +2198,7 @@ function renderLearn(){
       </button>
       <div class="topic-body hidden" data-topic-body="${t.id}">
         <p>${t.ex}</p>
+        ${t.obj?`<div class="objbox"><p class="eyebrow">By the end you can</p><ul class="objlist">${t.obj.map(o=>`<li>${o}</li>`).join("")}</ul></div>`:""}
         <ul>${t.tips.map(x=>`<li>${x}</li>`).join("")}</ul>
         <div class="tbar"><i style="width:${s.pct}%;background:${WORLD.hue}"></i></div>
         <button class="tdrill" data-drill="topic" data-topic="${t.id}">
@@ -2120,10 +2360,15 @@ function renderDrillIntro(){
     <p style="font-size:14.5px;color:var(--ink-2)">${left?
       `${left} of ${s.total} questions are still in rotation. Questions you have missed come back first, then ones you have never seen.`:
       `All ${s.total} questions in this module are retired. A drill now will revisit them for maintenance.`}</p>
-    <div class="tbar" style="height:3px;border-radius:3px;background:var(--line);margin:16px 0 4px;overflow:hidden">
+    <div class="tbar" style="height:3px;border-radius:3px;background:var(--line);margin:16px 0 14px;overflow:hidden">
       <i style="display:block;height:100%;width:${s.pct}%;background:${WORLD.hue};border-radius:3px"></i>
     </div>
-    <button class="next" data-drill="module">Start 10 questions</button>
+    <p class="eyebrow" style="margin-bottom:8px">How many questions?</p>
+    <div class="len-pick">
+      <button class="lenbtn" data-drill="module" data-size="5">5<span>quick</span></button>
+      <button class="lenbtn" data-drill="module" data-size="10">10<span>standard</span></button>
+      <button class="lenbtn" data-drill="module" data-size="20">20<span>exam prep</span></button>
+    </div>
   </div>`;
 }
 function startDrill(ids,size,label){
@@ -2164,7 +2409,7 @@ function renderQ(){
         <button class="flagbtn${flag?" on":""}" data-flag="${q.i}" type="button">${flag?"Flagged":"Flag question"}</button>
       </div>
       <p class="flag-note">${flag?`Flag note: ${esc(flag.note||"Needs review.")}`:"If a question, answer, or explanation seems faulty, flag it for review."}</p>
-      <div id="verdictBox"></div>
+      <div id="verdictBox" aria-live="polite"></div>
     </div>`;
   d.answered=false;
 }
@@ -2277,7 +2522,7 @@ document.addEventListener("click",e=>{
     if(kind==="topic"){
       const tid=dr.dataset.topic, m=topicMod(tid);
       DRILL=null; WORLD=m; openWorld(m.id,"drill"); startDrill([tid],8,TOPIC[tid].n);
-    } else if(kind==="module"){ startDrill(modIds(WORLD),10,WORLD.n); }
+    } else if(kind==="module"){ startDrill(modIds(WORLD),Number(dr.dataset.size)||10,WORLD.n); }
     else if(kind==="all"){
       const m=MODULES.find(x=>!x.calcOnly&&!x.caseOnly);
       DRILL=null; openWorld(m.id,"drill"); startDrill(allIds(),12,"Mixed");
@@ -2337,6 +2582,37 @@ $("#newSess").onclick=()=>{
   SESSION=newSession($("#learnerName").value.trim());
   try{localStorage.setItem(SKEY,JSON.stringify(SESSION));}catch(_){}
   M={}; DRILLNO=0; FLAGS={}; saveProgress(); saveFlags(); renderSession(); renderHome(); location.hash="finance"; show("home");
+};
+
+/* progress backup & restore */
+$("#exportProg").onclick=()=>{
+  const data={v:2,exported:new Date().toISOString(),session:SESSION,m:M,drill:DRILLNO,flags:FLAGS};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download="mba512-progress-"+new Date().toISOString().slice(0,10)+".json";
+  document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(a.href);
+  $("#exportProg").textContent="Saved"; setTimeout(()=>$("#exportProg").textContent="Save a backup file",1400);
+};
+$("#importProg").onclick=()=>$("#importFile").click();
+$("#importFile").onchange=e=>{
+  const file=e.target.files&&e.target.files[0]; if(!file) return;
+  const r=new FileReader();
+  r.onload=()=>{
+    try{
+      const d=JSON.parse(r.result);
+      if(!d||typeof d.m!=="object") throw 0;
+      if(!confirm("Restore this backup? It will replace the progress currently on this device.")) return;
+      if(d.session&&d.session.id){ SESSION=d.session; localStorage.setItem(SKEY,JSON.stringify(SESSION)); }
+      M=d.m||{}; DRILLNO=d.drill||0; FLAGS=d.flags||{};
+      saveProgress(); saveFlags();
+      $("#learnerName").value=SESSION.name||"";
+      renderSession(); renderHome();
+      alert("Progress restored.");
+    }catch(_){ alert("That file could not be read as an MBA512 backup."); }
+    finally{ e.target.value=""; }
+  };
+  r.readAsText(file);
 };
 
 /* calculator search */

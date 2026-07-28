@@ -1,5 +1,5 @@
-const CACHE = "mbaassist-v1";
-const SHELL = ["./", "./index.html", "./manifest.webmanifest"];
+const CACHE = "mbaassist-v2";
+const SHELL = ["./", "./index.html", "./manifest.webmanifest", "./assets/study-hero.png"];
 
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)));
