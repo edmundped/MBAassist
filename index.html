@@ -83,9 +83,60 @@ button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
 
 /* ---------- module cubes ---------- */
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.welcome{
+  min-height:calc(100svh - 84px);display:grid;align-content:center;gap:18px;padding-bottom:26px;
+}
+.welcome-stage{
+  position:relative;overflow:hidden;border-radius:20px;border:1px solid var(--line);
+  background:
+    radial-gradient(circle at 18% 20%,rgba(176,122,46,.22),transparent 30%),
+    radial-gradient(circle at 82% 0%,rgba(138,46,59,.18),transparent 34%),
+    linear-gradient(145deg,var(--surface),var(--raised));
+  padding:22px 18px 18px;min-height:420px;display:flex;flex-direction:column;justify-content:space-between;
+}
+.welcome-stage:after{
+  content:"";position:absolute;left:18px;right:18px;bottom:112px;height:1px;background:linear-gradient(90deg,transparent,var(--line-2),transparent);
+}
+.welcome-copy{position:relative;z-index:2;max-width:520px}
+.welcome-copy h2{font-size:34px;line-height:1.02;letter-spacing:-.035em;margin:8px 0 10px;color:var(--ink)}
+.welcome-copy p{font-size:15px;line-height:1.55;color:var(--ink-2);max-width:45ch}
+.welcome-form{position:relative;z-index:2;background:rgba(255,253,249,.78);border:1px solid rgba(231,223,209,.78);backdrop-filter:blur(14px);border-radius:16px;padding:14px}
+body.dark .welcome-form{background:rgba(29,25,18,.78);border-color:rgba(60,51,39,.82)}
+.welcome-form label{display:block;font-size:13px;font-weight:650;margin-bottom:7px;color:var(--ink)}
+.welcome-form .row{display:flex;gap:8px}
+.welcome-form input{min-width:0;flex:1;margin:0}
+.welcome-form button{flex:none;padding:0 15px;border-radius:11px;background:var(--ink);color:var(--bg);font-weight:650}
+.welcome-note{font-size:12px;color:var(--ink-3);margin-top:8px;line-height:1.4}
+.mentor{
+  position:relative;z-index:1;height:190px;margin:14px 0 4px;
+}
+.mentor svg{width:100%;height:100%;overflow:visible}
+.mentor .pulse{animation:pulseDot 2.4s ease-in-out infinite}
+.mentor .chart-line{stroke-dasharray:220;stroke-dashoffset:220;animation:drawChart 4.8s ease-in-out infinite}
+.mentor .person{animation:floatPerson 3.8s ease-in-out infinite;transform-origin:center}
+.mentor .coin{animation:coinRise 3.6s ease-in-out infinite;opacity:.88}
+.mentor .coin.two{animation-delay:.7s}
+.mentor .coin.three{animation-delay:1.35s}
+@keyframes drawChart{0%{stroke-dashoffset:220}45%,78%{stroke-dashoffset:0}100%{stroke-dashoffset:-220}}
+@keyframes floatPerson{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes pulseDot{0%,100%{transform:scale(1);opacity:.65}50%{transform:scale(1.22);opacity:1}}
+@keyframes coinRise{0%,100%{transform:translateY(0);opacity:.55}50%{transform:translateY(-12px);opacity:1}}
 .course-card{
   min-height:210px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
   padding:18px;text-align:left;display:flex;flex-direction:column;gap:12px;position:relative;overflow:hidden;
+}
+.course-intro{
+  display:grid;gap:14px;margin:6px 0 18px;border:1px solid var(--line);border-radius:18px;
+  padding:18px;background:linear-gradient(135deg,var(--surface),var(--raised));
+}
+.course-intro h2{font-size:26px;letter-spacing:-.03em;margin:5px 0 6px}
+.course-intro p{font-size:14px;color:var(--ink-2);line-height:1.5}
+.course-intro .mini-mentor{height:128px;min-height:0;margin:0}
+@media (min-width:720px){
+  .welcome-stage{padding:28px;min-height:470px}
+  .welcome-copy h2{font-size:46px}
+  .mentor{height:230px}
+  .course-intro{grid-template-columns:1.15fr .85fr;align-items:center}
 }
 .course-card:before{
   content:"";position:absolute;inset:auto -20% -42% 18%;height:80%;
@@ -465,9 +516,83 @@ body.dark .flagbtn.on{background:#2D2413;color:#F3C46B;border-color:#8A6A24}
   </div>
 </div>
 
+<!-- ============ WELCOME ============ -->
+<main id="welcomeView" class="wrap welcome">
+  <section class="welcome-stage">
+    <div class="welcome-copy">
+      <p class="eyebrow">MBAassist</p>
+      <h2>Build your MBA study rhythm.</h2>
+      <p>Start with your name so your progress, flags, drill history, and daily streak stay tied to this study session on this device.</p>
+    </div>
+    <div class="mentor" aria-hidden="true">
+      <svg viewBox="0 0 620 260" role="img">
+        <defs>
+          <linearGradient id="suit" x1="0" x2="1">
+            <stop offset="0" stop-color="#221A14"/>
+            <stop offset="1" stop-color="#5A2530"/>
+          </linearGradient>
+          <linearGradient id="screen" x1="0" x2="1">
+            <stop offset="0" stop-color="#FFF8EA"/>
+            <stop offset="1" stop-color="#EBD7B3"/>
+          </linearGradient>
+        </defs>
+        <path d="M72 218h476" stroke="var(--line-2)" stroke-width="3" stroke-linecap="round"/>
+        <g class="person">
+          <circle cx="166" cy="88" r="34" fill="#8B513F"/>
+          <path d="M121 217c5-54 23-87 47-87s44 32 50 87z" fill="url(#suit)"/>
+          <path d="M145 134l22 36 24-36" fill="#FFF6E8"/>
+          <path d="M160 169l8-14 8 14-8 37z" fill="#B07A2E"/>
+          <path d="M130 94c13-38 56-45 76-12-19-2-38-10-55-24-2 18-9 30-21 36z" fill="#241710"/>
+          <circle cx="154" cy="91" r="3.3" fill="#21150F"/>
+          <circle cx="181" cy="91" r="3.3" fill="#21150F"/>
+          <path d="M157 108c9 7 19 7 29 0" fill="none" stroke="#3B1E16" stroke-width="4" stroke-linecap="round"/>
+        </g>
+        <g>
+          <rect x="265" y="56" width="260" height="146" rx="18" fill="url(#screen)" stroke="#C9A86C" stroke-width="3"/>
+          <path d="M299 164h194" stroke="#D8BE8E" stroke-width="7" stroke-linecap="round"/>
+          <path class="chart-line" d="M300 151c26-34 52-42 77-24s44 18 68-12 42-48 73-58" fill="none" stroke="#8A2E3B" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle class="pulse" cx="518" cy="57" r="9" fill="#B07A2E"/>
+          <rect x="302" y="81" width="50" height="12" rx="6" fill="#D8BE8E"/>
+          <rect x="302" y="103" width="76" height="12" rx="6" fill="#D8BE8E"/>
+          <rect x="302" y="125" width="38" height="12" rx="6" fill="#D8BE8E"/>
+        </g>
+        <g fill="#B07A2E">
+          <circle class="coin" cx="470" cy="39" r="12"/>
+          <circle class="coin two" cx="532" cy="94" r="10"/>
+          <circle class="coin three" cx="430" cy="86" r="8"/>
+        </g>
+      </svg>
+    </div>
+    <form class="welcome-form" id="welcomeForm">
+      <label for="welcomeName">What should MBAassist call you?</label>
+      <div class="row">
+        <input type="text" id="welcomeName" placeholder="Your first name" autocomplete="given-name" required>
+        <button type="submit">Start</button>
+      </div>
+      <p class="welcome-note">Your name and progress stay in this browser. Use backup and restore from the session menu when switching devices.</p>
+    </form>
+  </section>
+</main>
+
 <!-- ============ COURSE HUB ============ -->
 <main id="courseView" class="wrap">
-  <p class="eyebrow sec-label" style="margin-top:8px">Choose a course</p>
+  <section class="course-intro">
+    <div>
+      <p class="eyebrow" id="courseGreeting">Welcome</p>
+      <h2>Choose your workspace.</h2>
+      <p>Each course keeps its own learning tools, quizzes, cases, flags, and progress rhythm.</p>
+    </div>
+    <div class="mentor mini-mentor" aria-hidden="true">
+      <svg viewBox="0 0 620 260">
+        <path d="M88 206h444" stroke="var(--line-2)" stroke-width="3" stroke-linecap="round"/>
+        <rect x="250" y="64" width="270" height="130" rx="18" fill="var(--surface)" stroke="var(--line-2)" stroke-width="3"/>
+        <path class="chart-line" d="M285 157c32-40 58-24 84-41s43-42 72-29 43 7 64-21" fill="none" stroke="var(--accent)" stroke-width="8" stroke-linecap="round"/>
+        <g class="person"><circle cx="155" cy="94" r="31" fill="#8B513F"/><path d="M112 211c6-55 24-85 45-85 24 0 44 32 50 85z" fill="#5A2530"/><path d="M137 132l21 33 23-33" fill="#FFF6E8"/></g>
+        <circle class="pulse" cx="505" cy="66" r="10" fill="var(--gold)"/>
+      </svg>
+    </div>
+  </section>
+  <p class="eyebrow sec-label" style="margin-top:8px">Courses</p>
   <div class="grid">
     <button class="course-card" data-course="finance" style="--course:#4A4FA0" type="button">
       <span class="tag">Live</span>
@@ -1941,7 +2066,8 @@ const QMAP={}; QB.forEach(q=>QMAP[q.i]=q);
 const RETIRE=2;
 const SKEY="mba512-session-v2";
 function newSession(name=""){
-  return {id:"S-"+Math.random().toString(36).slice(2,6).toUpperCase()+Date.now().toString(36).slice(-3).toUpperCase(),name,at:Date.now()};
+  const now=Date.now();
+  return {id:"S-"+Math.random().toString(36).slice(2,6).toUpperCase()+now.toString(36).slice(-3).toUpperCase(),name,at:now,last:now,views:0};
 }
 function readSession(){
   try{const s=JSON.parse(localStorage.getItem(SKEY)||"null"); if(s&&s.id) return s;}catch(_){}
@@ -1950,6 +2076,15 @@ function readSession(){
 }
 let SESSION=readSession();
 let M={}, DRILLNO=0, FLAGS={};
+function saveSession(){
+  try{localStorage.setItem(SKEY,JSON.stringify(SESSION));}catch(_){}
+}
+function touchSession(view){
+  SESSION.last=Date.now();
+  SESSION.views=(SESSION.views||0)+1;
+  SESSION.lastView=view;
+  saveSession();
+}
 function pkey(){return "mba512-progress-"+SESSION.id;}
 function fkey(){return "mba512-flags-"+SESSION.id;}
 function loadProgress(){
@@ -2110,6 +2245,10 @@ function renderHome(){
       <span class="arrow">›</span>
     </button>`).join("");
 }
+function renderCourseHub(){
+  const nm=(SESSION.name||"").trim().split(/\s+/)[0];
+  $("#courseGreeting").textContent=nm?`Welcome back, ${nm}`:"Welcome";
+}
 
 /* ============ views ============ */
 let VIEW="home", WORLD=null, PANE="learn";
@@ -2117,16 +2256,19 @@ let CALC_CATS=null;
 let OPEN_CASE=null, OPEN_HOW=null;
 function show(v){
   VIEW=v;
+  touchSession(v);
+  $("#welcomeView").classList.toggle("hidden",v!=="welcome");
   $("#courseView").classList.toggle("hidden",v!=="courses");
   $("#homeView").classList.toggle("hidden",v!=="home");
   $("#sessView").classList.toggle("hidden",v!=="session");
   $("#worldView").classList.toggle("hidden",v!=="world");
-  $("#coursesBtn").classList.toggle("hidden",v==="courses");
-  $("#sessBtn").classList.toggle("hidden",v==="courses");
-  $("#homeEyebrow").textContent=v==="courses"?"MBAassist":"MBA512 · Managerial Finance";
-  $("#homeTitle").textContent=v==="courses"?"Course workspace":"Managerial Finance";
+  $("#coursesBtn").classList.toggle("hidden",v==="courses"||v==="welcome");
+  $("#sessBtn").classList.toggle("hidden",v==="welcome");
+  $("#homeEyebrow").textContent=v==="courses"||v==="welcome"?"MBAassist":"MBA512 · Managerial Finance";
+  $("#homeTitle").textContent=v==="welcome"?"Welcome":v==="courses"?"Course workspace":"Managerial Finance";
   $("#topbarHome").classList.toggle("hidden",v==="world");
   $("#topbarWorld").classList.toggle("hidden",v!=="world");
+  if(v==="courses") renderCourseHub();
   window.scrollTo({top:0,behavior:"instant"in document.documentElement.style?"instant":"auto"});
 }
 function openWorld(id,pane){
@@ -2136,7 +2278,7 @@ function openWorld(id,pane){
   $("#worldTitle").textContent=WORLD.n;
   CALC_CATS=WORLD.cats;
   const tabs=worldTabs(WORLD);
-  const LBL={learn:"Learn",drill:"Drill",calc:"Formulas",cases:"Cases"};
+  const LBL={learn:"Learn",drill:"Drill",calc:"Formulas",cases:"Cases",framework:"Map",teach:"Teach"};
   $("#worldSeg").innerHTML=tabs.map(t=>`<button data-pane="${t}">${LBL[t]}</button>`).join("");
   $("#worldSeg").classList.toggle("hidden",tabs.length<2);
   renderModuleNav();
@@ -2567,6 +2709,18 @@ $("#backBtn").onclick=()=>{ DRILL=null; CALC_CATS=null; location.hash="finance";
 $("#coursesBtn").onclick=()=>{ DRILL=null; CALC_CATS=null; location.hash=""; show("courses"); };
 $("#courseWorldBtn").onclick=()=>{ DRILL=null; CALC_CATS=null; location.hash=""; show("courses"); };
 $("#sessBtn").onclick=()=>{ renderSession(); show("session"); };
+$("#welcomeForm").onsubmit=e=>{
+  e.preventDefault();
+  const name=$("#welcomeName").value.trim();
+  if(!name){ $("#welcomeName").focus(); return; }
+  SESSION.name=name;
+  SESSION.started=true;
+  saveSession();
+  $("#learnerName").value=name;
+  renderSession();
+  location.hash="";
+  show("courses");
+};
 function toggleTheme(){
   document.body.classList.toggle("dark");
   try{localStorage.setItem("mba512-theme",document.body.classList.contains("dark")?"dark":"light");}catch(_){}
@@ -2574,13 +2728,16 @@ function toggleTheme(){
 $("#themeBtn").onclick=toggleTheme; $("#themeBtn2").onclick=toggleTheme;
 $("#saveName").onclick=()=>{
   SESSION.name=$("#learnerName").value.trim();
-  try{localStorage.setItem(SKEY,JSON.stringify(SESSION));}catch(_){}
+  SESSION.started=!!SESSION.name;
+  saveSession();
+  renderHome(); renderCourseHub();
   $("#saveName").textContent="Saved"; setTimeout(()=>$("#saveName").textContent="Save name",1400);
 };
 $("#newSess").onclick=()=>{
   if(!confirm("Start a fresh session? All mastery progress on this device will be cleared.")) return;
   SESSION=newSession($("#learnerName").value.trim());
-  try{localStorage.setItem(SKEY,JSON.stringify(SESSION));}catch(_){}
+  SESSION.started=!!SESSION.name;
+  saveSession();
   M={}; DRILLNO=0; FLAGS={}; saveProgress(); saveFlags(); renderSession(); renderHome(); location.hash="finance"; show("home");
 };
 
@@ -2626,12 +2783,18 @@ $("#wizOpen").onclick=()=>{ wizPath=[]; renderWiz("start"); };
 /* boot */
 let saved=null; try{saved=localStorage.getItem("mba512-theme");}catch(_){}
 if(saved==="dark"||(!saved&&matchMedia("(prefers-color-scheme: dark)").matches)) document.body.classList.add("dark");
-renderHome(); renderSession(); renderList();
-const h=(location.hash||"").replace("#","");
-if(h==="finance") show("home");
-else if(h){ const [mid,pane]=h.split("/"); if(MODULES.some(m=>m.id===mid)) openWorld(mid,pane); else show("courses"); }
-else show("courses");
+$("#welcomeName").value=SESSION.name||"";
+renderHome(); renderSession(); renderCourseHub(); renderList();
+function routeFromHash(){
+  if(!(SESSION.name||"").trim()){ show("welcome"); return; }
+  const h=(location.hash||"").replace("#","");
+  if(h==="finance"){ show("home"); renderHome(); return; }
+  if(h){ const [mid,pane]=h.split("/"); if(MODULES.some(m=>m.id===mid)){ openWorld(mid,pane); return; } }
+  show("courses");
+}
+routeFromHash();
 addEventListener("hashchange",()=>{
+  if(!(SESSION.name||"").trim()){ show("welcome"); return; }
   const next=(location.hash||"").replace("#","");
   if(!next){ DRILL=null; show("courses"); return; }
   if(next==="finance"){ DRILL=null; show("home"); renderHome(); return; }
