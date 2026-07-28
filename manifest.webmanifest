@@ -1,7 +1,7 @@
 {
-  "name": "MBA512 Mastery",
-  "short_name": "MBA512",
-  "description": "Modular mastery trainer for MBA512 Managerial Finance: 385 drill questions across five lectures, case analysis, and a 35-formula calculator.",
+  "name": "MBAassist",
+  "short_name": "MBAassist",
+  "description": "Scalable MBA course learning workspace with guided practice, quizzes, cases, and calculators.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

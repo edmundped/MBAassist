@@ -7,9 +7,9 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="MBA512">
-<meta name="description" content="Modular mastery trainer for MBA512 Managerial Finance.">
-<title>MBA512 · Mastery</title>
+<meta name="apple-mobile-web-app-title" content="MBAassist">
+<meta name="description" content="MBAassist course learning workspace.">
+<title>MBAassist</title>
 <link rel="manifest" href="./manifest.webmanifest">
 <style>
 :root{
@@ -82,6 +82,20 @@ button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
 
 /* ---------- module cubes ---------- */
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.course-card{
+  min-height:210px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+  padding:18px;text-align:left;display:flex;flex-direction:column;gap:12px;position:relative;overflow:hidden;
+}
+.course-card:before{
+  content:"";position:absolute;inset:auto -20% -42% 18%;height:80%;
+  background:radial-gradient(circle, var(--course) 0%, transparent 62%);opacity:.13;
+}
+.course-card>*{position:relative;z-index:1}
+.course-card h2{font-size:24px;margin-top:auto}
+.course-card p{font-size:13.5px;color:var(--ink-2);line-height:1.45}
+.course-card .tag{width:max-content}
+.course-card[disabled]{opacity:.72;cursor:not-allowed}
+.course-card:not([disabled]):active{transform:scale(.985)}
 .cube-card{
   position:relative;background:var(--surface);border:1px solid var(--line);
   border-radius:var(--r);padding:15px 14px 13px;text-align:left;
@@ -251,6 +265,29 @@ body.dark .flagbtn.on{background:#2D2413;color:#F3C46B;border-color:#8A6A24}
 }
 .map-grid{display:grid;grid-template-columns:1fr;gap:10px}
 @media (min-width:620px){.map-grid{grid-template-columns:1fr 1fr}}
+.teach-list{display:flex;flex-direction:column;gap:9px;margin-bottom:12px}
+.teach-card{
+  width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--r);padding:14px 15px;display:flex;gap:12px;align-items:center;
+}
+.teach-card b{display:block;font-size:14.5px}
+.teach-card span{display:block;font-size:12.5px;color:var(--ink-3);margin-top:2px}
+.teach-card.on{border-color:var(--accent);background:var(--raised)}
+.teach-step{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:10px}
+.teach-step h3{font-size:16px;margin-bottom:7px}
+.teach-step p,.teach-step li{font-size:14px;color:var(--ink-2);line-height:1.5}
+.teach-step ul{margin:8px 0 0;padding-left:18px}
+.timeline{
+  display:flex;align-items:center;gap:0;margin:14px 0 5px;overflow-x:auto;padding:7px 0;
+}
+.tick{min-width:86px;text-align:center;position:relative}
+.tick:before{content:"";position:absolute;left:0;right:0;top:19px;border-top:2px solid var(--line-2)}
+.tick:first-child:before{left:50%}.tick:last-child:before{right:50%}
+.tick i{position:relative;display:inline-grid;place-items:center;width:38px;height:38px;border-radius:50%;background:var(--surface);border:2px solid var(--accent);font-style:normal;font-family:var(--mono);font-size:12px}
+.tick span{display:block;margin-top:5px;font-size:11.5px;color:var(--ink-3);white-space:nowrap}
+.congrats{background:var(--ok-bg);border:1px solid var(--ok);color:var(--ok);border-radius:var(--r);padding:15px;margin-top:10px}
+.congrats b{display:block;margin-bottom:4px}
+.congrats span{display:block;font-size:13px;line-height:1.45}
 
 /* ---------- calculator (reused engine) ---------- */
 .bar-search{display:flex;gap:9px;margin-bottom:14px}
@@ -351,9 +388,10 @@ body.dark .flagbtn.on{background:#2D2413;color:#F3C46B;border-color:#8A6A24}
 <div id="topbarHome" class="topbar">
   <div class="wrap">
     <div class="brand">
-      <p class="eyebrow">MBA512 · Managerial Finance</p>
-      <h1>Mastery</h1>
+      <p class="eyebrow" id="homeEyebrow">MBAassist</p>
+      <h1 id="homeTitle">Course workspace</h1>
     </div>
+    <button class="backbtn hidden" id="coursesBtn">‹ <span>Courses</span></button>
     <button class="iconbtn" id="themeBtn" aria-label="Switch light or dark">◐</button>
     <button class="iconbtn" id="sessBtn" aria-label="Session and progress">☰</button>
   </div>
@@ -366,11 +404,29 @@ body.dark .flagbtn.on{background:#2D2413;color:#F3C46B;border-color:#8A6A24}
       <p class="eyebrow" id="worldEyebrow"></p>
       <h1 id="worldTitle"></h1>
     </div>
+    <button class="backbtn" id="courseWorldBtn">Courses</button>
     <button class="iconbtn" id="themeBtn2" aria-label="Switch light or dark">◐</button>
   </div>
 </div>
 
-<!-- ============ HOME ============ -->
+<!-- ============ COURSE HUB ============ -->
+<main id="courseView" class="wrap">
+  <p class="eyebrow sec-label" style="margin-top:8px">Choose a course</p>
+  <div class="grid">
+    <button class="course-card" data-course="finance" style="--course:#4A4FA0" type="button">
+      <span class="tag">Live</span>
+      <h2>Managerial Finance</h2>
+      <p>Mastery practice, teach mode, case analysis, formula map, and calculator support for MBA512.</p>
+    </button>
+    <button class="course-card" style="--course:#8A4A78" type="button" disabled>
+      <span class="tag">Coming soon</span>
+      <h2>Cross-Border Business</h2>
+      <p>International strategy, market entry, trade, institutions, and global operating decisions.</p>
+    </button>
+  </div>
+</main>
+
+<!-- ============ MANAGERIAL FINANCE HOME ============ -->
 <main id="homeView" class="wrap">
   <div class="rail">
     <div class="rail-head">
@@ -430,6 +486,7 @@ body.dark .flagbtn.on{background:#2D2413;color:#F3C46B;border-color:#8A6A24}
   <div class="seg" id="worldSeg"></div>
   <div id="learnPane"></div>
   <div id="drillPane" class="hidden"></div>
+  <div id="teachPane" class="hidden"></div>
   <div id="frameworkPane" class="hidden"></div>
   <div id="casePane" class="hidden"></div>
   <div id="calcPane" class="hidden">
@@ -1639,6 +1696,7 @@ const MODULES=[
   ex:"If prices already reflect the information you have, no amount of analysis on that information will earn you an abnormal return.",
   tips:["Weak form: past prices and volumes — repudiates technical analysis.","Semi-strong: all public information — repudiates fundamental analysis.","Strong form: all information, public and private — least supported by evidence.","Anomalies: earnings announcement drift, the new issues puzzle, the January effect."]}
 ]},
+{id:"mt",n:"Teach mode",lec:"Guided computation",hue:"#1F7A8C",cats:[],topics:[],teachOnly:true},
 {id:"mf",n:"Formula map",lec:"Selection framework",hue:"#7A5A2B",cats:[],topics:[],frameworkOnly:true},
 {id:"mc",n:"Case room",lec:"Cases & analysis",hue:"#5C6B33",cats:[],topics:[],caseOnly:true},
 {id:"m0",n:"Calculator",lec:"All formulas",hue:"#4A5058",cats:null,topics:[],calcOnly:true}
@@ -1734,6 +1792,7 @@ function moduleIcon(id,pct,hue){
     m3:`<svg ${common}><circle cx="31" cy="32" r="22" ${base}/><circle cx="31" cy="32" r="18" ${stroke}/><path d="M31 21v12l9 6" ${stroke}/><path d="M15 54l32-44" ${stroke} opacity=".32"/>${progress}</svg>`,
     m4:`<svg ${common}><rect x="12" y="14" width="40" height="36" rx="6" ${base}/><rect x="14" y="16" width="36" height="32" rx="5" ${stroke}/><path d="M21 26h22M21 34h15M21 42h22" ${stroke}/><circle cx="43" cy="38" r="5" fill="${hue}" opacity=".35"/>${progress}</svg>`,
     m5:`<svg ${common}><path d="M12 48h42" ${stroke}/><path d="M17 43l9-12 8 6 13-19" ${stroke}/><path d="M17 43l9-12 8 6 13-19v30H17z" fill="${hue}" opacity=".12"/><path d="M43 18h4v4" ${stroke}/>${progress}</svg>`,
+    mt:`<svg ${common}><circle cx="21" cy="19" r="7" ${base}/><path d="M15 36c2-8 10-12 17-8 6 3 11 2 16-4" ${stroke}/><path d="M17 45h30M20 51h20" ${stroke} opacity=".55"/><circle cx="21" cy="19" r="7" ${stroke}/><path d="M30 19h18M40 11v16" ${stroke}/></svg>`,
     mf:`<svg ${common}><circle cx="15" cy="16" r="6" ${stroke}/><circle cx="49" cy="16" r="6" ${stroke}/><circle cx="32" cy="48" r="6" ${stroke}/><path d="M21 16h22M18 21l10 21M46 21L36 42" ${stroke}/><path d="M12 38h12v12H12zM40 38h12v12H40z" fill="${hue}" opacity=".12"/></svg>`,
     mc:`<svg ${common}><rect x="14" y="10" width="34" height="44" rx="6" ${base}/><path d="M22 10h20l6 6v38H16V10h6z" ${stroke}/><path d="M42 10v8h8M23 28h18M23 36h18M23 44h11" ${stroke}/></svg>`,
     m0:`<svg ${common}><rect x="14" y="10" width="36" height="44" rx="8" ${base}/><rect x="16" y="12" width="32" height="40" rx="7" ${stroke}/><path d="M23 22h18M23 32h4M31 32h4M39 32h4M23 40h4M31 40h4M39 40h4" ${stroke}/></svg>`
@@ -1772,6 +1831,14 @@ function renderHome(){
         <div class="tbar"><i style="width:100%;background:${m.hue};opacity:.35"></i></div>
       </button>`;
     }
+    if(m.teachOnly){
+      return `<button class="cube-card" data-mod="${m.id}" style="--mod:${m.hue}">
+        <div class="top">${moduleIcon(m.id,100,m.hue)}</div>
+        <h3>${m.n}</h3>
+        <div class="meta">guided practice</div>
+        <div class="tbar"><i style="width:100%;background:${m.hue};opacity:.35"></i></div>
+      </button>`;
+    }
     const s=statsFor(modIds(m));
     return `<button class="cube-card${s.pct===100?" done":""}" data-mod="${m.id}" style="--mod:${m.hue}">
       <div class="top">${moduleIcon(m.id,s.pct,m.hue)}<span class="pct">${s.pct}%</span></div>
@@ -1782,7 +1849,7 @@ function renderHome(){
   }).join("");
 
   /* focus strip: the three weakest topics with work left */
-  const weak=MODULES.filter(m=>!m.calcOnly&&!m.caseOnly&&!m.frameworkOnly).flatMap(m=>m.topics.map(t=>{
+  const weak=MODULES.filter(m=>!m.calcOnly&&!m.caseOnly&&!m.frameworkOnly&&!m.teachOnly).flatMap(m=>m.topics.map(t=>{
     const s=statsFor([t.id]); return {t,m,s};
   })).filter(x=>x.s.retired<x.s.total).sort((a,b)=>a.s.pct-b.s.pct||a.t.id.localeCompare(b.t.id)).slice(0,3);
 
@@ -1811,9 +1878,14 @@ let CALC_CATS=null;
 let OPEN_CASE=null, OPEN_HOW=null;
 function show(v){
   VIEW=v;
+  $("#courseView").classList.toggle("hidden",v!=="courses");
   $("#homeView").classList.toggle("hidden",v!=="home");
   $("#sessView").classList.toggle("hidden",v!=="session");
   $("#worldView").classList.toggle("hidden",v!=="world");
+  $("#coursesBtn").classList.toggle("hidden",v==="courses");
+  $("#sessBtn").classList.toggle("hidden",v==="courses");
+  $("#homeEyebrow").textContent=v==="courses"?"MBAassist":"MBA512 · Managerial Finance";
+  $("#homeTitle").textContent=v==="courses"?"Course workspace":"Managerial Finance";
   $("#topbarHome").classList.toggle("hidden",v==="world");
   $("#topbarWorld").classList.toggle("hidden",v!=="world");
   window.scrollTo({top:0,behavior:"instant"in document.documentElement.style?"instant":"auto"});
@@ -1835,7 +1907,7 @@ function openWorld(id,pane){
   location.hash=id+(initial?"/"+initial:"");
 }
 function worldTabs(m){
-  return m.caseOnly?["cases"]:m.calcOnly?["calc"]:m.frameworkOnly?["framework"]:(m.cats&&m.cats.length?["learn","drill","calc"]:["learn","drill"]);
+  return m.caseOnly?["cases"]:m.calcOnly?["calc"]:m.frameworkOnly?["framework"]:m.teachOnly?["teach"]:(m.cats&&m.cats.length?["learn","drill","calc"]:["learn","drill"]);
 }
 function renderModuleNav(){
   if(!WORLD) return;
@@ -1856,10 +1928,12 @@ function setPane(p){
   document.querySelectorAll("#worldSeg button").forEach(b=>b.classList.toggle("on",b.dataset.pane===p));
   $("#learnPane").classList.toggle("hidden",p!=="learn");
   $("#drillPane").classList.toggle("hidden",p!=="drill");
+  $("#teachPane").classList.toggle("hidden",p!=="teach");
   $("#frameworkPane").classList.toggle("hidden",p!=="framework");
   $("#calcPane").classList.toggle("hidden",p!=="calc");
   $("#casePane").classList.toggle("hidden",p!=="cases");
   if(p==="cases") renderCases();
+  if(p==="teach") renderTeach();
   if(p==="framework") renderFramework();
   if(p==="learn") renderLearn();
   if(p==="drill" && !DRILL) renderDrillIntro();
@@ -1961,6 +2035,79 @@ function renderFramework(){
       </div>
       <button class="next" data-mod="m0" type="button">Open calculator</button>
     </div>`;
+}
+
+/* ============ teach mode ============ */
+const TEACH=[
+ {id:"teach-pv",title:"Single cash flow present value",meta:"Lecture 3 · PV",
+  problem:"You will receive $5,000 at the end of year 4. The discount rate is 8% per year. What is this cash flow worth today?",
+  timeline:[["0","? PV"],["1",""],["2",""],["3",""],["4","$5,000"]],
+  steps:[
+   ["What is being asked?","The phrase worth today tells us the unknown is present value. We are moving one future amount back to time 0."],
+   ["Extract variables","FV = 5,000; r = 8% per year; t = 4 years; PV is unknown. The rate period and time period already match."],
+   ["Select formula family","This is one cash flow, not equal payments. Use the lump-sum present value relationship."],
+   ["Compute","PV = 5,000 / (1.08)^4 = 5,000 / 1.36049 = 3,675.15."],
+   ["Answer","The cash flow is worth about $3,675 today. The answer is lower than $5,000 because future money is discounted."]
+  ]},
+ {id:"teach-ann",title:"Loan payment",meta:"Lecture 3 · annuity",
+  problem:"A student borrows $20,000 and will repay it with equal annual payments over 5 years. The loan rate is 10%. What annual payment is required?",
+  timeline:[["0","$20,000"],["1","PMT"],["2","PMT"],["3","PMT"],["4","PMT"],["5","PMT"]],
+  steps:[
+   ["What is being asked?","The unknown is the equal payment. The loan amount is the present value of a 5-payment annuity."],
+   ["Extract variables","PV = 20,000; r = 10%; n = 5; PMT is unknown. Payments are annual, so the annual rate fits."],
+   ["Select formula family","Equal payments that stop after 5 periods means ordinary annuity, assuming payments are at year-end."],
+   ["Compute","PVIFA(10%,5) = 3.7908. PMT = 20,000 / 3.7908 = 5,275.95."],
+   ["Answer","The annual payment is about $5,276. Early payments include more interest; later payments repay more principal."]
+  ]},
+ {id:"teach-bond",title:"Bond price",meta:"Lecture 4 · bonds",
+  problem:"A 3-year bond has $1,000 face value and pays an 8% annual coupon. Similar-risk bonds yield 10%. What is the bond price?",
+  timeline:[["0","? Price"],["1","$80"],["2","$80"],["3","$1,080"]],
+  steps:[
+   ["What is being asked?","Price means present value today. The bond pays coupons plus face value at maturity."],
+   ["Extract variables","Coupon = 8% x 1,000 = 80; face value = 1,000; r = 10%; n = 3."],
+   ["Select formula family","A bond is coupon annuity plus face-value lump sum. Discount all promised cash flows at the market yield."],
+   ["Compute","Price = 80/1.10 + 80/(1.10)^2 + 1,080/(1.10)^3 = 950.26."],
+   ["Answer","The bond is worth about $950. It sells at a discount because the coupon rate is below the required return."]
+  ]},
+ {id:"teach-roe",title:"DuPont ROE",meta:"Lecture 2 · performance",
+  problem:"A firm has net profit margin of 6%, asset turnover of 1.5, and equity multiplier of 2.0. What is ROE?",
+  timeline:[["Inputs","6%, 1.5, 2.0"],["Output","? ROE"]],
+  steps:[
+   ["What is being asked?","ROE asks for the return earned for shareholders. DuPont breaks it into margin, efficiency, and leverage."],
+   ["Extract variables","Net profit margin = 6%; asset turnover = 1.5; equity multiplier = 2.0."],
+   ["Select formula family","This is a ratio decomposition, not TVM. Use extended DuPont for ROE."],
+   ["Compute","ROE = 0.06 x 1.5 x 2.0 = 0.18."],
+   ["Answer","ROE is 18%. The firm gets there through 6% profit on sales, 1.5 times asset use, and 2.0 times leverage."]
+  ]}
+];
+let TEACH_ID=TEACH[0].id, TEACH_STEP=0, TEACH_DONE=0;
+function renderTimeline(items){
+  return `<div class="timeline">${items.map(([t,v])=>`<div class="tick"><i>${t}</i><span>${v||"&nbsp;"}</span></div>`).join("")}</div>`;
+}
+function renderTeach(){
+  const item=TEACH.find(x=>x.id===TEACH_ID)||TEACH[0];
+  const shown=item.steps.slice(0,TEACH_STEP+1);
+  $("#teachPane").innerHTML=`
+    <div class="teach-list">
+      ${TEACH.map(x=>`<button class="teach-card${x.id===item.id?" on":""}" data-teach="${x.id}" type="button">
+        <span class="dot" style="background:${WORLD.hue}"></span><span><b>${x.title}</b><span>${x.meta}</span></span>
+      </button>`).join("")}
+    </div>
+    <div class="teach-step">
+      <p class="eyebrow" style="margin-bottom:8px">Practice prompt</p>
+      <p>${item.problem}</p>
+      ${renderTimeline(item.timeline)}
+    </div>
+    <div class="notice">
+      <b>Try first</b>
+      <p>Before revealing the next step, write down what you think the unknown is, which values belong on the timeline, and what computation you would run.</p>
+    </div>
+    ${shown.map((s,ix)=>`<div class="teach-step"><p class="eyebrow" style="margin-bottom:8px">Step ${ix+1}</p><h3>${s[0]}</h3><p>${s[1]}</p></div>`).join("")}
+    ${TEACH_STEP<item.steps.length-1?
+      `<button class="next" data-teach-next type="button">Reveal next step</button>`:
+      `<div class="congrats"><b>Nice work.</b>You completed this guided computation. Try solving it again on paper before moving to the next one.</div>
+       <button class="next" data-teach-reset type="button">Try another guided problem</button>`}
+  `;
 }
 
 /* ============ drill ============ */
@@ -2068,11 +2215,13 @@ function finishDrill(){
   });
   const line=pct===100?"Clean sweep.":pct>=80?"Strong. The misses come back first next time.":
     pct>=50?"Worth re-reading the notes for the weakest topic below.":"Go back to Learn for these topics, then drill again.";
+  const praise=pct===100?"Excellent work. You handled the full batch.":pct>=80?"Good batch. You are building reliable recall.":pct>=50?"Progress made. Now target the missed topics.":"This is useful diagnostic work. Reset with Learn, then try again.";
   $("#drillPane").innerHTML=`
     <div class="panel score">
       <div class="big">${right}<span style="color:var(--ink-3)">/${d.q.length}</span></div>
       <p class="sub">${line}</p>
     </div>
+    <div class="congrats"><b>${praise}</b><span>${d.retiredNow?`${d.retiredNow} question${d.retiredNow===1?"":"s"} retired in this batch.`:"No new retirements yet; missed items will return first."}</span></div>
     <div class="panel">
       <p class="eyebrow" style="margin-bottom:12px">This drill</p>
       <div class="deltas">
@@ -2111,6 +2260,9 @@ function renderSession(){
 
 /* ============ events ============ */
 document.addEventListener("click",e=>{
+  const course=e.target.closest("[data-course]");
+  if(course&&course.dataset.course==="finance"){ location.hash="finance"; show("home"); renderHome(); return; }
+
   const mod=e.target.closest("[data-mod]");
   if(mod){ DRILL=null; openWorld(mod.dataset.mod); return; }
 
@@ -2132,6 +2284,20 @@ document.addEventListener("click",e=>{
     } else if(kind==="again"&&DRILL_LAST){ startDrill(DRILL_LAST.ids,DRILL_LAST.q.length,DRILL_LAST.label); }
     return;
   }
+  const teach=e.target.closest("[data-teach]");
+  if(teach){ TEACH_ID=teach.dataset.teach; TEACH_STEP=0; renderTeach(); return; }
+  if(e.target.closest("[data-teach-next]")){
+    const item=TEACH.find(x=>x.id===TEACH_ID)||TEACH[0];
+    TEACH_STEP=Math.min(TEACH_STEP+1,item.steps.length-1);
+    renderTeach(); return;
+  }
+  if(e.target.closest("[data-teach-reset]")){
+    const idx=TEACH.findIndex(x=>x.id===TEACH_ID);
+    TEACH_DONE++;
+    TEACH_ID=TEACH[(idx+1+TEACH.length)%TEACH.length].id;
+    TEACH_STEP=0;
+    renderTeach(); return;
+  }
   const pk=e.target.closest("[data-pick]");
   if(pk&&DRILL){ answer(Number(pk.dataset.pick)); return; }
 
@@ -2142,13 +2308,19 @@ document.addEventListener("click",e=>{
   if(seg){ setPane(seg.dataset.pane); syncHash(); return; }
 
   const goto=e.target.closest("[data-goto]");
-  if(goto){ DRILL=null; show(goto.dataset.goto); if(goto.dataset.goto==="home") renderHome(); return; }
+  if(goto){
+    DRILL=null;
+    if(goto.dataset.goto==="home") location.hash="finance";
+    show(goto.dataset.goto); if(goto.dataset.goto==="home") renderHome(); return;
+  }
 
   const p=e.target.closest(".pick,.chip");
   if(p&&p.dataset.id) openFormula(p.dataset.id);
 });
 
-$("#backBtn").onclick=()=>{ DRILL=null; CALC_CATS=null; location.hash=""; show("home"); renderHome(); };
+$("#backBtn").onclick=()=>{ DRILL=null; CALC_CATS=null; location.hash="finance"; show("home"); renderHome(); };
+$("#coursesBtn").onclick=()=>{ DRILL=null; CALC_CATS=null; location.hash=""; show("courses"); };
+$("#courseWorldBtn").onclick=()=>{ DRILL=null; CALC_CATS=null; location.hash=""; show("courses"); };
 $("#sessBtn").onclick=()=>{ renderSession(); show("session"); };
 function toggleTheme(){
   document.body.classList.toggle("dark");
@@ -2164,7 +2336,7 @@ $("#newSess").onclick=()=>{
   if(!confirm("Start a fresh session? All mastery progress on this device will be cleared.")) return;
   SESSION=newSession($("#learnerName").value.trim());
   try{localStorage.setItem(SKEY,JSON.stringify(SESSION));}catch(_){}
-  M={}; DRILLNO=0; FLAGS={}; saveProgress(); saveFlags(); renderSession(); renderHome(); show("home");
+  M={}; DRILLNO=0; FLAGS={}; saveProgress(); saveFlags(); renderSession(); renderHome(); location.hash="finance"; show("home");
 };
 
 /* calculator search */
@@ -2180,8 +2352,16 @@ let saved=null; try{saved=localStorage.getItem("mba512-theme");}catch(_){}
 if(saved==="dark"||(!saved&&matchMedia("(prefers-color-scheme: dark)").matches)) document.body.classList.add("dark");
 renderHome(); renderSession(); renderList();
 const h=(location.hash||"").replace("#","");
-if(h){ const [mid,pane]=h.split("/"); if(MODULES.some(m=>m.id===mid)) openWorld(mid,pane); }
-addEventListener("hashchange",()=>{ if(!location.hash&&VIEW==="world"){ DRILL=null; show("home"); renderHome(); } });
+if(h==="finance") show("home");
+else if(h){ const [mid,pane]=h.split("/"); if(MODULES.some(m=>m.id===mid)) openWorld(mid,pane); else show("courses"); }
+else show("courses");
+addEventListener("hashchange",()=>{
+  const next=(location.hash||"").replace("#","");
+  if(!next){ DRILL=null; show("courses"); return; }
+  if(next==="finance"){ DRILL=null; show("home"); renderHome(); return; }
+  const [mid,pane]=next.split("/");
+  if(MODULES.some(m=>m.id===mid)) openWorld(mid,pane);
+});
 if("serviceWorker" in navigator && location.protocol.startsWith("http")){
   addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
 }

@@ -1,11 +1,14 @@
-# MBA512 Mastery
+# MBAassist
 
-A modular study app for MBA512 Managerial Finance. Everything is in one
-self-contained `index.html` — no build step, no dependencies, works offline.
+A scalable MBA course learning workspace. The first live course is MBA512
+Managerial Finance; Cross-Border Business is present as a coming-soon course.
+Everything is in one self-contained `index.html` — no build step, no
+dependencies, works offline.
 
 ## What it does
 
-Eight modules on the home screen. Tap a card to enter it.
+The landing page is a course hub. Inside Managerial Finance, there are nine
+learning modules.
 
 | Module | Source | Questions |
 |---|---|---|
@@ -14,6 +17,7 @@ Eight modules on the home screen. Tap a card to enter it.
 | Time value | Lecture 3 — time value of money & applications | 97 |
 | Bonds | Lecture 4 — bond valuation & analysis | 76 |
 | Stocks | Lecture 5 — stock valuation & market efficiency | 76 |
+| Teach mode | Guided computation walkthroughs | — |
 | Formula map | Framework for selecting the right formula | — |
 | Case room | The MBA Decision + three lecture breakouts | — |
 | Calculator | 35 formulas with step-by-step workings | — |
@@ -30,6 +34,8 @@ Inside a lecture module there are up to three tabs:
 - **Formulas** — the calculator, filtered to the formulas that lecture uses.
 - **Formula map** — a decision framework for choosing the right formula before
   opening the calculator.
+- **Teach mode** — step-by-step computation practice with timelines, variable
+  extraction, formula selection, computation, and answer interpretation.
 
 Because formula sheets are usually provided, drill questions should emphasise
 setup, computation, and interpretation rather than asking students to identify
