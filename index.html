@@ -107,6 +107,21 @@ body.dark .welcome-form{background:rgba(29,25,18,.78);border-color:rgba(60,51,39
 .welcome-form input{min-width:0;flex:1;margin:0}
 .welcome-form button{flex:none;padding:0 15px;border-radius:11px;background:var(--ink);color:var(--bg);font-weight:650}
 .welcome-note{font-size:12px;color:var(--ink-3);margin-top:8px;line-height:1.4}
+
+/* ---------- what's inside (orientation) ---------- */
+.intro-head{margin:2px 0 4px}
+.intro-head h2{font-size:26px;letter-spacing:-.026em;margin:7px 0 10px}
+.intro-lede{font-size:14.5px;color:var(--ink-2);line-height:1.55}
+.tool-row.static{cursor:default}
+.tool-row.static:active{transform:none;border-color:var(--line)}
+.tool-row.static span{font-size:13px;line-height:1.5;color:var(--ink-2);margin-top:3px}
+/* inline emphasis inside the body copy must not inherit the block title style */
+.tool-row.static .tbody span b{display:inline;font-size:inherit;font-weight:620;color:var(--ink)}
+.tool-row.static .kbd{
+  display:inline-block;font-family:var(--mono);font-size:11.5px;
+  background:var(--raised);border:1px solid var(--line);border-radius:5px;
+  padding:0 5px;color:var(--ink-2);
+}
 .mentor{
   position:relative;z-index:1;height:190px;margin:14px 0 4px;
 }
@@ -678,6 +693,32 @@ body.dark .flagbtn.on{background:#2D2413;color:#F3C46B;border-color:#8A6A24}
   </div>
 </main>
 
+<!-- ============ WHAT'S INSIDE (orientation) ============ -->
+<main id="introView" class="wrap hidden">
+  <section class="intro-head">
+    <p class="eyebrow" id="introGreet">Welcome</p>
+    <h2>What's inside</h2>
+    <p class="intro-lede">Everything for MBA512 sits in one place, and it works offline. Here's where to find each piece — about thirty seconds of reading, then you're set.</p>
+  </section>
+
+  <p class="eyebrow sec-label">The weekly loop</p>
+  <div class="tools" id="introLoop"></div>
+
+  <p class="eyebrow sec-label">When you're stuck</p>
+  <div class="tools" id="introStuck"></div>
+
+  <p class="eyebrow sec-label">Keeping your progress</p>
+  <div class="tools" id="introKeep"></div>
+
+  <div class="notice" style="margin-top:16px">
+    <b>One rule</b>
+    <p>MBA512 does not allow AI chatbots for graded work — quizzes, assignments, case analysis or the final exam. Use this app to learn the material beforehand, then sit the assessment on your own.</p>
+  </div>
+
+  <button class="next" id="introDone" type="button">Start studying</button>
+  <p class="welcome-note" style="text-align:center">You can reopen this any time from the <b>☰</b> menu.</p>
+</main>
+
 <!-- ============ MANAGERIAL FINANCE HOME ============ -->
 <main id="homeView" class="wrap">
   <div class="hero">
@@ -708,6 +749,11 @@ body.dark .flagbtn.on{background:#2D2413;color:#F3C46B;border-color:#8A6A24}
 
 <!-- ============ SESSION ============ -->
 <main id="sessView" class="wrap hidden">
+  <div class="panel">
+    <p class="eyebrow" style="margin-bottom:10px">New here?</p>
+    <button class="ghost" id="showIntro">What's inside</button>
+    <p class="warn">A short tour of where everything lives — the lectures, teach mode, drills, cases, the formula tools and your progress.</p>
+  </div>
   <div class="panel">
     <p class="eyebrow" style="margin-bottom:12px">Your session</p>
     <div class="srow">
@@ -2548,6 +2594,55 @@ function renderCourseHub(){
   $("#courseGreeting").textContent=nm?`Welcome back, ${nm}`:"Welcome";
 }
 
+/* ============ what's inside (orientation) ============ */
+function introIcon(kind,hue){
+  const c=`class="concept-icon" viewBox="0 0 64 64" aria-hidden="true"`;
+  const s=`fill="none" stroke="${hue}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"`;
+  const f=`fill="${hue}" opacity=".13"`;
+  const icons={
+    lectures:`<svg ${c}><rect x="9" y="14" width="20" height="36" rx="4" ${f}/><rect x="9" y="14" width="20" height="36" rx="4" ${s}/><rect x="33" y="14" width="20" height="36" rx="4" ${s}/><path d="M14 24h10M14 32h10M38 24h10M38 32h10" ${s} opacity=".6"/></svg>`,
+    drill:`<svg ${c}><circle cx="32" cy="32" r="21" ${f}/><circle cx="32" cy="32" r="21" ${s}/><circle cx="32" cy="32" r="12" ${s} opacity=".55"/><circle cx="32" cy="32" r="4" fill="${hue}"/><path d="M44 20l8-8" ${s}/></svg>`,
+    session:`<svg ${c}><rect x="18" y="9" width="28" height="46" rx="6" ${f}/><rect x="18" y="9" width="28" height="46" rx="6" ${s}/><path d="M27 47h10" ${s}/><path d="M26 27l5 5 9-10" ${s}/></svg>`,
+    install:`<svg ${c}><rect x="18" y="9" width="28" height="46" rx="6" ${f}/><rect x="18" y="9" width="28" height="46" rx="6" ${s}/><path d="M32 21v16M26 31l6 6 6-6" ${s}/><path d="M27 47h10" ${s} opacity=".55"/></svg>`
+  };
+  return icons[kind]||icons.lectures;
+}
+function introRow(icon,hue,title,body){
+  return `<div class="tool-row static" style="--tc:${hue}">
+    <span class="ti">${icon}</span>
+    <span class="tbody"><b>${title}</b><span>${body}</span></span>
+  </div>`;
+}
+function renderIntro(){
+  const nm=(SESSION.name||"").trim().split(/\s+/)[0];
+  $("#introGreet").textContent=nm?`Welcome, ${nm}`:"Welcome";
+  const lectures=MODULES.filter(m=>/^m[1-7]$/.test(m.id));
+  const mod=id=>MODULES.find(m=>m.id===id)||{hue:"#4A5058",n:""};
+  const mt=mod("mt"), mf=mod("mf"), mc=mod("mc"), m0=mod("m0");
+
+  $("#introLoop").innerHTML=
+    introRow(introIcon("lectures","#2F6F5E"),"#2F6F5E",`${lectures.length} lecture modules`,
+      `Lecture 1 through ${lectures.length}, on the home screen. Open one and you get tabs for <b>Learn</b> (the notes and objectives), <b>Teach</b> (the lessons), <b>Drill</b> (questions) and <b>Formulas</b> (that lecture's calculators).`)+
+    introRow(moduleIcon("mt",100,mt.hue),mt.hue,"Teach mode",
+      `${LESSONS.length} lessons, one per topic, that explain each idea from scratch and stop to ask you questions along the way. Start here when something hasn't clicked.`)+
+    introRow(introIcon("drill","#8A2E3B"),"#8A2E3B","Drill",
+      `${QB.length} questions with an explanation after every answer. Get one right twice in a row and it retires; ones you miss come back first. Pick 5, 10 or 20 at a time.`);
+
+  $("#introStuck").innerHTML=
+    introRow(moduleIcon("mf",100,mf.hue),mf.hue,"Formula map",
+      `Not sure which formula a question wants? Answer a couple of prompts and it walks you to the right one.`)+
+    introRow(moduleIcon("m0",100,m0.hue),m0.hue,"Calculator",
+      `${F.length} formulas that show every line of the working, not just the answer. Enter rates as percentages — type <span class="kbd">11</span> for 11%.`)+
+    introRow(moduleIcon("mc",100,mc.hue),mc.hue,"Case room",
+      `The MBA Decision minicase plus lecture breakouts. You get the facts, the questions and the method — running the numbers is left to you, because that is the part being examined.`);
+
+  $("#introKeep").innerHTML=
+    introRow(introIcon("session","#B07A2E"),"#B07A2E","Your session — the ☰ menu",
+      `Progress is saved in this browser only. The menu holds your streak, flagged questions, and <b>Save a backup file</b> — use it before clearing site data or moving to another phone.`)+
+    introRow(introIcon("install","#4A4FA0"),"#4A4FA0","Install it on your phone",
+      `Open the share menu and choose <b>Add to Home Screen</b>. It then opens like an app and keeps working with no signal.`);
+}
+
 /* ============ views ============ */
 let VIEW="home", WORLD=null, PANE="learn";
 let CALC_CATS=null;
@@ -2556,17 +2651,19 @@ function show(v){
   VIEW=v;
   touchSession(v);
   $("#welcomeView").classList.toggle("hidden",v!=="welcome");
+  $("#introView").classList.toggle("hidden",v!=="intro");
   $("#courseView").classList.toggle("hidden",v!=="courses");
   $("#homeView").classList.toggle("hidden",v!=="home");
   $("#sessView").classList.toggle("hidden",v!=="session");
   $("#worldView").classList.toggle("hidden",v!=="world");
-  $("#coursesBtn").classList.toggle("hidden",v==="courses"||v==="welcome");
-  $("#sessBtn").classList.toggle("hidden",v==="welcome");
-  $("#homeEyebrow").textContent=v==="courses"||v==="welcome"?"MBAassist":"MBA512 · Managerial Finance";
-  $("#homeTitle").textContent=v==="welcome"?"Welcome":v==="courses"?"Course workspace":"Managerial Finance";
+  $("#coursesBtn").classList.toggle("hidden",v==="courses"||v==="welcome"||v==="intro");
+  $("#sessBtn").classList.toggle("hidden",v==="welcome"||v==="intro");
+  $("#homeEyebrow").textContent=v==="courses"||v==="welcome"||v==="intro"?"MBAassist":"MBA512 · Managerial Finance";
+  $("#homeTitle").textContent=v==="welcome"?"Welcome":v==="intro"?"Getting started":v==="courses"?"Course workspace":"Managerial Finance";
   $("#topbarHome").classList.toggle("hidden",v==="world");
   $("#topbarWorld").classList.toggle("hidden",v!=="world");
   if(v==="courses") renderCourseHub();
+  if(v==="intro") renderIntro();
   window.scrollTo({top:0,behavior:"instant"in document.documentElement.style?"instant":"auto"});
 }
 function openWorld(id,pane){
@@ -3868,8 +3965,14 @@ $("#welcomeForm").onsubmit=e=>{
   $("#learnerName").value=name;
   renderSession();
   location.hash="";
-  show("courses");
+  show(SESSION.oriented?"courses":"intro");
 };
+/* the orientation is shown once; the ☰ menu can reopen it any time */
+$("#introDone").onclick=()=>{
+  SESSION.oriented=true; saveSession();
+  location.hash=""; show("courses");
+};
+$("#showIntro").onclick=()=>{ SESSION.oriented=true; saveSession(); show("intro"); };
 function toggleTheme(){
   document.body.classList.toggle("dark");
   try{localStorage.setItem("mba512-theme",document.body.classList.contains("dark")?"dark":"light");}catch(_){}
@@ -3884,8 +3987,10 @@ $("#saveName").onclick=()=>{
 };
 $("#newSess").onclick=()=>{
   if(!confirm("Start a fresh session? All mastery progress on this device will be cleared.")) return;
+  const wasOriented=SESSION.oriented;
   SESSION=newSession($("#learnerName").value.trim());
   SESSION.started=!!SESSION.name;
+  SESSION.oriented=wasOriented;   /* clearing progress shouldn't replay the tour */
   saveSession();
   M={}; DRILLNO=0; FLAGS={}; LDONE={}; LESSON_ID=null;
   saveProgress(); saveFlags(); renderSession(); renderHome(); location.hash="finance"; show("home");
@@ -3937,6 +4042,8 @@ $("#welcomeName").value=SESSION.name||"";
 renderHome(); renderSession(); renderCourseHub(); renderList();
 function routeFromHash(){
   if(!(SESSION.name||"").trim()){ show("welcome"); return; }
+  /* returning users who predate the tour see it once, on a plain entry */
+  if(!SESSION.oriented && !(location.hash||"").replace("#","")){ show("intro"); return; }
   const h=(location.hash||"").replace("#","");
   if(h==="finance"){ show("home"); renderHome(); return; }
   if(h){ const [mid,pane]=h.split("/"); if(MODULES.some(m=>m.id===mid)){ openWorld(mid,pane); return; } }

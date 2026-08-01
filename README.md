@@ -36,6 +36,19 @@ one).
 
 **570 drill questions in total**, across 29 topics.
 
+## First run
+
+The first time someone enters their name they get a short **What's inside**
+screen — a scannable tour of where everything lives, grouped into the weekly
+loop (lectures, teach mode, drill), what to reach for when stuck (formula map,
+calculator, case room), and how progress is kept (the ☰ menu, backups, adding
+the app to a phone home screen). It closes with the academic-integrity rule.
+
+It appears once, then never again. Anyone can reopen it from **☰ → What's
+inside**. Deep links are never interrupted by it, and clearing progress with
+"Begin a fresh session" does not replay it. All the counts on that screen are
+read from the data at render time, so they stay correct as content is added.
+
 ## Teach mode
 
 Teach mode is where the material gets *explained* rather than tested. There is
