@@ -395,6 +395,15 @@ body.dark .flagbtn.on{background:#2D2413;color:#F3C46B;border-color:#8A6A24}
 .congrats{background:var(--ok-bg);border:1px solid var(--ok);color:var(--ok);border-radius:var(--r);padding:15px;margin-top:10px}
 .congrats b{display:block;margin-bottom:4px}
 .congrats span{display:block;font-size:13px;line-height:1.45}
+.concept-step{border-left:3px solid var(--accent)}
+.concept-step p{margin-bottom:9px}
+.concept-step p:last-child{margin-bottom:0}
+.check{background:var(--raised);border:1px solid var(--line);border-radius:10px;padding:10px 13px;margin:10px 0}
+.check summary{cursor:pointer;font-size:13.5px;font-weight:600;color:var(--accent);list-style:none}
+.check summary::-webkit-details-marker{display:none}
+.check summary:before{content:"?  ";font-family:var(--mono)}
+.check[open] summary{margin-bottom:6px}
+.check p{font-size:13.5px;color:var(--ink-2);line-height:1.5}
 
 /* ---------- calculator (reused engine) ---------- */
 .bar-search{display:flex;gap:9px;margin-bottom:14px}
@@ -1112,7 +1121,115 @@ const F = [
    steps:[{l:"Value if it never grew",m:`${money(v.eps)} ÷ ${r6(v.r)} = ${money(noG)}`},
           {l:"Subtract from the price",m:`${money(v.p)} − ${money(noG)}`},
           {l:"Share of price that is growth",m:`${money(pvgo)} ÷ ${money(v.p)} = ${pctS(pvgo/v.p,2)}`}],
-   ans:money(pvgo), why:"A high P/E usually means investors are paying for growth, not current earnings."};}}
+   ans:money(pvgo), why:"A high P/E usually means investors are paying for growth, not current earnings."};}},
+
+/* ---- 9. capital budgeting ---- */
+{id:"npv", cat:"Capital budgeting", name:"Net present value (NPV)",
+ blurb:"What a project is worth today, after its cost.", key:"npv net present value project accept reject capital budgeting",
+ sym:"NPV = C0 + Σ CFₜ / (1 + r)^t",
+ in:[{k:"c0",l:"Initial outlay at year 0 (enter as negative)",h:"e.g. -500000"},
+     {k:"cfs",l:"Cash flows from year 1 onward",t:"text",h:"e.g. 150000, 200000, 250000"},
+     {k:"r",l:"Discount rate — cost of capital (%)",h:"e.g. 10"}],
+ run:v=>{const cf=nums(v.cfs); if(!cf.length) throw "Enter at least one cash flow.";
+   let tot=v.c0; const s=[{l:"Year 0",m:`${money(v.c0)} (no discounting)`}];
+   cf.forEach((c,idx)=>{const t=idx+1, d=Math.pow(1+v.r,t), pv=c/d; tot+=pv;
+     s.push({l:`Year ${t}`,m:`${money(c)} ÷ (1+${money(v.r*100,4)}%)^${t} = ${money(pv)}`});});
+   s.push({l:"Sum = NPV",m:money(tot)});
+   return {steps:s, ans:money(tot),
+     why: tot>0?"NPV is positive — the project is expected to add value, so accept.":
+          tot<0?"NPV is negative — the project would destroy value, so reject.":
+          "NPV is exactly zero — the firm is indifferent."};}},
+
+{id:"irrx", cat:"Capital budgeting", name:"IRR by interpolation (two trial rates)",
+ blurb:"Bracket the true rate with two guesses, then interpolate — the approximation method used in class.",
+ key:"irr internal rate of return interpolation approximation trial and error",
+ sym:"IRR ≈ Ra + [NPVa / (NPVa − NPVb)] × (Rb − Ra)",
+ in:[{k:"c0",l:"Initial outlay at year 0 (enter as negative)",h:"e.g. -350000"},
+     {k:"cfs",l:"Cash flows from year 1 onward",t:"text",h:"e.g. 16000, 16000, 466000"},
+     {k:"ra",l:"Lower trial rate — must give a POSITIVE NPV (%)",h:"e.g. 10"},
+     {k:"rb",l:"Higher trial rate — must give a NEGATIVE NPV (%)",h:"e.g. 15"}],
+ run:v=>{const cf=nums(v.cfs); if(!cf.length) throw "Enter at least one cash flow.";
+   const npvAt=r=>{let tot=v.c0; cf.forEach((c,idx)=>{tot+=c/Math.pow(1+r,idx+1);}); return tot;};
+   const na=npvAt(v.ra), nb=npvAt(v.rb);
+   if(na<=0||nb>=0) throw "Pick a lower trial rate with a positive NPV and a higher trial rate with a negative NPV.";
+   const irr=v.ra+na/(na-nb)*(v.rb-v.ra);
+   return {steps:[
+     {l:`NPV at ${money(v.ra*100,4)}%`,m:money(na)},
+     {l:`NPV at ${money(v.rb*100,4)}%`,m:money(nb)},
+     {l:"Interpolate",m:`${money(v.ra*100,4)}% + [${money(na)} ÷ (${money(na)} − ${money(nb)})] × (${money(v.rb*100,4)}% − ${money(v.ra*100,4)}%)`}],
+     ans:pctS(irr,2), why:"This is a straight-line estimate between two trial rates, the same approximation method used in class — it is close to, but not exactly, the true root."};}},
+
+{id:"payback", cat:"Capital budgeting", name:"Payback period",
+ blurb:"Years until the project's own cash flows repay the cost — no discounting.", key:"payback period cutoff recover investment liquidity",
+ sym:"Payback = full years + (amount still owed ÷ next year's cash flow)",
+ in:[{k:"c0",l:"Initial outlay at year 0 (enter as negative)",h:"e.g. -2000"},
+     {k:"cfs",l:"Cash flows from year 1 onward",t:"text",h:"e.g. 1000, 1000, 10000"}],
+ run:v=>{const cf=nums(v.cfs); if(!cf.length) throw "Enter at least one cash flow.";
+   let cum=v.c0; const s=[{l:"Year 0",m:money(v.c0)}];
+   for(let t=0;t<cf.length;t++){
+     const prev=cum; cum+=cf[t];
+     s.push({l:`Year ${t+1}`,m:`${money(prev)} + ${money(cf[t])} = ${money(cum)} cumulative`});
+     if(cum>=0){
+       const frac=cf[t]===0?0:(-prev)/cf[t], yrs=t+frac;
+       s.push({l:"Fraction of the final year",m:`${money(-prev)} still owed ÷ ${money(cf[t])} = ${r6(frac)}`});
+       return {steps:s, ans:`${money(yrs,2)} years`,
+         why:"Payback ignores every cash flow after this point and ignores the time value of money — use it only as a quick liquidity screen, never as a value measure."};
+     }
+   }
+   throw "The cash flows never fully repay the initial outlay.";}},
+
+{id:"dpayback", cat:"Capital budgeting", name:"Discounted payback period",
+ blurb:"Same idea as payback, but on discounted cash flows.", key:"discounted payback period cutoff recover investment",
+ sym:"Discounted payback = full years + (discounted amount still owed ÷ next year's discounted cash flow)",
+ in:[{k:"c0",l:"Initial outlay at year 0 (enter as negative)",h:"e.g. -2000"},
+     {k:"cfs",l:"Cash flows from year 1 onward",t:"text",h:"e.g. 1000, 1000, 10000"},
+     {k:"r",l:"Discount rate (%)",h:"e.g. 10"}],
+ run:v=>{const cf=nums(v.cfs); if(!cf.length) throw "Enter at least one cash flow.";
+   let cum=v.c0; const s=[{l:"Year 0",m:money(v.c0)}];
+   for(let t=0;t<cf.length;t++){
+     const d=Math.pow(1+v.r,t+1), dcf=cf[t]/d, prev=cum; cum+=dcf;
+     s.push({l:`Year ${t+1}`,m:`${money(cf[t])} ÷ (1+${money(v.r*100,4)}%)^${t+1} = ${money(dcf)}  →  cumulative ${money(cum)}`});
+     if(cum>=0){
+       const frac=dcf===0?0:(-prev)/dcf, yrs=t+frac;
+       s.push({l:"Fraction of the final year",m:`${money(-prev)} still owed ÷ ${money(dcf)} = ${r6(frac)}`});
+       return {steps:s, ans:`${money(yrs,2)} years`,
+         why:"Better than plain payback since it respects the time value of money, but it still ignores every cash flow after the cutoff."};
+     }
+   }
+   throw "The discounted cash flows never fully repay the initial outlay.";}},
+
+{id:"pi", cat:"Capital budgeting", name:"Profitability index (PI)",
+ blurb:"NPV per dollar invested — the ranking tool for capital rationing.", key:"profitability index capital rationing ranking budget limit",
+ sym:"PI = PV of future cash flows ÷ initial investment  =  (NPV ÷ initial investment) + 1",
+ in:[{k:"c0",l:"Initial outlay at year 0 (enter as negative)",h:"e.g. -3000000"},
+     {k:"cfs",l:"Cash flows from year 1 onward",t:"text",h:"e.g. 2200000, 2420000"},
+     {k:"r",l:"Discount rate (%)",h:"e.g. 10"}],
+ run:v=>{const cf=nums(v.cfs); if(!cf.length) throw "Enter at least one cash flow.";
+   if(v.c0>=0) throw "Enter the initial outlay as a negative number.";
+   let pvFuture=0; const s=[];
+   cf.forEach((c,idx)=>{const t=idx+1, d=Math.pow(1+v.r,t), pv=c/d; pvFuture+=pv;
+     s.push({l:`Year ${t}`,m:`${money(c)} ÷ (1+${money(v.r*100,4)}%)^${t} = ${money(pv)}`});});
+   const inv=-v.c0, npvVal=pvFuture+v.c0, piPV=pvFuture/inv, piNPV=npvVal/inv;
+   s.push({l:"PV of future cash flows",m:money(pvFuture)});
+   s.push({l:"PI, PV basis",m:`${money(pvFuture)} ÷ ${money(inv)} = ${r6(piPV)}`});
+   s.push({l:"PI, NPV basis (always 1.0 lower)",m:`${money(npvVal)} ÷ ${money(inv)} = ${r6(piNPV)}`});
+   return {steps:s, ans:`${r6(piPV)}  (NPV basis: ${r6(piNPV)})`,
+     why:"Under a budget limit, rank competing projects by PI and fund the highest first until the budget runs out. If projects are mutually exclusive rather than just capital-rationed, trust NPV instead."};}},
+
+{id:"eac", cat:"Capital budgeting", name:"Equivalent annual cost (EAC)",
+ blurb:"Spreads an unequal-life asset's cost over one common year, for a fair comparison.", key:"equivalent annual cost benefit unequal lives replacement machine",
+ sym:"EAC = (Initial cost + annual cost × PVIFA(r,n)) ÷ PVIFA(r,n)",
+ in:[{k:"c0",l:"Initial cost (positive number)",h:"e.g. 25000"},
+     {k:"c",l:"Annual operating cost",h:"e.g. 8000"},
+     {k:"r",l:"Discount rate (%)",h:"e.g. 6"},
+     {k:"n",l:"Asset life in years (n)",h:"e.g. 5"}],
+ run:v=>{const a=PVIFA(v.r,v.n), pv=v.c0+v.c*a, eacVal=pv/a;
+   return {steps:[
+     {l:"Annuity factor PVIFA(r,n)",m:`(1 − 1/(1+${money(v.r*100,4)}%)^${v.n}) ÷ ${money(v.r*100,4)}% = ${r6(a)}`},
+     {l:"PV of all costs",m:`${money(v.c0)} + ${money(v.c)} × ${r6(a)} = ${money(pv)}`},
+     {l:"Spread over the asset's life",m:`${money(pv)} ÷ ${r6(a)} = ${money(eacVal)}`}],
+     ans:money(eacVal)+" per year",
+     why:"Converting every option to one 'per year' cost is the only fair way to compare assets that don't share the same lifespan."};}}
 ];
 
 
@@ -1133,7 +1250,8 @@ const CAT_META={
   "Loans & amortisation":["▤","Payments, balances and interest"],
   "Uneven cash flows":["⋮","Different amounts across time"],
   "Bonds":["◈","Price, yield and return"],
-  "Stocks":["▥","Dividends, growth and value"]
+  "Stocks":["▥","Dividends, growth and value"],
+  "Capital budgeting":["◎","Accept/reject investment decisions"]
 };
 
 function renderRecents(){
@@ -1172,7 +1290,7 @@ function renderList(filter=""){
 }
 
 /* ============ detail ============ */
-const PCTKEYS=new Set(["r","g","y","cr","tx","e","i","roe","po"]);
+const PCTKEYS=new Set(["r","g","y","cr","tx","e","i","roe","po","ra","rb"]);
 
 function openFormula(id){
   if(typeof navigateMode === "function" && document.getElementById("calcShell")) navigateMode("calc");
@@ -1260,7 +1378,14 @@ const WIZ={
     {t:"Just one amount",d:"A single deposit, a single future sum",go:"one"},
     {t:"Several EQUAL amounts",d:"The same payment repeating",go:"equal"},
     {t:"Several DIFFERENT amounts",d:"Varies year to year",go:"uneven"},
-    {t:"It's a bond or a share",d:"Coupons, or dividends",go:"secur"}]},
+    {t:"It's a bond or a share",d:"Coupons, or dividends",go:"secur"},
+    {t:"It's an accept/reject project decision",d:"Capital budgeting — should we invest?",go:"capbud"}]},
+  capbud:{q:"What do you need?",o:[
+    {t:"Is the project worth doing?",d:"Present value of cash flows, minus cost",f:"npv"},
+    {t:"The project's own rate of return",d:"Two trial rates, then interpolate",f:"irrx"},
+    {t:"How fast the cost is recovered",d:"No discounting",f:"payback"},
+    {t:"How fast the cost is recovered, discounted",d:"Respects the time value of money",f:"dpayback"},
+    {t:"Ranking projects under a budget limit",d:"Capital rationing",f:"pi"}]},
   one:{q:"What are you looking for?",o:[
     {t:"The value TODAY",d:"Pull a future amount back",f:"pv1"},
     {t:"The value LATER",d:"Grow an amount forward",f:"fv1"},
@@ -1860,6 +1985,94 @@ QB.push(
 {i:"p23",t:"t_app",q:"A cost that is identical under both options being compared can be:",a:["Ignored, since it nets out of the comparison","Counted twice","Used as the discount rate","Treated as income"],c:0,e:"Equal costs cancel in a like-for-like comparison, though you should state that you have excluded them."}
 );
 
+/* ===== Module 7 (Lecture 7 — Capital Budgeting) ===== */
+QB.push(
+/* ---- t_cb_npv: NPV & the accept/reject rule (prefix np) ---- */
+{i:"np01",t:"t_cb_npv",q:"Capital budgeting is best described as the process of:",a:["Determining what investments will maximize the value of the firm","Deciding how to pay employee bonuses","Setting the firm's dividend policy","Choosing an auditor"],c:0,e:"Capital budgeting decides which real assets or projects a firm should invest in to build value."},
+{i:"np02",t:"t_cb_npv",q:"NPV is defined as:",a:["The present value of a project's cash flows minus the initial investment","The accounting profit of a project","The payback period of a project","The book value of a project's assets"],c:0,e:"NPV = PV of the cash inflows minus the cost of getting them."},
+{i:"np03",t:"t_cb_npv",q:"The correct decision rule using NPV is to:",a:["Accept if NPV > 0","Accept if NPV < 0","Accept only if NPV = 0","Reject any project with a positive NPV"],c:0,e:"A positive NPV means the project is expected to add value to the firm."},
+{i:"np04",t:"t_cb_npv",q:"In the NPV formula, r represents:",a:["The tax rate","The opportunity cost of capital — the return given up on an equally risky alternative","The inflation rate only","The firm's dividend yield"],c:1,e:"r is the required return, set by the risk of the project's cash flows, not by taxes or inflation alone."},
+{i:"np05",t:"t_cb_npv",q:"The discount rate used to value a project's cash flows must:",a:["Always equal the risk-free rate","Match the risk of those particular cash flows","Equal the coupon rate on the firm's bonds","Be set by the accounting department"],c:1,e:"Risk and present value must be matched — riskier cash flows need a higher discount rate."},
+{i:"np06",t:"t_cb_npv",q:"Two or more projects that cannot be pursued at the same time are described as:",a:["Independent projects","Mutually exclusive projects","Sunk-cost projects","Perpetual projects"],c:1,e:"Doing one mutually exclusive project rules out doing the other."},
+{i:"np07",t:"t_cb_npv",q:"Among mutually exclusive projects with equal lives, all with positive NPV, the firm should choose the one with:",a:["The shortest payback","The highest NPV","The highest IRR regardless of NPV","The lowest initial cost"],c:1,e:"With equal lives, simply pick the highest-NPV project among those that clear zero."},
+{i:"np08",t:"t_cb_npv",q:"The two hardest — and most critical — inputs to get right in any NPV analysis are:",a:["The company's tax rate and its dividend policy","The amount and timing of the cash flows, and the appropriate discount rate","The number of shares outstanding and the share price","The firm's credit rating and its auditor's opinion"],c:1,e:"Everything in NPV analysis comes down to correctly forecasting cash flows and picking the right discount rate."},
+{i:"np09",t:"t_cb_npv",q:"A positive NPV signals that a project is expected to:",a:["Add value and increase shareholder wealth","Break even exactly","Reduce the firm's tax bill only","Have no risk"],c:0,e:"NPV is a direct dollar measure of expected value added to owners."},
+{i:"np10",t:"t_cb_npv",q:"You can buy a building today for $350,000 and are guaranteed to sell it for $400,000 in one year. At a 7% opportunity cost of capital, the NPV of this deal is closest to:",a:["$23,832","$50,000","$7,143","-$23,832"],c:0,e:"NPV = -350,000 + 400,000/1.07 = 23,832."},
+{i:"np11",t:"t_cb_npv",q:"Using the same building deal, but with a riskier 12% required return (matching stock-market risk), NPV is closest to:",a:["$23,832","$7,143","-$7,143","$0"],c:1,e:"NPV = -350,000 + 400,000/1.12 = 7,143. A higher required return lowers NPV."},
+{i:"np12",t:"t_cb_npv",q:"A firm considers equipment costing $500,000, expected to generate $150,000, $200,000 and $250,000 in years 1-3. At a 10% required return, the NPV is closest to:",a:["+$10,519","-$10,519","+$100,000","-$100,000"],c:1,e:"NPV = -500,000 + 150,000/1.10 + 200,000/1.10^2 + 250,000/1.10^3 = -10,519."},
+{i:"np13",t:"t_cb_npv",q:"Given the equipment project above (NPV ≈ -$10,519 at 10%), the firm should:",a:["Accept it — the cash flows are attractive","Reject it — it destroys value at the required return","Accept it only if the payback is under 2 years","Accept it because year-3 cash flow is the largest"],c:1,e:"A negative NPV means the project earns less than the required return, so it should be rejected."},
+{i:"np14",t:"t_cb_npv",q:"A project costs $200,000 and returns $80,000, $90,000 and $100,000 in years 1-3. At a 12% required return, NPV is closest to:",a:["+$14,354","-$14,354","+$70,000","+$270,000"],c:0,e:"NPV = -200,000 + 80,000/1.12 + 90,000/1.12^2 + 100,000/1.12^3 = +14,354."},
+{i:"np15",t:"t_cb_npv",q:"Projects X and Y both cost $40,000 and both last 4 years, at a 9% required return. X pays $15,000 a year for 4 years (NPV ≈ $8,596); Y pays $25,000, $20,000, $10,000 and $5,000 (NPV ≈ $11,033). If X and Y are mutually exclusive, the firm should choose:",a:["X, because its cash flows are equal each year","Y, because it has the higher NPV","Neither, because a level cash flow is always safer","X, because it is simpler to compute"],c:1,e:"With equal lives, the higher-NPV project wins — here, Y."},
+
+/* ---- t_cb_pay: Payback & discounted payback (prefix pb) ---- */
+{i:"pb01",t:"t_cb_pay",q:"The payback period measures:",a:["The time it takes for a project's cash flows to recover the initial investment","The project's internal rate of return","The present value of the project's cash flows","The project's accounting profit margin"],c:0,e:"Payback is purely about how long it takes to get your money back."},
+{i:"pb02",t:"t_cb_pay",q:"The payback decision rule is to accept a project if:",a:["Its payback period is less than some preset cutoff","Its payback period exceeds 10 years","Its NPV is negative","Its IRR is below the cost of capital"],c:0,e:"Management sets an acceptable payback limit and accepts projects that recover cost within it."},
+{i:"pb03",t:"t_cb_pay",q:"A key disadvantage of the payback rule is that it:",a:["Is too complicated to compute by hand","Ignores the time value of money","Always agrees with the NPV rule","Requires a financial calculator"],c:1,e:"Payback simply adds raw cash flows with no discounting."},
+{i:"pb04",t:"t_cb_pay",q:"Besides ignoring the time value of money, payback also:",a:["Ignores all cash flows after the cutoff date","Double-counts early cash flows","Requires knowing the firm's tax rate","Cannot be used for any project"],c:0,e:"Once the cutoff is reached, payback stops caring what happens to the project afterward."},
+{i:"pb05",t:"t_cb_pay",q:"An advantage often claimed for the payback rule is that it is:",a:["The most theoretically correct decision rule","Easy to understand and biased towards liquidity","Immune to the choice of discount rate because it discounts every cash flow","Guaranteed to match the NPV decision"],c:1,e:"Its simplicity and preference for quick-recovery projects are its main selling points, not theoretical correctness."},
+{i:"pb06",t:"t_cb_pay",q:"The payback rule tends to be biased against:",a:["Short, quick-payoff projects","Long-term projects such as R&D, whose benefits arrive late","Projects with no cash flows","Projects that cost nothing"],c:1,e:"Slow-to-pay-off projects look bad on payback even if they are hugely valuable in the long run."},
+{i:"pb07",t:"t_cb_pay",q:"Discounted payback differs from ordinary payback because it:",a:["Uses discounted cash flows to find the recovery period","Ignores the discount rate entirely","Can never be longer than ordinary payback","Only applies to bonds"],c:0,e:"Each cash flow is first discounted to today, then the recovery period is found on those discounted amounts."},
+{i:"pb08",t:"t_cb_pay",q:"Compared with ordinary payback, discounted payback will always be:",a:["Shorter or equal","Longer or equal","Exactly the same","Impossible to compute"],c:1,e:"Discounting shrinks each cash flow, so it takes at least as long — often longer — to recover the investment."},
+{i:"pb09",t:"t_cb_pay",q:"Discounted payback improves on ordinary payback by correcting for:",a:["The time value of money","Cash flows after the cutoff date","Estimation of the discount rate","Project risk entirely"],c:0,e:"It fixes one flaw (ignoring the time value of money) but not the other (ignoring cash flows past the cutoff)."},
+{i:"pb10",t:"t_cb_pay",q:"Even discounted payback still shares one flaw with ordinary payback — it:",a:["Ignores cash flows that occur after the arbitrary cutoff date","Ignores the initial investment","Cannot use a discount rate","Only works for bonds"],c:0,e:"Both versions of payback throw away information about what happens beyond the cutoff, so both can reject good long-run projects."},
+{i:"pb11",t:"t_cb_pay",q:"A project costs $2,000 and returns $1,000 in year 1, $1,000 in year 2 and $10,000 in year 3. Its payback period is:",a:["1 year","2 years","3 years","It never pays back"],c:1,e:"Cumulative cash flow is exactly zero after year 2 (-2,000+1,000+1,000), so payback is 2 years."},
+{i:"pb12",t:"t_cb_pay",q:"Using the same project (cost $2,000; cash flows $1,000, $1,000, $10,000) discounted at 10%, and assuming cash flows occur evenly within the year, the discounted payback period is closest to:",a:["2.00 years","2.04 years","3.00 years","1.09 years"],c:1,e:"Discounted cumulative cash flow is -2,000, -1,091, -264, +7,249; recovery happens 264/7,513 ≈ 0.04 of the way into year 3, so about 2.04 years."},
+{i:"pb13",t:"t_cb_pay",q:"A project costs $15,000 and pays $6,000 a year for 4 years. Its (undiscounted) payback period is:",a:["2.0 years","2.5 years","3.0 years","4.0 years"],c:1,e:"Cumulative after year 2 is -3,000; that is half of year 3's $6,000 cash flow, so payback = 2.5 years."},
+{i:"pb14",t:"t_cb_pay",q:"Using the same project (cost $15,000; $6,000/year for 4 years) discounted at 10%, and assuming cash flows occur evenly within the year, the discounted payback period is closest to:",a:["2.50 years","3.02 years","4.00 years","1.85 years"],c:1,e:"Discounting delays recovery past the undiscounted 2.5-year mark — here to about 3.02 years."},
+{i:"pb15",t:"t_cb_pay",q:"A project costs $9,000 and returns $3,000, $4,000 and $5,000 in years 1-3. Its (undiscounted) payback period is closest to:",a:["2.0 years","2.4 years","2.8 years","3.0 years"],c:1,e:"Cumulative after year 2 is -2,000; that is 2,000/5,000 = 0.4 of year 3, so payback = 2.4 years."},
+
+/* ---- t_cb_irr: Internal rate of return (prefix ir) ---- */
+{i:"ir01",t:"t_cb_irr",q:"The internal rate of return (IRR) is defined as:",a:["The discount rate at which a project's NPV equals zero","The firm's cost of debt","The average accounting return on a project","The rate at which payback occurs"],c:0,e:"IRR is the break-even discount rate for the project's own cash flows."},
+{i:"ir02",t:"t_cb_irr",q:"The IRR decision rule is to accept a project if:",a:["IRR is less than the cost of capital","IRR is greater than the cost of capital","IRR equals zero","IRR equals the risk-free rate"],c:1,e:"A project's own return must beat what investors require for the project to be worth doing."},
+{i:"ir03",t:"t_cb_irr",q:"Because IRR generally cannot be solved for algebraically once there is more than one cash flow, it is normally found by:",a:["Trial and error, a financial calculator, a spreadsheet, or the interpolation (approximation) method","Reading it directly off the balance sheet","Always assuming it equals the coupon rate","Multiplying NPV by the discount rate"],c:0,e:"With multiple cash flows, r appears at several different powers at once, so there is no clean algebraic solution."},
+{i:"ir04",t:"t_cb_irr",q:"On a graph of NPV against the discount rate (the NPV profile), the IRR is the point where the curve:",a:["Reaches its maximum","Crosses the x-axis (NPV = 0)","Crosses the y-axis","Is steepest"],c:1,e:"IRR is exactly where NPV switches from positive to negative."},
+{i:"ir05",t:"t_cb_irr",q:"When choosing between mutually exclusive projects, if the IRR ranking and the NPV ranking disagree, the correct choice is to:",a:["Always follow the higher IRR","Follow the higher NPV","Reject both projects","Average the two IRRs"],c:1,e:"NPV directly measures value added in dollars; IRR can mislead when timing or scale differ between projects."},
+{i:"ir06",t:"t_cb_irr",q:"Projects H and I are mutually exclusive. H has an IRR of 14.29% and an NPV of $24,000 at a 7% cost of capital; I has an IRR of 12.96% and an NPV of $59,000. The firm should choose:",a:["H, because it has the higher IRR","I, because it has the higher NPV","Neither project","Both projects, since both have positive NPV"],c:1,e:"For mutually exclusive projects, the higher-NPV project (I) creates more value, even though H's IRR looks better."},
+{i:"ir07",t:"t_cb_irr",q:"Cash flows that change sign more than once during a project's life are called:",a:["Conventional cash flows","Non-conventional cash flows","Perpetual cash flows","Sunk cash flows"],c:1,e:"A conventional project has one outflow followed only by inflows; a sign change more than once makes it non-conventional."},
+{i:"ir08",t:"t_cb_irr",q:"A project with non-conventional cash flows (more than one sign change) can have:",a:["Exactly one IRR, always","More than one IRR, which makes the IRR rule unreliable","No NPV at any discount rate","A negative cost of capital"],c:1,e:"Multiple sign changes can produce multiple discount rates where NPV = 0, so IRR stops giving a clear signal."},
+{i:"ir09",t:"t_cb_irr",q:"When a project has multiple IRRs, the criterion that still gives a reliable accept/reject signal is:",a:["IRR","Payback","NPV","Profitability index only"],c:2,e:"NPV never breaks down this way — it always gives one clear number and one clear signal."},
+{i:"ir10",t:"t_cb_irr",q:"A cash flow pattern of -350, +75, -100, +120 (the sign changes twice) is described as:",a:["Non-conventional, with potentially several IRRs","Conventional, with a single IRR","A perpetuity","An annuity due"],c:0,e:"Two sign changes make this a non-conventional cash flow stream, capable of producing more than one IRR."},
+{i:"ir11",t:"t_cb_irr",q:"A project costs $100,000 and returns $40,000 a year for 4 years. NPV at 10% is $26,795 and NPV at 25% is -$5,536. Using the interpolation method, IRR is approximately:",a:["10.0%","15.0%","22.4%","30.0%"],c:2,e:"IRR ≈ 10 + [26,795/(26,795-(-5,536))] × (25-10) ≈ 22.4%."},
+{i:"ir12",t:"t_cb_irr",q:"A project costs $60,000 and returns $25,000 a year for 3 years. NPV at 10% is $2,171 and NPV at 20% is -$7,338. Using the interpolation method, IRR is approximately:",a:["10.0%","12.3%","20.0%","5.0%"],c:1,e:"IRR ≈ 10 + [2,171/(2,171-(-7,338))] × (20-10) ≈ 12.3%."},
+{i:"ir13",t:"t_cb_irr",q:"You can buy a building for $350,000 that pays $16,000 a year for 3 years and sells for $450,000 at the end of year 3 (so year 3's cash flow is $466,000). At trial rates of 10% (NPV = +$27,881) and 15% (NPV = -$17,586), the interpolated IRR is closest to:",a:["10.0%","13.1%","15.0%","20.0%"],c:1,e:"IRR ≈ 10 + [27,881/(27,881-(-17,586))] × (15-10) ≈ 13.07%."},
+{i:"ir14",t:"t_cb_irr",q:"For the building investment above, the exact IRR (found by a financial calculator rather than interpolation) is closest to:",a:["10.0%","13.0%","15.0%","20.0%"],c:1,e:"The exact IRR is about 12.96% — very close to, but not identical to, the interpolated 13.07% estimate."},
+{i:"ir15",t:"t_cb_irr",q:"If a firm's cost of capital is 12% and a project's IRR (found by interpolation) is 13.07%, the firm should:",a:["Reject the project — the IRR is too close to the cost of capital","Accept the project — its return exceeds the cost of capital","Wait until the cost of capital falls","Use payback instead to decide"],c:1,e:"IRR > cost of capital means accept, regardless of how close the two numbers look."},
+
+/* ---- t_cb_mex: Unequal lives, timing & replacement (prefix eq) ---- */
+{i:"eq01",t:"t_cb_mex",q:"Mutually exclusive projects are:",a:["Two or more projects that cannot both be pursued at the same time","Projects with identical cash flows","Projects that must always be accepted together","Projects with no initial cost"],c:0,e:"Choosing one mutually exclusive project rules out the other(s)."},
+{i:"eq02",t:"t_cb_mex",q:"When mutually exclusive projects have equal lives, the firm should choose the one with:",a:["The lowest initial cost","The highest positive NPV","The shortest payback","The highest IRR, regardless of NPV"],c:1,e:"Equal lives mean NPVs are directly comparable, so simply pick the highest."},
+{i:"eq03",t:"t_cb_mex",q:"When mutually exclusive projects have unequal lives, comparing their raw PV of costs directly is:",a:["Perfectly valid","Misleading, because one asset will need replacing sooner than the other","Only valid if both cost the same","Only valid if both last exactly one year"],c:1,e:"A cheaper asset that must be replaced sooner may actually cost more per year than a pricier, longer-lived one."},
+{i:"eq04",t:"t_cb_mex",q:"The equivalent annual cost (EAC) is calculated as:",a:["PV of costs multiplied by the annuity factor","PV of costs divided by the annuity factor for the asset's own life","Initial cost divided by the number of years","NPV divided by the discount rate"],c:1,e:"EAC spreads the PV of all costs evenly over the asset's life using the annuity factor."},
+{i:"eq05",t:"t_cb_mex",q:"Between two mutually exclusive assets with unequal lives, the cost-minimizing firm should choose the one with:",a:["The higher EAC","The lower EAC","The longer life","The higher initial cost"],c:1,e:"Lower equivalent annual cost means cheaper to operate on a like-for-like, per-year basis."},
+{i:"eq06",t:"t_cb_mex",q:"The investment-timing decision rule says a firm should undertake a project at whichever date:",a:["Is soonest, regardless of value","Gives the highest NPV valued as of today","Gives the highest NPV as of the investment date itself, ignoring today's value","Requires the smallest initial outlay"],c:1,e:"Compare the NPV of starting at each candidate date, discounted back to today, and pick the highest."},
+{i:"eq07",t:"t_cb_mex",q:"In a replacement decision, a firm should replace an old machine now only if:",a:["The new machine's EAC is below the old machine's remaining annual operating cost","The new machine costs less upfront","The old machine is more than one year old","The new machine has a longer life, regardless of cost"],c:0,e:"If the new machine's spread-out annual cost is still higher than just running the old one, wait."},
+{i:"eq08",t:"t_cb_mex",q:"Delaying the purchase of equipment that is falling in price every year can raise NPV today because:",a:["Waiting always increases risk","The cost saved by waiting can outweigh the value lost by delaying the benefits","Discount rates always fall over time","Depreciation is higher for older equipment"],c:1,e:"Investment timing compares the NPV of buying now against buying later, once falling prices are factored in."},
+{i:"eq09",t:"t_cb_mex",q:"Machine D costs $15,000, lasts 3 years and costs $4,000 a year to run; Machine E costs $10,000, lasts 2 years and costs $6,000 a year to run, both at a 6% discount rate. To compare them fairly, the firm should compute each machine's:",a:["Total PV of costs, compared directly","Equivalent annual cost","Payback period","IRR"],c:1,e:"Unequal lives mean EAC, not raw PV of costs, is the fair comparison."},
+{i:"eq10",t:"t_cb_mex",q:"Machine D (cost $15,000, 3-year life, $4,000/yr operating cost, 6%) has a PV of costs of about $25,690. Its equivalent annual cost is closest to:",a:["$8,563","$9,610","$15,000","$4,282"],c:1,e:"EAC = 25,690 ÷ (3-year annuity factor at 6%, 2.673) ≈ $9,610."},
+{i:"eq11",t:"t_cb_mex",q:"Machine E (cost $10,000, 2-year life, $6,000/yr operating cost, 6%) has a PV of costs of about $21,000. Its equivalent annual cost is closest to:",a:["$10,500","$11,450","$21,000","$6,000"],c:1,e:"EAC = 21,000 ÷ (2-year annuity factor at 6%, 1.8334) ≈ $11,450."},
+{i:"eq12",t:"t_cb_mex",q:"Comparing Machine D (EAC ≈ $9,610) and Machine E (EAC ≈ $11,450), the cost-minimizing firm should choose:",a:["Machine E, because its total upfront cost is lower","Machine D, because its equivalent annual cost is lower","Either — total PV of costs already tells us which is cheaper","Machine E, because it has a shorter life"],c:1,e:"Machine D's lower EAC means it is cheaper on a fair, per-year basis, even though it costs more upfront."},
+{i:"eq13",t:"t_cb_mex",q:"An old machine costs $12,000 a year to run and will last two more years. A new machine costs $25,000, runs at $8,000 a year, lasts 5 years, and the opportunity cost of capital is 6% — giving the new machine an EAC of about $13,935. The firm should:",a:["Replace now — the new machine is more efficient","Wait — the new machine's equivalent annual cost is higher than what it costs to keep running the old one","Replace immediately regardless of cost","Compare only the upfront purchase prices"],c:1,e:"$13,935 (new machine EAC) exceeds $12,000 (old machine's annual cost), so keep the old machine for now."},
+{i:"eq14",t:"t_cb_mex",q:"Machine F costs $20,000, lasts 4 years and costs $5,000 a year to run; Machine G costs $30,000, lasts 6 years and costs $3,000 a year to run, both at 8%. Machine F's equivalent annual cost is closest to:",a:["$11,038","$9,489","$20,000","$5,000"],c:0,e:"PV of F's costs ≈ $36,561; divided by the 4-year annuity factor at 8% (3.3121) ≈ $11,038."},
+{i:"eq15",t:"t_cb_mex",q:"Using the same figures, Machine G's equivalent annual cost is closest to $9,489, versus Machine F's roughly $11,038. The firm should choose:",a:["Machine F, since it costs less upfront","Machine G, since its equivalent annual cost is lower","Either, since both have positive cash flows","Machine F, since it has a shorter life"],c:1,e:"Lower EAC wins — here, Machine G, even though it costs more to buy and lasts longer."},
+
+/* ---- t_cb_pi: Capital rationing & profitability index (prefix pi) ---- */
+{i:"pi01",t:"t_cb_pi",q:"Capital rationing refers to:",a:["Unlimited funds being available for any positive-NPV project","A limit set on the amount of funds available for investment","A tax on capital gains","The requirement to pay dividends before investing"],c:1,e:"Rationing means the firm cannot fund every positive-NPV project it finds."},
+{i:"pi02",t:"t_cb_pi",q:"Soft capital rationing is a limit imposed by:",a:["The unavailability of capital in the market","Senior management, internally","Government regulation only","The stock exchange"],c:1,e:"Soft rationing is a self-imposed budget ceiling set inside the firm."},
+{i:"pi03",t:"t_cb_pi",q:"Hard capital rationing is a limit imposed by:",a:["Senior management's internal policy","The unavailability of capital in the market, such as during a credit crunch","The firm's auditors","Its own dividend policy"],c:1,e:"Hard rationing comes from outside the firm — the market simply won't supply more capital."},
+{i:"pi04",t:"t_cb_pi",q:"The profitability index (PI) is defined as:",a:["NPV multiplied by the initial investment","PV of future cash flows (or NPV) divided by the initial investment","The IRR divided by the discount rate","Payback period divided by project life"],c:1,e:"PI measures value created per dollar invested."},
+{i:"pi05",t:"t_cb_pi",q:"The PI calculated using PV of cash flows is related to the PI calculated using NPV by:",a:["They are always identical","The PV-based PI is exactly 1.0 higher than the NPV-based PI","The NPV-based PI is always higher","There is no consistent relationship"],c:1,e:"Since PV of CF = NPV + investment, dividing both by the investment shows the PV-based PI is always the NPV-based PI plus 1."},
+{i:"pi06",t:"t_cb_pi",q:"Under capital rationing, projects should be ranked and selected in order of:",a:["Lowest initial cost first","Highest profitability index first, until the budget is used up","Highest IRR first, regardless of PI","Alphabetical order of project name"],c:1,e:"PI ranks projects by value created per dollar, which is exactly what a limited budget needs."},
+{i:"pi07",t:"t_cb_pi",q:"The profitability index becomes an unreliable ranking tool when:",a:["Funds are unlimited and projects are independent","Projects are mutually exclusive rather than simply capital-rationed","The discount rate is positive","NPV is positive"],c:1,e:"Like IRR, PI can favour a small, high-ratio project over a larger one that actually creates more total value."},
+{i:"pi08",t:"t_cb_pi",q:"A small project can have a high PI but a low NPV in dollar terms, while a large project can have a lower PI but a much higher NPV. Choosing between them as mutually exclusive projects, the firm should generally prefer:",a:["The higher PI, always","The higher NPV, since a higher NPV is always preferable to a higher PI","Whichever project costs less","Whichever project has the shorter payback"],c:1,e:"Outside of a binding budget constraint, NPV in dollars is what actually adds shareholder wealth."},
+{i:"pi09",t:"t_cb_pi",q:"Aside from capital rationing, the criterion regarded as always giving the theoretically correct accept/reject decision is:",a:["Payback period","Profitability index","Net present value","Accounting rate of return"],c:2,e:"NPV is the benchmark; PI, IRR and payback are useful shortcuts but each can mislead in specific situations."},
+{i:"pi10",t:"t_cb_pi",q:"Project L costs $3m and has a PV of future cash flows of $4m (NPV = $1m). Its profitability index on a PV basis is closest to:",a:["0.33","1.33","3.00","4.00"],c:1,e:"PI = 4/3 ≈ 1.33."},
+{i:"pi11",t:"t_cb_pi",q:"Project N costs $7m and has a PV of future cash flows of $10m (NPV = $3m). Its profitability index on a PV basis is closest to:",a:["0.43","1.43","0.70","3.00"],c:1,e:"PI = 10/7 ≈ 1.43."},
+{i:"pi12",t:"t_cb_pi",q:"Five candidate projects (cost, PI on a PV basis): L costs $3m at PI 1.33; M costs $5m at PI 1.20; N costs $7m at PI 1.43; O costs $6m at PI 1.33; P costs $4m at PI 1.25. With a $20m budget, which set should the firm fund?",a:["M only, since it is listed first","N, then L and O, then P — ranked by highest PI first until the $20m budget is used up","All five projects, regardless of the budget","P only, since it has the lowest cost"],c:1,e:"N (7) + L (3) + O (6) + P (4) = $20m exactly, funding every project except the lowest-PI one, M."},
+{i:"pi13",t:"t_cb_pi",q:"A project costs $8,000 and pays $3,000, $4,000 and $5,000 in years 1-3 at a 10% required return. Its profitability index on a PV basis is closest to:",a:["0.22","1.22","2.22","0.78"],c:1,e:"PV of inflows ≈ $9,790; PI = 9,790/8,000 ≈ 1.22."},
+{i:"pi14",t:"t_cb_pi",q:"Using the same project (cost $8,000; PI ≈ 1.22 on a PV basis), the profitability index on an NPV basis is closest to:",a:["1.22","0.22","2.22","-0.22"],c:1,e:"NPV-basis PI is always the PV-basis PI minus 1, so about 0.22."},
+{i:"pi15",t:"t_cb_pi",q:"Project Small costs $50,000 with a PV of cash flows of $70,000 (PI ≈ 0.40 on an NPV basis). Project Large costs $5,000,000 with a PV of cash flows of $5,500,000 (PI ≈ 0.10 on an NPV basis). With no budget limit and the firm choosing only one, it should choose:",a:["Small, since it has the higher PI","Large, since it has the far higher NPV in dollar terms","Neither, since both have a PI below 1.0 on the NPV basis","Small, since it costs less"],c:1,e:"Large creates $500,000 of value versus Small's $20,000 — NPV in dollars is what counts when funds aren't constrained."}
+);
+
 /* ===== Case room ===== */
 const CASES=[
 {
@@ -2051,6 +2264,28 @@ const MODULES=[
   ex:"The WACC blends the component costs into one required return for the firm. It is the right discount rate only when a project is a carbon copy of the firm's existing business.",
   tips:["WACC = wE·RE + wD·RD(1 − TC) + wPF·RPF.","Weights use market values; V = D + E (+ P).","Same-risk, same-financing projects only — adjust up for risky divisions, down for safe ones.","Flotation costs never enter the WACC; add them as a cash outflow to the project's cost."]}
 ]},
+{id:"m7",n:"Capital Budgeting",lec:"Lecture 7",hue:"#C1440E",cats:["Capital budgeting"],topics:[
+ {id:"t_cb_npv",n:"NPV & the accept/reject rule",
+  obj:["Explain what capital budgeting is trying to achieve.","Compute the NPV of a project from its cash flows.","Apply the accept/reject rule and use NPV to choose between equal-life mutually exclusive projects."],
+  ex:"Capital budgeting is about which real projects are worth doing. NPV answers that directly: it is the present value of everything the project pays back, minus what it costs to start.",
+  tips:["NPV = C0 + CF1/(1+r) + CF2/(1+r)^2 + ... , where C0 is the initial outflow.","Accept if NPV > 0; reject if NPV < 0; indifferent if NPV = 0.","r is the opportunity cost of capital — the return given up on an equal-risk alternative.","Among mutually exclusive, equal-life projects with positive NPV, pick the highest NPV."]},
+ {id:"t_cb_pay",n:"Payback & discounted payback",
+  obj:["Compute a project's payback period and discounted payback period.","State the decision rule for each.","Explain why both are weaker tools than NPV."],
+  ex:"Payback asks a simpler question than NPV: how long until the project's own cash flows return what it cost? It is quick and intuitive, but it can approve projects that destroy value and reject ones that create it.",
+  tips:["Payback = years until cumulative cash flow reaches zero; accept if under the firm's cutoff.","Discounted payback does the same thing on discounted cash flows, so it always takes at least as long as payback.","Both ignore every cash flow after the cutoff date — a fatal flaw for long-lived, front-loaded-cost projects.","Payback also ignores the time value of money entirely; discounted payback fixes only that one problem."]},
+ {id:"t_cb_irr",n:"Internal rate of return",
+  obj:["Explain what the IRR represents and its accept/reject rule.","Estimate IRR using the two-rate approximation (interpolation) method.","Recognise when the IRR rule gives the wrong answer."],
+  ex:"IRR asks: at what discount rate does this project's NPV hit exactly zero? That rate is the project's own rate of return, and you accept if it beats your cost of capital.",
+  tips:["Find IRR by trial and error: try two rates, one giving a positive NPV and one negative, then interpolate.","IRR ≈ Ra + [NPVa / (NPVa − NPVb)] × (Rb − Ra).","For mutually exclusive projects, IRR can rank them differently from NPV — when they conflict, trust NPV.","Cash flows that change sign more than once can produce more than one IRR; NPV still works, IRR does not."]},
+ {id:"t_cb_mex",n:"Unequal lives, timing & replacement",
+  obj:["Explain why unequal-life projects can't be compared on raw PV of costs.","Compute an equivalent annual cost (EAC) and use it to choose between assets.","Apply the same logic to investment-timing and equipment-replacement decisions."],
+  ex:"Comparing a 3-year machine to a 2-year machine by their PV of costs alone is comparing apples to oranges — one of them gets replaced sooner. Spreading each option's cost over one common year fixes that.",
+  tips:["EAC = PV of costs ÷ annuity factor for that asset's own life, at the opportunity cost of capital.","Between mutually exclusive assets with unequal lives, pick the lower EAC (or higher equivalent annual benefit).","Investment timing: compute the NPV of starting the project at each candidate date, discount each back to today, and take the highest.","Replacement: only replace an asset now if the new one's EAC is below the old asset's remaining annual operating cost."]},
+ {id:"t_cb_pi",n:"Capital rationing & profitability index",
+  obj:["Explain why capital rationing forces a different ranking rule than NPV alone.","Compute the profitability index and use it to rank projects under a budget limit.","State when the profitability index gives an unreliable answer."],
+  ex:"NPV alone tells you if a project is worth doing, not how to get the most value out of a limited pot of money. When funds are capped, you need the biggest bang per dollar invested — that's what the profitability index measures.",
+  tips:["PI = PV of future cash flows ÷ initial investment (equivalently, NPV ÷ initial investment, plus 1).","Under a budget limit, rank projects by PI and fund the highest-PI projects first until the budget runs out.","PI is unreliable for choosing between mutually exclusive projects — a small project can have a high PI but a low NPV.","Outside of capital rationing, a higher NPV is always preferable to a higher PI."]}
+]},
 {id:"mt",n:"Teach mode",lec:"Guided computation",hue:"#1F7A8C",cats:[],topics:[],teachOnly:true},
 {id:"mf",n:"Formula map",lec:"Selection framework",hue:"#7A5A2B",cats:[],topics:[],frameworkOnly:true},
 {id:"mc",n:"Case room",lec:"Cases & analysis",hue:"#5C6B33",cats:[],topics:[],caseOnly:true},
@@ -2172,6 +2407,7 @@ function moduleIcon(id,pct,hue){
     m3:`<svg ${common}><circle cx="31" cy="32" r="22" ${base}/><circle cx="31" cy="32" r="18" ${stroke}/><path d="M31 21v12l9 6" ${stroke}/><path d="M15 54l32-44" ${stroke} opacity=".32"/>${progress}</svg>`,
     m4:`<svg ${common}><rect x="12" y="14" width="40" height="36" rx="6" ${base}/><rect x="14" y="16" width="36" height="32" rx="5" ${stroke}/><path d="M21 26h22M21 34h15M21 42h22" ${stroke}/><circle cx="43" cy="38" r="5" fill="${hue}" opacity=".35"/>${progress}</svg>`,
     m5:`<svg ${common}><path d="M12 48h42" ${stroke}/><path d="M17 43l9-12 8 6 13-19" ${stroke}/><path d="M17 43l9-12 8 6 13-19v30H17z" fill="${hue}" opacity=".12"/><path d="M43 18h4v4" ${stroke}/>${progress}</svg>`,
+    m7:`<svg ${common}><rect x="10" y="10" width="44" height="44" rx="10" ${base}/><path d="M16 46h32" ${stroke}/><path d="M22 46v-10M32 46v-18M42 46v-26" ${stroke}/><circle cx="46" cy="16" r="7" fill="${hue}" opacity=".18"/><path d="M43 16l2.5 2.5L49 13" ${stroke}/>${progress}</svg>`,
     mt:`<svg ${common}><circle cx="21" cy="19" r="7" ${base}/><path d="M15 36c2-8 10-12 17-8 6 3 11 2 16-4" ${stroke}/><path d="M17 45h30M20 51h20" ${stroke} opacity=".55"/><circle cx="21" cy="19" r="7" ${stroke}/><path d="M30 19h18M40 11v16" ${stroke}/></svg>`,
     mf:`<svg ${common}><circle cx="15" cy="16" r="6" ${stroke}/><circle cx="49" cy="16" r="6" ${stroke}/><circle cx="32" cy="48" r="6" ${stroke}/><path d="M21 16h22M18 21l10 21M46 21L36 42" ${stroke}/><path d="M12 38h12v12H12zM40 38h12v12H40z" fill="${hue}" opacity=".12"/></svg>`,
     mc:`<svg ${common}><rect x="14" y="10" width="34" height="44" rx="6" ${base}/><path d="M22 10h20l6 6v38H16V10h6z" ${stroke}/><path d="M42 10v8h8M23 28h18M23 36h18M23 44h11" ${stroke}/></svg>`,
@@ -2185,7 +2421,7 @@ const TOOL_DESC={
   mt:"Work a problem step by step with hints",
   mf:"Not sure which formula? Answer a few questions",
   mc:()=>`${CASES.length} worked cases, including the MBA decision`,
-  m0:"35 worked calculators, every step shown"
+  m0:"41 worked calculators, every step shown"
 };
 function renderHome(){
   const all=statsFor(allIds());
@@ -2415,6 +2651,17 @@ function renderFramework(){
           <li><b>Asset use?</b> turnover ratios. <b>Short-term safety?</b> liquidity ratios. <b>Debt pressure?</b> leverage ratios.</li>
         </ul>
       </div>
+      <div class="map-card">
+        <h3>Capital budgeting decision rules</h3>
+        <p>NPV is the default; the others are quick checks or fallbacks in specific situations.</p>
+        <ul>
+          <li><b>NPV:</b> accept if positive. The only rule that always gives the right answer.</li>
+          <li><b>IRR:</b> accept if it beats the cost of capital — but trust NPV instead when ranking mutually exclusive projects or when cash flows change sign more than once.</li>
+          <li><b>Payback / discounted payback:</b> a quick liquidity screen only; both ignore cash flows after the cutoff.</li>
+          <li><b>Unequal lives:</b> compare equivalent annual cost, not raw PV of costs.</li>
+          <li><b>Limited budget (capital rationing):</b> rank by profitability index, not NPV alone.</li>
+        </ul>
+      </div>
       <button class="next" data-mod="m0" type="button">Open calculator</button>
     </div>`;
 }
@@ -2424,6 +2671,12 @@ const TEACH=[
  {id:"teach-pv",title:"Single cash flow present value",meta:"Lecture 3 · PV",
   problem:"You will receive $5,000 at the end of year 4. The discount rate is 8% per year. What is this cash flow worth today?",
   timeline:[["0","? PV"],["1",""],["2",""],["3",""],["4","$5,000"]],
+  concept:[
+   "Money has a date attached to it. $5,000 four years from now and $5,000 today are not the same thing, because money in hand can be put to work and grow. Present value is just the tool that strips the growth back out so two amounts standing at different dates can be compared honestly.",
+   {q:"If the discount rate were 0%, what would PV of a future amount equal?",
+    a:"The future amount itself — with no time value of money, dates stop mattering and $5,000 in year 4 is worth exactly $5,000 today."},
+   "The bigger the rate or the longer the wait, the harder that future dollar gets discounted. That's why PV always comes out lower than the FV it was pulled back from — you're removing the growth the money would otherwise have earned."
+  ],
   steps:[
    ["What is being asked?","The phrase worth today tells us the unknown is present value. We are moving one future amount back to time 0."],
    ["Extract variables","FV = 5,000; r = 8% per year; t = 4 years; PV is unknown. The rate period and time period already match."],
@@ -2434,6 +2687,12 @@ const TEACH=[
  {id:"teach-ann",title:"Loan payment",meta:"Lecture 3 · annuity",
   problem:"A student borrows $20,000 and will repay it with equal annual payments over 5 years. The loan rate is 10%. What annual payment is required?",
   timeline:[["0","$20,000"],["1","PMT"],["2","PMT"],["3","PMT"],["4","PMT"],["5","PMT"]],
+  concept:[
+   "An annuity is nothing more than the same cash flow repeating on a schedule — five equal payments instead of five separately valued amounts. Because the payments are identical and evenly spaced, they collapse into one shortcut factor (PVIFA) instead of five separate PV calculations.",
+   {q:"Early in the loan, is more of each payment going to interest or to principal — and why?",
+    a:"Mostly interest. The balance owed is largest at the start, so 10% of it is a large number; as the balance shrinks each year, the interest slice shrinks and the principal slice grows, even though the total payment never changes."},
+   "That's the whole idea of amortisation: a level payment, but a shifting mix underneath it."
+  ],
   steps:[
    ["What is being asked?","The unknown is the equal payment. The loan amount is the present value of a 5-payment annuity."],
    ["Extract variables","PV = 20,000; r = 10%; n = 5; PMT is unknown. Payments are annual, so the annual rate fits."],
@@ -2444,6 +2703,12 @@ const TEACH=[
  {id:"teach-bond",title:"Bond price",meta:"Lecture 4 · bonds",
   problem:"A 3-year bond has $1,000 face value and pays an 8% annual coupon. Similar-risk bonds yield 10%. What is the bond price?",
   timeline:[["0","? Price"],["1","$80"],["2","$80"],["3","$1,080"]],
+  concept:[
+   "Start with the idea, not the formula: a bond is a loan. You hand a borrower money today; in exchange they promise fixed coupon payments and the return of the face value at the end. The price is simply what those promised payments are worth today.",
+   {q:"If the market's required yield rises after the bond is issued, does the price go up or down — and why, given the coupons are fixed?",
+    a:"Down. The coupons can't change, so the only lever left is the price investors pay today — it has to fall so those fixed payments work out to a higher percentage return."},
+   "That's the whole valuation problem in one line: discount the coupons and the face value at whatever return the market currently demands, and add them up."
+  ],
   steps:[
    ["What is being asked?","Price means present value today. The bond pays coupons plus face value at maturity."],
    ["Extract variables","Coupon = 8% x 1,000 = 80; face value = 1,000; r = 10%; n = 3."],
@@ -2454,12 +2719,64 @@ const TEACH=[
  {id:"teach-roe",title:"DuPont ROE",meta:"Lecture 2 · performance",
   problem:"A firm has net profit margin of 6%, asset turnover of 1.5, and equity multiplier of 2.0. What is ROE?",
   timeline:[["Inputs","6%, 1.5, 2.0"],["Output","? ROE"]],
+  concept:[
+   "Return on equity answers one question for a shareholder: for every dollar I have tied up in this firm, how much net income did it earn me this year? DuPont's trick is to refuse to leave that as one opaque number and instead ask where it came from.",
+   {q:"Two firms both have ROE of 18%. One gets there mostly through a fat profit margin, the other mostly through heavy leverage. Are they equally attractive?",
+    a:"No. The margin-driven firm is earning its return from selling well; the leverage-driven one is earning it by borrowing heavily, which raises risk even though the ROE number looks identical. Same output, very different risk underneath."},
+   "That's the payoff of the decomposition: margin × turnover × leverage tells you *how* a firm earns its return, not just how much."
+  ],
   steps:[
    ["What is being asked?","ROE asks for the return earned for shareholders. DuPont breaks it into margin, efficiency, and leverage."],
    ["Extract variables","Net profit margin = 6%; asset turnover = 1.5; equity multiplier = 2.0."],
    ["Select formula family","This is a ratio decomposition, not TVM. Use extended DuPont for ROE."],
    ["Compute","ROE = 0.06 x 1.5 x 2.0 = 0.18."],
    ["Answer","ROE is 18%. The firm gets there through 6% profit on sales, 1.5 times asset use, and 2.0 times leverage."]
+  ]},
+ {id:"teach-npv",title:"Project NPV",meta:"Lecture 7 · NPV",
+  problem:"A company can buy new equipment for $200,000. It expects the equipment to generate cash flows of $80,000 in year 1, $90,000 in year 2, and $100,000 in year 3. The required return is 12%. Should the company buy it?",
+  timeline:[["0","-$200,000"],["1","$80,000"],["2","$90,000"],["3","$100,000"]],
+  concept:[
+   "Capital budgeting is really just one question dressed up in different examples: is this project worth more than it costs? NPV answers it directly by moving every future cash flow back to today's dollars and comparing the total to the price tag.",
+   {q:"If a project's NPV comes out to exactly zero, has it created any value?",
+    a:"No — and it hasn't destroyed any either. A zero NPV means the project earns exactly the required return, nothing more. The firm is indifferent between doing it and not doing it."},
+   "So NPV isn't a hurdle you clear by scraping past zero — a small positive NPV really is better than nothing, and a small negative NPV really is a project to walk away from."
+  ],
+  steps:[
+   ["What is being asked?","'Should the company buy it' is an accept/reject decision. NPV settles that directly."],
+   ["Extract variables","C0 = -200,000; CF1 = 80,000; CF2 = 90,000; CF3 = 100,000; r = 12%."],
+   ["Select formula family","Uneven cash flows plus an initial cost — discount each cash flow separately, then subtract the cost."],
+   ["Compute","NPV = -200,000 + 80,000/1.12 + 90,000/1.12^2 + 100,000/1.12^3 = -200,000 + 71,429 + 71,747 + 71,178 = 14,354."],
+   ["Answer","NPV is about $14,354, which is positive. The company should buy the equipment — it is expected to add value beyond the 12% required return."]
+  ]},
+ {id:"teach-irr",title:"IRR by interpolation",meta:"Lecture 7 · IRR",
+  problem:"You can buy a building for $350,000. It will generate $16,000 a year in rental income for three years, and you will sell it at the end of year 3 for $450,000 (so year 3's total cash flow is $466,000). What is the IRR on this investment?",
+  timeline:[["0","-$350,000"],["1","$16,000"],["2","$16,000"],["3","$466,000"]],
+  concept:[
+   "IRR flips the NPV question around. Instead of picking a rate and asking what the project is worth, you ask: what rate would make this project worth exactly what it costs — NPV of zero? That rate is the project's own percentage return.",
+   {q:"Why can't you just solve for IRR algebraically the way you solve PV = FV/(1+r)^t for r?",
+    a:"Because with more than one cash flow, r appears raised to several different powers in the same equation at once — there's no clean algebraic rearrangement. That's why IRR is normally found by trial and error, a spreadsheet, or a financial calculator."}
+  ],
+  steps:[
+   ["What is being asked?","The unknown is the discount rate that makes NPV = 0 — the project's internal rate of return."],
+   ["Extract variables","C0 = -350,000; CF1 = 16,000; CF2 = 16,000; CF3 = 466,000."],
+   ["Select formula family","No algebraic shortcut exists for IRR with more than one cash flow — use the two-rate approximation (interpolation) method."],
+   ["Compute","Try 10%: NPV = +27,881. Try 15%: NPV = -17,586. IRR ≈ 10 + [27,881 / (27,881 - (-17,586))] x (15 - 10) = 10 + 3.07 = 13.07%."],
+   ["Answer","IRR is about 13.07%. If the cost of capital is below that, accept the project — its own return beats what the firm requires."]
+  ]},
+ {id:"teach-pi",title:"Profitability index under a budget cap",meta:"Lecture 7 · capital rationing",
+  problem:"A project costs $8,000 today and is expected to pay back $3,000 in year 1, $4,000 in year 2, and $5,000 in year 3. The required return is 10%. Funds are limited this year, so the firm is ranking projects by profitability index rather than NPV alone. What is this project's PI?",
+  timeline:[["0","-$8,000"],["1","$3,000"],["2","$4,000"],["3","$5,000"]],
+  concept:[
+   "When money is unlimited, NPV alone tells you everything: do every positive-NPV project you can find. But once there's a cap on how much you can invest this year, the question changes — you want the most value per dollar of that scarce budget, not just the most total value.",
+   {q:"A tiny project has a PI of 2.0. A huge project has a PI of 1.1 but a far bigger NPV in dollar terms. With no budget limit at all, which should you prefer?",
+    a:"The huge project — its NPV in dollars is larger, and NPV is what actually adds wealth. PI only becomes the deciding tool once a budget constraint forces you to ration which projects you can fund."}
+  ],
+  steps:[
+   ["What is being asked?","PI, so this project can be ranked against others competing for the same limited budget."],
+   ["Extract variables","C0 = -8,000; CF1 = 3,000; CF2 = 4,000; CF3 = 5,000; r = 10%."],
+   ["Select formula family","Profitability index = PV of future cash flows ÷ initial investment."],
+   ["Compute","PV of inflows = 3,000/1.10 + 4,000/1.10^2 + 5,000/1.10^3 = 2,727 + 3,306 + 3,757 = 9,790. PI = 9,790 / 8,000 = 1.22."],
+   ["Answer","PI is about 1.22 (equivalently, NPV of $1,790 gives a PI of 0.22 on the NPV basis). Under a budget cap, rank this against other projects' PI and fund the highest first."]
   ]}
 ];
 let TEACH_ID=TEACH[0].id, TEACH_STEP=0, TEACH_DONE=0;
@@ -2480,6 +2797,11 @@ function renderTeach(){
       <p>${item.problem}</p>
       ${renderTimeline(item.timeline)}
     </div>
+    ${item.concept?`<div class="teach-step concept-step">
+      <p class="eyebrow" style="margin-bottom:8px">First, the idea</p>
+      ${item.concept.map(b=>typeof b==="string"?`<p>${b}</p>`:
+        `<details class="check"><summary>${b.q}</summary><p>${b.a}</p></details>`).join("")}
+    </div>`:""}
     <div class="notice">
       <b>Try first</b>
       <p>Before revealing the next step, write down what you think the unknown is, which values belong on the timeline, and what computation you would run.</p>

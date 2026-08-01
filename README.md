@@ -23,17 +23,18 @@ one).
 | Bonds | Lecture 4 — bond valuation & analysis | 86 |
 | Stocks | Lecture 5 — stock valuation & market efficiency | 88 |
 | Cost of Capital | Lecture 6 — cost of capital estimation | 61 |
+| Capital Budgeting | Lecture 7 — capital budgeting analysis | 75 |
 
 ### Study tools
 
 | Tool | What it is |
 |---|---|
-| Teach mode | Guided step-by-step computation walkthroughs |
+| Teach mode | Guided step-by-step computation walkthroughs, each opening with a short conceptual explanation and a couple of quick self-check prompts before the calculation |
 | Formula map | A framework for selecting the right formula |
 | Case room | The MBA Decision + three lecture breakouts |
-| Calculator | 35 formulas with step-by-step workings |
+| Calculator | 41 formulas with step-by-step workings |
 
-**495 drill questions in total**, across 24 topics.
+**570 drill questions in total**, across 29 topics.
 
 Inside a lecture module there are up to three tabs:
 
@@ -46,7 +47,9 @@ Inside a lecture module there are up to three tabs:
 - **Formulas** — the calculator, filtered to the formulas that lecture uses.
 - **Formula map** — a decision framework for choosing the right formula before
   opening the calculator.
-- **Teach mode** — step-by-step computation practice with timelines, variable
+- **Teach mode** — opens with a short, conversational "first, the idea" section
+  (with a couple of tap-to-reveal self-check questions) explaining the concept
+  itself, then step-by-step computation practice with timelines, variable
   extraction, formula selection, computation, and answer interpretation.
 
 Because formula sheets are usually provided, drill questions should emphasise
