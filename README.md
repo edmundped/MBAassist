@@ -31,8 +31,8 @@ one).
 |---|---|
 | Teach mode | 29 lessons — one per topic, covering all seven lectures — that explain each idea from scratch |
 | Formula map | A framework for selecting the right formula |
-| Case room | The MBA Decision + three lecture breakouts |
-| Calculator | 41 formulas with step-by-step workings |
+| Case room | 8 cases — the MBA Decision minicase plus one for every lecture |
+| Calculator | 56 formulas with step-by-step workings |
 
 **570 drill questions in total**, across 29 topics.
 
@@ -73,22 +73,50 @@ Finishing a lesson marks it complete, and the lesson list shows per-lecture
 progress. Every lesson ends with a **Drill this topic** button that drops you
 straight into that topic's questions while it is fresh.
 
-Teach mode is available both as a standalone study tool (all seven lectures,
-grouped) and as a **Teach** tab inside each lecture module, where it shows only
-that lecture's lessons.
+Teach mode is also a standalone study tool that lists all 29 lessons grouped by
+lecture, for when you want to browse them independently of a concept.
 
-Inside a lecture module there are up to four tabs:
+## Inside a lecture: the concept page
 
-- **Learn** — a short coaching note, the topic's learning objectives ("by the
-  end you can…"), and four key points, then a button to drill that topic on its
-  own.
-- **Drill** — pick 5 (quick), 10 (standard), or 20 (exam prep) questions, one
-  per screen, with an explanation after every answer. Students can flag a
-  question locally if the wording, answer, or explanation looks faulty.
-- **Teach** — that lecture's lessons (see above).
-- **Formulas** — the calculator, filtered to the formulas that lecture uses.
-- **Formula map** — a decision framework for choosing the right formula before
-  opening the calculator.
+A lecture is **one scrolling page of concepts**, not a set of tabs. Everything
+about a single idea lives in one place, because that is the unit students
+actually think in ("I'm weak on YTM").
+
+The page opens with how far through the lecture you are and a **Continue** card
+naming the one concept most worth opening next — so a lecture never opens on a
+screen with nothing to do.
+
+Then one row per concept, each showing its state at a glance through three pips
+(notes · lesson · practice) and a mastery bar. Tapping a row opens everything
+for that concept:
+
+- the coaching note and the "by the end you can…" objectives
+- the key points
+- **Lesson** — that concept's guided lesson
+- **Practise** — 10 questions on this concept alone
+- **Formulas** — the step-by-step calculators this concept uses
+
+At the foot of the page is a **whole-lecture** drill that deliberately mixes
+every concept together, at 5 / 10 / 20 questions. That separation is on purpose:
+practising one concept right after learning it helps consolidate it, but the
+exam won't tell you which idea a question is testing, so the mixed drill is
+where that skill gets built.
+
+### What the states mean
+
+A concept is never just a percentage. The app distinguishes:
+
+| State | Meaning |
+|---|---|
+| Not started | Neither taught nor practised |
+| Learned — not practised yet | Lesson done, no questions answered — the gap retrieval practice exists to close |
+| In practice · n/m retired | Working through it |
+| Needs another look | Answered a fair number, accuracy still low |
+| Solid · all retired | Every question retired |
+| Solid — last practised n days ago | Retired but going cold |
+
+The middle two states are the point: previously a concept you had been taught
+but never tested on displayed as `0%`, identical to one you had never opened.
 
 Because formula sheets are usually provided, drill questions should emphasise
 setup, computation, and interpretation rather than asking students to identify

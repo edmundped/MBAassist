@@ -31,6 +31,12 @@ body.dark{
   --ok:#7BC894; --ok-bg:#18271C; --no:#E79079; --no-bg:#2C1A14;
   --accent:#D98A63; --gold:#D9A441;
 }
+/* Inside a lecture the accent takes that lecture's hue (--wh, set in openWorld).
+   It must be declared on body: body.dark also declares --accent, and a rule on
+   body beats a value inherited from :root, which used to flatten every lecture
+   to the same colour in dark mode. Dark lightens the hue so it stays legible. */
+body.in-lecture{--accent:var(--wh)}
+body.dark.in-lecture{--accent:color-mix(in srgb,var(--wh) 62%,#F4EEE2)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{-webkit-text-size-adjust:100%}
 body{
@@ -175,8 +181,8 @@ body.dark .welcome-form{background:rgba(29,25,18,.78);border-color:rgba(60,51,39
 .cube-card .pct{font-family:var(--mono);font-size:13px;color:var(--ink-3);padding-top:3px}
 .cube-card h3{font-size:15px;margin-top:auto}
 .cube-card .meta{font-size:12.5px;color:var(--ink-3);font-family:var(--mono)}
-.cube-card .tbar{height:3px;border-radius:3px;background:var(--line);overflow:hidden}
-.cube-card .tbar i{display:block;height:100%;border-radius:3px}
+.tbar{height:3px;border-radius:3px;background:var(--line);overflow:hidden}
+.tbar i{display:block;height:100%;border-radius:3px}
 .cube-card.done{border-color:var(--mod)}
 
 /* ---------- hero ---------- */
@@ -268,7 +274,7 @@ body.dark .welcome-form{background:rgba(29,25,18,.78);border-color:rgba(60,51,39
 .module-scroll{display:flex;gap:7px;overflow-x:auto;padding-bottom:5px;-webkit-overflow-scrolling:touch}
 .module-chip{
   flex:none;border:1px solid var(--line);background:var(--surface);border-radius:999px;
-  padding:8px 11px;font-size:12.5px;font-weight:560;color:var(--ink-2);white-space:nowrap;
+  padding:8px 13px;min-height:44px;font-size:12.5px;font-weight:560;color:var(--ink-2);white-space:nowrap;
 }
 .module-chip.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 
@@ -284,12 +290,57 @@ body.dark .welcome-form{background:rgba(29,25,18,.78);border-color:rgba(60,51,39
 .topic-body p{font-size:14.5px;color:var(--ink-2);margin:13px 0 0}
 .topic-body ul{margin:11px 0 0;padding-left:17px}
 .topic-body li{font-size:14px;color:var(--ink-2);margin-bottom:5px}
-.topic-body .tbar{height:3px;border-radius:3px;background:var(--line);margin-top:14px;overflow:hidden}
-.topic-body .tbar i{display:block;height:100%;border-radius:3px}
+.topic-body .tbar{margin-top:14px}
 .tdrill{
   margin-top:13px;width:100%;padding:11px;border-radius:10px;border:1px solid var(--line);
   background:var(--raised);font-size:13.5px;font-weight:560;color:var(--ink-2);
 }
+
+/* ---------- concept-first lecture page ---------- */
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.lec-top{margin-bottom:15px}
+.lec-top .lec-meta{font-family:var(--mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3);margin-bottom:9px}
+.cx-continue{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:15px 16px;margin-bottom:16px}
+.cx-continue .eyebrow{margin-bottom:6px}
+.cx-continue .cx-what{font-size:15.5px;font-weight:620;letter-spacing:-.015em;line-height:1.3}
+.cx-continue .cx-why{font-size:13px;color:var(--ink-2);margin-top:4px;line-height:1.45}
+.cx-list{display:flex;flex-direction:column;gap:9px}
+.cx-head{width:100%;display:flex;align-items:center;gap:11px;padding:13px 14px;text-align:left}
+.cx-head .tnum{font-family:var(--mono);font-size:11px;color:var(--ink-3);width:19px;flex:none;padding-top:2px}
+.cx-head .cx-name{flex:1;min-width:0}
+.cx-head .cx-name b{display:block;font-size:14.5px;font-weight:600;letter-spacing:-.012em;line-height:1.3}
+.cx-head .cx-state{display:block;font-size:12px;color:var(--ink-3);margin-top:3px}
+.cx-head .cx-chev{flex:none;color:var(--ink-3);font-size:15px;transition:transform .18s ease}
+.topic.open .cx-head .cx-chev{transform:rotate(90deg)}
+.cx-head .tbar{margin-top:8px}
+/* state pips — shape and fill carry the meaning, not colour alone */
+.tri{display:flex;gap:5px;flex:none;align-items:center}
+/* modifiers are namespaced: bare .empty and .warn already exist in this sheet
+   (calculator no-results, session warnings) and would otherwise win on order */
+.pip{width:15px;height:15px;border-radius:50%;border:1.5px solid var(--line-2);display:grid;place-items:center;font-size:9px;color:transparent;line-height:1;flex:none}
+.pip--part{border-color:var(--ok)}
+.pip--done{background:var(--ok);border-color:var(--ok);color:var(--bg)}
+.pip--fade{background:var(--gold);border-color:var(--gold);color:var(--bg)}
+.pip--warn{border-color:var(--no);border-width:2px}
+.cx-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--ink-3);margin:2px 0 13px;align-items:center}
+.cx-legend span{display:flex;gap:5px;align-items:center}
+.cx-acts{display:flex;flex-direction:column;gap:0;margin-top:14px;border:1px solid var(--line);border-radius:11px;overflow:hidden}
+.cx-act{
+  width:100%;text-align:left;display:flex;align-items:center;gap:11px;
+  padding:12px 13px;background:var(--raised);border-top:1px solid var(--line);
+}
+.cx-act:first-child{border-top:0}
+.cx-act .ai{width:22px;flex:none;font-family:var(--mono);font-size:12px;color:var(--accent);text-align:center}
+.cx-act .ab{flex:1;min-width:0}
+.cx-act .ab b{display:block;font-size:13.5px;font-weight:600}
+.cx-act .ab span{display:block;font-size:11.5px;color:var(--ink-3);margin-top:1px}
+.cx-act .aa{flex:none;font-size:12.5px;font-weight:600;color:var(--accent)}
+.cx-fx{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.cx-fx button{
+  font-size:12px;padding:6px 10px;border-radius:8px;border:1px solid var(--line);
+  background:var(--surface);color:var(--ink-2);
+}
+.lec-mixed{margin-top:18px}
 
 /* ---------- drill ---------- */
 .dots{display:flex;gap:4px;margin-bottom:16px}
@@ -426,7 +477,7 @@ body.dark .flagbtn.on{background:#2D2413;color:#F3C46B;border-color:#8A6A24}
   flex:none;width:20px;height:20px;border-radius:50%;border:1.5px solid var(--line-2);
   display:grid;place-items:center;font-size:11px;color:transparent;
 }
-.ls-row.done .ltick{background:var(--ok);border-color:var(--ok);color:#fff}
+.ls-row.done .ltick{background:var(--ok);border-color:var(--ok);color:var(--bg)}
 .ls-row.done .ltxt b{color:var(--ink-2)}
 
 /* ---------- teach mode: lesson view ---------- */
@@ -1231,7 +1282,170 @@ const F = [
           {l:"Share of price that is growth",m:`${money(pvgo)} ÷ ${money(v.p)} = ${pctS(pvgo/v.p,2)}`}],
    ans:money(pvgo), why:"A high P/E usually means investors are paying for growth, not current earnings."};}},
 
-/* ---- 9. capital budgeting ---- */
+/* ---- 9. performance ratios ---- */
+{id:"nopat", cat:"Performance ratios", name:"NOPAT",
+ blurb:"Operating profit as if the firm had no debt.", key:"nopat net operating profit after tax interest add back",
+ sym:"NOPAT = net income + after-tax interest expense",
+ in:[{k:"inc",l:"Net income",h:"e.g. 10"},{k:"ds",l:"After-tax interest expense",h:"e.g. 270"}],
+ run:v=>{const n=v.inc+v.ds; return {
+   steps:[{l:"Add back after-tax interest",m:`${money(v.inc)} + ${money(v.ds)}`}],
+   ans:money(n), why:"Returns to ALL investors, lenders included — which is why ROA and ROC use it while ROE, the shareholders' slice, uses net income."};}},
+
+{id:"eva", cat:"Performance ratios", name:"EVA (economic value added)",
+ blurb:"Profit after charging for every dollar of capital used.", key:"eva economic value added residual income capital charge",
+ sym:"EVA = NOPAT − (cost of capital × total capitalisation)",
+ in:[{k:"inc",l:"NOPAT (or net income + after-tax interest)",h:"e.g. 280"},
+     {k:"r",l:"Cost of capital (%)",h:"e.g. 6.7"},
+     {k:"pv",l:"Total capitalisation",h:"e.g. 809.61"}],
+ run:v=>{const charge=v.r*v.pv, eva=v.inc-charge; return {
+   steps:[{l:"Capital charge",m:`${money(v.r*100,4)}% × ${money(v.pv)} = ${money(charge)}`},
+          {l:"Subtract from NOPAT",m:`${money(v.inc)} − ${money(charge)}`}],
+   ans:money(eva), why: eva>0?"Positive: the firm earned more than its investors required, so it created value.":"Negative: it earned an accounting profit but less than investors demanded, so it destroyed value."};}},
+
+{id:"mva", cat:"Performance ratios", name:"MVA (market value added)",
+ blurb:"Is the stake worth more than what was put in?", key:"mva market value added capitalisation book equity",
+ sym:"MVA = market capitalisation − book value of equity",
+ in:[{k:"price",l:"Market capitalisation",h:"e.g. 4200"},{k:"pv",l:"Book value of equity",h:"e.g. 3100"}],
+ run:v=>{const m=v.price-v.pv; return {
+   steps:[{l:"Subtract",m:`${money(v.price)} − ${money(v.pv)}`}],
+   ans:money(m), why:"Needs a market price, so it only works for listed firms and moves with the market. EVA is the version that works without one."};}},
+
+{id:"rox", cat:"Performance ratios", name:"ROA · ROC · ROE",
+ blurb:"Three returns — the difference is whose money is in the denominator.", key:"roa roc roe return on assets capital equity profitability",
+ sym:"ROA = NOPAT/assets · ROC = NOPAT/capitalisation · ROE = net income/equity",
+ in:[{k:"inc",l:"Numerator — NOPAT for ROA/ROC, net income for ROE",h:"e.g. 280"},
+     {k:"pv",l:"Denominator — assets, capitalisation, or equity",h:"e.g. 9470"}],
+ run:v=>{if(v.pv===0) throw "The denominator cannot be zero.";
+   const r=v.inc/v.pv; return {
+   steps:[{l:"Divide",m:`${money(v.inc)} ÷ ${money(v.pv)}`}],
+   ans:pctS(r), why:"Match the numerator to the denominator: equity holders are paid after interest (net income), while ROA and ROC ask about returns to everyone, so interest is added back into NOPAT."};}},
+
+{id:"dupont", cat:"Performance ratios", name:"DuPont — where an ROE comes from",
+ blurb:"Splits ROE into margin, asset use and leverage.", key:"dupont roe decomposition margin turnover equity multiplier leverage",
+ sym:"ROE = profit margin × asset turnover × equity multiplier",
+ in:[{k:"nm",l:"Net profit margin (%)",h:"e.g. 6"},
+     {k:"c",l:"Asset turnover (times)",h:"e.g. 1.5"},
+     {k:"m",l:"Equity multiplier (times)",h:"e.g. 2.0"}],
+ run:v=>{const roe=v.nm*v.c*v.m; return {
+   steps:[{l:"Multiply the three",m:`${money(v.nm*100,4)}% × ${r6(v.c)} × ${r6(v.m)}`},
+          {l:"From operations alone (margin × turnover)",m:pctS(v.nm*v.c,4)},
+          {l:"Leverage contributes",m:`× ${r6(v.m)}`}],
+   ans:pctS(roe), why:"Two firms can post the same ROE — one by selling well, one by borrowing heavily. Always read ROE beside ROA or leverage will flatter it."};}},
+
+{id:"turn", cat:"Performance ratios", name:"Turnover ratios (and days)",
+ blurb:"How hard the assets work, and how long a cycle takes.", key:"asset inventory receivables turnover days sales collection period efficiency",
+ sym:"turnover = flow ÷ balance      days = 365 ÷ turnover",
+ in:[{k:"c",l:"Flow — sales, or COGS for inventory",h:"e.g. 12000"},
+     {k:"pv",l:"Balance — total assets, inventory, or receivables",h:"e.g. 1500"}],
+ run:v=>{if(v.pv===0) throw "The balance cannot be zero.";
+   const t=v.c/v.pv, d=365/t; return {
+   steps:[{l:"Turnover",m:`${money(v.c)} ÷ ${money(v.pv)} = ${r6(t)} times`},
+          {l:"Days",m:`365 ÷ ${r6(t)}`}],
+   ans:`${money(t,2)} times · ${money(d,1)} days`,
+   why:"Use COGS with inventory and sales with receivables. Judge the number against the same firm's history and its own industry — a grocer and a jeweller should look nothing alike."};}},
+
+{id:"liq", cat:"Performance ratios", name:"Current & quick ratio",
+ blurb:"Can short-term bills be covered?", key:"current quick acid test ratio liquidity working capital inventory",
+ sym:"current = CA ÷ CL      quick = (CA − inventory) ÷ CL",
+ in:[{k:"c",l:"Current assets",h:"e.g. 4200"},
+     {k:"pv",l:"Current liabilities",h:"e.g. 2800"},
+     {k:"c0",l:"Inventory (for the quick ratio)",h:"e.g. 1200",opt:true}],
+ run:v=>{if(v.pv===0) throw "Current liabilities cannot be zero.";
+   const cur=v.c/v.pv, inv=isFinite(v.c0)?v.c0:0, q=(v.c-inv)/v.pv;
+   const s=[{l:"Current ratio",m:`${money(v.c)} ÷ ${money(v.pv)} = ${money(cur,2)}`}];
+   if(isFinite(v.c0)) s.push({l:"Quick ratio",m:`(${money(v.c)} − ${money(inv)}) ÷ ${money(v.pv)} = ${money(q,2)}`});
+   return {steps:s, ans:isFinite(v.c0)?`${money(cur,2)} current · ${money(q,2)} quick`:`${money(cur,2)} current`,
+     why:"The quick ratio strips out inventory because stock is only worth its book value if somebody actually buys it in time to pay the bill."};}},
+
+{id:"tie", cat:"Performance ratios", name:"Times interest earned",
+ blurb:"How many times over does profit cover the interest bill?", key:"times interest earned coverage ratio ebit leverage solvency",
+ sym:"TIE = EBIT ÷ interest expense",
+ in:[{k:"c",l:"EBIT (operating profit)",h:"e.g. 1800"},{k:"pv",l:"Interest expense",h:"e.g. 240"}],
+ run:v=>{if(v.pv===0) throw "Interest expense cannot be zero.";
+   const t=v.c/v.pv; return {
+   steps:[{l:"Divide",m:`${money(v.c)} ÷ ${money(v.pv)}`}],
+   ans:money(t,2)+" times", why:"A coverage measure, not a profitability one. The lower it gets, the less room the firm has before a bad year threatens the interest payment."};}},
+
+{id:"ltd", cat:"Performance ratios", name:"Long-term debt ratio",
+ blurb:"How much of permanent funding is borrowed.", key:"long term debt ratio leverage capital structure gearing",
+ sym:"LTD ratio = long-term debt ÷ (long-term debt + equity)",
+ in:[{k:"c",l:"Long-term debt",h:"e.g. 3000"},{k:"pv",l:"Equity",h:"e.g. 5000"}],
+ run:v=>{const tot=v.c+v.pv; if(tot===0) throw "Debt and equity cannot both be zero.";
+   const r=v.c/tot; return {
+   steps:[{l:"Total long-term funding",m:`${money(v.c)} + ${money(v.pv)} = ${money(tot)}`},
+          {l:"Debt share",m:`${money(v.c)} ÷ ${money(tot)}`}],
+   ans:pctS(r), why:"Leverage amplifies results in both directions. It does not improve the underlying business — it just makes the outcome, good or bad, land harder on equity."};}},
+
+/* ---- 10. cost of capital ---- */
+{id:"capm", cat:"Cost of capital", name:"Cost of equity — CAPM",
+ blurb:"Required return on equity from the risk-free rate, beta and the market premium.", key:"capm cost of equity sml beta market risk premium required return",
+ sym:"RE = Rf + β × (E(Rm) − Rf)",
+ in:[{k:"rf",l:"Risk-free rate (%)",h:"e.g. 6.1"},{k:"b",l:"Beta (β)",h:"e.g. 0.58"},
+     {k:"mrp",l:"Market risk premium, E(Rm) − Rf (%)",h:"e.g. 8.6"}],
+ run:v=>{const prem=v.b*v.mrp, re=v.rf+prem; return {
+   steps:[{l:"Risk premium for this stock",m:`${r6(v.b)} × ${money(v.mrp*100,4)}% = ${pctS(prem,4)}`},
+          {l:"Add the risk-free rate",m:`${money(v.rf*100,4)}% + ${pctS(prem,4)}`}],
+   ans:pctS(re), why:"Beta scales the market risk premium into the extra return demanded for this stock's systematic risk. Works even for firms that pay no dividend."};}},
+
+{id:"dgmre", cat:"Cost of capital", name:"Cost of equity — dividend growth model",
+ blurb:"Required return on equity from the dividend yield plus growth.", key:"dgm ddm cost of equity dividend growth gordon required return",
+ sym:"RE = D₁ / P₀ + g",
+ in:[{k:"d",l:"Dividend",h:"e.g. 1.50"},{k:"isD0",l:"That is LAST year's dividend (D₀)",t:"bool"},
+     {k:"p",l:"Current share price (P₀)",h:"e.g. 25"},{k:"g",l:"Dividend growth rate (%)",h:"e.g. 5.1"}],
+ run:v=>{const d1=v.isD0?v.d*(1+v.g):v.d, y=d1/v.p, re=y+v.g; const s=[];
+   if(v.isD0) s.push({l:"Next year's dividend",m:`${money(v.d)} × (1 + ${money(v.g*100,4)}%) = ${money(d1)}`});
+   s.push({l:"Dividend yield",m:`${money(d1)} ÷ ${money(v.p)} = ${pctS(y,4)}`},
+          {l:"Add the growth rate",m:`${pctS(y,4)} + ${money(v.g*100,4)}%`});
+   return {steps:s, ans:pctS(re), why:"Rearranged from P₀ = D₁/(RE − g). Direct and intuitive, but it needs a firm paying steady, growing dividends."};}},
+
+{id:"kdtax", cat:"Cost of capital", name:"After-tax cost of debt",
+ blurb:"What debt really costs once the interest tax shield is counted.", key:"after tax cost of debt tax shield ytm interest deductible",
+ sym:"After-tax RD = RD × (1 − TC)",
+ in:[{k:"r",l:"Cost of debt — the YTM, not the coupon (%)",h:"e.g. 9"},{k:"tx",l:"Corporate tax rate (%)",h:"e.g. 30"}],
+ run:v=>{const at=v.r*(1-v.tx); return {
+   steps:[{l:"Tax shield factor",m:`1 − ${money(v.tx*100,4)}% = ${r6(1-v.tx)}`},
+          {l:"Multiply",m:`${money(v.r*100,4)}% × ${r6(1-v.tx)}`}],
+   ans:pctS(at), why:"Interest is deductible, so the government carries part of it. Use the YTM the market demands today, never the coupon fixed at issue."};}},
+
+{id:"kdspread", cat:"Cost of capital", name:"Cost of debt from a credit rating",
+ blurb:"For debt that is rated but not traded.", key:"cost of debt default spread rating risk free untraded bbb",
+ sym:"kd = risk-free rate + default spread for the rating",
+ in:[{k:"rf",l:"Risk-free rate (%)",h:"e.g. 12"},{k:"sp",l:"Default spread for the rating (%)",h:"e.g. 3"}],
+ run:v=>{const kd=v.rf+v.sp; return {
+   steps:[{l:"Add the spread to the risk-free rate",m:`${money(v.rf*100,4)}% + ${money(v.sp*100,4)}%`}],
+   ans:pctS(kd), why:"With no traded price there is no YTM to read, so the rating's spread stands in for the market's view of default risk."};}},
+
+{id:"rpf", cat:"Cost of capital", name:"Cost of preferred stock",
+ blurb:"A fixed dividend forever, so it is a perpetuity.", key:"preferred stock cost perpetuity fixed dividend preference shares",
+ sym:"RPF = Dividend ÷ Price",
+ in:[{k:"d",l:"Annual preferred dividend",h:"e.g. 6"},{k:"p",l:"Price of the preferred share",h:"e.g. 50"}],
+ run:v=>{const r=v.d/v.p; return {
+   steps:[{l:"Divide",m:`${money(v.d)} ÷ ${money(v.p)}`}],
+   ans:pctS(r), why:"Preferred pays a level dividend in perpetuity, so the perpetuity relationship inverts straight to a required return. No tax adjustment — preferred dividends are not deductible."};}},
+
+{id:"wacc", cat:"Cost of capital", name:"WACC (weighted average cost of capital)",
+ blurb:"Blends equity, debt and preferred into one required return.", key:"wacc weighted average cost of capital discount rate hurdle market value weights",
+ sym:"WACC = wE·RE + wD·RD(1 − TC) + wPF·RPF",
+ in:[{k:"ev",l:"MARKET value of equity",h:"e.g. 60000000"},
+     {k:"re",l:"Cost of equity (%)",h:"e.g. 14"},
+     {k:"dv",l:"MARKET value of debt",h:"e.g. 40000000"},
+     {k:"rd",l:"Cost of debt, pre-tax YTM (%)",h:"e.g. 8"},
+     {k:"tx",l:"Corporate tax rate (%)",h:"e.g. 30"},
+     {k:"pv",l:"Market value of preferred (optional)",h:"leave blank if none",opt:true},
+     {k:"rp",l:"Cost of preferred (%) (optional)",h:"leave blank if none",opt:true}],
+ run:v=>{
+   const p=isFinite(v.pv)?v.pv:0, rp=isFinite(v.rp)?v.rp:0;
+   const V=v.ev+v.dv+p; if(V<=0) throw "The total market value must be greater than zero.";
+   const wE=v.ev/V, wD=v.dv/V, wP=p/V, atRd=v.rd*(1-v.tx);
+   const wacc=wE*v.re+wD*atRd+wP*rp;
+   const s=[{l:"Total market value (V)",m:`${money(v.ev)} + ${money(v.dv)}${p?` + ${money(p)}`:""} = ${money(V)}`},
+            {l:"Weights",m:`wE = ${r6(wE)}· wD = ${r6(wD)}${p?`· wPF = ${r6(wP)}`:""}`},
+            {l:"After-tax cost of debt",m:`${money(v.rd*100,4)}% × (1 − ${money(v.tx*100,4)}%) = ${pctS(atRd,4)}`},
+            {l:"Weighted average",m:`${r6(wE)} × ${money(v.re*100,4)}% + ${r6(wD)} × ${pctS(atRd,4)}${p?` + ${r6(wP)} × ${money(rp*100,4)}%`:""}`}];
+   return {steps:s, ans:pctS(wacc),
+     why:"The minimum return the firm must earn on an average-risk project. Weights must be market values, and it is only the right discount rate for a project matching the firm's existing risk — adjust up for riskier divisions, down for safer ones."};}},
+
+/* ---- 10. capital budgeting ---- */
 {id:"npv", cat:"Capital budgeting", name:"Net present value (NPV)",
  blurb:"What a project is worth today, after its cost.", key:"npv net present value project accept reject capital budgeting",
  sym:"NPV = C0 + Σ CFₜ / (1 + r)^t",
@@ -1359,6 +1573,8 @@ const CAT_META={
   "Uneven cash flows":["⋮","Different amounts across time"],
   "Bonds":["◈","Price, yield and return"],
   "Stocks":["▥","Dividends, growth and value"],
+  "Performance ratios":["▦","Returns, efficiency, liquidity and leverage"],
+  "Cost of capital":["⚖","What the firm must earn to satisfy investors"],
   "Capital budgeting":["◎","Accept/reject investment decisions"]
 };
 
@@ -1398,7 +1614,11 @@ function renderList(filter=""){
 }
 
 /* ============ detail ============ */
-const PCTKEYS=new Set(["r","g","y","cr","tx","e","i","roe","po","ra","rb"]);
+/* Inputs whose typed value is a percentage and gets divided by 100.
+   NOTE: money-valued keys must never appear here — that is why the WACC
+   market values use ev/dv/pv rather than e, which is the EAR percentage. */
+const PCTKEYS=new Set(["r","g","y","cr","tx","e","i","roe","po","ra","rb",
+                       "rf","mrp","sp","re","rd","rp","nm","at","gm"]);
 
 function openFormula(id){
   if(typeof navigateMode === "function" && document.getElementById("calcShell")) navigateMode("calc");
@@ -2277,6 +2497,123 @@ const CASES=[
   "Sustainable growth = plowback × ROE, the rate the firm can fund from retained earnings without changing its leverage.",
   "No ratio means anything alone. You need the firm's own trend over time and a set of comparable competitors before calling any number good or bad."
  ]
+},
+{
+ id:"c_bondmove",
+ t:"The rate rise",
+ tag:"Lecture 4 · practice",
+ blurb:"A pension fund holds a bond that has lost value on paper. Nothing about the bond changed — only the market's required return. Work out what it is now worth, what it earned, and whether anything was actually lost.",
+ facts:[
+  ["The holding","A 10-year corporate bond, $1,000 face value, 7% annual coupon, bought at issue at par."],
+  ["What happened","One year later, market yields on comparable bonds have risen to 9%. The issuer has not missed a payment and its rating is unchanged."],
+  ["The fund","Holds the bond in a portfolio it can sell from at any time, but has no obligation to sell."],
+  ["Also under consideration","A 3-year bond from the same issuer, also 7% annual coupon, also bought at par."]
+ ],
+ qs:[
+  "What was the bond worth at issue, and why can you say so without computing anything?",
+  "What is the bond worth immediately after yields rise to 9%, with 9 years remaining?",
+  "What rate of return did the fund earn over that first year?",
+  "The 3-year bond suffered a much smaller price fall than the 10-year. Explain why, in terms of where each bond's value sits.",
+  "The fund manager says: \"We have lost nothing, because we intend to hold to maturity.\" Assess that claim.",
+  "What is the bond's current yield after the rate rise, and why does it differ from the 9% yield to maturity?"
+ ],
+ how:[
+  "At issue the coupon rate equals the required yield, so the bond must trade at par — $1,000. Predicting premium/par/discount before calculating is a good habit and a free sanity check.",
+  "Price the remaining cash flows at the new yield: 9 coupons of $70 plus $1,000 at year 9, discounted at 9%. Use the coupon annuity plus face-value lump sum structure.",
+  "Rate of return over the year = (coupon received + price change) ÷ purchase price. Both parts matter; the coupon alone tells you nothing about what you made.",
+  "Interest rate risk rises with maturity. The longer bond has more payments sitting far out where discounting bites hardest, and a larger share of its value locked in a distant face-value repayment.",
+  "Take the claim seriously before dismissing it. In cash terms it is right — every coupon and the face value still arrive. But the money is now locked into an old, lower rate while new bonds pay 9%, so there is a real opportunity cost. It shows up as a return foregone, not as a cheque that fails to arrive.",
+  "Current yield = annual coupon ÷ current price. It exceeds the coupon rate because the price fell, but sits below the 9% YTM because it ignores the capital gain the bond will deliver as it pulls back toward $1,000 by maturity.",
+  "Cross-check your price with the Bond price calculator, and your holding-period figure with Rate of return over a holding period."
+ ]
+},
+{
+ id:"c_ddm",
+ t:"The growth that does not last",
+ tag:"Lecture 5 · practice",
+ blurb:"A firm is growing at 20% a year and cannot possibly keep it up. Value the share properly — the trap is not the arithmetic, it is where you place the terminal value on the timeline.",
+ facts:[
+  ["The firm","Aseda Foods has just paid an annual dividend of $2.00 a share."],
+  ["Near term","Dividends are expected to grow 20% a year for the next three years as it rolls out nationally."],
+  ["After that","Growth settles to 4% a year indefinitely, in line with the wider economy."],
+  ["Required return","Shareholders require 11%."],
+  ["Market price","The share currently trades at $52."]
+ ],
+ qs:[
+  "Why can the constant-growth model not be applied directly to this share?",
+  "Compute the dividends for years 1, 2 and 3.",
+  "Compute the terminal value of the stable phase. Which year does that value sit on?",
+  "What is the share worth today?",
+  "The share trades at $52. What does your valuation imply, and what would you check before acting on it?",
+  "How much of your valuation comes from the first three years, and how much from everything after? What does that tell you about which assumption matters most?"
+ ],
+ how:[
+  "The Gordon model assumes one constant growth rate forever. Here growth changes, so the early years must be valued individually and only the stable phase can be treated as a growing perpetuity.",
+  "Grow the last paid dividend forward: D1 = 2.00 × 1.20, then compound again for years 2 and 3.",
+  "Apply the growing perpetuity to the FIRST stable dividend, D4 = D3 × 1.04. The formula returns a value standing one period before that dividend — so at year 3, not year 4 and not today. Misplacing this is the single most common error in the topic.",
+  "Discount the three early dividends and the terminal value back to today at 11%, then add. Value is additive only once everything stands on the same date.",
+  "If your figure is below $52 the market is more optimistic than you are — about the growth rate, its duration, or the risk. A valuation that disagrees with the price is a prompt to interrogate your assumptions, not proof the market is wrong.",
+  "Compute each part as a share of the total. The terminal value will dominate, which is why the long-run growth rate and the required return deserve far more scrutiny than the near-term forecast — and why a model needing r > g is fragile when the two are close."
+ ]
+},
+{
+ id:"c_wacc",
+ t:"Build the discount rate",
+ tag:"Lecture 6 · practice",
+ blurb:"Before any project can be judged, somebody has to produce the rate to judge it against. Build a WACC from a balance sheet and market data — then decide where it may legitimately be used.",
+ facts:[
+  ["Common equity","8,000,000 shares outstanding, trading at $42. Beta 1.15."],
+  ["Debt","60,000 bonds outstanding, $1,000 face value, trading at 94% of par, with a yield to maturity of 8.4%."],
+  ["Preferred stock","500,000 shares paying a $6 annual dividend, trading at $58."],
+  ["Market data","Risk-free rate 6.1%. Market risk premium 7.5%. Corporate tax rate 30%."],
+  ["On the balance sheet","Book value of equity is $180m and book value of debt is $60m."],
+  ["Two proposals","(a) expand the existing plant; (b) enter a new, considerably riskier line of business."]
+ ],
+ qs:[
+  "Compute the market value of each component and the resulting weights.",
+  "Estimate the cost of equity, the after-tax cost of debt, and the cost of preferred stock.",
+  "Compute the WACC.",
+  "The book values differ substantially from the market values. Which set belongs in the weights, and why?",
+  "Why is the tax adjustment applied to debt but not to preferred stock, when both pay a fixed amount?",
+  "Which of the two proposals may be evaluated at this WACC? What should be done about the other one?"
+ ],
+ how:[
+  "Equity = shares × price. Debt = number of bonds × face × the percentage of par. Preferred = shares × price. Each weight is that component over the total V.",
+  "Cost of equity by CAPM: risk-free plus beta times the market risk premium. Cost of debt is the YTM — never the coupon — then multiply by (1 − tax rate). Preferred is a perpetuity: dividend ÷ price.",
+  "WACC = wE·RE + wD·RD(1 − TC) + wPF·RPF. Check the weights sum to 1 before combining.",
+  "Market values. Book equity records what was raised historically at historic rates; the cost of capital is about what investors demand today, and only market values carry that.",
+  "Interest is deductible before tax, so borrowing shelters some tax and the government effectively pays part of the bill. Preferred dividends are paid out of already-taxed profit, so there is no shield and no (1 − TC).",
+  "The plant expansion matches the firm's existing risk and financing, so the WACC is the right rate. The new line of business does not — discounting riskier cash flows at the firm's average rate would make it look better than it is. Adjust the rate upward for that division, and note that flotation costs on any new issue belong in the project's initial outlay, never inside the WACC."
+ ]
+},
+{
+ id:"c_rank",
+ t:"When IRR and NPV disagree",
+ tag:"Lecture 7 · practice",
+ blurb:"Two mutually exclusive projects. One has the better percentage return, the other adds more money. Work out which is which, why they conflict, and what settles it.",
+ facts:[
+  ["Project A — Kiosk","Costs $40,000 today. Returns $26,000, $22,000 and $12,000 over the next three years."],
+  ["Project B — Depot","Costs $120,000 today. Returns $45,000, $55,000 and $65,000 over the same three years."],
+  ["The constraint","The two are mutually exclusive — the site fits one or the other, not both."],
+  ["Cost of capital","10%."],
+  ["Capital available","Not restricted; the firm can fund either project comfortably."]
+ ],
+ qs:[
+  "Compute the IRR of each project. Which looks better on that measure?",
+  "Compute the NPV of each at 10%. Which looks better now?",
+  "The two measures disagree. Find the crossover rate at which the ranking flips.",
+  "At a 10% cost of capital, which project should the firm take, and why?",
+  "At what cost of capital would the answer change, and what does that tell you about when IRR is safe to rank with?",
+  "Suppose instead that capital were rationed to $120,000 in total and other projects were competing for it. How would that change your approach?"
+ ],
+ how:[
+  "Find each IRR by trial and interpolation: try two rates, one giving a positive NPV and one negative, then interpolate between them. The Kiosk's smaller, front-loaded cash flows will produce the higher percentage.",
+  "Discount each project's cash flows at 10% and subtract the outlay. The Depot is roughly three times the size, so a lower percentage return can still add more dollars.",
+  "The crossover is the rate where the two NPVs are equal — compute the difference between the two cash-flow streams and find the IRR of that difference. It lands near 12.6% here.",
+  "Take the Depot. Shareholders are made better off by dollars of NPV, not by a superior-looking percentage. IRR ignores scale, which is exactly what differs between these two.",
+  "Above the crossover rate the Depot's later cash flows are punished enough that the Kiosk wins on both measures and the conflict disappears. IRR only ranks reliably when projects are similar in size and timing, and when the cost of capital sits away from the crossover.",
+  "That is a different question. Under a binding budget you are no longer choosing the single best project but the best combination per dollar — rank by profitability index and fund from the top down. Note the switch only becomes correct once funds are genuinely constrained; absent that, a higher NPV always wins."
+ ]
 }
 ];
 
@@ -2285,111 +2622,155 @@ const CASES=[
 const MODULES=[
 {id:"m1",n:"Foundations",lec:"Lecture 1",hue:"#2F6F5E",cats:[],topics:[
  {id:"t_goal",n:"Goals, governance & agency",
+  obj:["Explain why maximising market value is the right corporate goal.","Say why profit maximisation is a weaker objective.","Identify agency problems and the mechanisms that reduce them."],
   ex:"Corporations separate the people who own the firm from the people who run it. That buys permanence, limited liability and access to capital, but it opens a gap between what managers want and what shareholders want.",
   tips:["The goal is maximising current market value, not this quarter's accounting profit.","The board is elected by shareholders to monitor management.","Agency problems: perks, empire building, and dodging risky projects that would add value.","Remedies: share-based pay, independent boards, auditors, analysts, the takeover threat."]},
  {id:"t_dec",n:"Investment, financing & payout",
+  obj:["Sort a corporate action into investment, financing or payout.","Distinguish real assets from financial assets.","State what a capital budgeting decision must value: amount, timing and risk."],
   ex:"Every finance decision falls into one of three buckets. Ask what is actually being chosen: an asset, a source of cash, or a distribution.",
   tips:["Capital budgeting means real assets and projects.","Financing means debt, equity or retained earnings.","Payout means dividends and share repurchases.","Real assets produce goods and services; financial assets are claims on them."]},
  {id:"t_mkt",n:"Markets & intermediaries",
+  obj:["Distinguish primary from secondary markets, and capital from money markets.","Explain what financial intermediaries do and name the main classes.","List the functions markets perform beyond supplying finance."],
   ex:"Markets and intermediaries move savings from people who have spare cash to firms that need it, and then let investors trade those claims among themselves.",
   tips:["Primary market raises new cash for the issuer; secondary market does not.","Money market is short term; capital market is long term.","Intermediaries: banks, mutual funds, ETFs, pension funds, insurers.","Markets supply liquidity, diversification, payments, risk transfer and price information."]}
 ]},
-{id:"m2",n:"Performance",lec:"Lecture 2",hue:"#2B6796",cats:[],topics:[
+{id:"m2",n:"Performance",lec:"Lecture 2",hue:"#2B6796",cats:["Performance ratios"],topics:[
  {id:"t_val",n:"Value added: MVA & EVA",
+  fx:["mva","eva","nopat"],
+  obj:["Compute MVA from market capitalisation and book equity.","Compute EVA from NOPAT, the cost of capital and total capitalisation.","Explain why a firm can post an accounting profit and still destroy value."],
   ex:"Profit alone never tells you whether a firm created value, because it says nothing about the capital tied up earning it. MVA and EVA both fix that, one with market prices and one with accounting numbers.",
   tips:["MVA = market value of equity − book value of equity.","EVA = NOPAT − (cost of capital × total capitalisation).","NOPAT is what the firm would earn with no debt.","Zero EVA means the firm earned exactly its cost of capital."]},
  {id:"t_ret",n:"Returns: ROA, ROC & ROE",
+  fx:["rox","nopat"],
+  obj:["Compute ROA, ROC and ROE and say whose return each measures.","Explain why ROE uses net income while ROA and ROC use NOPAT.","Judge an ROE by reading it alongside ROA."],
   ex:"Accounting returns answer 'how much profit per unit of capital', but which profit and which capital depends on whose return you are measuring.",
   tips:["ROA = NOPAT / total assets — the return to all investors.","ROC = NOPAT / (long-term debt + equity).","ROE = net income / equity — the return to shareholders alone.","ROE above ROA usually signals leverage, which raises risk as well as return."]},
  {id:"t_eff",n:"Efficiency & liquidity",
+  fx:["turn","liq"],
+  obj:["Compute asset, inventory and receivables turnover, and convert them to days.","Compute the current and quick ratios and say what each assumes.","Explain why a ratio only means something against an industry or a trend."],
   ex:"Efficiency ratios ask how hard the assets are working. Liquidity ratios ask whether the firm can pay what falls due soon.",
   tips:["Asset turnover = sales / total assets.","Inventory turnover = cost of sales / average inventory.","Collection period = average receivables / average daily sales.","Current, quick and cash ratios tighten progressively; the quick ratio drops inventory."]},
  {id:"t_lev",n:"Leverage, DuPont & growth",
+  fx:["dupont","ltd","tie","sgr"],
+  obj:["Compute the long-term debt ratio and times interest earned.","Decompose an ROE with DuPont into margin, turnover and leverage.","Compute a sustainable growth rate and state the assumptions it rests on."],
   ex:"Leverage magnifies returns in both directions. DuPont pulls a single return apart into the drivers a manager can actually move.",
   tips:["Times interest earned = EBIT / interest.","DuPont ROA = asset turnover × operating profit margin.","ROE = net margin × asset turnover × equity multiplier.","Sustainable growth = plowback × ROE."]}
 ]},
 {id:"m3",n:"Time value",lec:"Lecture 3",hue:"#4A4FA0",
  cats:["Single amounts (one cash flow)","Solving for rate or time","Rates & compounding (EAR / APR)","Uneven cash flows","Annuities (equal payments that STOP)","Perpetuities (payments FOREVER)","Loans & amortisation"],topics:[
  {id:"t_sing",n:"Single sums: PV, FV, r, t",
+  fx:["pv1","fv1","solr","solt","r72"],
+  obj:["Move a single amount forward or back through time.","Solve for the rate or the number of periods given the other three variables.","Explain why the rate and the period must always describe the same length of time."],
   ex:"Everything in this lecture rests on one relationship. Given any three of PV, FV, r and t, you can find the fourth.",
   tips:["FV = PV × (1+r)^t","PV = FV / (1+r)^t","r = (FV/PV)^(1/t) − 1","t = ln(FV/PV) / ln(1+r)"]},
  {id:"t_comp",n:"Compounding, APR & EAR",
+  fx:["ear","earp","emr","apr","fvm","pvm"],
+  obj:["Convert a quoted APR into an effective annual rate.","Explain why compounding frequency changes what you actually earn or pay.","Adjust both the rate and the period count for intra-year compounding."],
   ex:"A quoted rate means nothing until you know how often it compounds. The effective annual rate is the only fair basis for comparison.",
   tips:["Period rate = APR / m; number of periods = m × t.","EAR = (1 + APR/m)^m − 1.","More frequent compounding always raises the EAR.","The rate and the period count must match the payment frequency."]},
  {id:"t_multi",n:"Multiple & uneven cash flows",
+  fx:["unpv","unfv","chain"],
+  obj:["Value an uneven stream by discounting each cash flow separately.","Explain why only amounts on the same date may be added.","Split a complex stream into recognisable annuity and lump-sum pieces."],
   ex:"When the amounts differ year to year there is no shortcut. Move every cash flow to one common date, then add.",
   tips:["Only compare cash flows standing at the same point in time.","Value is additive, so a complex stream can be split into simple pieces.","For PV, discount each flow to today; for FV, compound each to the target date.","The annuity formula needs equal payments at regular intervals."]},
  {id:"t_ann",n:"Annuities & perpetuities",
+  fx:["pva","fva","pmtpv","pmtfv","gann","perp","gperp","dperp","perpr"],
+  obj:["Value an ordinary annuity and adjust it for an annuity due.","Compute a loan payment from the amount borrowed.","Value level and growing perpetuities, and place them on the timeline correctly."],
   ex:"When payments are level, shortcuts appear. The trap is always the timing of the first payment.",
   tips:["Ordinary annuity: first payment at the end of period 1.","Annuity due: first payment today — multiply the ordinary value by (1+r).","Perpetuity: PV = C/r, valued one period before the first payment.","Growing perpetuity: PV = C/(r−g), valid only when r > g."]},
  {id:"t_app",n:"Applications",
+  fx:["pva","fva","loan","bal","unpv"],
+  obj:["Build a timeline for a retirement, mortgage or education problem.","Treat foregone salary as an opportunity cost.","Decide which costs are relevant to a like-for-like comparison."],
   ex:"Retirement pots, mortgages, education funds and the MBA decision are all the same machinery. The work is in the timeline, not the arithmetic.",
   tips:["Draw the timeline before choosing a formula.","Compound any savings you already hold to the target date first.","Separate one-off costs from recurring cash flows.","Treat foregone salary as a real opportunity cost."]}
 ]},
 {id:"m4",n:"Bonds",lec:"Lecture 4",hue:"#8A4A78",cats:["Bonds"],topics:[
  {id:"t_bbasic",n:"Bond market & terms",
+  obj:["Explain what a bond is and who issues one.","Compute a coupon payment from the coupon rate and face value.","Explain why a zero-coupon bond still offers a return."],
   ex:"A bond is a loan cut into tradeable pieces. Coupon and face value are fixed at issue; only the market's required return moves afterwards.",
   tips:["Coupon rate = annual coupon / face value — always on face, never on price.","Clean price excludes accrued interest; dirty price includes it.","Variations: zero-coupon, strip, floating rate, convertible, callable.","The discount rate is the return available on similar-risk investments."]},
  {id:"t_bprice",n:"Pricing a bond",
+  fx:["bond"],
+  obj:["Price a bond as a coupon annuity plus a face-value lump sum.","Explain why price and yield must move in opposite directions.","Predict premium, par or discount before computing anything."],
   ex:"Price is just present value: an annuity of coupons plus a lump sum at maturity. Every result in the lecture follows from that.",
   tips:["Price = (coupon × annuity factor) + (face value × discount factor).","Rate above coupon → discount. Rate below coupon → premium. Equal → par.","Semi-annual: halve the coupon and the rate, double the periods.","Price and yield always move in opposite directions."]},
  {id:"t_byield",n:"Current yield, YTM & rate of return",
+  fx:["ytm","hpr"],
+  obj:["Compute current yield, yield to maturity and a holding-period rate of return.","Say which measure answers which question.","Explain why current yield and YTM differ for a premium or discount bond."],
   ex:"Three different questions, three different measures. Confusing them is the commonest error in this lecture.",
   tips:["Current yield = annual coupon / current price — income only.","YTM is the discount rate that makes PV of cash flows equal the price.","Rate of return = (coupon income + price change) / investment.","If the YTM is unchanged over the holding period, rate of return equals YTM."]},
  {id:"t_brisk",n:"Interest-rate risk, tax & ratings",
+  fx:["atax"],
+  obj:["Explain interest-rate risk and say which bonds carry most of it.","Compute a default risk premium from two comparable bonds.","Read a credit rating and adjust a return for tax."],
   ex:"Two risks matter: rates move, and issuers default. Both show up in the price you pay today.",
   tips:["Longer maturity and lower coupon both mean greater interest-rate risk.","Default premium = corporate yield − government yield, same coupon and maturity.","AAA is highest; BBB and above is investment grade; BB and below is junk.","Convert cash flows to after-tax values before computing an after-tax return."]}
 ]},
 {id:"m5",n:"Stocks",lec:"Lecture 5",hue:"#B4553C",cats:["Stocks"],topics:[
  {id:"t_sbasic",n:"Stock market & returns",
+  fx:["exret"],
+  obj:["Explain what a shareholder actually owns and why equity is riskier than debt.","Split a holding-period return into dividend yield and capital gains yield.","Distinguish market price from intrinsic value."],
   ex:"A share is a residual claim. Its expected return over a year splits cleanly into the dividend you collect and the price change you hope for.",
   tips:["r = (Div₁ + P₁ − P₀) / P₀ = dividend yield + capital gains yield.","IPO is the first public sale; an SEO is a later one; both are primary market.","P/E = price per share / earnings per share.","Intrinsic value is the present value of expected future cash flows."]},
  {id:"t_ddm",n:"Dividend discount model",
+  fx:["ddm","nogrow","nonconst"],
+  obj:["Value a share with no growth and with constant growth.","Rearrange the model to get the required return.","Handle non-constant growth by valuing early dividends then a terminal perpetuity."],
   ex:"A share is worth the present value of the dividends it will pay. Push the horizon far enough out and the terminal price term disappears.",
   tips:["No growth: P₀ = Div₁ / r.","Constant growth: P₀ = Div₁ / (r − g), valid only when g < r.","Rearranged: r = Div₁/P₀ + g.","Non-constant growth: discount each early dividend, then value the stable phase as a growing perpetuity one period before it starts."]},
  {id:"t_growth",n:"Growth, income stocks & PVGO",
+  fx:["sgr","pvgo"],
+  obj:["Compute a growth rate from ROE and the plowback ratio.","Compute PVGO and say what share of a price is growth.","Explain why growth only adds value when ROE exceeds the required return."],
   ex:"Reinvesting earnings produces growth, but growth only adds value when the money earns more than shareholders require.",
   tips:["g = ROE × plowback ratio.","Plowback + payout = 1.","PVGO = price with growth − price with no growth.","A high P/E signals that the market expects good growth opportunities."]},
  {id:"t_emh",n:"Market efficiency & anomalies",
+  obj:["State the three forms of market efficiency and the information each covers.","Say which form repudiates technical and which fundamental analysis.","Name the main anomalies that sit awkwardly with the theory."],
   ex:"If prices already reflect the information you have, no amount of analysis on that information will earn you an abnormal return.",
   tips:["Weak form: past prices and volumes — repudiates technical analysis.","Semi-strong: all public information — repudiates fundamental analysis.","Strong form: all information, public and private — least supported by evidence.","Anomalies: earnings announcement drift, the new issues puzzle, the January effect."]}
 ]},
-{id:"m6",n:"Cost of Capital",lec:"Lecture 6",hue:"#B07A2E",cats:[],topics:[
+{id:"m6",n:"Cost of Capital",lec:"Lecture 6",hue:"#B07A2E",cats:["Cost of capital"],topics:[
  {id:"t_coc",n:"Cost of capital & components",
+  fx:["wacc"],
   obj:["Explain what the cost of capital is and why the discount rate matters.","Name the three financing components and why market weights are used.","List the four steps in building the WACC."],
   ex:"The cost of capital is the minimum return a firm must earn on an average-risk project to keep every investor happy. It is set by the market's view of the firm's risk, not by the accountants.",
   tips:["Required return and discount rate are the same number, driven by risk.","Components: debt, preferred stock, common equity.","Always weight by market value, never book value.","WACC steps: cost of each security → its market value → its weight → weighted average."]},
  {id:"t_ce",n:"Cost of equity: DGM & CAPM",
+  fx:["capm","dgmre"],
   obj:["Estimate the cost of equity with the dividend growth model.","Estimate the cost of equity with the CAPM (SML).","State the strengths and limits of each method."],
   ex:"Shareholders bear the residual risk, so their required return is the hardest cost to pin down. Two methods dominate: the dividend growth model and the CAPM.",
   tips:["DGM: RE = D₁/P₀ + g.","Growth shortcut: g = (1 − payout) × ROE.","CAPM: RE = Rf + β(E(Rm) − Rf).","If the two disagree, take an average — neither is exact."]},
  {id:"t_cd",n:"Cost of debt & preferred",
+  fx:["kdtax","kdspread","rpf"],
   obj:["Estimate the cost of debt three ways and pick the right one.","Apply the tax shield to get the after-tax cost of debt.","Compute the cost of preferred stock as a perpetuity."],
   ex:"Debt is cheaper and easier to price than equity, but the coupon is a trap — what matters is the return the market requires today, and what tax does to it.",
   tips:["Cost of debt = YTM, not the coupon rate.","Rated but untraded: kd = rf + default spread.","Neither traded nor rated: interest ÷ book value of debt.","After-tax cost of debt = RD(1 − TC); preferred = D ÷ price, with no tax adjustment."]},
  {id:"t_wacc",n:"WACC & when to use it",
+  fx:["wacc"],
   obj:["Combine component costs into the WACC using market-value weights.","Judge when the WACC is and is not the right discount rate.","Treat flotation costs and differential project risk correctly."],
   ex:"The WACC blends the component costs into one required return for the firm. It is the right discount rate only when a project is a carbon copy of the firm's existing business.",
   tips:["WACC = wE·RE + wD·RD(1 − TC) + wPF·RPF.","Weights use market values; V = D + E (+ P).","Same-risk, same-financing projects only — adjust up for risky divisions, down for safe ones.","Flotation costs never enter the WACC; add them as a cash outflow to the project's cost."]}
 ]},
 {id:"m7",n:"Capital Budgeting",lec:"Lecture 7",hue:"#C1440E",cats:["Capital budgeting"],topics:[
  {id:"t_cb_npv",n:"NPV & the accept/reject rule",
+  fx:["npv"],
   obj:["Explain what capital budgeting is trying to achieve.","Compute the NPV of a project from its cash flows.","Apply the accept/reject rule and use NPV to choose between equal-life mutually exclusive projects."],
   ex:"Capital budgeting is about which real projects are worth doing. NPV answers that directly: it is the present value of everything the project pays back, minus what it costs to start.",
   tips:["NPV = C0 + CF1/(1+r) + CF2/(1+r)^2 + ... , where C0 is the initial outflow.","Accept if NPV > 0; reject if NPV < 0; indifferent if NPV = 0.","r is the opportunity cost of capital — the return given up on an equal-risk alternative.","Among mutually exclusive, equal-life projects with positive NPV, pick the highest NPV."]},
  {id:"t_cb_pay",n:"Payback & discounted payback",
+  fx:["payback","dpayback"],
   obj:["Compute a project's payback period and discounted payback period.","State the decision rule for each.","Explain why both are weaker tools than NPV."],
   ex:"Payback asks a simpler question than NPV: how long until the project's own cash flows return what it cost? It is quick and intuitive, but it can approve projects that destroy value and reject ones that create it.",
   tips:["Payback = years until cumulative cash flow reaches zero; accept if under the firm's cutoff.","Discounted payback does the same thing on discounted cash flows, so it always takes at least as long as payback.","Both ignore every cash flow after the cutoff date — a fatal flaw for long-lived, front-loaded-cost projects.","Payback also ignores the time value of money entirely; discounted payback fixes only that one problem."]},
  {id:"t_cb_irr",n:"Internal rate of return",
+  fx:["irrx","npv"],
   obj:["Explain what the IRR represents and its accept/reject rule.","Estimate IRR using the two-rate approximation (interpolation) method.","Recognise when the IRR rule gives the wrong answer."],
   ex:"IRR asks: at what discount rate does this project's NPV hit exactly zero? That rate is the project's own rate of return, and you accept if it beats your cost of capital.",
   tips:["Find IRR by trial and error: try two rates, one giving a positive NPV and one negative, then interpolate.","IRR ≈ Ra + [NPVa / (NPVa − NPVb)] × (Rb − Ra).","For mutually exclusive projects, IRR can rank them differently from NPV — when they conflict, trust NPV.","Cash flows that change sign more than once can produce more than one IRR; NPV still works, IRR does not."]},
  {id:"t_cb_mex",n:"Unequal lives, timing & replacement",
+  fx:["eac","pva"],
   obj:["Explain why unequal-life projects can't be compared on raw PV of costs.","Compute an equivalent annual cost (EAC) and use it to choose between assets.","Apply the same logic to investment-timing and equipment-replacement decisions."],
   ex:"Comparing a 3-year machine to a 2-year machine by their PV of costs alone is comparing apples to oranges — one of them gets replaced sooner. Spreading each option's cost over one common year fixes that.",
   tips:["EAC = PV of costs ÷ annuity factor for that asset's own life, at the opportunity cost of capital.","Between mutually exclusive assets with unequal lives, pick the lower EAC (or higher equivalent annual benefit).","Investment timing: compute the NPV of starting the project at each candidate date, discount each back to today, and take the highest.","Replacement: only replace an asset now if the new one's EAC is below the old asset's remaining annual operating cost."]},
  {id:"t_cb_pi",n:"Capital rationing & profitability index",
+  fx:["pi","npv"],
   obj:["Explain why capital rationing forces a different ranking rule than NPV alone.","Compute the profitability index and use it to rank projects under a budget limit.","State when the profitability index gives an unreliable answer."],
   ex:"NPV alone tells you if a project is worth doing, not how to get the most value out of a limited pot of money. When funds are capped, you need the biggest bang per dollar invested — that's what the profitability index measures.",
   tips:["PI = PV of future cash flows ÷ initial investment (equivalently, NPV ÷ initial investment, plus 1).","Under a budget limit, rank projects by PI and fund the highest-PI projects first until the budget runs out.","PI is unreliable for choosing between mutually exclusive projects — a small project can have a high PI but a low NPV.","Outside of capital rationing, a higher NPV is always preferable to a higher PI."]}
@@ -2457,7 +2838,13 @@ function touchStreak(){
   return s.streak;
 }
 
-function rec(id){return M[id]||{n:0,k:0,s:0,d:-999};}
+/* n attempts · k correct · s streak · d drill number · w day last answered.
+   w is a day count, not a drill count: a student studying weekly needs wall
+   clock to know something has gone cold. Records written before w existed
+   default to 0, which reads as "unknown" and never claims a topic is fading. */
+const DAY=86400000;
+const today=()=>Math.floor(Date.now()/DAY);
+function rec(id){const r=M[id]; return r?(r.w===undefined?Object.assign({w:0},r):r):{n:0,k:0,s:0,d:-999,w:0};}
 function isRetired(id){return rec(id).s>=RETIRE;}
 
 function statsFor(ids){
@@ -2469,6 +2856,39 @@ function statsFor(ids){
 }
 const modIds=m=>m.topics.map(t=>t.id);
 const allIds=()=>MODULES.flatMap(modIds);
+
+/* ---- concept state ----
+   Joins the two records the app already keeps but never combined: lesson
+   completion (LDONE) and question mastery (M). Without the join, a concept you
+   were taught but never practised looks identical to one you never opened —
+   both render 0%, which is exactly the illusion of competence that retrieval
+   practice exists to break.                                                  */
+const FADE_DAYS=14;
+function topicState(t){
+  const s=statsFor([t.id]);
+  const lesson=LESSONS.find(x=>x.topic===t.id);
+  const taught=!!(lesson&&LDONE[lesson.id]);
+  let n=0,k=0,last=0;
+  (BY_TOPIC[t.id]||[]).forEach(q=>{const r=rec(q.i); n+=r.n; k+=r.k; if(r.w>last) last=r.w;});
+  const acc=n?k/n:null;
+  const age=last?today()-last:null;
+  let key,label,action;
+  if(!taught&&s.seen===0){ key="new";        label="Not started";                       action="lesson"; }
+  else if(s.seen===0){     key="taught";     label="Learned — not practised yet";        action="drill";  }
+  else if(n>=6&&acc<0.6){  key="shaky";      label="Needs another look";                 action="lesson"; }
+  else if(s.retired<s.total){ key="practising"; label=`In practice · ${s.retired}/${s.total} retired`; action="drill"; }
+  else if(age!==null&&age>FADE_DAYS){ key="fading"; label=`Solid — last practised ${age} days ago`; action="drill"; }
+  else {                   key="solid";      label="Solid · all retired";                action="drill";  }
+  return {stats:s,lesson,taught,acc,age,key,label,action,
+          practised:s.seen>0, mastered:s.total>0&&s.retired===s.total};
+}
+/* Order used by the Continue card: the concept most worth opening next. */
+function nextConcept(m){
+  const rank={new:0,shaky:1,taught:2,practising:3,fading:4,solid:5};
+  const rows=m.topics.map(t=>({t,st:topicState(t)}));
+  rows.sort((a,b)=>rank[a.st.key]-rank[b.st.key]||a.st.stats.pct-b.st.stats.pct);
+  return rows[0];
+}
 
 /* ============ the scheduler ============ */
 /* Priority: 0 previously missed · 1 never seen · 2 part-way · 3 retired.
@@ -2497,7 +2917,7 @@ function buildQueue(ids,size){
 function recordAnswer(id,ok){
   const r=rec(id);
   const before=r.s>=RETIRE;
-  const m={n:r.n+1,k:r.k+(ok?1:0),s:ok?Math.min(r.s+1,RETIRE):0,d:DRILLNO};
+  const m={n:r.n+1,k:r.k+(ok?1:0),s:ok?Math.min(r.s+1,RETIRE):0,d:DRILLNO,w:today()};
   M[id]=m;
   return {wasRetired:before,nowRetired:m.s>=RETIRE};
 }
@@ -2529,7 +2949,7 @@ const TOOL_DESC={
   mt:()=>`${LESSONS.length} lessons across all seven lectures, explained from scratch`,
   mf:"Not sure which formula? Answer a few questions",
   mc:()=>`${CASES.length} worked cases, including the MBA decision`,
-  m0:"41 worked calculators, every step shown"
+  m0:()=>`${F.length} worked calculators, every step shown`
 };
 function renderHome(){
   const all=statsFor(allIds());
@@ -2662,6 +3082,7 @@ function show(v){
   $("#homeTitle").textContent=v==="welcome"?"Welcome":v==="intro"?"Getting started":v==="courses"?"Course workspace":"Managerial Finance";
   $("#topbarHome").classList.toggle("hidden",v==="world");
   $("#topbarWorld").classList.toggle("hidden",v!=="world");
+  if(v!=="world") document.body.classList.remove("in-lecture");  /* accent back to the app default */
   if(v==="courses") renderCourseHub();
   if(v==="intro") renderIntro();
   window.scrollTo({top:0,behavior:"instant"in document.documentElement.style?"instant":"auto"});
@@ -2670,7 +3091,8 @@ function openWorld(id,pane){
   const prev=WORLD&&WORLD.id;
   WORLD=MODULES.find(m=>m.id===id); if(!WORLD) return;
   if(prev!==WORLD.id) LESSON_ID=null;   /* don't carry a lesson across modules */
-  document.documentElement.style.setProperty("--accent",WORLD.hue);
+  document.body.style.setProperty("--wh",WORLD.hue);
+  document.body.classList.add("in-lecture");
   $("#worldEyebrow").textContent=WORLD.lec;
   $("#worldTitle").textContent=WORLD.n;
   CALC_CATS=WORLD.cats;
@@ -2679,7 +3101,12 @@ function openWorld(id,pane){
   $("#worldSeg").innerHTML=tabs.map(t=>`<button data-pane="${t}">${LBL[t]}</button>`).join("");
   $("#worldSeg").classList.toggle("hidden",tabs.length<2);
   renderModuleNav();
-  const initial=tabs.includes(pane)?pane:tabs[0];
+  /* Tabs drive the segmented control, but drill / lesson / calculator are
+     takeover panes reached from inside a concept, so they are valid targets
+     even though they are no longer tabs. */
+  const TAKEOVER=["teach","drill","calc"];
+  const canTake=tabs.includes(pane)||(tabs[0]==="learn"&&TAKEOVER.includes(pane));
+  const initial=canTake?pane:tabs[0];
   setPane(initial);
   show("world");
   location.hash=id+(initial?"/"+initial:"");
@@ -2689,28 +3116,41 @@ function worldTabs(m){
   if(m.calcOnly) return ["calc"];
   if(m.frameworkOnly) return ["framework"];
   if(m.teachOnly) return ["teach"];
-  const t=["learn"];
-  if(lessonsFor(m.id).length) t.push("teach");
-  t.push("drill");
-  if(m.cats&&m.cats.length) t.push("calc");
-  return t;
+  /* A lecture is now a single concept page. Lesson, drill and formulas are
+     reached from inside the concept they belong to, so the tab bar — which
+     used to change shape between lectures depending on formula coverage —
+     is gone entirely. "learn" is the concept page; the other panes are still
+     rendered into on demand (a drill or a lesson takes over the view).       */
+  return ["learn"];
 }
+/* Prev/next walks lectures only. It used to index all of MODULES, so "Next ›"
+   from Capital Budgeting landed on the Teach mode tool rather than stopping. */
+const LECTURES=()=>MODULES.filter(m=>!m.calcOnly&&!m.caseOnly&&!m.frameworkOnly&&!m.teachOnly);
 function renderModuleNav(){
   if(!WORLD) return;
-  const idx=MODULES.findIndex(m=>m.id===WORLD.id);
-  const prev=MODULES[idx-1], next=MODULES[idx+1];
-  $("#moduleNav").innerHTML=`
+  const list=LECTURES(), idx=list.findIndex(m=>m.id===WORLD.id);
+  const inLecture=idx>=0;
+  const prev=inLecture?list[idx-1]:null, next=inLecture?list[idx+1]:null;
+  /* On a takeover pane (a lesson, a drill, the calculator) the only thing that
+     matters is getting back to the concept list, so the nav collapses to that. */
+  const onTakeover=inLecture&&PANE!=="learn";
+  $("#moduleNav").innerHTML=onTakeover?`
+    <div class="nav-row">
+      <button class="nav-mini" data-cx-back type="button">‹ Concepts</button>
+      <button class="nav-mini" data-goto="home" type="button">All lectures</button>
+    </div>`:`
     <div class="nav-row">
       <button class="nav-mini" data-goto="home" type="button">Home</button>
       <button class="nav-mini" ${prev?`data-mod="${prev.id}"`:"disabled"} type="button">‹ ${prev?prev.n:"Previous"}</button>
       <button class="nav-mini" ${next?`data-mod="${next.id}"`:"disabled"} type="button">${next?next.n:"Next"} ›</button>
     </div>
-    <div class="module-scroll" aria-label="Module navigation">
-      ${MODULES.map(m=>`<button class="module-chip${m.id===WORLD.id?" on":""}" data-mod="${m.id}" type="button">${m.n}</button>`).join("")}
+    <div class="module-scroll" aria-label="Lecture navigation">
+      ${list.map(m=>`<button class="module-chip${m.id===WORLD.id?" on":""}" data-mod="${m.id}" type="button">${m.n}</button>`).join("")}
     </div>`;
 }
 function setPane(p){
   PANE=p;
+  renderModuleNav();   /* so the "‹ Concepts" escape appears on takeover panes */
   document.querySelectorAll("#worldSeg button").forEach(b=>b.classList.toggle("on",b.dataset.pane===p));
   $("#learnPane").classList.toggle("hidden",p!=="learn");
   $("#drillPane").classList.toggle("hidden",p!=="drill");
@@ -2733,27 +3173,111 @@ function syncHash(){
 }
 
 /* ============ learn pane ============ */
+/* ---- the concept page ----
+   One row per concept, each holding everything about that concept: the note,
+   the objectives, the key points, then its lesson, its drill and its formulas.
+   Replaces the old Learn/Teach/Drill/Formulas tab split, which scattered one
+   idea across three lists that could not see each other's progress.          */
+let OPEN_CX=new Set();   /* survives a round trip to a drill and back */
+
+function pip(kind,title){
+  return `<span class="pip${kind?" pip--"+kind:""}" title="${title}">&#10003;</span>`;
+}
+function conceptPips(st){
+  const taught=st.taught?"done":"";
+  const practised=st.mastered?(st.key==="fading"?"fade":"done"):st.practised?"part":"";
+  const notes=st.taught||st.practised?"done":"";
+  return `<span class="tri" aria-hidden="true">${pip(notes,"Notes")}${pip(taught,"Lesson")}${pip(st.key==="shaky"?"warn":practised,"Practice")}</span>`;
+}
+function conceptSummary(t,st){
+  const bits=[t.n+".", st.taught?"Lesson done.":"Lesson not done.",
+    st.stats.seen===0?"Not practised yet.":`${st.stats.retired} of ${st.stats.total} questions retired.`];
+  if(st.key==="fading") bits.push(`Last practised ${st.age} days ago.`);
+  if(st.key==="shaky") bits.push("Accuracy is low so far.");
+  return bits.join(" ");
+}
 function renderLearn(){
   const box=$("#learnPane");
-  box.innerHTML=WORLD.topics.map((t,ix)=>{
-    const s=statsFor([t.id]);
-    return `<div class="topic" style="margin-bottom:10px">
-      <button class="topic-head" data-topic-open="${t.id}">
-        <span class="tnum">${String(ix+1).padStart(2,"0")}</span>
-        <b>${t.n}</b>
-        <span class="ring">${s.pct}%</span>
-      </button>
-      <div class="topic-body hidden" data-topic-body="${t.id}">
-        <p>${t.ex}</p>
-        ${t.obj?`<div class="objbox"><p class="eyebrow">By the end you can</p><ul class="objlist">${t.obj.map(o=>`<li>${o}</li>`).join("")}</ul></div>`:""}
-        <ul>${t.tips.map(x=>`<li>${x}</li>`).join("")}</ul>
-        <div class="tbar"><i style="width:${s.pct}%;background:${WORLD.hue}"></i></div>
-        <button class="tdrill" data-drill="topic" data-topic="${t.id}">
-          Drill this topic · ${s.total-s.retired} left
-        </button>
+  const m=WORLD, s=statsFor(modIds(m));
+  const up=nextConcept(m);
+  const totalQ=s.total;
+  const doneLessons=m.topics.filter(t=>{const l=LESSONS.find(x=>x.topic===t.id);return l&&LDONE[l.id];}).length;
+  const act={lesson:"Start the lesson",drill:`Practise · ${TOPIC_DRILL} questions`}[up.st.action];
+
+  box.innerHTML=`
+    <div class="lec-top">
+      <p class="lec-meta">${m.topics.length} concepts · ${totalQ} questions · ${doneLessons}/${m.topics.length} lessons done</p>
+      <div class="tbar"><i style="width:${s.pct}%;background:${m.hue}"></i></div>
+    </div>
+
+    <div class="cx-continue">
+      <p class="eyebrow">${up.st.key==="new"&&doneLessons===0?"Start here":"Pick up where you left off"}</p>
+      <p class="cx-what">${up.t.n}</p>
+      <p class="cx-why">${up.st.label}</p>
+      <button class="next" data-cx-go="${up.t.id}" data-cx-act="${up.st.action}" type="button">${act}</button>
+    </div>
+
+    <div class="cx-legend" aria-hidden="true">
+      <span>${pip("","")} to do</span>
+      <span>${pip("part","")} in progress</span>
+      <span>${pip("done","")} done</span>
+      <span>${pip("fade","")} going cold</span>
+      <span style="color:var(--ink-3)">notes · lesson · practice</span>
+    </div>
+
+    <div class="cx-list">
+      ${m.topics.map((t,ix)=>{
+        const st=topicState(t), open=OPEN_CX.has(t.id);
+        const left=st.stats.total-st.stats.retired;
+        const fx=(t.fx||[]).map(id=>F.find(f=>f.id===id)).filter(Boolean);
+        return `<div class="topic${open?" open":""}">
+          <button class="cx-head" data-cx-toggle="${t.id}" aria-expanded="${open}" aria-controls="cxb_${t.id}" type="button">
+            <span class="tnum">${String(ix+1).padStart(2,"0")}</span>
+            <span class="cx-name">
+              <b>${t.n}</b>
+              <span class="cx-state">${st.label}</span>
+              <span class="tbar"><i style="width:${st.stats.pct}%;background:${m.hue}"></i></span>
+            </span>
+            ${conceptPips(st)}
+            <span class="cx-chev">&#9656;</span>
+            <span class="sr">${conceptSummary(t,st)}</span>
+          </button>
+          <div class="topic-body${open?"":" hidden"}" id="cxb_${t.id}" data-topic-body="${t.id}">
+            <p>${t.ex}</p>
+            <div class="objbox"><p class="eyebrow">By the end you can</p>
+              <ul class="objlist">${t.obj.map(o=>`<li>${o}</li>`).join("")}</ul></div>
+            <ul>${t.tips.map(x=>`<li>${x}</li>`).join("")}</ul>
+            <div class="cx-acts">
+              ${st.lesson?`<button class="cx-act" data-cx-lesson="${st.lesson.id}" type="button">
+                <span class="ai">${st.taught?"&#10003;":"1"}</span>
+                <span class="ab"><b>Lesson</b><span>${st.lesson.mins} min · ${st.taught?"completed":"explains the idea from scratch"}</span></span>
+                <span class="aa">${st.taught?"Redo":"Start"}</span></button>`:""}
+              <button class="cx-act" data-drill="topic" data-topic="${t.id}" type="button">
+                <span class="ai">${st.mastered?"&#10003;":"2"}</span>
+                <span class="ab"><b>Practise</b><span>${left?`${left} of ${st.stats.total} still in rotation`:`all ${st.stats.total} retired — maintenance`}</span></span>
+                <span class="aa">${TOPIC_DRILL} Qs</span></button>
+              ${fx.length?`<div class="cx-act" style="display:block">
+                <span class="ab" style="display:block"><b>Formulas</b>
+                <span>Step-by-step working for this concept</span></span>
+                <div class="cx-fx">${fx.map(f=>`<button data-cx-fx="${f.id}" type="button">${f.name}</button>`).join("")}</div>
+              </div>`:""}
+            </div>
+          </div>
+        </div>`;
+      }).join("")}
+    </div>
+
+    <div class="lec-mixed">
+      <p class="eyebrow sec-label">Whole lecture</p>
+      <div class="panel">
+        <p style="font-size:14px;color:var(--ink-2);line-height:1.5">Mix all ${m.topics.length} concepts together. Jumping between concepts is harder than drilling one at a time — and that is the point, because the exam will not tell you which idea a question is testing.</p>
+        <div class="len-pick" style="margin-top:13px">
+          <button class="lenbtn" data-drill="module" data-size="5">5<span>quick</span></button>
+          <button class="lenbtn" data-drill="module" data-size="10">10<span>standard</span></button>
+          <button class="lenbtn" data-drill="module" data-size="20">20<span>exam prep</span></button>
+        </div>
       </div>
     </div>`;
-  }).join("");
 }
 
 /* ============ formula framework ============ */
@@ -3666,7 +4190,7 @@ function renderLesson(){
   const next=scope[ix+1];
   $("#teachPane").innerHTML=`
     <div class="lesson-top">
-      <button class="back" data-lesson-home type="button">&#8592; All lessons</button>
+      <button class="back" data-lesson-home type="button">&#8592; ${WORLD&&WORLD.teachOnly?"All lessons":"Concepts"}</button>
       <p class="eyebrow" style="margin-top:11px">${mod.lec} · ${(TOPIC[l.topic]||{}).n||""}</p>
       <h2>${l.title}</h2>
       <div class="lsbar"><i style="width:${Math.round((LESSON_POS+1)/l.blocks.length*100)}%;background:${mod.hue}"></i></div>
@@ -3708,7 +4232,7 @@ function lessonBlock(b,i){
         return `<button class="${cls}"${answered?" disabled":""} data-lesson-opt="${i}" data-opt="${oi}" type="button">
           <span class="k">${String.fromCharCode(65+oi)}</span><span>${opt}</span></button>`;
       }).join("")}
-      ${answered?`<div class="verdict ${picked===b.c?"y":"n"}"><b>${picked===b.c?"Correct":"Not quite"}</b>${b.e}</div>`:""}
+      <div aria-live="polite">${answered?`<div class="verdict ${picked===b.c?"y":"n"}"><b>${picked===b.c?"Correct":"Not quite"}</b>${b.e}</div>`:""}</div>
     </div>`;
   }
   if(b.k==="eg"){
@@ -3764,6 +4288,9 @@ function startDrill(ids,size,label){
   renderQ();
 }
 function topicMod(tid){return (TOPIC[tid]&&TOPIC[tid].mod)||MODULES[0];}
+/* One length for every single-concept drill, and it is always shown on the
+   button — previously two call sites hardcoded 8 while the tab offered 5/10/20. */
+const TOPIC_DRILL=10;
 function shuffled(n){
   const a=[...Array(n).keys()];
   for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
@@ -3843,12 +4370,18 @@ function finishDrill(){
     const k=q.t; byTopic[k]=byTopic[k]||{r:0,n:0}; byTopic[k].n++; if(d.res[ix]) byTopic[k].r++;
   });
   const line=pct===100?"Clean sweep.":pct>=80?"Strong. The misses come back first next time.":
-    pct>=50?"Worth re-reading the notes for the weakest topic below.":"Go back to Learn for these topics, then drill again.";
-  const praise=pct===100?"Excellent work. You handled the full batch.":pct>=80?"Good batch. You are building reliable recall.":pct>=50?"Progress made. Now target the missed topics.":"This is useful diagnostic work. Reset with Learn, then try again.";
+    pct>=50?"Worth re-reading the notes for the weakest concept below.":"Re-read these concepts, then drill them again.";
+  const praise=pct===100?"Excellent work. You handled the full batch.":pct>=80?"Good batch. You are building reliable recall.":pct>=50?"Progress made. Now target the missed topics.":"This is useful diagnostic work. Re-read the concept, then try again.";
+  /* A drill used to end by dumping you at the course home, two levels up from
+     whatever you were working on. Offer the way back to its own lecture. */
+  const homeMod=(d.ids&&d.ids.length===1&&topicMod(d.ids[0]))||WORLD;
+  const backToLecture=homeMod&&!homeMod.teachOnly&&!homeMod.calcOnly&&!homeMod.caseOnly&&!homeMod.frameworkOnly
+    ?`<button class="ghost" data-mod="${homeMod.id}">Back to ${homeMod.n}</button>`:"";
   $("#drillPane").innerHTML=`
-    <div class="panel score">
+    <div class="panel score" role="status" aria-live="polite">
       <div class="big">${right}<span style="color:var(--ink-3)">/${d.q.length}</span></div>
       <p class="sub">${line}</p>
+      <p class="sr">You scored ${right} out of ${d.q.length}. ${line}</p>
     </div>
     <div class="congrats"><b>${praise}</b><span>${d.retiredNow?`${d.retiredNow} question${d.retiredNow===1?"":"s"} retired in this batch.`:"No new retirements yet; missed items will return first."}</span></div>
     <div class="panel">
@@ -3860,7 +4393,8 @@ function finishDrill(){
       </div>
       <div style="margin-top:14px;display:flex;flex-direction:column;gap:8px">
         <button class="next" data-drill="again">Another ${d.q.length}</button>
-        <button class="ghost" data-goto="home">Back to modules</button>
+        ${backToLecture}
+        <button class="ghost" data-goto="home">All lectures</button>
       </div>
     </div>`;
   const done=DRILL; DRILL=null; DRILL_LAST=done;
@@ -3895,17 +4429,39 @@ document.addEventListener("click",e=>{
   const mod=e.target.closest("[data-mod]");
   if(mod){ DRILL=null; openWorld(mod.dataset.mod); return; }
 
-  const th=e.target.closest("[data-topic-open]");
-  if(th){
-    const b=document.querySelector(`[data-topic-body="${th.dataset.topicOpen}"]`);
-    b.classList.toggle("hidden"); return;
+  if(e.target.closest("[data-cx-back]")){ DRILL=null; LESSON_ID=null; setPane("learn"); window.scrollTo(0,0); return; }
+  const cxT=e.target.closest("[data-cx-toggle]");
+  if(cxT){
+    const id=cxT.dataset.cxToggle;
+    if(OPEN_CX.has(id)) OPEN_CX.delete(id); else OPEN_CX.add(id);
+    renderLearn();
+    if(OPEN_CX.has(id)){
+      const row=document.querySelector(`[data-cx-toggle="${id}"]`);
+      if(row) row.scrollIntoView({block:"start",behavior:"smooth"});
+    }
+    return;
   }
+  const cxGo=e.target.closest("[data-cx-go]");
+  if(cxGo){
+    const tid=cxGo.dataset.cxGo;
+    if(cxGo.dataset.cxAct==="lesson"){
+      const l=LESSONS.find(x=>x.topic===tid);
+      if(l){ setPane("teach"); openLesson(l.id); return; }
+    }
+    const m=topicMod(tid);
+    DRILL=null; openWorld(m.id,"drill"); startDrill([tid],TOPIC_DRILL,TOPIC[tid].n);
+    return;
+  }
+  const cxL=e.target.closest("[data-cx-lesson]");
+  if(cxL){ setPane("teach"); openLesson(cxL.dataset.cxLesson); return; }
+  const cxF=e.target.closest("[data-cx-fx]");
+  if(cxF){ CALC_CATS=WORLD?WORLD.cats:null; setPane("calc"); openFormula(cxF.dataset.cxFx); return; }
   const dr=e.target.closest("[data-drill]");
   if(dr){
     const kind=dr.dataset.drill;
     if(kind==="topic"){
       const tid=dr.dataset.topic, m=topicMod(tid);
-      DRILL=null; WORLD=m; openWorld(m.id,"drill"); startDrill([tid],8,TOPIC[tid].n);
+      DRILL=null; WORLD=m; openWorld(m.id,"drill"); startDrill([tid],TOPIC_DRILL,TOPIC[tid].n);
     } else if(kind==="module"){ startDrill(modIds(WORLD),Number(dr.dataset.size)||10,WORLD.n); }
     else if(kind==="all"){
       const m=MODULES.find(x=>!x.calcOnly&&!x.caseOnly);
@@ -3916,7 +4472,12 @@ document.addEventListener("click",e=>{
   const lsOpen=e.target.closest("[data-lesson]");
   if(lsOpen){ openLesson(lsOpen.dataset.lesson); return; }
   if(e.target.closest("[data-lesson-next]")){ advanceLesson(); return; }
-  if(e.target.closest("[data-lesson-home]")){ LESSON_ID=null; renderTeach(); window.scrollTo(0,0); return; }
+  if(e.target.closest("[data-lesson-home]")){
+    LESSON_ID=null;
+    /* inside a lecture the lesson came from a concept, so go back to it */
+    if(WORLD&&!WORLD.teachOnly) setPane("learn"); else renderTeach();
+    window.scrollTo(0,0); return;
+  }
   const lsRev=e.target.closest("[data-lesson-reveal]");
   if(lsRev){ LESSON_ANS[Number(lsRev.dataset.lessonReveal)]=true; renderTeach(); return; }
   const lsOpt=e.target.closest("[data-lesson-opt]");
@@ -3928,7 +4489,7 @@ document.addEventListener("click",e=>{
   const lsDrill=e.target.closest("[data-lesson-drill]");
   if(lsDrill){
     const tid=lsDrill.dataset.lessonDrill, m=topicMod(tid);
-    LESSON_ID=null; DRILL=null; openWorld(m.id,"drill"); startDrill([tid],8,TOPIC[tid].n);
+    LESSON_ID=null; DRILL=null; openWorld(m.id,"drill"); startDrill([tid],TOPIC_DRILL,TOPIC[tid].n);
     return;
   }
   const pk=e.target.closest("[data-pick]");
