@@ -380,6 +380,68 @@ body.dark .flagbtn.on{background:#2D2413;color:#F3C46B;border-color:#8A6A24}
 .teach-card b{display:block;font-size:14.5px}
 .teach-card span{display:block;font-size:12.5px;color:var(--ink-3);margin-top:2px}
 .teach-card.on{border-color:var(--accent);background:var(--raised)}
+
+/* ---------- teach mode: lesson list ---------- */
+.ls-summary{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:15px 16px;margin-bottom:14px}
+.ls-summary .big{font-size:15px;font-weight:640;letter-spacing:-.015em}
+.ls-summary .sub{font-size:13px;color:var(--ink-2);margin-top:3px;line-height:1.45}
+.ls-group{margin-bottom:9px}
+.ls-group>summary{
+  cursor:pointer;list-style:none;display:flex;align-items:center;gap:11px;
+  padding:13px 15px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+}
+.ls-group[open]>summary{border-radius:var(--r) var(--r) 0 0;border-bottom-color:transparent}
+.ls-group>summary::-webkit-details-marker{display:none}
+.ls-group .gdot{width:9px;height:9px;border-radius:50%;flex:none}
+.ls-group .gname{flex:1;min-width:0}
+.ls-group .gname b{display:block;font-size:14.5px;letter-spacing:-.015em}
+.ls-group .gname i{display:block;font-style:normal;font-size:12px;color:var(--ink-3);margin-top:1px;font-family:var(--mono)}
+.ls-group .gcount{font-family:var(--mono);font-size:11.5px;color:var(--ink-3);flex:none}
+.ls-body{border:1px solid var(--line);border-top:0;border-radius:0 0 var(--r) var(--r);overflow:hidden}
+.ls-row{
+  width:100%;text-align:left;display:flex;align-items:center;gap:11px;
+  padding:12px 15px;background:var(--surface);border-top:1px solid var(--line);
+}
+.ls-row:first-child{border-top:0}
+.ls-row .lnum{font-family:var(--mono);font-size:11.5px;color:var(--ink-3);flex:none;width:18px}
+.ls-row .ltxt{flex:1;min-width:0}
+.ls-row .ltxt b{display:block;font-size:14px;font-weight:560;letter-spacing:-.01em;line-height:1.3}
+.ls-row .ltxt i{display:block;font-style:normal;font-size:11.5px;color:var(--ink-3);margin-top:2px;font-family:var(--mono)}
+.ls-row .ltick{
+  flex:none;width:20px;height:20px;border-radius:50%;border:1.5px solid var(--line-2);
+  display:grid;place-items:center;font-size:11px;color:transparent;
+}
+.ls-row.done .ltick{background:var(--ok);border-color:var(--ok);color:#fff}
+.ls-row.done .ltxt b{color:var(--ink-2)}
+
+/* ---------- teach mode: lesson view ---------- */
+.lesson-top{margin-bottom:14px}
+.lesson-top h2{font-size:20px;letter-spacing:-.022em;margin:5px 0 9px}
+.lsbar{height:3px;border-radius:3px;background:var(--line);overflow:hidden}
+.lsbar i{display:block;height:100%;background:var(--accent);border-radius:3px;transition:width .25s ease}
+.lsblock{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:10px}
+.lsblock h3{font-size:15.5px;margin-bottom:7px;letter-spacing:-.015em}
+.lsblock p,.lsblock li{font-size:14.5px;color:var(--ink-2);line-height:1.58}
+.lsblock ul{margin:8px 0 0;padding-left:18px}
+.lsblock li{margin-bottom:5px}
+.lsblock li:last-child{margin-bottom:0}
+.lsblock.q{border-left:3px solid var(--accent)}
+.lsblock.q .qtext{font-size:15px;color:var(--ink);font-weight:560;line-height:1.45;margin-bottom:11px}
+.lsblock.trap{background:var(--raised);border-left:3px solid var(--gold)}
+.lsblock.trap .eyebrow{color:var(--gold);margin-bottom:6px}
+.lsblock.eg{border-left:3px solid var(--ink-3)}
+.lsblock.recap{background:var(--raised)}
+.reveal{
+  width:100%;text-align:left;margin-top:4px;padding:11px 13px;border-radius:10px;
+  background:var(--raised);border:1px dashed var(--line-2);font-size:13.5px;
+  font-weight:560;color:var(--accent);
+}
+.egsteps{margin-top:12px;border-top:1px solid var(--line);padding-top:11px}
+.egsteps .egrow{display:flex;gap:11px;padding:7px 0;font-size:14px;line-height:1.5}
+.egsteps .egrow b{flex:none;width:88px;font-size:12px;font-family:var(--mono);color:var(--ink-3);font-weight:400;padding-top:2px}
+.egsteps .egrow span{flex:1;color:var(--ink-2)}
+.lsnav{display:flex;gap:9px;margin-top:12px}
+.lsnav button{flex:1;margin-top:0}
 .teach-step{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:10px}
 .teach-step h3{font-size:16px;margin-bottom:7px}
 .teach-step p,.teach-step li{font-size:14px;color:var(--ink-2);line-height:1.5}
@@ -2310,7 +2372,7 @@ function readSession(){
   return s;
 }
 let SESSION=readSession();
-let M={}, DRILLNO=0, FLAGS={};
+let M={}, DRILLNO=0, FLAGS={}, LDONE={};
 function saveSession(){
   try{localStorage.setItem(SKEY,JSON.stringify(SESSION));}catch(_){}
 }
@@ -2324,11 +2386,11 @@ function pkey(){return "mba512-progress-"+SESSION.id;}
 function fkey(){return "mba512-flags-"+SESSION.id;}
 function loadProgress(){
   try{const d=JSON.parse(localStorage.getItem(pkey())||"null");
-    M=(d&&d.m)||{}; DRILLNO=(d&&d.drill)||0;}catch(_){M={};DRILLNO=0;}
+    M=(d&&d.m)||{}; DRILLNO=(d&&d.drill)||0; LDONE=(d&&d.lessons)||{};}catch(_){M={};DRILLNO=0;LDONE={};}
   try{FLAGS=JSON.parse(localStorage.getItem(fkey())||"{}")||{};}catch(_){FLAGS={};}
 }
 function saveProgress(){
-  try{localStorage.setItem(pkey(),JSON.stringify({m:M,drill:DRILLNO}));}catch(_){}
+  try{localStorage.setItem(pkey(),JSON.stringify({m:M,drill:DRILLNO,lessons:LDONE}));}catch(_){}
 }
 function saveFlags(){
   try{localStorage.setItem(fkey(),JSON.stringify(FLAGS));}catch(_){}
@@ -2418,7 +2480,7 @@ function moduleIcon(id,pct,hue){
 
 /* ============ home ============ */
 const TOOL_DESC={
-  mt:"Work a problem step by step with hints",
+  mt:()=>`${LESSONS.length} guided lessons across core computation topics`,
   mf:"Not sure which formula? Answer a few questions",
   mc:()=>`${CASES.length} worked cases, including the MBA decision`,
   m0:"41 worked calculators, every step shown"
@@ -2508,7 +2570,9 @@ function show(v){
   window.scrollTo({top:0,behavior:"instant"in document.documentElement.style?"instant":"auto"});
 }
 function openWorld(id,pane){
+  const prev=WORLD&&WORLD.id;
   WORLD=MODULES.find(m=>m.id===id); if(!WORLD) return;
+  if(prev!==WORLD.id) LESSON_ID=null;   /* don't carry a lesson across modules */
   document.documentElement.style.setProperty("--accent",WORLD.hue);
   $("#worldEyebrow").textContent=WORLD.lec;
   $("#worldTitle").textContent=WORLD.n;
@@ -2524,7 +2588,15 @@ function openWorld(id,pane){
   location.hash=id+(initial?"/"+initial:"");
 }
 function worldTabs(m){
-  return m.caseOnly?["cases"]:m.calcOnly?["calc"]:m.frameworkOnly?["framework"]:m.teachOnly?["teach"]:(m.cats&&m.cats.length?["learn","drill","calc"]:["learn","drill"]);
+  if(m.caseOnly) return ["cases"];
+  if(m.calcOnly) return ["calc"];
+  if(m.frameworkOnly) return ["framework"];
+  if(m.teachOnly) return ["teach"];
+  const t=["learn"];
+  if(lessonsFor(m.id).length) t.push("teach");
+  t.push("drill");
+  if(m.cats&&m.cats.length) t.push("calc");
+  return t;
 }
 function renderModuleNav(){
   if(!WORLD) return;
@@ -2777,41 +2849,166 @@ const TEACH=[
    ["Select formula family","Profitability index = PV of future cash flows ÷ initial investment."],
    ["Compute","PV of inflows = 3,000/1.10 + 4,000/1.10^2 + 5,000/1.10^3 = 2,727 + 3,306 + 3,757 = 9,790. PI = 9,790 / 8,000 = 1.22."],
    ["Answer","PI is about 1.22 (equivalently, NPV of $1,790 gives a PI of 0.22 on the NPV basis). Under a budget cap, rank this against other projects' PI and fund the highest first."]
-  ]}
+ ]}
 ];
-let TEACH_ID=TEACH[0].id, TEACH_STEP=0, TEACH_DONE=0;
+const LESSON_META={
+  "teach-pv":["m3","t_sing",4],
+  "teach-ann":["m3","t_ann",5],
+  "teach-bond":["m4","t_bprice",5],
+  "teach-roe":["m2","t_ret",4],
+  "teach-npv":["m7","t_cb_npv",5],
+  "teach-irr":["m7","t_cb_irr",6],
+  "teach-pi":["m7","t_cb_pi",5]
+};
+const LESSONS=TEACH.map(item=>{
+  const [mod,topic,mins]=LESSON_META[item.id]||["mt","",4];
+  const conceptBlocks=(item.concept||[]).map(x=>typeof x==="string"
+    ?{k:"idea",p:x}
+    :{k:"think",q:x.q,a:x.a});
+  const answer=item.steps[item.steps.length-1]||["Answer",""];
+  return {
+    id:item.id, mod, topic, mins,
+    title:item.title,
+    blocks:[
+      ...conceptBlocks,
+      {k:"eg",problem:item.problem,timeline:item.timeline,steps:item.steps},
+      {k:"recap",pts:[answer[1],"Now drill the topic once while the setup is fresh."]}
+    ]
+  };
+});
+/* ---- lesson engine ----
+   A lesson is an ordered list of typed blocks, revealed one at a time.
+   Block kinds: idea (explanation) · check (MCQ, gates progress) ·
+   think (reveal) · eg (worked computation) · trap (exam trap) · recap.     */
+let LESSON_ID=null, LESSON_POS=0, LESSON_ANS={};
+
 function renderTimeline(items){
   return `<div class="timeline">${items.map(([t,v])=>`<div class="tick"><i>${t}</i><span>${v||"&nbsp;"}</span></div>`).join("")}</div>`;
 }
+const lessonsFor=modId=>LESSONS.filter(l=>l.mod===modId);
+const lessonDone=id=>!!LDONE[id];
+function lessonList(){ return WORLD&&WORLD.teachOnly?LESSONS:lessonsFor(WORLD?WORLD.id:"m1"); }
+
 function renderTeach(){
-  const item=TEACH.find(x=>x.id===TEACH_ID)||TEACH[0];
-  const shown=item.steps.slice(0,TEACH_STEP+1);
+  if(LESSON_ID) renderLesson(); else renderTeachHome();
+}
+
+function renderTeachHome(){
+  const scope=lessonList();
+  const mods=[...new Set(scope.map(l=>l.mod))].map(id=>MODULES.find(m=>m.id===id)).filter(Boolean);
+  const done=scope.filter(l=>lessonDone(l.id)).length;
+  const pct=scope.length?Math.round(done/scope.length*100):0;
+  const nextUp=scope.find(l=>!lessonDone(l.id));
   $("#teachPane").innerHTML=`
-    <div class="teach-list">
-      ${TEACH.map(x=>`<button class="teach-card${x.id===item.id?" on":""}" data-teach="${x.id}" type="button">
-        <span class="dot" style="background:${WORLD.hue}"></span><span><b>${x.title}</b><span>${x.meta}</span></span>
-      </button>`).join("")}
+    <div class="ls-summary">
+      <p class="eyebrow" style="margin-bottom:7px">Teach mode</p>
+      <p class="big">${done} of ${scope.length} lesson${scope.length===1?"":"s"} complete</p>
+      <p class="sub">Each lesson explains the idea in plain language, stops to ask you a question or two, then works an example. Around ${scope[0]?scope[0].mins:4} minutes each.</p>
+      <div class="tbar" style="height:3px;border-radius:3px;background:var(--line);margin:13px 0 0;overflow:hidden">
+        <i style="display:block;height:100%;width:${pct}%;background:${WORLD.hue};border-radius:3px"></i>
+      </div>
+      ${nextUp?`<button class="next" data-lesson="${nextUp.id}" type="button">${done?"Continue":"Start"} — ${nextUp.title}</button>`:
+        `<div class="congrats" style="margin-top:13px"><b>Every lesson done.</b><span>Revisit any lesson below, or move on to drilling.</span></div>`}
     </div>
-    <div class="teach-step">
-      <p class="eyebrow" style="margin-bottom:8px">Practice prompt</p>
-      <p>${item.problem}</p>
-      ${renderTimeline(item.timeline)}
+    ${mods.map(m=>{
+      const ls=scope.filter(l=>l.mod===m.id);
+      const d=ls.filter(l=>lessonDone(l.id)).length;
+      return `<details class="ls-group"${(mods.length===1||m.id===(nextUp||{}).mod)?" open":""}>
+        <summary>
+          <span class="gdot" style="background:${m.hue}"></span>
+          <span class="gname"><b>${m.n}</b><i>${m.lec}</i></span>
+          <span class="gcount">${d}/${ls.length}</span>
+        </summary>
+        <div class="ls-body">
+          ${ls.map((l,ix)=>`<button class="ls-row${lessonDone(l.id)?" done":""}" data-lesson="${l.id}" type="button">
+            <span class="lnum">${String(ix+1).padStart(2,"0")}</span>
+            <span class="ltxt"><b>${l.title}</b><i>${l.mins} min · ${(TOPIC[l.topic]||{}).n||""}</i></span>
+            <span class="ltick">&#10003;</span>
+          </button>`).join("")}
+        </div>
+      </details>`;
+    }).join("")}`;
+}
+
+function renderLesson(){
+  const l=LESSONS.find(x=>x.id===LESSON_ID); if(!l){ LESSON_ID=null; return renderTeachHome(); }
+  const mod=MODULES.find(m=>m.id===l.mod)||WORLD;
+  const shown=l.blocks.slice(0,LESSON_POS+1);
+  const cur=l.blocks[LESSON_POS];
+  const atEnd=LESSON_POS>=l.blocks.length-1;
+  /* a check block holds the lesson until it has been answered */
+  const gated=cur&&cur.k==="check"&&LESSON_ANS[LESSON_POS]===undefined;
+  const scope=lessonList();
+  const ix=scope.findIndex(x=>x.id===l.id);
+  const next=scope[ix+1];
+  $("#teachPane").innerHTML=`
+    <div class="lesson-top">
+      <button class="back" data-lesson-home type="button">&#8592; All lessons</button>
+      <p class="eyebrow" style="margin-top:11px">${mod.lec} · ${(TOPIC[l.topic]||{}).n||""}</p>
+      <h2>${l.title}</h2>
+      <div class="lsbar"><i style="width:${Math.round((LESSON_POS+1)/l.blocks.length*100)}%;background:${mod.hue}"></i></div>
     </div>
-    ${item.concept?`<div class="teach-step concept-step">
-      <p class="eyebrow" style="margin-bottom:8px">First, the idea</p>
-      ${item.concept.map(b=>typeof b==="string"?`<p>${b}</p>`:
-        `<details class="check"><summary>${b.q}</summary><p>${b.a}</p></details>`).join("")}
-    </div>`:""}
-    <div class="notice">
-      <b>Try first</b>
-      <p>Before revealing the next step, write down what you think the unknown is, which values belong on the timeline, and what computation you would run.</p>
-    </div>
-    ${shown.map((s,ix)=>`<div class="teach-step"><p class="eyebrow" style="margin-bottom:8px">Step ${ix+1}</p><h3>${s[0]}</h3><p>${s[1]}</p></div>`).join("")}
-    ${TEACH_STEP<item.steps.length-1?
-      `<button class="next" data-teach-next type="button">Reveal next step</button>`:
-      `<div class="congrats"><b>Nice work.</b>You completed this guided computation. Try solving it again on paper before moving to the next one.</div>
-       <button class="next" data-teach-reset type="button">Try another guided problem</button>`}
+    ${shown.map((b,i)=>lessonBlock(b,i)).join("")}
+    ${gated?"":atEnd?`
+      <div class="congrats"><b>Lesson complete.</b><span>${l.title} — done. Test it now while it is fresh.</span></div>
+      <button class="next" data-lesson-drill="${l.topic}" type="button">Drill this topic</button>
+      <div class="lsnav">
+        <button class="ghost" data-lesson-home type="button">All lessons</button>
+        ${next?`<button class="ghost" data-lesson="${next.id}" type="button">Next lesson &#8594;</button>`:""}
+      </div>`:
+      `<button class="next" data-lesson-next type="button">Continue</button>`}
   `;
+}
+
+function lessonBlock(b,i){
+  if(b.k==="idea") return `<div class="lsblock">${b.h?`<h3>${b.h}</h3>`:""}<p>${b.p}</p></div>`;
+  if(b.k==="trap") return `<div class="lsblock trap"><p class="eyebrow">Watch out</p><p>${b.p}</p></div>`;
+  if(b.k==="recap") return `<div class="lsblock recap"><p class="eyebrow" style="margin-bottom:8px">Worth remembering</p><ul>${b.pts.map(p=>`<li>${p}</li>`).join("")}</ul></div>`;
+  if(b.k==="think"){
+    const open=LESSON_ANS[i]!==undefined;
+    return `<div class="lsblock q">
+      <p class="eyebrow" style="margin-bottom:8px">Think first</p>
+      <p class="qtext">${b.q}</p>
+      ${open?`<p>${b.a}</p>`:`<button class="reveal" data-lesson-reveal="${i}" type="button">Tap to reveal the answer</button>`}
+    </div>`;
+  }
+  if(b.k==="check"){
+    const picked=LESSON_ANS[i];
+    const answered=picked!==undefined;
+    return `<div class="lsblock q">
+      <p class="eyebrow" style="margin-bottom:8px">Quick check</p>
+      <p class="qtext">${b.q}</p>
+      ${b.o.map((opt,oi)=>{
+        let cls="optbtn";
+        if(answered&&oi===b.c) cls+=" right";
+        else if(answered&&oi===picked) cls+=" wrong";
+        return `<button class="${cls}"${answered?" disabled":""} data-lesson-opt="${i}" data-opt="${oi}" type="button">
+          <span class="k">${String.fromCharCode(65+oi)}</span><span>${opt}</span></button>`;
+      }).join("")}
+      ${answered?`<div class="verdict ${picked===b.c?"y":"n"}"><b>${picked===b.c?"Correct":"Not quite"}</b>${b.e}</div>`:""}
+    </div>`;
+  }
+  if(b.k==="eg"){
+    return `<div class="lsblock eg">
+      <p class="eyebrow" style="margin-bottom:8px">Worked example</p>
+      <p>${b.problem}</p>
+      ${b.timeline?renderTimeline(b.timeline):""}
+      <div class="egsteps">${b.steps.map(s=>`<div class="egrow"><b>${s[0]}</b><span>${s[1]}</span></div>`).join("")}</div>
+    </div>`;
+  }
+  return "";
+}
+
+function openLesson(id){
+  LESSON_ID=id; LESSON_POS=0; LESSON_ANS={};
+  renderTeach(); window.scrollTo({top:0,behavior:"instant"in document.documentElement.style?"instant":"auto"});
+}
+function advanceLesson(){
+  const l=LESSONS.find(x=>x.id===LESSON_ID); if(!l) return;
+  if(LESSON_POS>=l.blocks.length-1) return;
+  LESSON_POS++;
+  if(LESSON_POS>=l.blocks.length-1&&!LDONE[l.id]){ LDONE[l.id]=true; saveProgress(); }
+  renderTeach();
 }
 
 /* ============ drill ============ */
@@ -2993,19 +3190,23 @@ document.addEventListener("click",e=>{
     } else if(kind==="again"&&DRILL_LAST){ startDrill(DRILL_LAST.ids,DRILL_LAST.q.length,DRILL_LAST.label); }
     return;
   }
-  const teach=e.target.closest("[data-teach]");
-  if(teach){ TEACH_ID=teach.dataset.teach; TEACH_STEP=0; renderTeach(); return; }
-  if(e.target.closest("[data-teach-next]")){
-    const item=TEACH.find(x=>x.id===TEACH_ID)||TEACH[0];
-    TEACH_STEP=Math.min(TEACH_STEP+1,item.steps.length-1);
-    renderTeach(); return;
+  const lsOpen=e.target.closest("[data-lesson]");
+  if(lsOpen){ openLesson(lsOpen.dataset.lesson); return; }
+  if(e.target.closest("[data-lesson-next]")){ advanceLesson(); return; }
+  if(e.target.closest("[data-lesson-home]")){ LESSON_ID=null; renderTeach(); window.scrollTo(0,0); return; }
+  const lsRev=e.target.closest("[data-lesson-reveal]");
+  if(lsRev){ LESSON_ANS[Number(lsRev.dataset.lessonReveal)]=true; renderTeach(); return; }
+  const lsOpt=e.target.closest("[data-lesson-opt]");
+  if(lsOpt){
+    const bi=Number(lsOpt.dataset.lessonOpt);
+    if(LESSON_ANS[bi]===undefined){ LESSON_ANS[bi]=Number(lsOpt.dataset.opt); renderTeach(); }
+    return;
   }
-  if(e.target.closest("[data-teach-reset]")){
-    const idx=TEACH.findIndex(x=>x.id===TEACH_ID);
-    TEACH_DONE++;
-    TEACH_ID=TEACH[(idx+1+TEACH.length)%TEACH.length].id;
-    TEACH_STEP=0;
-    renderTeach(); return;
+  const lsDrill=e.target.closest("[data-lesson-drill]");
+  if(lsDrill){
+    const tid=lsDrill.dataset.lessonDrill, m=topicMod(tid);
+    LESSON_ID=null; DRILL=null; openWorld(m.id,"drill"); startDrill([tid],8,TOPIC[tid].n);
+    return;
   }
   const pk=e.target.closest("[data-pick]");
   if(pk&&DRILL){ answer(Number(pk.dataset.pick)); return; }
@@ -3060,12 +3261,13 @@ $("#newSess").onclick=()=>{
   SESSION=newSession($("#learnerName").value.trim());
   SESSION.started=!!SESSION.name;
   saveSession();
-  M={}; DRILLNO=0; FLAGS={}; saveProgress(); saveFlags(); renderSession(); renderHome(); location.hash="finance"; show("home");
+  M={}; DRILLNO=0; FLAGS={}; LDONE={}; LESSON_ID=null;
+  saveProgress(); saveFlags(); renderSession(); renderHome(); location.hash="finance"; show("home");
 };
 
 /* progress backup & restore */
 $("#exportProg").onclick=()=>{
-  const data={v:2,exported:new Date().toISOString(),session:SESSION,m:M,drill:DRILLNO,flags:FLAGS};
+  const data={v:3,exported:new Date().toISOString(),session:SESSION,m:M,drill:DRILLNO,flags:FLAGS,lessons:LDONE};
   const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
   const a=document.createElement("a");
   a.href=URL.createObjectURL(blob);
@@ -3083,7 +3285,7 @@ $("#importFile").onchange=e=>{
       if(!d||typeof d.m!=="object") throw 0;
       if(!confirm("Restore this backup? It will replace the progress currently on this device.")) return;
       if(d.session&&d.session.id){ SESSION=d.session; localStorage.setItem(SKEY,JSON.stringify(SESSION)); }
-      M=d.m||{}; DRILLNO=d.drill||0; FLAGS=d.flags||{};
+      M=d.m||{}; DRILLNO=d.drill||0; FLAGS=d.flags||{}; LDONE=d.lessons||{}; LESSON_ID=null;
       saveProgress(); saveFlags();
       $("#learnerName").value=SESSION.name||"";
       renderSession(); renderHome();
