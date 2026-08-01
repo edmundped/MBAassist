@@ -2480,7 +2480,7 @@ function moduleIcon(id,pct,hue){
 
 /* ============ home ============ */
 const TOOL_DESC={
-  mt:()=>`${LESSONS.length} guided lessons across core computation topics`,
+  mt:()=>`${LESSONS.length} lessons across all seven lectures, explained from scratch`,
   mf:"Not sure which formula? Answer a few questions",
   mc:()=>`${CASES.length} worked cases, including the MBA decision`,
   m0:"41 worked calculators, every step shown"
@@ -2738,144 +2738,770 @@ function renderFramework(){
     </div>`;
 }
 
-/* ============ teach mode ============ */
-const TEACH=[
- {id:"teach-pv",title:"Single cash flow present value",meta:"Lecture 3 · PV",
-  problem:"You will receive $5,000 at the end of year 4. The discount rate is 8% per year. What is this cash flow worth today?",
-  timeline:[["0","? PV"],["1",""],["2",""],["3",""],["4","$5,000"]],
-  concept:[
-   "Money has a date attached to it. $5,000 four years from now and $5,000 today are not the same thing, because money in hand can be put to work and grow. Present value is just the tool that strips the growth back out so two amounts standing at different dates can be compared honestly.",
-   {q:"If the discount rate were 0%, what would PV of a future amount equal?",
-    a:"The future amount itself — with no time value of money, dates stop mattering and $5,000 in year 4 is worth exactly $5,000 today."},
-   "The bigger the rate or the longer the wait, the harder that future dollar gets discounted. That's why PV always comes out lower than the FV it was pulled back from — you're removing the growth the money would otherwise have earned."
-  ],
-  steps:[
-   ["What is being asked?","The phrase worth today tells us the unknown is present value. We are moving one future amount back to time 0."],
-   ["Extract variables","FV = 5,000; r = 8% per year; t = 4 years; PV is unknown. The rate period and time period already match."],
-   ["Select formula family","This is one cash flow, not equal payments. Use the lump-sum present value relationship."],
-   ["Compute","PV = 5,000 / (1.08)^4 = 5,000 / 1.36049 = 3,675.15."],
-   ["Answer","The cash flow is worth about $3,675 today. The answer is lower than $5,000 because future money is discounted."]
-  ]},
- {id:"teach-ann",title:"Loan payment",meta:"Lecture 3 · annuity",
-  problem:"A student borrows $20,000 and will repay it with equal annual payments over 5 years. The loan rate is 10%. What annual payment is required?",
-  timeline:[["0","$20,000"],["1","PMT"],["2","PMT"],["3","PMT"],["4","PMT"],["5","PMT"]],
-  concept:[
-   "An annuity is nothing more than the same cash flow repeating on a schedule — five equal payments instead of five separately valued amounts. Because the payments are identical and evenly spaced, they collapse into one shortcut factor (PVIFA) instead of five separate PV calculations.",
-   {q:"Early in the loan, is more of each payment going to interest or to principal — and why?",
-    a:"Mostly interest. The balance owed is largest at the start, so 10% of it is a large number; as the balance shrinks each year, the interest slice shrinks and the principal slice grows, even though the total payment never changes."},
-   "That's the whole idea of amortisation: a level payment, but a shifting mix underneath it."
-  ],
-  steps:[
-   ["What is being asked?","The unknown is the equal payment. The loan amount is the present value of a 5-payment annuity."],
-   ["Extract variables","PV = 20,000; r = 10%; n = 5; PMT is unknown. Payments are annual, so the annual rate fits."],
-   ["Select formula family","Equal payments that stop after 5 periods means ordinary annuity, assuming payments are at year-end."],
-   ["Compute","PVIFA(10%,5) = 3.7908. PMT = 20,000 / 3.7908 = 5,275.95."],
-   ["Answer","The annual payment is about $5,276. Early payments include more interest; later payments repay more principal."]
-  ]},
- {id:"teach-bond",title:"Bond price",meta:"Lecture 4 · bonds",
-  problem:"A 3-year bond has $1,000 face value and pays an 8% annual coupon. Similar-risk bonds yield 10%. What is the bond price?",
-  timeline:[["0","? Price"],["1","$80"],["2","$80"],["3","$1,080"]],
-  concept:[
-   "Start with the idea, not the formula: a bond is a loan. You hand a borrower money today; in exchange they promise fixed coupon payments and the return of the face value at the end. The price is simply what those promised payments are worth today.",
-   {q:"If the market's required yield rises after the bond is issued, does the price go up or down — and why, given the coupons are fixed?",
-    a:"Down. The coupons can't change, so the only lever left is the price investors pay today — it has to fall so those fixed payments work out to a higher percentage return."},
-   "That's the whole valuation problem in one line: discount the coupons and the face value at whatever return the market currently demands, and add them up."
-  ],
-  steps:[
-   ["What is being asked?","Price means present value today. The bond pays coupons plus face value at maturity."],
-   ["Extract variables","Coupon = 8% x 1,000 = 80; face value = 1,000; r = 10%; n = 3."],
-   ["Select formula family","A bond is coupon annuity plus face-value lump sum. Discount all promised cash flows at the market yield."],
-   ["Compute","Price = 80/1.10 + 80/(1.10)^2 + 1,080/(1.10)^3 = 950.26."],
-   ["Answer","The bond is worth about $950. It sells at a discount because the coupon rate is below the required return."]
-  ]},
- {id:"teach-roe",title:"DuPont ROE",meta:"Lecture 2 · performance",
-  problem:"A firm has net profit margin of 6%, asset turnover of 1.5, and equity multiplier of 2.0. What is ROE?",
-  timeline:[["Inputs","6%, 1.5, 2.0"],["Output","? ROE"]],
-  concept:[
-   "Return on equity answers one question for a shareholder: for every dollar I have tied up in this firm, how much net income did it earn me this year? DuPont's trick is to refuse to leave that as one opaque number and instead ask where it came from.",
-   {q:"Two firms both have ROE of 18%. One gets there mostly through a fat profit margin, the other mostly through heavy leverage. Are they equally attractive?",
-    a:"No. The margin-driven firm is earning its return from selling well; the leverage-driven one is earning it by borrowing heavily, which raises risk even though the ROE number looks identical. Same output, very different risk underneath."},
-   "That's the payoff of the decomposition: margin × turnover × leverage tells you *how* a firm earns its return, not just how much."
-  ],
-  steps:[
-   ["What is being asked?","ROE asks for the return earned for shareholders. DuPont breaks it into margin, efficiency, and leverage."],
-   ["Extract variables","Net profit margin = 6%; asset turnover = 1.5; equity multiplier = 2.0."],
-   ["Select formula family","This is a ratio decomposition, not TVM. Use extended DuPont for ROE."],
-   ["Compute","ROE = 0.06 x 1.5 x 2.0 = 0.18."],
-   ["Answer","ROE is 18%. The firm gets there through 6% profit on sales, 1.5 times asset use, and 2.0 times leverage."]
-  ]},
- {id:"teach-npv",title:"Project NPV",meta:"Lecture 7 · NPV",
-  problem:"A company can buy new equipment for $200,000. It expects the equipment to generate cash flows of $80,000 in year 1, $90,000 in year 2, and $100,000 in year 3. The required return is 12%. Should the company buy it?",
-  timeline:[["0","-$200,000"],["1","$80,000"],["2","$90,000"],["3","$100,000"]],
-  concept:[
-   "Capital budgeting is really just one question dressed up in different examples: is this project worth more than it costs? NPV answers it directly by moving every future cash flow back to today's dollars and comparing the total to the price tag.",
-   {q:"If a project's NPV comes out to exactly zero, has it created any value?",
-    a:"No — and it hasn't destroyed any either. A zero NPV means the project earns exactly the required return, nothing more. The firm is indifferent between doing it and not doing it."},
-   "So NPV isn't a hurdle you clear by scraping past zero — a small positive NPV really is better than nothing, and a small negative NPV really is a project to walk away from."
-  ],
-  steps:[
-   ["What is being asked?","'Should the company buy it' is an accept/reject decision. NPV settles that directly."],
-   ["Extract variables","C0 = -200,000; CF1 = 80,000; CF2 = 90,000; CF3 = 100,000; r = 12%."],
-   ["Select formula family","Uneven cash flows plus an initial cost — discount each cash flow separately, then subtract the cost."],
-   ["Compute","NPV = -200,000 + 80,000/1.12 + 90,000/1.12^2 + 100,000/1.12^3 = -200,000 + 71,429 + 71,747 + 71,178 = 14,354."],
-   ["Answer","NPV is about $14,354, which is positive. The company should buy the equipment — it is expected to add value beyond the 12% required return."]
-  ]},
- {id:"teach-irr",title:"IRR by interpolation",meta:"Lecture 7 · IRR",
-  problem:"You can buy a building for $350,000. It will generate $16,000 a year in rental income for three years, and you will sell it at the end of year 3 for $450,000 (so year 3's total cash flow is $466,000). What is the IRR on this investment?",
-  timeline:[["0","-$350,000"],["1","$16,000"],["2","$16,000"],["3","$466,000"]],
-  concept:[
-   "IRR flips the NPV question around. Instead of picking a rate and asking what the project is worth, you ask: what rate would make this project worth exactly what it costs — NPV of zero? That rate is the project's own percentage return.",
-   {q:"Why can't you just solve for IRR algebraically the way you solve PV = FV/(1+r)^t for r?",
-    a:"Because with more than one cash flow, r appears raised to several different powers in the same equation at once — there's no clean algebraic rearrangement. That's why IRR is normally found by trial and error, a spreadsheet, or a financial calculator."}
-  ],
-  steps:[
-   ["What is being asked?","The unknown is the discount rate that makes NPV = 0 — the project's internal rate of return."],
-   ["Extract variables","C0 = -350,000; CF1 = 16,000; CF2 = 16,000; CF3 = 466,000."],
-   ["Select formula family","No algebraic shortcut exists for IRR with more than one cash flow — use the two-rate approximation (interpolation) method."],
-   ["Compute","Try 10%: NPV = +27,881. Try 15%: NPV = -17,586. IRR ≈ 10 + [27,881 / (27,881 - (-17,586))] x (15 - 10) = 10 + 3.07 = 13.07%."],
-   ["Answer","IRR is about 13.07%. If the cost of capital is below that, accept the project — its own return beats what the firm requires."]
-  ]},
- {id:"teach-pi",title:"Profitability index under a budget cap",meta:"Lecture 7 · capital rationing",
-  problem:"A project costs $8,000 today and is expected to pay back $3,000 in year 1, $4,000 in year 2, and $5,000 in year 3. The required return is 10%. Funds are limited this year, so the firm is ranking projects by profitability index rather than NPV alone. What is this project's PI?",
-  timeline:[["0","-$8,000"],["1","$3,000"],["2","$4,000"],["3","$5,000"]],
-  concept:[
-   "When money is unlimited, NPV alone tells you everything: do every positive-NPV project you can find. But once there's a cap on how much you can invest this year, the question changes — you want the most value per dollar of that scarce budget, not just the most total value.",
-   {q:"A tiny project has a PI of 2.0. A huge project has a PI of 1.1 but a far bigger NPV in dollar terms. With no budget limit at all, which should you prefer?",
-    a:"The huge project — its NPV in dollars is larger, and NPV is what actually adds wealth. PI only becomes the deciding tool once a budget constraint forces you to ration which projects you can fund."}
-  ],
-  steps:[
-   ["What is being asked?","PI, so this project can be ranked against others competing for the same limited budget."],
-   ["Extract variables","C0 = -8,000; CF1 = 3,000; CF2 = 4,000; CF3 = 5,000; r = 10%."],
-   ["Select formula family","Profitability index = PV of future cash flows ÷ initial investment."],
-   ["Compute","PV of inflows = 3,000/1.10 + 4,000/1.10^2 + 5,000/1.10^3 = 2,727 + 3,306 + 3,757 = 9,790. PI = 9,790 / 8,000 = 1.22."],
-   ["Answer","PI is about 1.22 (equivalently, NPV of $1,790 gives a PI of 0.22 on the NPV basis). Under a budget cap, rank this against other projects' PI and fund the highest first."]
+/* ============ teach mode: lessons ============ */
+/* One lesson per topic, 29 in all. A lesson is an ordered list of typed
+   blocks revealed one at a time: idea (explanation) · check (MCQ that
+   gates progress) · think (reveal) · eg (worked example) · trap · recap. */
+const LESSONS=[
+/* ========== Lecture 1 — Foundations ========== */
+{id:"ls_goal",mod:"m1",topic:"t_goal",mins:5,title:"What a company is actually trying to do",
+ blocks:[
+  {k:"idea",h:"Start with an odd arrangement",p:"A corporation is owned by shareholders — but almost none of them show up to run it. They hire managers to do that. The owners supply the money and carry the risk; someone else makes the daily decisions. Nearly everything in this lecture follows from that one split."},
+  {k:"idea",h:"So what should managers aim at?",p:"The answer finance settles on is: <b>maximise the market value of the firm</b>. Not sales, not headcount, not even profit. Market value is what shareholders can actually sell their stake for, so raising it is the same thing as making the owners better off."},
+  {k:"check",q:"Why is \"maximise profit\" a weaker goal than \"maximise market value\"?",
+   o:["Profit is impossible to measure accurately","Profit ignores when the money arrives, how risky it is, and what must be reinvested","Profit is only relevant for small firms","There is no difference — they always give the same answer"],c:1,
+   e:"A profit figure is a single number for a single year. Market value reflects the size, timing and risk of all expected future cash flows — so a manager can raise this year's profit while destroying value, for example by cutting the research the firm's future depends on."},
+  {k:"idea",h:"Where it goes wrong",p:"Managers are the shareholders' <b>agents</b>. When a manager's personal interests pull against the owners' interests, you get an <b>agency problem</b>. Classic examples: padding expenses and perks, empire building — growing the firm for the prestige of running something big — and quietly avoiding attractive projects that happen to carry risk."},
+  {k:"think",q:"A shareholder holds twenty different shares. A manager's salary, reputation and career all sit inside one firm. Why does that alone make the manager more cautious than the owners want?",
+   a:"The shareholder has diversified — one project failing barely dents their overall wealth, so they want the firm to take every positive-value risk. The manager cannot diversify their career. A failed project could cost them their job, so they may reject good risky projects to protect themselves. Excessive risk aversion is an agency problem even though nobody did anything dishonest."},
+  {k:"check",q:"Which of these is <i>least</i> likely to be an agency problem?",
+   o:["A lavish executive suite refurbishment","Expanding into unprofitable markets to run a bigger company","An incentive plan paying managers partly in company shares","Turning down a risky project with a strongly positive expected value"],c:2,
+   e:"Share-based pay is a <i>remedy</i>, not the disease. Giving managers an equity stake makes them feel value creation and destruction the way owners do. The other three are textbook agency costs."},
+  {k:"idea",h:"How firms fight back",p:"No single fix works alone, so firms stack several: compensation tied to shares, a board of directors that can fire the CEO, the threat of takeover (badly run firms get bought and management replaced), specialist monitoring by analysts, and direct shareholder pressure at the AGM."},
+  {k:"trap",p:"Agency costs are not just the money wasted on perks. They are the value lost when managers don't act in owners' interests <i>plus</i> everything spent monitoring them — audits, boards, reporting. Even a perfectly behaved manager is expensive, because you still pay to check."},
+  {k:"recap",pts:[
+   "The goal is maximising market value, which is the same as maximising shareholder wealth.",
+   "Profit maximisation is weaker because it ignores timing, risk and reinvestment needs.",
+   "Separating ownership from control buys flexibility and permanence, and costs you agency problems.",
+   "Remedies: incentive pay, the board, takeover threat, monitoring, shareholder pressure.",
+   "Limited liability means a shareholder can lose what they invested, but no more."]}
+ ]},
+
+{id:"ls_dec",mod:"m1",topic:"t_dec",mins:4,title:"The three decisions a financial manager makes",
+ blocks:[
+  {k:"idea",h:"Everything reduces to three questions",p:"Strip away the job titles and a financial manager only ever answers three things. <b>What should we invest in?</b> (the investment or capital budgeting decision). <b>Where do we get the money?</b> (the financing decision). <b>What do we send back to shareholders?</b> (the payout decision)."},
+  {k:"idea",h:"The investment decision",p:"This is about buying real assets — a factory, a pipeline, a licence, a new product line. To value one you need three things about its future cash flows: <b>how much</b>, <b>when</b>, and <b>how risky</b>. If the project is worth more than it costs, take it."},
+  {k:"check",q:"Nova Corp constructs a pipeline to transport natural gas from Abuja to Tema. This is:",
+   o:["A financing decision","A capital budgeting decision","A payout decision","A money market transaction"],c:1,
+   e:"The pipeline is a long-lived real asset that will produce cash flows. Buying real assets is always capital budgeting, no matter how it gets paid for."},
+  {k:"idea",h:"The financing decision",p:"Once you know what to buy, you need the cash. It comes from inside (retained profit) or outside — and outside financing is either <b>debt</b> or <b>equity</b>. The mix you choose is the firm's <b>capital structure</b>."},
+  {k:"check",q:"GCB completes a $2 billion public debt offering that replaces existing debt at a lower cost. This is:",
+   o:["A capital budgeting decision","A financing decision","An investment in real assets","A payout decision"],c:1,
+   e:"Nothing is being bought or built — the firm is changing how it is funded. Raising, repaying or refinancing debt is always financing."},
+  {k:"idea",h:"Real versus financial assets",p:"A <b>real asset</b> is used to produce goods and services: factories, equipment, a patent. A <b>financial asset</b> is a claim on the income those real assets throw off: shares, bonds, a loan. Firms buy real assets and sell financial assets to pay for them."},
+  {k:"think",q:"Is a mortgage loan a real asset or a financial asset — and does the answer depend on who you ask?",
+   a:"It's a financial asset. It is a claim on future payments, not a productive thing. And yes, it depends on the side you sit: the house is a real asset to the homeowner, while the mortgage is a financial asset to the lender and a liability to the borrower. The same contract, two sets of books."},
+  {k:"idea",h:"The payout decision",p:"Profit that isn't reinvested goes back to shareholders, either as <b>dividends</b> or through <b>share repurchases</b>. This is a genuinely separate decision from the other two — a firm can be investing heavily and still paying dividends."},
+  {k:"trap",p:"The exam nearly always tests one confusion: <i>issuing shares is financing, not investing.</i> It feels like the firm is \"doing something with equity\", but no real asset changes hands — the firm is just raising cash."},
+  {k:"recap",pts:[
+   "Investment (capital budgeting) = which real assets to buy.",
+   "Financing (capital structure) = debt or equity, and in what mix.",
+   "Payout = dividends or repurchases.",
+   "Real assets produce goods and services; financial assets are claims on the income they generate.",
+   "Value a project on the amount, timing and risk of its cash flows."]}
+ ]},
+
+{id:"ls_mkt",mod:"m1",topic:"t_mkt",mins:5,title:"How savings actually reach a company",
+ blocks:[
+  {k:"idea",h:"The basic plumbing",p:"Households save. Companies need money to invest. Financial markets and institutions are the pipework connecting the two — without them, a firm with a brilliant project and no cash simply could not start."},
+  {k:"idea",h:"Primary versus secondary",p:"A <b>primary market</b> transaction is a genuinely new issue of securities — the firm sells them and receives the cash. The first such sale to the public is an <b>IPO</b>. A <b>secondary market</b> transaction is investors trading existing securities among themselves."},
+  {k:"check",q:"You buy 500 MTN shares from another investor on the Ghana Stock Exchange. How much of your money reaches MTN?",
+   o:["All of it","None of it","Half of it","It depends on the share price"],c:1,
+   e:"None. This is a secondary market trade — your money goes to the investor who sold, not to the company. MTN only raised cash when it originally issued those shares in the primary market."},
+  {k:"think",q:"If secondary trading raises no money for firms, why should any company care whether its shares trade actively?",
+   a:"Because it makes the primary market work. Investors will only hand cash to a firm in the first place if they know they can sell out later without a fight — that's liquidity. Active secondary trading also produces a visible price, which tells everyone what the firm is worth and what return investors demand."},
+  {k:"idea",h:"Naming the markets",p:"Sorted by what trades: the <b>fixed income</b> (debt) market for bonds; the <b>capital market</b> for long-term securities, over a year; the <b>money market</b> for short-term ones, under a year; plus foreign exchange, commodities, and markets for options and other derivatives."},
+  {k:"check",q:"A 90-day Treasury bill is traded between two investors. Which market is this?",
+   o:["The capital market","The money market","The foreign exchange market","The commodities market"],c:1,
+   e:"Under one year to maturity puts it in the money market. The capital market is for long-term debt and equity — over a year."},
+  {k:"idea",h:"Intermediaries",p:"An intermediary raises money from many investors and channels it into financing. <b>Mutual funds</b> and <b>ETFs</b> pool savings into managed portfolios; <b>pension funds</b> are set up by employers for retirement (in Ghana, SSNIT as Tier 1, occupational schemes as Tier 2, private pensions as Tier 3); <b>hedge funds</b> and <b>private equity</b> serve wealthier or institutional investors."},
+  {k:"idea",h:"Why banks are different",p:"A mutual fund essentially just pools savings and buys securities. A <b>bank</b> takes deposits and <i>also</i> lends directly to individuals and businesses, runs the payments system, and provides other services. Insurance companies similarly both invest and transfer risk."},
+  {k:"idea",h:"What this machinery gives you",p:"Five functions worth naming: it <b>transports cash across time</b> (save now, spend later); provides <b>risk transfer and diversification</b>; provides <b>liquidity</b>; provides a <b>payment mechanism</b>; and produces <b>information</b> — prices, interest rates and values that everyone can see."},
+  {k:"trap",p:"Don't mix up the primary/secondary split with the capital/money split. The first is about <i>who gets the cash</i> (new issue or resale); the second is about <i>how long the security lasts</i> (over or under a year). A new 6-month bill is primary and money market at once."},
+  {k:"recap",pts:[
+   "Primary market = new issue, firm receives the cash; an IPO is the first public one.",
+   "Secondary market = investors trading existing securities with each other.",
+   "Capital market is long-term (over a year); money market is short-term (under a year).",
+   "Intermediaries — mutual funds, ETFs, pension funds, banks, insurers — channel savings into financing.",
+   "Markets move cash through time, spread risk, give liquidity, settle payments and reveal prices."]}
+ ]},
+
+/* ========== Lecture 2 — Performance ========== */
+{id:"ls_val",mod:"m2",topic:"t_val",mins:5,title:"Did this firm actually create value?",
+ blocks:[
+  {k:"idea",h:"Profit is not the same as value",p:"A firm can report a healthy profit and still have destroyed value — because the accountant never charges it for the shareholders' money. Equity looks free in the income statement. It isn't: investors could have put that money elsewhere at the same risk."},
+  {k:"idea",h:"Market Value Added",p:"<b>MVA = market capitalisation − book value of equity.</b> It asks a blunt question: investors have put a certain amount into this firm over its life; is the stake now worth more than what went in? A positive MVA means yes."},
+  {k:"check",q:"A firm's market capitalisation is $4.2bn and the book value of its equity is $3.1bn. Its MVA is:",
+   o:["$7.3bn","$1.1bn","$1.36bn","−$1.1bn"],c:1,
+   e:"MVA = 4.2 − 3.1 = $1.1bn. The market values the firm above what has been invested in it, so value has been added."},
+  {k:"idea",h:"Economic Value Added",p:"MVA needs a share price, so it only works for listed firms and swings with the market. <b>EVA</b> — also called residual income — fixes that by charging the firm for <i>all</i> the capital it uses: <b>EVA = NOPAT − (cost of capital × total capitalisation)</b>, where NOPAT is net income plus after-tax interest."},
+  {k:"idea",h:"Reading the formula",p:"The first term is what the firm earned for <i>all</i> its investors, lenders included — hence adding back after-tax interest. The second is the minimum those investors demanded. What's left over is genuine economic profit."},
+  {k:"eg",problem:"A firm has net income of $10m and after-tax net interest expense of $270m. Its cost of capital is 6.7% and total capitalisation is $809.61m. What is its EVA?",
+   steps:[
+    ["What's being asked","EVA — profit after charging for every dollar of capital, not just the debt."],
+    ["NOPAT","Net income + after-tax interest = 10 + 270 = $280m."],
+    ["Capital charge","6.7% × 809.61 = $54.24m — what investors required."],
+    ["EVA","280 − 54.24 = $225.76m."],
+    ["Read it","Comfortably positive, so the firm earned well above what its investors demanded and created value that year."]]},
+  {k:"think",q:"A firm reports positive net income but negative EVA. In plain words, what has happened?",
+   a:"It made an accounting profit but not enough of one. It covered its interest and its costs, but fell short of what shareholders needed to be compensated for their risk. The accounts say it made money; economically it went backwards, and if it keeps that up, its value falls."},
+  {k:"trap",p:"EVA still runs on accounting numbers, so it inherits their weaknesses — book values can be far off current values, and R&D or brand-building gets expensed rather than capitalised, which flatters EVA later and punishes it now."},
+  {k:"recap",pts:[
+   "MVA = market capitalisation − book value of equity; needs a market price.",
+   "EVA = NOPAT − (cost of capital × total capitalisation).",
+   "NOPAT = net income + after-tax interest — the return to every investor, not just shareholders.",
+   "Positive EVA means the firm beat what its investors required; that is real value creation.",
+   "Both measures still rest on accounting figures, so treat them as strong indicators, not verdicts."]}
+ ]},
+
+{id:"ls_ret",mod:"m2",topic:"t_ret",mins:5,title:"Three returns, and choosing the right one",
+ blocks:[
+  {k:"idea",h:"Same question, three audiences",p:"Every return ratio is profit ÷ what was invested. The three differ only in <i>whose</i> money is in the denominator — and once you see that, choosing between them stops being guesswork."},
+  {k:"idea",h:"The three",p:"<b>ROC</b> = NOPAT ÷ total capitalisation — the return to all long-term investors. <b>ROA</b> = NOPAT ÷ total assets — how well the assets themselves perform. <b>ROE</b> = net income ÷ equity — what's left for shareholders alone, after the lenders have been paid."},
+  {k:"check",q:"Why does ROE use net income while ROA and ROC use NOPAT?",
+   o:["Net income is more accurate than NOPAT","ROE measures the shareholders' slice, which is what remains after interest; ROA and ROC measure returns to all investors, so interest must be added back","NOPAT is only used by listed companies","There is no real reason — it is a convention"],c:1,
+   e:"Match the numerator to the denominator. Equity investors get what's left after interest, so ROE uses net income. ROA and ROC ask about returns to everyone who funded the firm, so interest is added back into NOPAT."},
+  {k:"think",q:"A firm takes on more debt and its ROE rises, while its ROA barely moves. Has it become better at running its business?",
+   a:"No. ROA is flat, so the assets are performing exactly as before. The higher ROE is leverage: with less equity in the denominator and the same operating performance, the shareholders' slice looks bigger. The return went up and so did the risk — nothing improved operationally."},
+  {k:"trap",p:"A high ROE is not automatically good news. Because leverage inflates it, always read ROE next to ROA. If ROE is climbing while ROA is flat, you're looking at borrowing, not skill."},
+  {k:"recap",pts:[
+   "ROC = NOPAT ÷ total capitalisation — return to all long-term investors.",
+   "ROA = NOPAT ÷ total assets — how hard the assets are working.",
+   "ROE = net income ÷ equity — the shareholders' return.",
+   "NOPAT = net income + after-tax interest.",
+   "Read ROE beside ROA, or leverage will fool you."]}
+ ]},
+
+{id:"ls_eff",mod:"m2",topic:"t_eff",mins:4,title:"Efficiency and staying solvent",
+ blocks:[
+  {k:"idea",h:"Two different worries",p:"Efficiency ratios ask <i>are we using our assets hard enough?</i> Liquidity ratios ask something more urgent — <i>can we pay what's due in the next few months?</i> A firm can be profitable and still fail on the second question."},
+  {k:"idea",h:"Turnover: sales per dollar of assets",p:"<b>Asset turnover</b> = sales ÷ total assets tells you how much revenue each dollar of assets generates. <b>Inventory turnover</b> = cost of goods sold ÷ inventory shows how fast stock moves. <b>Receivables turnover</b> = sales ÷ receivables shows how fast customers pay."},
+  {k:"check",q:"A supermarket has a low profit margin but very high asset turnover. A luxury jeweller has the opposite. What does this tell you?",
+   o:["The supermarket is badly run","They are pursuing different but potentially equally valid routes to a return","The jeweller must have higher ROA","Turnover ratios cannot be compared across industries"],c:1,
+   e:"Neither is wrong. A grocer earns thin margins on enormous volume; a jeweller earns fat margins on few sales. Both can reach a decent return on assets — the route differs, which is exactly why you compare firms to their own industry."},
+  {k:"idea",h:"Liquidity",p:"The <b>current ratio</b> = current assets ÷ current liabilities. The <b>quick ratio</b> strips out inventory, which is the hardest current asset to turn into cash quickly. Both ask whether short-term obligations are covered."},
+  {k:"think",q:"Why might an analyst trust the quick ratio more than the current ratio for a firm holding a lot of unsold inventory?",
+   a:"Because inventory is only worth its book value if someone actually buys it. If it's slow-moving, obsolete or seasonal, it can't be converted to cash in time to pay a bill next month. The quick ratio removes that optimistic assumption and asks what could be paid using cash and receivables alone."},
+  {k:"trap",p:"Ratios mean almost nothing in isolation. A current ratio of 1.4 is comfortable in one industry and alarming in another. Always compare against the same firm's history and its close competitors."},
+  {k:"recap",pts:[
+   "Asset turnover = sales ÷ total assets — revenue generated per dollar of assets.",
+   "Inventory turnover = COGS ÷ inventory; receivables turnover = sales ÷ receivables.",
+   "Current ratio = current assets ÷ current liabilities.",
+   "Quick ratio removes inventory, the least liquid current asset.",
+   "High margin with low turnover and low margin with high turnover can both work — judge against the industry."]}
+ ]},
+
+{id:"ls_lev",mod:"m2",topic:"t_lev",mins:6,title:"Leverage, DuPont and how fast a firm can grow",
+ blocks:[
+  {k:"idea",h:"What leverage actually does",p:"Borrowing multiplies whatever the business does. Good year: shareholders keep the upside after paying a fixed interest bill, so returns look excellent. Bad year: the interest is still due, and the loss lands entirely on equity. Leverage doesn't create performance — it amplifies it in both directions."},
+  {k:"idea",h:"Measuring it",p:"The <b>long-term debt ratio</b> = long-term debt ÷ (long-term debt + equity) shows how much of permanent funding is borrowed. <b>Times interest earned</b> = EBIT ÷ interest asks a more immediate question: how many times over can current profit cover the interest bill?"},
+  {k:"idea",h:"DuPont: refusing to accept one number",p:"ROE on its own tells you the size of the shareholders' return but nothing about where it came from. DuPont breaks it apart: <b>ROE = profit margin × asset turnover × equity multiplier</b> — how much you earn per sale, how hard your assets work, and how much you've borrowed."},
+  {k:"eg",problem:"A firm has a net profit margin of 6%, asset turnover of 1.5, and an equity multiplier of 2.0. What is its ROE, and where does it come from?",
+   steps:[
+    ["What's being asked","ROE, decomposed — the number and its sources."],
+    ["Extract","Margin = 0.06; turnover = 1.5; equity multiplier = 2.0."],
+    ["Select","Extended DuPont: ROE = margin × turnover × multiplier."],
+    ["Compute","0.06 × 1.5 × 2.0 = 0.18."],
+    ["Read it","ROE is 18%: 6% profit on each sale, assets turned over 1.5 times, and leverage of 2.0 doubling the result. Half of that 18% is borrowing, not operations."]]},
+  {k:"check",q:"Two firms both report an ROE of 18%. Firm A gets there on a fat profit margin; Firm B on an equity multiplier of 3.0. What should you conclude?",
+   o:["They are equally attractive — same ROE","Firm B is better because leverage is efficient","Same headline return, but Firm B's is built on debt and carries more risk","Firm A must have higher sales"],c:2,
+   e:"An identical ROE can be assembled very differently. Firm A earns its return by selling well; Firm B borrows heavily to manufacture the same number. Same output, materially different risk — which is exactly what DuPont exists to expose."},
+  {k:"idea",h:"How fast can it grow?",p:"Growth needs funding. If a firm won't issue new shares, growth has to come out of retained profit — so it is capped by how much it keeps and how well it reinvests: <b>sustainable growth = plowback ratio × ROE</b>, where plowback = 1 − payout ratio."},
+  {k:"think",q:"A firm pays out 100% of its earnings as dividends. What is its sustainable growth rate, and why?",
+   a:"Zero. Plowback is 1 − 1 = 0, so sustainable growth = 0 × ROE = 0. Nothing is retained, so there is no new equity funding growth. It can still grow — but only by issuing shares or borrowing, which is exactly what this measure assumes it won't do."},
+  {k:"trap",p:"Sustainable growth assumes a stable ROE, a stable payout ratio, and no new external equity. Break any of those — a rights issue, a change in dividend policy — and the number stops describing the firm."},
+  {k:"recap",pts:[
+   "Leverage amplifies returns in both directions; it doesn't improve the underlying business.",
+   "Long-term debt ratio = LTD ÷ (LTD + equity); times interest earned = EBIT ÷ interest.",
+   "DuPont: ROE = profit margin × asset turnover × equity multiplier.",
+   "Sustainable growth = plowback × ROE, and plowback = 1 − payout.",
+   "Always ask how an ROE was assembled, not just how big it is."]}
+ ]},
+
+/* ========== Lecture 3 — Time value of money ========== */
+{id:"ls_sing",mod:"m3",topic:"t_sing",mins:5,title:"Why money has a date attached to it",
+ blocks:[
+  {k:"idea",h:"The one idea underneath everything",p:"$5,000 today and $5,000 in four years are not the same thing — and not because of inflation. Money in your hand can be put to work and grow. So every amount in finance carries a date, and two amounts can only be compared when they stand on the same date."},
+  {k:"idea",h:"Two directions, one relationship",p:"Going forward is <b>compounding</b>: FV = PV × (1+r)^t. Going backward is <b>discounting</b>: PV = FV ÷ (1+r)^t. They are the same equation rearranged — one multiplies by the growth factor, the other divides by it."},
+  {k:"check",q:"If the discount rate were 0%, what would the present value of $5,000 received in four years be?",
+   o:["$0","$5,000","Undefined","It depends on the number of years"],c:1,
+   e:"$5,000. With no time value of money, dates stop mattering entirely and a future amount is worth exactly its face value today. That is the cleanest way to see what the discount rate is actually doing — it is the price of waiting."},
+  {k:"eg",problem:"You will receive $5,000 at the end of year 4. The discount rate is 8% per year. What is it worth today?",
+   timeline:[["0","? PV"],["1",""],["2",""],["3",""],["4","$5,000"]],
+   steps:[
+    ["What's being asked","\"Worth today\" means present value — moving one future amount back to time 0."],
+    ["Extract","FV = 5,000; r = 8%; t = 4. The rate period and time period already match."],
+    ["Select","One cash flow, not a repeating payment — use the lump-sum relationship."],
+    ["Compute","1.08^4 = 1.36049, so PV = 5,000 ÷ 1.36049 = 3,675.15."],
+    ["Read it","About $3,675. Lower than $5,000, because you're stripping out four years of growth the money would have earned."]]},
+  {k:"idea",h:"Four variables, any three gets you the fourth",p:"PV, FV, r and t are locked together. Know three and you can solve for the last: <b>r = (FV/PV)^(1/t) − 1</b> and <b>t = ln(FV/PV) ÷ ln(1+r)</b>. Solving for time always needs logs — that's the one that catches people."},
+  {k:"think",q:"Two things raise the gap between PV and FV. What are they, and which one is more dangerous to get wrong on a long project?",
+   a:"The rate and the number of periods. Time is the more dangerous one because it sits in the exponent — the effect compounds. A small error in r on a 2-year project is minor; the same error on a 25-year project, compounded 25 times, can change the answer enormously. That is exactly why the discount rate matters most for long-lived investments."},
+  {k:"trap",p:"The rate and the period must always describe the same length of time. A monthly cash flow discounted at an annual rate is simply wrong — convert one of them first."},
+  {k:"recap",pts:[
+   "FV = PV × (1+r)^t; PV = FV ÷ (1+r)^t.",
+   "r = (FV/PV)^(1/t) − 1; t = ln(FV/PV) ÷ ln(1+r).",
+   "Any three of PV, FV, r, t give you the fourth.",
+   "Only amounts standing on the same date can be added or compared.",
+   "Rate period and cash-flow period must match."]}
+ ]},
+
+{id:"ls_comp",mod:"m3",topic:"t_comp",mins:5,title:"Why a \"12% rate\" can mean several different things",
+ blocks:[
+  {k:"idea",h:"A quoted rate is incomplete",p:"If a bank advertises 12%, you still don't know what you'll earn — because it depends on how often interest is added. Interest that gets credited monthly starts earning interest itself, so the same headline rate produces a bigger result than one credited annually."},
+  {k:"idea",h:"APR versus EAR",p:"The <b>APR</b> is the quoted annual rate; it's just the period rate multiplied up, so it ignores compounding within the year. The <b>EAR</b> is what you actually earn once compounding is counted: <b>EAR = (1 + APR/m)^m − 1</b>, where m is compounding periods per year."},
+  {k:"eg",problem:"A bank quotes 12% APR. What is the effective annual rate under monthly compounding, and under quarterly?",
+   steps:[
+    ["What's being asked","The true annual return behind one quoted rate, at two compounding frequencies."],
+    ["Monthly: period rate","12% ÷ 12 = 1% per month, over m = 12 periods."],
+    ["Monthly: EAR","(1.01)^12 − 1 = 0.126825, so 12.6825%."],
+    ["Quarterly: period rate","12% ÷ 4 = 3% per quarter, over m = 4 periods."],
+    ["Quarterly: EAR","(1.03)^4 − 1 = 0.125509, so 12.5509%."],
+    ["Read it","Same 12% headline, two different real returns. More frequent compounding always raises the EAR."]]},
+  {k:"check",q:"Two banks both advertise 10% APR. Bank A compounds daily, Bank B compounds annually. Where should you deposit?",
+   o:["Bank A — more frequent compounding gives a higher EAR","Bank B — fewer compounding periods means less risk","They are identical, since the APR is the same","Not enough information"],c:0,
+   e:"With the same APR, the more frequent the compounding, the higher the EAR — so Bank A pays more. This is exactly why the EAR is the only fair basis for comparing quoted rates."},
+  {k:"think",q:"You're borrowing rather than saving. Does more frequent compounding still work in your favour?",
+   a:"No — it flips. Frequent compounding raises the effective rate, which is good when you're earning and bad when you're paying. The same 18% APR credit card compounded monthly costs you more than 18% a year. Lenders quote APR precisely because it looks smaller than the EAR you actually pay."},
+  {k:"trap",p:"When compounding happens m times a year, you must adjust <i>both</i> parts: divide the rate (APR/m) and multiply the periods (m × t). Changing only one is the single most common slip in this topic."},
+  {k:"recap",pts:[
+   "Period rate = APR ÷ m; number of periods = m × t.",
+   "EAR = (1 + APR/m)^m − 1.",
+   "More frequent compounding always raises the EAR.",
+   "Compare rates on EAR, never on APR.",
+   "Higher EAR is good when investing and bad when borrowing."]}
+ ]},
+
+{id:"ls_multi",mod:"m3",topic:"t_multi",mins:4,title:"When the amounts differ every year",
+ blocks:[
+  {k:"idea",h:"No shortcut, but no mystery either",p:"Real projects rarely pay the same amount each year. When cash flows are uneven there's no clever formula — you value each one on its own and add them up. It's more arithmetic, not more theory."},
+  {k:"idea",h:"Why adding is legitimate",p:"Value is <b>additive</b>, but only for amounts standing on the same date. That's the licence for the whole method: pull every cash flow back to today, and once they all sit at time 0 you can simply sum them."},
+  {k:"eg",problem:"A project pays $4,000 at the end of year 1, $5,000 in year 2 and $6,000 in year 3. At a 9% discount rate, what is the stream worth today?",
+   timeline:[["0","? PV"],["1","$4,000"],["2","$5,000"],["3","$6,000"]],
+   steps:[
+    ["What's being asked","The value today of three unequal amounts."],
+    ["Year 1","4,000 ÷ 1.09 = 3,669.72."],
+    ["Year 2","5,000 ÷ 1.09² = 4,208.40."],
+    ["Year 3","6,000 ÷ 1.09³ = 4,633.10."],
+    ["Add them","3,669.72 + 4,208.40 + 4,633.10 = 12,511.23."],
+    ["Read it","About $12,511 today. Note the later cash flows are discounted hardest — year 3's $6,000 is worth less than $4,634."]]},
+  {k:"check",q:"Why can't you use the annuity formula on the stream above?",
+   o:["Because there are only three cash flows","Because the payments are not equal","Because the rate is above 8%","Because the cash flows are annual"],c:1,
+   e:"The annuity shortcut requires <i>equal</i> payments at <i>regular</i> intervals. Break either condition and you must value each cash flow separately."},
+  {k:"think",q:"A complicated stream has five equal payments followed by two odd ones. Must you value all seven separately?",
+   a:"No — and this is where additivity earns its keep. Treat the five equal payments as an annuity, value the two odd ones individually, then add the pieces. Splitting a messy stream into recognisable chunks is nearly always faster than brute force."},
+  {k:"trap",p:"Watch the exponent. A cash flow at the end of year 1 is divided by (1+r)^1, not (1+r)^0. Off-by-one on the timeline quietly wrecks the whole answer."},
+  {k:"recap",pts:[
+   "Uneven cash flows: discount each one separately, then add.",
+   "Value is additive only for amounts on the same date.",
+   "For a future value, compound each flow forward to the target date instead.",
+   "Shortcuts need equal payments at regular intervals.",
+   "Split complex streams into simple recognisable pieces."]}
+ ]},
+
+{id:"ls_ann",mod:"m3",topic:"t_ann",mins:6,title:"Payments that repeat — and payments that never stop",
+ blocks:[
+  {k:"idea",h:"When a pattern appears, a shortcut appears",p:"Loans, leases, salaries, pensions: the same amount arriving at regular intervals. That's an <b>annuity</b>, and because the payments are identical the whole stream collapses into one factor instead of a dozen separate calculations."},
+  {k:"idea",h:"Ordinary annuity versus annuity due",p:"An <b>ordinary annuity</b> pays at the <i>end</i> of each period — the default assumption. An <b>annuity due</b> pays at the <i>beginning</i>, so every payment sits one period closer to today. Value it as an ordinary annuity, then multiply by (1+r)."},
+  {k:"eg",problem:"A student borrows $20,000 and repays it in equal annual instalments over 5 years at 10%. What is the annual payment?",
+   timeline:[["0","$20,000"],["1","PMT"],["2","PMT"],["3","PMT"],["4","PMT"],["5","PMT"]],
+   steps:[
+    ["What's being asked","The level payment. The loan amount is the present value of the five repayments."],
+    ["Extract","PV = 20,000; r = 10%; n = 5; payments are annual, so the annual rate fits."],
+    ["Select","Equal payments that stop after 5 periods, assumed at year-end — ordinary annuity."],
+    ["Compute","PVIFA(10%, 5) = 3.7908. PMT = 20,000 ÷ 3.7908 = 5,275.95."],
+    ["Read it","About $5,276 a year. Early payments are mostly interest; later ones mostly principal, though the payment never changes."]]},
+  {k:"check",q:"The same $20,000 loan, but the first payment is due <i>today</i> rather than in a year. What happens to the required payment?",
+   o:["It rises","It falls","It stays the same","It doubles"],c:1,
+   e:"It falls. Paying earlier means each instalment is discounted less, so the same $20,000 is covered by slightly smaller payments — you divide by an annuity factor multiplied by (1+r). Earlier payments always do more work."},
+  {k:"idea",h:"Perpetuities: forever",p:"If the payments never stop, the formula becomes remarkably simple: <b>PV = C ÷ r</b>. If they grow at a constant rate g forever, <b>PV = C ÷ (r − g)</b> — valid only when r > g, or the maths breaks and returns nonsense."},
+  {k:"eg",problem:"An endowment pays $500 a year forever. The required return is 8%. What is it worth? And what if the payment grows 3% a year?",
+   steps:[
+    ["Level perpetuity","PV = 500 ÷ 0.08 = 6,250."],
+    ["Growing perpetuity","PV = 500 ÷ (0.08 − 0.03) = 500 ÷ 0.05 = 10,000."],
+    ["Read it","A 3% growth rate on the payment nearly doubles the value — small growth compounded forever is worth a great deal."]]},
+  {k:"think",q:"The perpetuity formula gives a value at one specific date. Which one — and why does it matter?",
+   a:"It gives the value one period <i>before</i> the first payment. So C ÷ r applied to payments starting at year 1 gives the value at time 0, which is usually what you want. But if the payments only start in year 6, the formula returns the value at year 5, and you must then discount that back five more years. Forgetting the second step is a very common error."},
+  {k:"trap",p:"Timing is where annuity questions are actually won or lost. Before touching a formula, ask: does the first payment arrive at the end of period 1, or right now? Everything else follows from that."},
+  {k:"recap",pts:[
+   "Ordinary annuity pays at period end; annuity due pays at the start — multiply by (1+r).",
+   "PV of an annuity = C × PVIFA(r,n); loan payment = PV ÷ PVIFA(r,n).",
+   "Perpetuity: PV = C ÷ r. Growing perpetuity: PV = C ÷ (r − g), needs r > g.",
+   "A perpetuity formula values the stream one period before the first payment.",
+   "Read the timing of the first payment before choosing anything."]}
+ ]},
+
+{id:"ls_app",mod:"m3",topic:"t_app",mins:5,title:"Putting it to work: retirement, mortgages, the MBA decision",
+ blocks:[
+  {k:"idea",h:"Same machinery, bigger words",p:"Retirement planning, a mortgage, an education fund, the MBA decision — none of these need new formulas. They're all the same lump sums and annuities you've already met. The difficulty moves from the arithmetic to the setup."},
+  {k:"idea",h:"Draw the timeline first",p:"Before choosing a formula, put every cash flow on a line: what happens today, what repeats, what arrives once, and when each starts and stops. Most wrong answers in this topic come from a wrong timeline, not wrong arithmetic."},
+  {k:"check",q:"You give up a $60,000 salary for two years to study full-time. In an NPV analysis of the degree, that foregone salary is:",
+   o:["Irrelevant, since no money is actually paid out","A real opportunity cost that belongs in the analysis","A financing decision","A sunk cost"],c:1,
+   e:"It's an opportunity cost and it belongs in the analysis. No cheque is written, but you genuinely give up $120,000 you would otherwise have had — for most people, the largest single cost of a full-time degree."},
+  {k:"think",q:"You're comparing a two-year MBA against a one-year MBA. Both require you to keep paying rent. Should rent appear in the comparison?",
+   a:"Not if it's identical under both options — equal costs cancel out of a like-for-like comparison, and including them just adds arithmetic. But say so explicitly rather than silently dropping them. And be careful: if the two-year option means two more years of rent than the one-year option, the <i>difference</i> is very much relevant."},
+  {k:"idea",h:"A workable order of operations",p:"Compound any savings you already hold forward to the target date. Separate one-off amounts from repeating ones. Watch whether payments land at the start or end of a period. Then, and only then, pick your formulas."},
+  {k:"trap",p:"Tuition is usually paid at the <i>start</i> of each year while salary arrives at the <i>end</i>. That's a full period apart, and at any positive discount rate it changes the answer. The exam rewards noticing it."},
+  {k:"recap",pts:[
+   "Draw the timeline before selecting any formula.",
+   "Foregone salary is a genuine opportunity cost.",
+   "Compound existing savings forward to the target date first.",
+   "Costs identical under both options cancel — but say that you've excluded them.",
+   "Beginning-of-year and end-of-year cash flows are one period apart, and it matters."]}
+ ]},
+
+/* ========== Lecture 4 — Bonds ========== */
+{id:"ls_bbasic",mod:"m4",topic:"t_bbasic",mins:4,title:"What a bond actually is",
+ blocks:[
+  {k:"idea",h:"A bond is a loan, split into pieces",p:"When a government or company needs to borrow more than any one lender will provide, it breaks the loan into tradable slices and sells them to many investors. Each slice is a bond. You hand over money today; in return you're promised fixed payments and your capital back at the end."},
+  {k:"idea",h:"The vocabulary",p:"<b>Face value</b> (or par) is the amount repaid at maturity, usually $1,000. The <b>coupon rate</b> is a fixed percentage of face value paid each year — so a 10% coupon on $1,000 face means $100 a year, regardless of what the bond later trades for. <b>Maturity</b> is when the face value is repaid."},
+  {k:"check",q:"A bond has a face value of $1,000 and a coupon rate of 8%. Its market price falls to $920. What is the annual coupon payment now?",
+   o:["$73.60","$80","$92","It changes with the price"],c:1,
+   e:"$80, unchanged. The coupon is contractually fixed as a percentage of <i>face value</i>, not of market price. This is the single most important fact about bonds — the payments can't move, so the price has to."},
+  {k:"idea",h:"Who issues them",p:"Governments issue the safest bonds; corporations issue riskier ones and must pay more to compensate. Variations include <b>zero-coupon bonds</b>, which pay no interest at all and are instead sold well below face value, and <b>strip bonds</b>, where the coupons and principal are separated and sold individually."},
+  {k:"think",q:"If a zero-coupon bond pays no interest whatsoever, why would anyone buy one?",
+   a:"Because you buy it for less than it repays. A zero that returns $1,000 in five years might sell for $680 today — your entire return comes from the gap between purchase price and face value rather than from periodic payments. It's the same lump-sum PV relationship, run in reverse."},
+  {k:"recap",pts:[
+   "A bond is a tradable slice of a loan.",
+   "Coupon = coupon rate × face value, and it never changes with the market price.",
+   "Face value is repaid at maturity; $1,000 is the usual convention.",
+   "Government bonds are safest; corporates pay more for their extra risk.",
+   "Zero-coupon bonds pay nothing periodically and are sold below face value instead."]}
+ ]},
+
+{id:"ls_bprice",mod:"m4",topic:"t_bprice",mins:6,title:"Pricing a bond, and why price moves opposite to yield",
+ blocks:[
+  {k:"idea",h:"The price is just a present value",p:"A bond promises a known set of cash flows: a coupon each year, plus the face value at the end. Its price is simply what that stream is worth today — discount everything at the return the market currently demands, and add it up."},
+  {k:"idea",h:"Two pieces",p:"Structurally a bond is <b>a coupon annuity plus a face-value lump sum</b>. That's why the formula is Price = coupon × PVIFA(r,n) + Face ÷ (1+r)^n — it's the two tools from Lecture 3 stacked together, nothing new."},
+  {k:"check",q:"A 3-year bond with $1,000 face pays a 10% coupon, and similar bonds yield exactly 10%. Without calculating, what is its price?",
+   o:["Above $1,000","Exactly $1,000","Below $1,000","Impossible to say"],c:1,
+   e:"Exactly $1,000 — par. When the coupon rate equals the required yield, the bond pays precisely what the market demands, so there's no reason for it to trade at a premium or a discount."},
+  {k:"eg",problem:"A 3-year bond has $1,000 face value and pays an 8% annual coupon. Similar-risk bonds yield 10%. What is its price?",
+   timeline:[["0","? Price"],["1","$80"],["2","$80"],["3","$1,080"]],
+   steps:[
+    ["What's being asked","Price = present value of everything the bond promises."],
+    ["Extract","Coupon = 8% × 1,000 = $80; face = 1,000; r = 10%; n = 3."],
+    ["Select","Coupon annuity + face-value lump sum, discounted at the market yield."],
+    ["Compute","80/1.10 + 80/1.10² + 1,080/1.10³ = 72.73 + 66.12 + 811.42 = 950.26."],
+    ["Read it","About $950 — a discount. The coupon (8%) is below what the market demands (10%), so the price must drop until the total return matches."]]},
+  {k:"think",q:"Interest rates in the economy rise sharply. What happens to the price of a bond you already own, and why can't the issuer simply raise your coupon to compensate?",
+   a:"The price falls. The coupon is fixed by contract — the issuer has no obligation or ability to raise it. So the only thing that can adjust is the price: it drops until a buyer paying that lower price earns the higher return the market now demands. Fixed payments plus a changing required return force the price to move inversely."},
+  {k:"idea",h:"Premium, par and discount",p:"Coupon rate above required yield → price above par (<b>premium</b>). Coupon equal to yield → <b>par</b>. Coupon below yield → price below par (<b>discount</b>). You can call the answer before computing it, which is a good way to catch an arithmetic slip."},
+  {k:"trap",p:"When coupons are paid semiannually, adjust all three inputs: halve the coupon, halve the rate, double the number of periods. Changing only some of them is the standard exam trap."},
+  {k:"recap",pts:[
+   "Price = coupon × PVIFA(r,n) + Face ÷ (1+r)^n.",
+   "A bond is a coupon annuity plus a face-value lump sum.",
+   "Price and yield always move in opposite directions, because the coupon can't move.",
+   "Coupon > yield → premium; coupon = yield → par; coupon < yield → discount.",
+   "Semiannual coupons: halve the coupon and the rate, double the periods."]}
+ ]},
+
+{id:"ls_byield",mod:"m4",topic:"t_byield",mins:6,title:"Three ways to measure what a bond earns you",
+ blocks:[
+  {k:"idea",h:"Why one number isn't enough",p:"\"What does this bond return?\" has three legitimate answers depending on what you're actually asking: what income does it throw off right now, what will I earn if I hold it to the end, or what did I make over the period I actually held it?"},
+  {k:"idea",h:"1. Current yield",p:"<b>Current yield = annual coupon ÷ current price.</b> It captures income only. It says nothing about the capital gain or loss you'll take as the price drifts toward face value — so it is never the full story."},
+  {k:"idea",h:"2. Yield to maturity",p:"The <b>YTM</b> is the discount rate that makes the present value of all the bond's cash flows equal its price. It's the total return if you buy today and hold to maturity, counting both coupons and any gain or loss."},
+  {k:"eg",problem:"A 3-year, 10% annual coupon bond with $1,000 face value sells for $1,136.16. Find its current yield and its yield to maturity.",
+   steps:[
+    ["Current yield","Annual coupon ÷ price = 100 ÷ 1,136.16 = 8.80%."],
+    ["YTM: what it means","Find r where 100/(1+r) + 100/(1+r)² + 1,100/(1+r)³ = 1,136.16."],
+    ["Solve","By trial or calculator, r = 5%."],
+    ["Why they differ","The bond trades at a premium, so it will drift down toward $1,000 by maturity. That built-in capital loss drags the total return (5%) well below the income measure (8.8%)."],
+    ["Read it","Current yield flatters a premium bond and understates a discount bond. YTM is the honest number."]]},
+  {k:"check",q:"For a bond trading at a <i>discount</i>, how will current yield compare with yield to maturity?",
+   o:["Current yield will be higher","Current yield will be lower","They will be equal","It depends on the coupon rate"],c:1,
+   e:"Lower. A discount bond rises toward face value as maturity approaches, so there's a capital <i>gain</i> that current yield ignores entirely. Add that gain in and the YTM comes out above the current yield — the mirror image of the premium case."},
+  {k:"idea",h:"3. Rate of return",p:"If you don't hold to maturity, neither of the above describes what you made. <b>Rate of return = (coupon income + price change) ÷ purchase price</b> over the period you actually held it."},
+  {k:"eg",problem:"You buy that same bond for $1,136.16. One year later, with the yield still 5%, you sell it for $1,092.97. What was your rate of return?",
+   steps:[
+    ["Extract","Coupon received = $100; bought at 1,136.16; sold at 1,092.97."],
+    ["Price change","1,092.97 − 1,136.16 = −43.19, a capital loss."],
+    ["Compute","(100 − 43.19) ÷ 1,136.16 = 56.81 ÷ 1,136.16 = 5.00%."],
+    ["Read it","Exactly 5% — the same as the YTM. That's no coincidence: if the market yield doesn't change, your holding-period return equals the yield you bought at."]]},
+  {k:"think",q:"In that example the rate of return matched the YTM exactly. What would have to happen for a one-year return to come out far above the YTM?",
+   a:"Market yields would have to fall during the year. Lower required returns push the bond's price up, handing you a capital gain on top of the coupon — a return well above the 5% you originally locked in. The reverse is also true: rising yields produce a loss and a return below the YTM. You only reliably earn the YTM if you hold to maturity or yields stay put."},
+  {k:"trap",p:"The coupon rate is not a yield. It's fixed at issue and measured against face value; the yields here are measured against the price you actually paid. Confusing the two makes every question in this topic go wrong."},
+  {k:"recap",pts:[
+   "Current yield = annual coupon ÷ price — income only.",
+   "YTM = the discount rate equating price with all promised cash flows; total return if held to maturity.",
+   "Rate of return = (coupon + price change) ÷ purchase price, for the period actually held.",
+   "Premium bond: current yield > YTM. Discount bond: current yield < YTM.",
+   "If the market yield doesn't move, holding-period return equals the YTM."]}
+ ]},
+
+{id:"ls_brisk",mod:"m4",topic:"t_brisk",mins:5,title:"What can go wrong: rate risk, default risk and tax",
+ blocks:[
+  {k:"idea",h:"Two quite different risks",p:"A bond can hurt you in two ways. Rates in the economy can move, changing what your bond is worth if you sell — <b>interest rate risk</b>. Or the borrower can simply fail to pay — <b>default risk</b>. They're unrelated: a government bond has almost no default risk and can still lose you a lot of money."},
+  {k:"idea",h:"Interest rate risk isn't equal across bonds",p:"Longer-maturity bonds are far more sensitive to rate changes, because more payments sit further out where discounting bites hardest. Lower-coupon bonds are also more sensitive, since more of their value is locked in the distant face-value repayment."},
+  {k:"check",q:"Rates rise by 1%. Which bond loses the most value?",
+   o:["A 2-year bond with a 10% coupon","A 20-year bond with a 3% coupon","A 2-year bond with a 3% coupon","All lose exactly the same"],c:1,
+   e:"The long, low-coupon bond. Both factors point the same way — a distant maturity and a small coupon mean most of its value sits in a far-off payment, which is precisely what a higher discount rate punishes hardest."},
+  {k:"think",q:"You hold a government bond and rates rise sharply, so its market price drops. If you simply hold it to maturity, have you actually lost money?",
+   a:"Not in cash terms — you'll still collect every coupon and the full face value, exactly as promised. But you have taken a real opportunity cost: your money is locked into an old, lower rate while new bonds pay more. Interest rate risk is genuine even when you never sell; it just shows up as a return foregone rather than a cheque you don't receive."},
+  {k:"idea",h:"Default risk and ratings",p:"Agencies grade issuers. <b>AAA</b> is the highest; <b>BBB and above</b> is investment grade; <b>BB and below</b> is speculative, or <b>junk</b>. Lower ratings mean investors demand more, which shows up as a <b>default premium</b> — the corporate yield minus the government yield on a comparable bond."},
+  {k:"check",q:"A 10-year government bond yields 6%. A 10-year BBB corporate bond with the same coupon yields 9%. The default risk premium is:",
+   o:["6%","9%","3%","15%"],c:2,
+   e:"3% — the difference between the two, holding maturity and coupon constant. That gap is exactly what investors are charging the corporate borrower for the possibility that it doesn't pay."},
+  {k:"idea",h:"Tax",p:"Returns are quoted before tax, but you spend what's left after it. Convert cash flows to after-tax amounts before computing a return if you want a figure that reflects what you actually keep."},
+  {k:"trap",p:"To read a default premium correctly, the two bonds must be genuinely comparable — same maturity, same coupon structure. Comparing a 2-year government bond with a 20-year corporate one mixes default risk and interest rate risk into one meaningless number."},
+  {k:"recap",pts:[
+   "Interest rate risk: prices fall when rates rise.",
+   "Longer maturity and lower coupon both mean greater interest rate risk.",
+   "Default premium = corporate yield − government yield, same maturity and coupon.",
+   "AAA is highest; BBB and above is investment grade; BB and below is junk.",
+   "Convert to after-tax cash flows before computing an after-tax return."]}
+ ]},
+
+/* ========== Lecture 5 — Stocks ========== */
+{id:"ls_sbasic",mod:"m5",topic:"t_sbasic",mins:4,title:"What you own when you own a share",
+ blocks:[
+  {k:"idea",h:"A residual claim",p:"A bondholder is promised specific amounts on specific dates. A shareholder is promised nothing. You own a <b>residual claim</b> — whatever is left after employees, suppliers and lenders have been paid. That's why equity is riskier than debt, and why it must offer a higher expected return."},
+  {k:"idea",h:"Where your return comes from",p:"Over a year, your return splits cleanly in two: the <b>dividend</b> you collect and the <b>price change</b> you hope for. Formally: <b>r = (Div₁ + P₁ − P₀) ÷ P₀</b>, which is the dividend yield plus the capital gains yield."},
+  {k:"check",q:"You buy a share at $40. A year later it pays a $2 dividend and trades at $44. What was your return?",
+   o:["5%","10%","15%","20%"],c:2,
+   e:"(2 + 44 − 40) ÷ 40 = 6/40 = 15%. That's 5% dividend yield plus 10% capital gains yield — both parts count, which is why judging a share on its dividend alone is misleading."},
+  {k:"idea",h:"Primary and secondary, again",p:"An <b>IPO</b> is a firm's first sale of shares to the public; a later one is a <b>seasoned equity offering</b>. Both are primary market — the firm gets the cash. Everything after that is investors trading with each other."},
+  {k:"idea",h:"Price versus value",p:"The <b>price</b> is what the market is charging. <b>Intrinsic value</b> is the present value of the cash flows you expect to receive. The entire discipline of stock valuation is an attempt to estimate the second and compare it with the first."},
+  {k:"think",q:"A firm has never paid a dividend and says it won't for a decade. Can its shares still be worth something today?",
+   a:"Certainly. Value comes from the cash you can <i>eventually</i> get, not the cash arriving this year. A firm reinvesting everything is building the capacity to pay much larger dividends later — or to be sold, which converts that future stream into cash immediately. The payments are deferred, not absent."},
+  {k:"recap",pts:[
+   "A share is a residual claim — paid after everyone else, hence riskier than debt.",
+   "r = (Div₁ + P₁ − P₀) ÷ P₀ = dividend yield + capital gains yield.",
+   "IPO is a first public sale; an SEO is a later one; both are primary market.",
+   "P/E = price per share ÷ earnings per share.",
+   "Intrinsic value is the present value of expected future cash flows."]}
+ ]},
+
+{id:"ls_ddm",mod:"m5",topic:"t_ddm",mins:6,title:"Valuing a share from its dividends",
+ blocks:[
+  {k:"idea",h:"The logic in one line",p:"If you'll hold a share forever, all you ever receive is dividends — so the share is worth the present value of those dividends. And if you plan to sell, the buyer values it the same way, so their price already embodies the dividends after your sale. Push that far enough and the terminal price disappears; only dividends remain."},
+  {k:"idea",h:"The simplest case",p:"If the dividend never changes, the share is a perpetuity: <b>P₀ = Div₁ ÷ r</b>. A share paying $4 forever at a 10% required return is worth $40. Nothing more complicated is happening."},
+  {k:"idea",h:"Constant growth — the Gordon model",p:"More realistically, dividends grow. If they grow at a constant rate g forever: <b>P₀ = Div₁ ÷ (r − g)</b>. Note it's Div₁ — <i>next</i> year's dividend. If you're handed this year's, grow it first: Div₁ = Div₀ × (1 + g)."},
+  {k:"check",q:"A share is expected to pay a $3 dividend next year, dividends grow at 4% forever, and the required return is 12%. What is the share worth?",
+   o:["$25.00","$37.50","$75.00","$300.00"],c:1,
+   e:"P₀ = 3 ÷ (0.12 − 0.04) = 3 ÷ 0.08 = $37.50. The trap here is dividing by r alone — you must subtract g, because growth reduces the effective discount."},
+  {k:"think",q:"What happens to the Gordon model if g is greater than r, and why should that not worry you?",
+   a:"The denominator turns negative, giving a negative price — obvious nonsense. It shouldn't worry you because the assumption is the problem, not the formula: no firm can grow faster than its investors' required return <i>forever</i>. Fast growth is always temporary, so if g exceeds r you're using the wrong model, not discovering a broken one."},
+  {k:"idea",h:"Rearranging for the return",p:"The same equation solved for r gives <b>r = Div₁/P₀ + g</b> — dividend yield plus growth rate. This is genuinely useful: it's how the market price tells you what return investors are demanding, and it reappears in Lecture 6 as the dividend growth model for the cost of equity."},
+  {k:"idea",h:"When growth isn't constant",p:"For a firm growing rapidly then settling down: discount each of the early, irregular dividends individually, then value the stable phase as a growing perpetuity. That gives you a terminal value standing <i>one period before</i> the stable phase begins, which you must then discount back to today."},
+  {k:"trap",p:"In a non-constant growth problem, the terminal value from the Gordon formula sits at the year <i>before</i> the constant-growth dividends start — not at today, and not at the year of the first stable dividend. Placing it wrongly is the classic error in this topic."},
+  {k:"recap",pts:[
+   "No growth: P₀ = Div₁ ÷ r.",
+   "Constant growth: P₀ = Div₁ ÷ (r − g), valid only when g < r.",
+   "Div₁ = Div₀ × (1 + g) — always check which dividend you've been given.",
+   "Rearranged: r = Div₁/P₀ + g.",
+   "Non-constant growth: value early dividends one by one, then a terminal growing perpetuity, then discount it back."]}
+ ]},
+
+{id:"ls_growth",mod:"m5",topic:"t_growth",mins:6,title:"Growth is only worth something if it earns enough",
+ blocks:[
+  {k:"idea",h:"Where growth comes from",p:"A firm grows by keeping profit and reinvesting it. The share it keeps is the <b>plowback</b> (or retention) ratio; the share it pays out is the <b>payout</b> ratio, and the two sum to 1. Reinvest more and you grow faster — that part is mechanical."},
+  {k:"idea",h:"Putting a number on it",p:"<b>g = ROE × plowback ratio.</b> Keep 40% of earnings and earn 20% on equity, and you grow at 8% a year. It assumes a stable ROE and payout policy, funded internally with no new share issues."},
+  {k:"check",q:"A firm earns an ROE of 15% and pays out 60% of earnings. What is its sustainable growth rate?",
+   o:["9%","6%","15%","25%"],c:1,
+   e:"Plowback = 1 − 0.60 = 0.40, so g = 0.15 × 0.40 = 6%. Payout and plowback are easy to swap by accident — read which one the question gave you."},
+  {k:"idea",h:"The uncomfortable question",p:"Growth sounds unambiguously good, but reinvesting means <i>not</i> paying shareholders now. That's only worth doing if the money earns more inside the firm than shareholders require. Growth funded by projects earning less than r actively destroys value, even as earnings rise."},
+  {k:"idea",h:"PVGO",p:"<b>PVGO</b> separates the two. Value the firm as if it paid out everything and never grew — that's EPS₁ ÷ r. Whatever the price exceeds that by is the market's valuation of its growth opportunities: <b>PVGO = P₀ − EPS₁ ÷ r</b>."},
+  {k:"eg",problem:"MJ Company expects EPS of $5, plows back 40% of earnings, earns an ROE of 20%, and its shareholders require 12%. Find the share price, the no-growth value, and PVGO.",
+   steps:[
+    ["Dividend","Payout is 60%, so Div₁ = 0.60 × 5 = $3."],
+    ["Growth rate","g = ROE × plowback = 0.20 × 0.40 = 8%."],
+    ["Price with growth","P₀ = 3 ÷ (0.12 − 0.08) = $75."],
+    ["Value if it never grew","EPS₁ ÷ r = 5 ÷ 0.12 = $41.67."],
+    ["PVGO","75 − 41.67 = $33.33 — nearly half the share price is future growth, not current earnings."],
+    ["As a P/E","Without growth, 41.67 ÷ 5 = 8.33×. With growth, 75 ÷ 5 = 15×. That gap is what a high P/E is telling you."]]},
+  {k:"think",q:"Here reinvesting raised the price from $41.67 to $75. What single number made that work, and what would have to change for reinvestment to <i>lower</i> the price?",
+   a:"ROE of 20% against a required return of 12% — the firm earns more on retained profit than shareholders could get elsewhere at that risk, so keeping the money creates value. If ROE fell below 12%, every dollar retained would earn less than shareholders demand, and plowing back more would push the price <i>down</i>. Growth only adds value when ROE exceeds r."},
+  {k:"trap",p:"A high P/E doesn't mean expensive and a low P/E doesn't mean cheap. It mainly reflects how much growth the market expects. Reading P/E as a valuation verdict rather than a growth expectation is a standard mistake."},
+  {k:"recap",pts:[
+   "g = ROE × plowback; plowback + payout = 1.",
+   "PVGO = P₀ − EPS₁ ÷ r.",
+   "Growth adds value only when ROE exceeds the required return.",
+   "A high P/E signals expected growth opportunities, not cheapness or dearness.",
+   "Income stocks pay out heavily; growth stocks retain and reinvest."]}
+ ]},
+
+{id:"ls_emh",mod:"m5",topic:"t_emh",mins:5,title:"If the price already knows, you can't beat it",
+ blocks:[
+  {k:"idea",h:"The core claim",p:"In an efficient market, prices already reflect available information. That has a sharp consequence: if everyone already knows what you know, it's in the price, and analysing it further can't earn you an abnormal return. Not because analysis is worthless — because you're late."},
+  {k:"idea",h:"Three forms, three sets of information",p:"<b>Weak form</b>: prices reflect all past prices and volumes. <b>Semi-strong</b>: prices reflect all publicly available information. <b>Strong form</b>: prices reflect everything, including private information. Each is a wider claim that contains the one before it."},
+  {k:"check",q:"Which form of efficiency, if true, means technical analysis — studying past price charts for patterns — cannot produce abnormal returns?",
+   o:["Weak form","Semi-strong form","Strong form","None of them"],c:0,
+   e:"Weak form. It says past prices and volumes carry no predictive information, which is precisely the data technical analysis relies on. Semi-strong would additionally kill fundamental analysis of public information."},
+  {k:"check",q:"You study a firm's published annual report carefully and conclude it's undervalued. Under semi-strong efficiency, what should you expect?",
+   o:["A reliable abnormal profit","No abnormal profit, because published accounts are public and already in the price","Losses, because the analysis is worthless","Abnormal profit only if you trade quickly"],c:1,
+   e:"No abnormal profit. Semi-strong efficiency says all public information is already reflected in the price — and an annual report is about as public as information gets. This is the form that repudiates fundamental analysis."},
+  {k:"think",q:"Strong-form efficiency has the weakest empirical support of the three. What real-world observation cuts against it?",
+   a:"That people with genuine inside information do appear to make abnormal returns — which is exactly why insider trading is illegal and prosecuted. If prices already reflected private information, insider trading would be pointless rather than profitable. Markets look reasonably good at absorbing public information and much worse at absorbing information nobody has yet."},
+  {k:"idea",h:"The awkward exceptions",p:"Several persistent <b>anomalies</b> resist the theory: <b>earnings announcement drift</b> (stocks with the best earnings news keep outperforming afterwards), the <b>new issues puzzle</b> (early IPO gains often fade into long-run underperformance), and calendar effects like the <b>January effect</b>."},
+  {k:"trap",p:"Efficiency doesn't mean prices are always <i>right</i> — it means they reflect available information and you can't systematically profit from what's already known. Prices can be wrong and still efficient, because nobody knew better at the time."},
+  {k:"recap",pts:[
+   "Weak form: past prices and volumes — repudiates technical analysis.",
+   "Semi-strong: all public information — repudiates fundamental analysis.",
+   "Strong form: all information, public and private — least supported by evidence.",
+   "Anomalies: earnings announcement drift, the new issues puzzle, the January effect.",
+   "Efficient means information is reflected, not that prices are always correct."]}
+ ]},
+
+/* ========== Lecture 6 — Cost of capital ========== */
+{id:"ls_coc",mod:"m6",topic:"t_coc",mins:5,title:"The number every project has to beat",
+ blocks:[
+  {k:"idea",h:"One number, two names",p:"Investors hand a firm money and demand a return for the risk. From their side that's a <b>required return</b>; from the firm's side the identical number is a <b>cost of capital</b>. Same figure, two vantage points — and it's the hurdle every new project must clear."},
+  {k:"idea",h:"It's an opportunity cost",p:"The cost of capital isn't set by accountants or by what the firm paid historically. It's set by the market: whatever investors could earn elsewhere at the same risk. Riskier assets mean a higher cost of capital, which is why it also serves as a read on how the market sees the firm."},
+  {k:"check",q:"A project's required return and its appropriate discount rate are:",
+   o:["Unrelated concepts","The same number, both driven by the risk of the cash flows","Always equal to the risk-free rate","Set by the tax authority"],c:1,
+   e:"They're the same thing. The rate you discount at <i>is</i> the return investors require, and both follow from the risk of the cash flows being discounted."},
+  {k:"idea",h:"The three components",p:"A firm's financing mix — its <b>capital structure</b> — is made of <b>debt</b>, <b>preferred stock</b> and <b>common equity</b>. Each has its own cost, because each carries different risk and a different claim on the firm's cash."},
+  {k:"idea",h:"Four steps to the WACC",p:"Find the required return on each security. Find the market value of each. Turn those into weights. Take the weighted average. In that order — the whole of Lecture 6 is filling in those four steps."},
+  {k:"check",q:"When computing the weights, why must you use market values rather than book values?",
+   o:["Book values are always smaller","Market values reflect today's required returns; book values record historic funding","Book values are not available in the accounts","It makes no real difference"],c:1,
+   e:"Book equity records what was raised in the past at past rates. The cost of capital is about what investors demand <i>now</i>, and only market values carry that information."},
+  {k:"think",q:"Why does an error in the discount rate matter far more for a 25-year infrastructure project than a 2-year one?",
+   a:"Because the rate sits in an exponent and compounds. Over two years, a percentage point off barely moves the answer. Over twenty-five years and a large outlay, the same error is compounded twenty-five times and can easily flip a project from accept to reject. Long-lived, capital-heavy projects are where discount-rate discipline earns its keep."},
+  {k:"recap",pts:[
+   "Required return and cost of capital are the same number seen from two sides.",
+   "It is an opportunity cost set by the market, not by the accounts.",
+   "Components: debt, preferred stock, common equity.",
+   "Always weight by market value, never book value.",
+   "Steps: cost of each security → market value of each → weights → weighted average."]}
+ ]},
+
+{id:"ls_ce",mod:"m6",topic:"t_ce",mins:6,title:"The hardest cost to pin down: equity",
+ blocks:[
+  {k:"idea",h:"Why equity is awkward",p:"A lender's required return is nearly visible — you can look up what the firm's bonds yield. Shareholders never state a number. They're the residual claimants, so their required return has to be inferred. Two methods dominate, and they rarely agree exactly."},
+  {k:"idea",h:"Method 1 — the dividend growth model",p:"Rearranging the Gordon model gives <b>RE = Div₁/P₀ + g</b>: the return shareholders get is the dividend yield plus the rate at which those dividends grow. Where a firm pays steady, growing dividends, this is direct and intuitive."},
+  {k:"eg",problem:"A share pays a $1.50 dividend next year, trades at $25, and dividends grow at 5.1%. What is the cost of equity?",
+   steps:[
+    ["Select","Steady growing dividends — the dividend growth model fits."],
+    ["Dividend yield","1.50 ÷ 25 = 0.06, or 6%."],
+    ["Add growth","6% + 5.1% = 11.1%."],
+    ["Read it","Shareholders require about 11.1%. Note the price does the work — a higher price for the same dividend implies investors are content with less."]]},
+  {k:"idea",h:"Estimating g",p:"Where does the growth rate come from? Either the historical average growth in dividends, or the sustainable growth shortcut from Lecture 2: <b>g = (1 − payout) × ROE</b>."},
+  {k:"idea",h:"Method 2 — the CAPM",p:"<b>RE = Rf + β(E(Rm) − Rf).</b> Start from the risk-free rate and add a premium for the stock's systematic risk, where beta scales the market risk premium. Unlike the DGM, it works for firms that pay no dividends at all."},
+  {k:"eg",problem:"A firm has a beta of 0.58. The risk-free rate is 6.1% and the market risk premium is 8.6%. What is its cost of equity by CAPM?",
+   steps:[
+    ["Select","CAPM — we have beta and a market risk premium."],
+    ["Risk premium","0.58 × 8.6% = 4.99%."],
+    ["Add the risk-free rate","6.1% + 4.99% = 11.09%."],
+    ["Read it","About 11.1%. A beta below 1 means less systematic risk than the market, so the premium is less than the full 8.6%."]]},
+  {k:"check",q:"A firm has never paid a dividend and doesn't intend to. Which method can you still use?",
+   o:["The dividend growth model","The CAPM","Neither","Both work equally well"],c:1,
+   e:"CAPM. It needs a beta and a market risk premium, neither of which depends on dividends. The DGM divides by a dividend the firm doesn't pay, so it simply has nothing to work with."},
+  {k:"think",q:"The two methods above both landed near 11.1%. If they had instead given 9% and 15%, what should you do?",
+   a:"Neither is exact, so don't just pick the one you prefer. Standard practice is to average them, while asking why they diverge — a wide gap usually means one input is shaky: an unrealistic growth rate, or a beta estimated over an unrepresentative period. The disagreement is information about your inputs, not a coin toss."},
+  {k:"trap",p:"CAPM's weakness is that both beta and the market risk premium are <i>estimates</i> from past data being used to predict the future, and both shift over time. Two analysts can compute very different costs of equity for the same firm, quite honestly."},
+  {k:"recap",pts:[
+   "DGM: RE = Div₁/P₀ + g.",
+   "Growth shortcut: g = (1 − payout) × ROE.",
+   "CAPM: RE = Rf + β(E(Rm) − Rf).",
+   "CAPM adjusts explicitly for systematic risk and works for non-dividend payers.",
+   "When the two disagree, average them — and interrogate your inputs."]}
+ ]},
+
+{id:"ls_cd",mod:"m6",topic:"t_cd",mins:5,title:"Debt and preferred: cheaper, and taxed differently",
+ blocks:[
+  {k:"idea",h:"The coupon is a trap",p:"The obvious answer for the cost of debt — the coupon rate — is wrong. The coupon was fixed when the bond was issued and reflects conditions back then. What matters is the return the market demands <i>today</i>, which is the <b>yield to maturity</b>."},
+  {k:"idea",h:"Three ways to get there",p:"If the debt is traded, use its <b>YTM</b>. If it's rated but not traded, use <b>kd = risk-free rate + the default spread</b> for that rating. If it's neither traded nor rated, fall back on <b>interest ÷ book value of debt</b>."},
+  {k:"check",q:"A firm's bonds carry a 6% coupon but currently trade at a yield to maturity of 9%. Its cost of debt is:",
+   o:["6%","9%","7.5%","3%"],c:1,
+   e:"9%. To raise debt today the firm must offer what the market currently requires. The 6% coupon is a historical artefact of when those particular bonds were sold."},
+  {k:"idea",h:"Then tax changes everything",p:"Interest is tax-deductible, so borrowing shelters some tax. The government effectively pays part of the interest bill: <b>after-tax cost of debt = RD × (1 − TC)</b>. This is the main reason debt is cheaper than equity."},
+  {k:"eg",problem:"A firm's debt yields 10% and its tax rate is 30%. What is the after-tax cost of that debt?",
+   steps:[
+    ["Select","Interest is deductible, so apply the tax shield."],
+    ["Compute","10% × (1 − 0.30) = 10% × 0.70 = 7%."],
+    ["Read it","The firm pays 10% to lenders, but 3 points of that come back as reduced tax — so the real cost is 7%."]]},
+  {k:"idea",h:"Preferred stock",p:"Preferred pays a fixed dividend forever, so it's a perpetuity: <b>RPF = Dividend ÷ Price</b>. A $50 par preferred paying $6 a year costs 6 ÷ 50 = 12%."},
+  {k:"think",q:"Why does the tax adjustment apply to debt but not to preferred stock, even though both pay a fixed amount?",
+   a:"Because tax law treats them differently. Interest on debt is an expense deducted before tax is computed, so it reduces the tax bill. A preferred dividend is a distribution of profit that's already been taxed — no deduction, so no shield. Same-looking cash flow, entirely different tax treatment, and only one gets the (1 − TC)."},
+  {k:"trap",p:"Apply (1 − TC) to debt only. Attaching it to preferred stock or to the cost of equity is a frequent and costly error."},
+  {k:"recap",pts:[
+   "Cost of debt = YTM, not the coupon rate.",
+   "Rated but untraded: kd = risk-free rate + default spread.",
+   "Neither traded nor rated: interest ÷ book value of debt.",
+   "After-tax cost of debt = RD(1 − TC) — the tax shield is why debt is cheap.",
+   "Cost of preferred = dividend ÷ price, with no tax adjustment."]}
+ ]},
+
+{id:"ls_wacc",mod:"m6",topic:"t_wacc",mins:6,title:"Blending it all — and knowing when not to use it",
+ blocks:[
+  {k:"idea",h:"One rate for the whole firm",p:"A firm funds itself with a mix of securities, each with its own cost. The <b>WACC</b> blends them into a single required return, weighting each by how much of the firm's market value it represents."},
+  {k:"idea",h:"The formula",p:"<b>WACC = wE·RE + wD·RD(1 − TC)</b>, plus <b>wPF·RPF</b> if there's preferred stock. The weights come from market values: V = D + E (+ P), and each weight is that component divided by V."},
+  {k:"eg",problem:"A firm has equity with a market value of $60m and debt worth $40m. Its cost of equity is 14%, its cost of debt is 8%, and the tax rate is 30%. What is its WACC?",
+   steps:[
+    ["Total market value","V = 60 + 40 = $100m."],
+    ["Weights","wE = 60/100 = 0.60; wD = 40/100 = 0.40."],
+    ["After-tax cost of debt","8% × (1 − 0.30) = 5.6%."],
+    ["Weighted average","0.60 × 14% + 0.40 × 5.6% = 8.4% + 2.24% = 10.64%."],
+    ["Read it","The firm must earn at least 10.64% on an average-risk project just to keep all its investors satisfied."]]},
+  {k:"check",q:"The firm above is considering a project with an expected return of 9%, of the same risk as its existing business. Should it accept?",
+   o:["Yes — 9% is a healthy positive return","No — 9% is below the 10.64% its investors require","Yes, but only if funded entirely with debt","There is not enough information"],c:1,
+   e:"Reject. A positive return isn't the test — beating the cost of capital is. At 9% the project earns less than investors demand for that risk, so taking it would destroy value even though it looks profitable."},
+  {k:"idea",h:"The big limitation",p:"WACC is the right discount rate only for projects that are <b>carbon copies of the firm's existing business</b> — same risk, same financing. Use it on a project of different risk and you'll systematically mis-price it."},
+  {k:"think",q:"A stable utility company with a low WACC uses that single rate to evaluate a risky new software venture. What goes wrong?",
+   a:"It discounts risky cash flows at a rate meant for safe ones, making the venture look far more attractive than it is — and it will accept projects it should reject. The mirror image also happens inside conglomerates: a flat company-wide WACC over-rewards risky divisions and unfairly penalises safe ones. Riskier divisions need the rate adjusted <i>up</i>, safer ones <i>down</i>."},
+  {k:"trap",p:"Flotation costs — the fees of issuing new securities — never belong inside the WACC. Treat them as an extra cash outflow added to the project's initial cost."},
+  {k:"recap",pts:[
+   "WACC = wE·RE + wD·RD(1 − TC) + wPF·RPF.",
+   "Weights use market values; V = D + E (+ P).",
+   "Accept a project only if its return beats the WACC, not merely if it's positive.",
+   "Valid only for projects matching the firm's existing risk and financing.",
+   "Adjust up for risky divisions, down for safe ones; keep flotation costs out of the rate."]}
+ ]},
+
+/* ========== Lecture 7 — Capital budgeting ========== */
+{id:"ls_cb_npv",mod:"m7",topic:"t_cb_npv",mins:6,title:"Is this project worth more than it costs?",
+ blocks:[
+  {k:"idea",h:"The whole subject in one question",p:"Capital budgeting is the process of deciding which real investments will raise the value of the firm. Every technique in this lecture is an attempt to answer one question — <i>is this worth more than it costs?</i> — and NPV answers it most directly."},
+  {k:"idea",h:"What NPV does",p:"Take everything the project will pay back, move it to today's dollars, and subtract what it costs to start: <b>NPV = C₀ + Σ CFₜ/(1+r)ᵗ</b>, with C₀ the initial outflow. What's left is the value created, measured in today's money."},
+  {k:"idea",h:"The rule, and why the rate matters",p:"Accept if NPV > 0, reject if NPV < 0, indifferent at exactly zero. The discount rate r is the <b>opportunity cost of capital</b> — the return given up by not investing in something equally risky — so it must match the risk of <i>these</i> cash flows, not the firm's average."},
+  {k:"eg",problem:"You can buy a building today for $350,000 and are guaranteed to sell it for $400,000 in a year. What is the NPV at a 7% opportunity cost of capital — and what if the risk actually warrants 12%?",
+   timeline:[["0","-$350,000"],["1","$400,000"]],
+   steps:[
+    ["At 7%","400,000 ÷ 1.07 = 373,832. NPV = 373,832 − 350,000 = $23,832 — accept."],
+    ["At 12%","400,000 ÷ 1.12 = 357,143. NPV = 357,143 − 350,000 = $7,143 — still accept, but far less attractive."],
+    ["Read it","Identical cash flows, very different verdicts on attractiveness. The discount rate isn't a detail; it's the risk judgement that drives the answer."]]},
+  {k:"check",q:"A project's NPV comes out to exactly zero. Has it created value?",
+   o:["Yes, a small amount","No, and it has destroyed value","No value created and none destroyed — it earns exactly the required return","The question can't be answered without the IRR"],c:2,
+   e:"Zero NPV means the project earns precisely the return investors demanded — no more, no less. The firm is genuinely indifferent. So a small positive NPV really is worth taking, and a small negative one really is worth refusing."},
+  {k:"eg",problem:"A company considers equipment costing $500,000 that will generate $150,000, $200,000 and $250,000 over three years. The required return is 10%. Should it buy?",
+   timeline:[["0","-$500,000"],["1","$150,000"],["2","$200,000"],["3","$250,000"]],
+   steps:[
+    ["Discount each","150,000/1.10 = 136,364; 200,000/1.10² = 165,289; 250,000/1.10³ = 187,829."],
+    ["Sum the inflows","136,364 + 165,289 + 187,829 = 489,481."],
+    ["Subtract the cost","489,481 − 500,000 = −$10,519."],
+    ["Read it","Negative, so reject. Note the raw cash flows total $600,000 against a $500,000 cost — it looks profitable until you account for timing."]]},
+  {k:"think",q:"That equipment returns $600,000 on a $500,000 outlay and still fails. Explain to a non-finance colleague why.",
+   a:"Because the $600,000 doesn't arrive today — it trickles in over three years, and money you have to wait for is worth less than money in hand. Once each amount is converted back into today's dollars it's only worth $489,481, which is less than the $500,000 you'd hand over now. The project earns a positive return, just not the 10% investors could get elsewhere at the same risk."},
+  {k:"idea",h:"Choosing between projects",p:"Projects are <b>mutually exclusive</b> when doing one rules out the other. Among those with positive NPV and <i>equal lives</i>, the rule is simple: take the highest NPV. (Unequal lives need different treatment — that's a later lesson.)"},
+  {k:"trap",p:"NPV is measured in currency, not percent. That's a feature — it tells you <i>how much</i> value is added, which is what shareholders actually care about. Ratio measures like IRR and PI can rank projects differently and mislead precisely because they discard scale."},
+  {k:"recap",pts:[
+   "NPV = C₀ + Σ CFₜ/(1+r)ᵗ.",
+   "Accept if NPV > 0; reject if NPV < 0; indifferent at zero.",
+   "r is the opportunity cost of capital and must match the project's risk.",
+   "Among equal-life mutually exclusive projects, pick the highest NPV.",
+   "NPV is the only criterion that always gives the correct decision."]}
+ ]},
+
+{id:"ls_cb_pay",mod:"m7",topic:"t_cb_pay",mins:5,title:"How fast do I get my money back?",
+ blocks:[
+  {k:"idea",h:"A simpler question",p:"Payback asks something narrower than NPV: how long until the project's own cash flows return what it cost? Managers set a cutoff — say two years — and accept anything that recovers within it. It's easy to explain and it favours getting cash back quickly."},
+  {k:"idea",h:"Computing it",p:"Subtract each year's cash flow from the initial cost until the cumulative total reaches zero. If it crosses mid-year, interpolate: full years plus (amount still owed ÷ that year's cash flow)."},
+  {k:"idea",h:"Where it fails badly",p:"Payback commits two sins. It <b>ignores the time value of money</b> entirely — a dollar in year 3 counts the same as one today. And it <b>ignores every cash flow after the cutoff</b>, which is where long-term projects earn their keep."},
+  {k:"eg",problem:"Three projects each cost $2,000, and the firm accepts anything with payback under 2 years at a 10% discount rate. A pays $1,000, $1,000, $10,000. B pays $1,000, $1,000, nothing. C pays nothing, $2,000, nothing. Which should it take?",
+   steps:[
+    ["Payback, all three","Each recovers exactly $2,000 by the end of year 2 — so all three have a 2-year payback and all three pass."],
+    ["NPV of A","+$7,249 — the enormous year-3 cash flow makes it hugely valuable."],
+    ["NPV of B","−$264."],
+    ["NPV of C","−$347."],
+    ["Read it","Payback rates all three identically. NPV shows only A creates value — and it does so almost entirely through a cash flow payback refused to look at."]]},
+  {k:"check",q:"In the example above, why did payback fail so badly on Project A?",
+   o:["It used the wrong discount rate","It stopped counting at the 2-year cutoff and ignored the $10,000 in year 3","It double-counted the year-1 cash flow","It should have been computed monthly"],c:1,
+   e:"Payback simply stops at the cutoff. Project A's entire value sits in the year-3 cash flow, which arrives after payback has already stopped paying attention — so the measure is blind to the one thing that matters."},
+  {k:"idea",h:"Discounted payback",p:"<b>Discounted payback</b> patches the first flaw: discount each cash flow, then find how long until the <i>discounted</i> total covers the cost. Because discounting shrinks every inflow, it always takes at least as long as ordinary payback."},
+  {k:"eg",problem:"Project A above (cost $2,000; cash flows $1,000, $1,000, $10,000) at 10%. What is its discounted payback?",
+   steps:[
+    ["Discount each","1,000/1.10 = 909; 1,000/1.10² = 826; 10,000/1.10³ = 7,513."],
+    ["Cumulative","−2,000 → −1,091 → −264 → +7,249."],
+    ["Still short after year 2","$264 outstanding entering year 3."],
+    ["Interpolate","2 + 264/7,513 ≈ 2.04 years."],
+    ["Read it","Longer than the undiscounted 2 years, as it must be — and it still tells you nothing about the $7,249 of value created."]]},
+  {k:"think",q:"Discounted payback fixes the time-value problem. Why is it still not a substitute for NPV?",
+   a:"Because it only fixed one of the two flaws. It still stops dead at an arbitrary cutoff and ignores everything beyond, so it will still reject positive-NPV projects whose value arrives late. It's a better screen than plain payback, not a value measure — payback answers \"how soon am I safe?\", NPV answers \"am I better off?\"."},
+  {k:"trap",p:"Despite everything above, many real companies still use payback — usually as a quick liquidity or risk screen alongside NPV, not instead of it. Knowing both its appeal and its failure modes is what the exam is testing."},
+  {k:"recap",pts:[
+   "Payback = years until cumulative cash flow reaches zero; accept if under the cutoff.",
+   "It ignores the time value of money and everything after the cutoff.",
+   "Discounted payback discounts first, so it's always at least as long.",
+   "Discounted payback still ignores cash flows beyond the cutoff.",
+   "Useful as a liquidity screen; never as a substitute for NPV."]}
+ ]},
+
+{id:"ls_cb_irr",mod:"m7",topic:"t_cb_irr",mins:6,title:"The project's own rate of return",
+ blocks:[
+  {k:"idea",h:"Turning the NPV question around",p:"NPV picks a rate and asks what the project is worth. <b>IRR</b> flips it: what rate would make the project worth exactly what it costs — an NPV of zero? That rate is the project's own percentage return. Accept if it exceeds your cost of capital."},
+  {k:"idea",h:"Why you can't just solve for it",p:"With more than one cash flow, the unknown rate appears raised to several different powers in the same equation, so there's no clean rearrangement. IRR is found by trial and error, a financial calculator, a spreadsheet, or the interpolation method."},
+  {k:"idea",h:"The interpolation method",p:"Try two rates — one giving a positive NPV, one negative — and draw a straight line between them: <b>IRR ≈ Ra + [NPVa ÷ (NPVa − NPVb)] × (Rb − Ra)</b>. It's an approximation, because the true NPV profile is a curve rather than a line."},
+  {k:"eg",problem:"A building costs $350,000, pays $16,000 rent a year for three years, and sells for $450,000 at the end of year 3 (so year 3's cash flow is $466,000). Find the IRR.",
+   timeline:[["0","-$350,000"],["1","$16,000"],["2","$16,000"],["3","$466,000"]],
+   steps:[
+    ["What's being asked","The rate that drives NPV to zero."],
+    ["Try 10%","NPV = +$27,881 — positive, so the true rate is higher."],
+    ["Try 15%","NPV = −$17,586 — negative, so the true rate sits between the two."],
+    ["Interpolate","10 + [27,881 ÷ (27,881 + 17,586)] × 5 = 10 + 3.07 = 13.07%."],
+    ["Read it","About 13.07%. The exact answer is 12.96% — interpolation is close but not perfect, because it approximates a curve with a straight line."]]},
+  {k:"check",q:"Your two trial rates both produce a positive NPV. What does that tell you?",
+   o:["The project has no IRR","Both rates are below the IRR, so you need to try a higher one","The IRR is exactly halfway between them","The project should be rejected"],c:1,
+   e:"NPV falls as the rate rises, so if both trials are still positive you haven't yet reached the rate that drives NPV to zero. You need a higher trial rate to bracket the answer — interpolation only works with one positive and one negative."},
+  {k:"idea",h:"Pitfall 1 — ranking mutually exclusive projects",p:"IRR is a percentage, so it ignores scale and timing. Project H may have a higher IRR yet add far less value than Project I. When IRR and NPV disagree on mutually exclusive projects, <b>NPV wins</b>."},
+  {k:"check",q:"H has an IRR of 14.29% and an NPV of $24,000. I has an IRR of 12.96% and an NPV of $59,000. They're mutually exclusive. Choose.",
+   o:["H — the higher IRR","I — the higher NPV","Both","Neither"],c:1,
+   e:"Take I. A higher percentage on a smaller or differently-timed base can still add less total value. Shareholders are made better off by dollars of NPV, not by a superior-looking rate."},
+  {k:"idea",h:"Pitfall 2 — multiple IRRs",p:"A <b>conventional</b> project has one sign change: an outflow, then inflows. If the cash flows change sign more than once — say −350, +75, −100, +120 — the equation can have several roots, giving multiple IRRs, some above and some below the cost of capital. The rule breaks down; NPV doesn't."},
+  {k:"think",q:"When is IRR genuinely the more useful number to quote, despite all these pitfalls?",
+   a:"When you want to communicate. \"This project returns 13%\" is instantly comparable to a borrowing rate or a benchmark, whereas \"the NPV is $27,881\" means little without knowing the scale. IRR is excellent for describing a single conventional project, and unreliable for <i>ranking</i> competing ones. Use it to communicate, use NPV to decide."},
+  {k:"trap",p:"Be wary of IRR whenever: early cash flows are positive, the sign changes more than once, or projects are mutually exclusive. Those three conditions cover nearly every exam question where IRR gives the wrong answer."},
+  {k:"recap",pts:[
+   "IRR is the discount rate at which NPV = 0; accept if IRR > cost of capital.",
+   "Interpolate: IRR ≈ Ra + [NPVa ÷ (NPVa − NPVb)] × (Rb − Ra), bracketing with one positive and one negative NPV.",
+   "For mutually exclusive projects, trust NPV over IRR.",
+   "More than one sign change can produce multiple IRRs.",
+   "Interpolation approximates a curve with a line, so it's close but not exact."]}
+ ]},
+
+{id:"ls_cb_mex",mod:"m7",topic:"t_cb_mex",mins:6,title:"Different lifespans, and when to act",
+ blocks:[
+  {k:"idea",h:"An unfair comparison",p:"Machine D lasts 3 years and costs about $25,700 in present-value terms. Machine E lasts 2 years and costs $21,000. E looks cheaper — but it isn't a fair fight, because E has to be replaced a year sooner. Comparing total costs across different lifespans is comparing apples to oranges."},
+  {k:"idea",h:"Equivalent annual cost",p:"The fix is to convert each option into a cost <i>per year</i>: <b>EAC = PV of costs ÷ annuity factor for that asset's own life</b>. Now both are stated in the same units and can be compared honestly. Pick the lower EAC."},
+  {k:"eg",problem:"Machine D costs $15,000, lasts 3 years, and costs $4,000 a year to run. Machine E costs $10,000, lasts 2 years, and costs $6,000 a year. The discount rate is 6%. Which should the firm buy?",
+   steps:[
+    ["PV of D's costs","15,000 + 4,000 × PVIFA(6%,3) = 15,000 + 4,000 × 2.6730 = $25,692."],
+    ["PV of E's costs","10,000 + 6,000 × PVIFA(6%,2) = 10,000 + 6,000 × 1.8334 = $21,000."],
+    ["EAC of D","25,692 ÷ 2.6730 = $9,612 per year."],
+    ["EAC of E","21,000 ÷ 1.8334 = $11,454 per year."],
+    ["Read it","D wins. On raw PV of costs E looked about $4,690 cheaper; per year of service it's actually roughly $1,840 more expensive."]]},
+  {k:"check",q:"Why is dividing by the annuity factor the right way to annualise, rather than simply dividing by the number of years?",
+   o:["It gives a smaller number","Dividing by the years ignores the time value of money; the annuity factor spreads the cost as an equivalent stream of discounted payments","There is no difference","Because costs are always front-loaded"],c:1,
+   e:"You want the level annual payment whose present value equals the PV of the costs — that's exactly what dividing by the annuity factor produces. Dividing by the number of years would treat a payment three years out as equal to one today."},
+  {k:"idea",h:"The replacement decision",p:"Same logic, applied to keeping an old asset. Compare the <i>new</i> machine's EAC with what it costs to simply keep running the old one for another year. Replace only if the new EAC is lower."},
+  {k:"eg",problem:"An old machine costs $12,000 a year to run and will last two more years. A new one costs $25,000, runs at $8,000 a year, lasts 5 years, at a 6% cost of capital. Replace now or wait?",
+   steps:[
+    ["PV of the new machine's costs","25,000 + 8,000 × PVIFA(6%,5) = 25,000 + 8,000 × 4.2124 = $58,699."],
+    ["EAC of the new machine","58,699 ÷ 4.2124 = $13,935 per year."],
+    ["Compare","New machine $13,935/year against old machine $12,000/year."],
+    ["Read it","Wait. Replacing now means paying $1,935 a year more to run a machine you don't yet need. Efficiency isn't the test — annual cost is."]]},
+  {k:"idea",h:"The timing decision",p:"Sometimes you can simply postpone. Compute the NPV of starting at each candidate date, discount each back to <b>today</b>, and choose the date with the highest present-day NPV. Waiting can beat acting when costs are falling."},
+  {k:"think",q:"Why must you discount each option's NPV back to today rather than comparing the NPVs as measured at each start date?",
+   a:"Because those NPVs sit on different dates, and amounts on different dates can't be compared. An NPV of $23,000 measured at year 1 isn't worth $23,000 today — at 10% it's about $20,909. Bring every option back to a common date and only then compare, which is the same discipline that runs through the whole course."},
+  {k:"trap",p:"EAC compares <i>costs</i>, so lower wins — the opposite of the NPV habit where higher wins. When the options produce benefits rather than costs, use equivalent annual benefit and pick the higher one."},
+  {k:"recap",pts:[
+   "Unequal lives can't be compared on raw PV of costs.",
+   "EAC = PV of costs ÷ annuity factor for that asset's own life; lowest EAC wins.",
+   "Replace an old asset only if the new one's EAC is below the old one's annual running cost.",
+   "Investment timing: discount each start date's NPV back to today and take the highest.",
+   "Lower is better for costs; higher is better for benefits."]}
+ ]},
+
+{id:"ls_cb_pi",mod:"m7",topic:"t_cb_pi",mins:5,title:"When there isn't enough money to go round",
+ blocks:[
+  {k:"idea",h:"A different constraint",p:"So far the rule has been: take every positive-NPV project. That assumes you can fund them all. <b>Capital rationing</b> is the situation where you can't — and it changes the question from \"is this worth doing?\" to \"which combination gets the most value out of a fixed budget?\""},
+  {k:"idea",h:"Soft and hard",p:"<b>Soft rationing</b> is imposed internally — senior management caps the budget as a discipline. <b>Hard rationing</b> is imposed by the market: capital simply isn't available at any sensible price, as during the 2008 credit crunch."},
+  {k:"idea",h:"The profitability index",p:"Under a budget cap you want the most value per dollar spent. <b>PI = PV of future cash flows ÷ initial investment</b>, or equivalently NPV ÷ investment, which comes out exactly 1.0 lower. Rank by PI and fund from the top until the money runs out."},
+  {k:"eg",problem:"A firm has $20m to invest at a 10% cost of capital. Five projects: L costs $3m (NPV $1m), M costs $5m (NPV $1m), N costs $7m (NPV $3m), O costs $6m (NPV $2m), P costs $4m (NPV $1m). Which should it fund?",
+   steps:[
+    ["PI for each (NPV basis)","L: 1/3 = 0.33. M: 1/5 = 0.20. N: 3/7 = 0.43. O: 2/6 = 0.33. P: 1/4 = 0.25."],
+    ["Rank","N (0.43), then L and O (0.33 each), then P (0.25), then M (0.20) last."],
+    ["Fund from the top","N $7m + L $3m + O $6m + P $4m = $20m exactly."],
+    ["What's dropped","M — the lowest PI, despite having a positive NPV of $1m."],
+    ["Read it","All five are worth doing in the abstract. The budget forces a choice, and PI identifies which combination extracts the most value from the $20m."]]},
+  {k:"check",q:"Project M has a positive NPV of $1m and is still rejected. Why isn't that a mistake?",
+   o:["Its NPV must have been calculated incorrectly","Under a budget cap, funding M would mean dropping a project that creates more value per dollar","Positive-NPV projects are always rejected under rationing","Its IRR must be below the cost of capital"],c:1,
+   e:"Nothing is wrong with M — in an unconstrained world you'd take it. But every dollar spent on M is a dollar unavailable for a project generating more value per dollar. Rationing forces you to rank, and something worthwhile has to be dropped."},
+  {k:"idea",h:"Where PI misleads",p:"PI is a ratio, so it's blind to scale — exactly like IRR. A small project can post a high PI while adding little value in dollars. That makes PI a <b>rationing tool, not a general ranking tool</b>."},
+  {k:"check",q:"Project Small costs $50,000 with an NPV of $20,000 (PI 0.40). Project Large costs $5m with an NPV of $500,000 (PI 0.10). With no budget limit and only one choice, take:",
+   o:["Small — the far higher PI","Large — it adds $500,000 of value versus $20,000","Neither, since both PIs are below 1","Small, because it needs less capital"],c:1,
+   e:"Large. It creates twenty-five times more value in dollars. Choosing Small on its PI would be picking a flattering ratio over actual shareholder wealth — a higher NPV is always preferable to a higher PI when funds aren't constrained."},
+  {k:"think",q:"Pull the whole lecture together: when is NPV <i>not</i> the criterion you should be optimising?",
+   a:"Essentially only under capital rationing — and even then you're not abandoning NPV, you're maximising total NPV across a portfolio subject to a budget, which is what PI ranking achieves. Every other technique in the lecture is either a rough screen (payback), a communication device (IRR), or a fair-comparison adjustment (EAC). NPV remains the underlying objective throughout."},
+  {k:"trap",p:"Note which PI a question wants. On the PV-of-cash-flows basis, break-even is 1.0; on the NPV basis it's 0.0. They differ by exactly 1.0 and give identical rankings — but quoting the wrong one loses the mark."},
+  {k:"recap",pts:[
+   "Capital rationing: soft is set internally, hard is imposed by the market.",
+   "PI = PV of future cash flows ÷ initial investment (NPV basis is exactly 1.0 lower).",
+   "Under a budget cap, rank by PI and fund from the top down.",
+   "PI is unreliable for mutually exclusive projects because it ignores scale.",
+   "Absent a budget constraint, a higher NPV always beats a higher PI."]}
  ]}
 ];
-const LESSON_META={
-  "teach-pv":["m3","t_sing",4],
-  "teach-ann":["m3","t_ann",5],
-  "teach-bond":["m4","t_bprice",5],
-  "teach-roe":["m2","t_ret",4],
-  "teach-npv":["m7","t_cb_npv",5],
-  "teach-irr":["m7","t_cb_irr",6],
-  "teach-pi":["m7","t_cb_pi",5]
-};
-const LESSONS=TEACH.map(item=>{
-  const [mod,topic,mins]=LESSON_META[item.id]||["mt","",4];
-  const conceptBlocks=(item.concept||[]).map(x=>typeof x==="string"
-    ?{k:"idea",p:x}
-    :{k:"think",q:x.q,a:x.a});
-  const answer=item.steps[item.steps.length-1]||["Answer",""];
-  return {
-    id:item.id, mod, topic, mins,
-    title:item.title,
-    blocks:[
-      ...conceptBlocks,
-      {k:"eg",problem:item.problem,timeline:item.timeline,steps:item.steps},
-      {k:"recap",pts:[answer[1],"Now drill the topic once while the setup is fresh."]}
-    ]
-  };
-});
 /* ---- lesson engine ----
    A lesson is an ordered list of typed blocks, revealed one at a time.
    Block kinds: idea (explanation) · check (MCQ, gates progress) ·

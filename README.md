@@ -29,14 +29,42 @@ one).
 
 | Tool | What it is |
 |---|---|
-| Teach mode | Guided step-by-step computation walkthroughs, each opening with a short conceptual explanation and a couple of quick self-check prompts before the calculation |
+| Teach mode | 29 lessons — one per topic, covering all seven lectures — that explain each idea from scratch |
 | Formula map | A framework for selecting the right formula |
 | Case room | The MBA Decision + three lecture breakouts |
 | Calculator | 41 formulas with step-by-step workings |
 
 **570 drill questions in total**, across 29 topics.
 
-Inside a lecture module there are up to three tabs:
+## Teach mode
+
+Teach mode is where the material gets *explained* rather than tested. There is
+one lesson per topic — **29 lessons covering all seven lectures**, roughly four
+to six minutes each.
+
+A lesson is a sequence of blocks revealed one at a time, so you read a little,
+then do something:
+
+- **Idea** — a short chunk of plain-language explanation.
+- **Quick check** — a multiple-choice question with instant feedback and a short
+  why. You cannot continue until you answer it, so the retrieval practice can't
+  be skipped past.
+- **Think first** — an open question you consider before tapping to reveal the
+  answer, for the "why" questions where naming your own reasoning is the point.
+- **Worked example** — a full computation with a cash-flow timeline where the
+  topic calls for one. Conceptual topics simply don't have these.
+- **Watch out** — the mistake the exam actually punishes.
+- **Worth remembering** — the closing recap.
+
+Finishing a lesson marks it complete, and the lesson list shows per-lecture
+progress. Every lesson ends with a **Drill this topic** button that drops you
+straight into that topic's questions while it is fresh.
+
+Teach mode is available both as a standalone study tool (all seven lectures,
+grouped) and as a **Teach** tab inside each lecture module, where it shows only
+that lecture's lessons.
+
+Inside a lecture module there are up to four tabs:
 
 - **Learn** — a short coaching note, the topic's learning objectives ("by the
   end you can…"), and four key points, then a button to drill that topic on its
@@ -44,13 +72,10 @@ Inside a lecture module there are up to three tabs:
 - **Drill** — pick 5 (quick), 10 (standard), or 20 (exam prep) questions, one
   per screen, with an explanation after every answer. Students can flag a
   question locally if the wording, answer, or explanation looks faulty.
+- **Teach** — that lecture's lessons (see above).
 - **Formulas** — the calculator, filtered to the formulas that lecture uses.
 - **Formula map** — a decision framework for choosing the right formula before
   opening the calculator.
-- **Teach mode** — opens with a short, conversational "first, the idea" section
-  (with a couple of tap-to-reveal self-check questions) explaining the concept
-  itself, then step-by-step computation practice with timelines, variable
-  extraction, formula selection, computation, and answer interpretation.
 
 Because formula sheets are usually provided, drill questions should emphasise
 setup, computation, and interpretation rather than asking students to identify
@@ -90,12 +115,13 @@ position to memorise.
 
 Progress lives in this browser under a session ID, shown in the ☰ menu. It
 survives closing the tab and reloading. **Begin a fresh session** clears every
-mastery record and restarts the rotation. Classmates using the app on their own
-devices keep separate progress.
+mastery record and completed lesson, and restarts the rotation. Classmates using
+the app on their own devices keep separate progress.
 
 Because that progress lives only in one browser, the ☰ menu also has **Save a
 backup file** and **Restore from a file**. Export a small JSON file to keep your
-mastery and flags safe, and restore it after clearing site data or on another
+mastery, completed lessons and flags safe, and restore it after clearing site
+data or on another
 device. A day counter (streak) on the home screen tracks consecutive days of
 practice.
 
