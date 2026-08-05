@@ -24,17 +24,20 @@ one).
 | Stocks | Lecture 5 — stock valuation & market efficiency | 88 |
 | Cost of Capital | Lecture 6 — cost of capital estimation | 61 |
 | Capital Budgeting | Lecture 7 — capital budgeting analysis | 75 |
+| Project Cash Flows | Lecture 8 — cash-flow estimation | 12 |
+| Risk & Return | Lecture 9 — introduction to risk and return | 11 |
+| Mergers & Acquisitions | Lecture 10 — M&A as a capital-investment decision | 11 |
 
 ### Study tools
 
 | Tool | What it is |
 |---|---|
-| Teach mode | 29 lessons — one per topic, covering all seven lectures — that explain each idea from scratch |
+| Teach mode | 41 lessons — one per topic, covering Lectures 1-10 — that explain each idea from scratch |
 | Formula map | A framework for selecting the right formula |
-| Case room | 8 cases — the MBA Decision minicase plus one for every lecture |
-| Calculator | 56 formulas with step-by-step workings |
+| Case room | 8 current cases — the MBA Decision minicase plus lecture breakouts for earlier modules |
+| Calculator | 67 formulas with step-by-step workings |
 
-**570 drill questions in total**, across 29 topics.
+**604 drill questions in total**, across 41 topics.
 
 ## First run
 
@@ -52,8 +55,8 @@ read from the data at render time, so they stay correct as content is added.
 ## Teach mode
 
 Teach mode is where the material gets *explained* rather than tested. There is
-one lesson per topic — **29 lessons covering all seven lectures**, roughly four
-to six minutes each.
+one lesson per topic — **41 lessons covering Lectures 1-10**, roughly four to
+six minutes each.
 
 A lesson is a sequence of blocks revealed one at a time, so you read a little,
 then do something:
@@ -73,7 +76,7 @@ Finishing a lesson marks it complete, and the lesson list shows per-lecture
 progress. Every lesson ends with a **Drill this topic** button that drops you
 straight into that topic's questions while it is fresh.
 
-Teach mode is also a standalone study tool that lists all 29 lessons grouped by
+Teach mode is also a standalone study tool that lists all 41 lessons grouped by
 lecture, for when you want to browse them independently of a concept.
 
 ## Inside a lecture: the concept page
