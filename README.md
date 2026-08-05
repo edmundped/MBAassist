@@ -24,9 +24,9 @@ one).
 | Stocks | Lecture 5 — stock valuation & market efficiency | 88 |
 | Cost of Capital | Lecture 6 — cost of capital estimation | 61 |
 | Capital Budgeting | Lecture 7 — capital budgeting analysis | 75 |
-| Project Cash Flows | Lecture 8 — cash-flow estimation | 12 |
-| Risk & Return | Lecture 9 — introduction to risk and return | 11 |
-| Mergers & Acquisitions | Lecture 10 — M&A as a capital-investment decision | 11 |
+| Project Cash Flows | Lecture 8 — cash-flow estimation | 60 |
+| Risk & Return | Lecture 9 — introduction to risk and return | 60 |
+| Mergers & Acquisitions | Lecture 10 — M&A as a capital-investment decision | 60 |
 
 ### Study tools
 
@@ -34,10 +34,10 @@ one).
 |---|---|
 | Teach mode | 41 lessons — one per topic, covering Lectures 1-10 — that explain each idea from scratch |
 | Formula map | A framework for selecting the right formula |
-| Case room | 8 current cases — the MBA Decision minicase plus lecture breakouts for earlier modules |
+| Case room | 11 current cases — the MBA Decision minicase plus lecture breakouts through Lecture 10 |
 | Calculator | 67 formulas with step-by-step workings |
 
-**604 drill questions in total**, across 41 topics.
+**750 drill questions in total**, across 41 topics.
 
 ## First run
 

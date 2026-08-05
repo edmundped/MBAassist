@@ -2777,8 +2777,97 @@ const CASES=[
   "Above the crossover rate the Depot's later cash flows are punished enough that the Kiosk wins on both measures and the conflict disappears. IRR only ranks reliably when projects are similar in size and timing, and when the cost of capital sits away from the crossover.",
   "That is a different question. Under a binding budget you are no longer choosing the single best project but the best combination per dollar — rank by profitability index and fund from the top down. Note the switch only becomes correct once funds are genuinely constrained; absent that, a higher NPV always wins."
  ]
-}
-];
+	},
+	{
+	 id:"c_homenet_cf",
+	 t:"HomeNet cash-flow build",
+	 tag:"Lecture 8 · cash-flow estimation",
+	 blurb:"Build project cash flows from the raw facts: sunk cost, opportunity cost, cannibalisation, working capital, OCF and terminal recovery.",
+	 facts:[
+	  ["Feasibility study","$300,000 already spent to assess the project."],
+	  ["Launch investment","New equipment costs $7,500,000 and is depreciated straight-line over five years."],
+	  ["Operations","Expected annual sales: 100,000 units at $260. Unit cost is $110. Annual overhead is $2,800,000. Tax rate is 40%."],
+	  ["Opportunity cost","The lab space could otherwise be rented for $200,000 per year."],
+	  ["Cannibalisation","25% of unit sales would have come from an existing router with price $100 and unit cost $60."],
+	  ["Working capital","Receivables equal 15% of sales and payables equal 15% of COGS."]
+	 ],
+	 qs:[
+	  "Which facts are sunk, which are opportunity costs, and which are side effects?",
+	  "Estimate annual depreciation and base EBIT before opportunity cost and cannibalisation.",
+	  "Compute the after-tax effect of lost rent.",
+	  "Compute the contribution lost to cannibalisation.",
+	  "Estimate the working-capital requirement from receivables and payables.",
+	  "Build the project FCF for one representative operating year and explain what would be recovered at the end."
+	 ],
+	 how:[
+	  "The feasibility study is sunk and excluded. The lab rent is an opportunity cost. Lost router contribution is cannibalisation.",
+	  "Depreciation is 7.5m/5 = 1.5m per year. Start EBIT from sales minus unit costs, overhead and depreciation.",
+	  "Lost rent reduces cash flow by 200,000 × (1 − 0.40) = 120,000 per year.",
+	  "Cannibalised units are 25,000. Lost contribution per unit is 100 − 60 = 40, so pretax lost contribution is 1,000,000; after-tax effect is 600,000.",
+	  "Receivables are 15% of sales. Payables are 15% of COGS. The net increase is an investment in working capital and reduces FCF.",
+	  "Use FCF = EBIT(1 − T) + depreciation − capex − ΔNWC. At the end, recover remaining NWC and add any after-tax salvage value if given."
+	 ]
+	},
+	{
+	 id:"c_auto_gold",
+	 t:"Auto and Gold portfolio",
+	 tag:"Lecture 9 · risk and return",
+	 blurb:"Use the lecture's Auto/Gold setup to compute expected return, standard deviation, covariance, correlation and portfolio risk.",
+	 facts:[
+	  ["Scenarios","Recession, normal and boom are equally likely."],
+	  ["Auto stock","Returns: −8%, 5%, 18%."],
+	  ["Gold stock","Returns: 20%, 3%, −20%."],
+	  ["Portfolio","75% Auto, 25% Gold."],
+	  ["Known checks","Expected returns should be near 5% for Auto and 1% for Gold."]
+	 ],
+	 qs:[
+	  "Compute expected return for Auto and Gold.",
+	  "Compute each stock's standard deviation.",
+	  "Compute the portfolio return in each scenario.",
+	  "Compute expected return and standard deviation for the portfolio.",
+	  "Compute covariance and correlation between Auto and Gold.",
+	  "Explain why the portfolio is less risky than either individual stock."
+	 ],
+	 how:[
+	  "Expected return is the simple average because the three probabilities are equal.",
+	  "Variance is the average squared deviation from expected return; standard deviation is its square root.",
+	  "Portfolio return by scenario is 0.75×Auto + 0.25×Gold.",
+	  "The portfolio returns should be approximately −1%, 4.5% and 8.5%, giving expected return around 4% and standard deviation around 3.9%.",
+	  "Covariance is the probability-weighted product of deviations. Correlation = covariance/(σAuto×σGold), near −0.997 here.",
+	  "The assets move almost opposite each other, so bad Auto states are cushioned by strong Gold states."
+	 ]
+	},
+	{
+	 id:"c_merger_bid",
+	 t:"Bidder value and takeover defenses",
+	 tag:"Lecture 10 · M&A valuation",
+	 blurb:"Evaluate a cash deal, a stock deal and a poison pill using the same capital-budgeting logic as the lecture.",
+	 facts:[
+	  ["Bidder B","Pre-bid market value $500,000; 5,000 shares outstanding."],
+	  ["Target T","Pre-bid market value $75,000; 10,000 shares outstanding."],
+	  ["Synergies","Present value of merger benefits is $50,000."],
+	  ["Cash offer","Bidder can pay $100,000 cash."],
+	  ["Stock offer","Bidder can instead issue 1,000 new shares."],
+	  ["Defense scenario","Target has 1,000,000 shares. A 20% raider triggers a pill allowing non-raider shareholders to buy 4 new shares each."]
+	 ],
+	 qs:[
+	  "Compute combined firm value before considering payment method.",
+	  "Compute bidder NPV under the cash offer.",
+	  "Compute post-merger share price under the stock offer.",
+	  "Explain why bidder shareholders prefer cash in this example.",
+	  "Compute post-trigger shares and raider voting power in the poison-pill scenario.",
+	  "Explain the agency trade-off in takeover defenses."
+	 ],
+	 how:[
+	  "Combined value = bidder value + target value + synergy = 500,000 + 75,000 + 50,000.",
+	  "Cash-offer bidder NPV = target value + synergy − cash paid.",
+	  "Stock deal shares after merger = 5,000 + 1,000. Divide combined value by post-merger shares.",
+	  "Target shareholders share in gains under stock because they receive part of the combined firm; cash fixes what they receive.",
+	  "Non-raider shares are 800,000. New shares are 800,000×4. Total becomes 4,200,000 and raider voting power falls to 200,000/4,200,000.",
+	  "Defenses may force a better price, but they can also entrench managers. Judge them by shareholder value."
+	 ]
+	}
+	];
 
 	/* ===== Modules 8-10 (Lectures 8-10 — Cash flows, Risk/Return, M&A) ===== */
 	QB.push(
@@ -2815,10 +2904,163 @@ const CASES=[
 	{i:"ma08",t:"t_ma_eval",q:"A bidder with 5,000 old shares issues 1,000 new shares. Combined value is $625,000. Post-merger price is:",a:["$100.00","$104.17","$105.00","$625.00"],c:1,e:"Post-merger price = 625,000 / 6,000 = $104.17."},
 	{i:"ma09",t:"t_ma_def",q:"A poison pill mainly works by:",a:["Raising the target's coupon rate","Giving non-raider shareholders rights to buy cheap shares, diluting the raider","Removing all debt","Paying a special tax"],c:1,e:"The rights issue makes control more expensive and reduces the hostile bidder's voting/economic position."},
 	{i:"ma10",t:"t_ma_def",q:"Tau has 1,000,000 shares. A raider owns 20%. Non-raider shareholders may buy 4 new shares each. Post-trigger total shares are:",a:["1,800,000","3,200,000","4,200,000","5,000,000"],c:2,e:"Non-raider shares = 800,000. New shares = 800,000×4 = 3,200,000. Total = 4,200,000."},
-	{i:"ma11",t:"t_ma_def",q:"Using the Tau poison pill, the raider owns 200,000 shares after total shares rise to 4,200,000. Raider voting power becomes:",a:["4.76%","15.24%","20.00%","80.00%"],c:0,e:"Voting power = 200,000 / 4,200,000 = 4.76%."}
-	);
+		{i:"ma11",t:"t_ma_def",q:"Using the Tau poison pill, the raider owns 200,000 shares after total shares rise to 4,200,000. Raider voting power becomes:",a:["4.76%","15.24%","20.00%","80.00%"],c:0,e:"Voting power = 200,000 / 4,200,000 = 4.76%."}
+		);
 
-	/* ===== app ===== */
+	/* ===== Deepening block for Lectures 8-10 ===== */
+	[
+	{i:"cf13",t:"t_cf_rel",q:"A project will use a consultant report that must be paid for whether the project is accepted or rejected. The fee is:",a:["Incremental","A sunk/committed cost","An opportunity cost","A terminal cash flow"],c:1,e:"If it will be paid regardless of the decision, accepting the project does not change it."},
+	{i:"cf14",t:"t_cf_rel",q:"A project will increase sales of a related product by $40,000 after tax each year. This is:",a:["A positive externality to include","A sunk cost to ignore","A financing flow","A depreciation tax shield"],c:0,e:"Enhanced sales caused by the project are incremental benefits."},
+	{i:"cf15",t:"t_cf_rel",q:"A project will reduce existing product sales by $120,000 with a 35% contribution margin. The annual erosion cost is:",a:["$42,000","$78,000","$120,000","$155,000"],c:0,e:"Lost contribution = 120,000 × 35% = $42,000 before tax."},
+	{i:"cf16",t:"t_cf_rel",q:"Why does the stand-alone principle help in project analysis?",a:["It lets analysts ignore all cash flows","It lets a project be evaluated by focusing only on its incremental cash flows","It requires every project to be financed with equity","It removes taxes"],c:1,e:"The firm is treated as if the project stands alone, so only changes caused by the project are counted."},
+	{i:"cf17",t:"t_cf_rel",q:"If a project uses an idle machine that could be sold today for $55,000, the $55,000 is:",a:["Ignored because the machine is idle","An opportunity cost","A sunk cost","A financing cost"],c:1,e:"Using the machine gives up the sale proceeds."},
+	{i:"cf18",t:"t_cf_rel",q:"Allocated head-office overhead should be included in project cash flows only if it:",a:["Is allocated by accountants","Is incremental because of the project","Is a fixed cost from last year","Is larger than depreciation"],c:1,e:"Allocated overhead is often not incremental; include only the extra cost caused by the project."},
+	{i:"cf19",t:"t_cf_initial",q:"A project needs equipment $220,000, installation $18,000 and initial NWC $32,000. The time-0 cash flow is:",a:["−$238,000","−$252,000","−$270,000","+$270,000"],c:2,e:"CF0 = −(220,000 + 18,000 + 32,000) = −$270,000."},
+	{i:"cf20",t:"t_cf_initial",q:"Cash rises by $10,000, inventory by $65,000, receivables by $25,000 and payables by $40,000. ΔNWC is:",a:["$60,000","$100,000","$140,000","$40,000"],c:0,e:"ΔNWC = 10,000 + 65,000 + 25,000 − 40,000 = $60,000."},
+	{i:"cf21",t:"t_cf_initial",q:"If NWC rises at project start and is fully recovered at the end, the recovery is:",a:["A terminal cash inflow","A depreciation expense","A sunk cost","A financing cost"],c:0,e:"Working capital released at project shutdown comes back as cash."},
+	{i:"cf22",t:"t_cf_initial",q:"A building bought for $300,000 has book value $180,000 and market value $260,000. If used in a project, the relevant initial cost is closest to:",a:["$180,000","$260,000","$300,000","$0"],c:1,e:"The opportunity cost is the current market value given up, not historical or book value."},
+	{i:"cf23",t:"t_cf_initial",q:"Which item is least likely to be part of the initial investment for an expansion project?",a:["Shipping and installation","Additional NWC","Opportunity cost of land used","Annual interest on project debt"],c:3,e:"Financing costs are excluded from project FCF and reflected in the discount rate."},
+	{i:"cf24",t:"t_cf_initial",q:"A project requires $500,000 of equipment plus $35,000 setup. It uses space that could be rented for $20,000 after tax per year. Which part is in CF0?",a:["Only $20,000","$535,000 upfront; rent is annual opportunity cost","$555,000 all upfront","Nothing"],c:1,e:"Equipment and setup are time-0 costs; forgone rent is an annual opportunity cost."},
+	{i:"cf25",t:"t_cf_ocf",q:"Sales are $300,000, cash costs $180,000, depreciation $40,000 and tax is 25%. OCF is:",a:["$60,000","$100,000","$120,000","$80,000"],c:1,e:"EBIT = 80,000; OCF = 80,000(0.75) + 40,000 = $100,000."},
+	{i:"cf26",t:"t_cf_ocf",q:"EBIT is $90,000, depreciation $25,000 and tax rate 30%. OCF is:",a:["$63,000","$88,000","$115,000","$52,000"],c:1,e:"OCF = 90,000(1 − .30) + 25,000 = 63,000 + 25,000 = $88,000."},
+	{i:"cf27",t:"t_cf_ocf",q:"Net income is $48,000 and depreciation is $17,000, with no interest expense. OCF by the bottom-up method is:",a:["$31,000","$48,000","$65,000","$17,000"],c:2,e:"OCF = NI + depreciation = $65,000."},
+	{i:"cf28",t:"t_cf_ocf",q:"Sale price is $120,000, book value $80,000 and tax rate 30%. After-tax salvage is:",a:["$108,000","$120,000","$132,000","$40,000"],c:0,e:"Gain = 40,000; tax = 12,000; after-tax salvage = 120,000 − 12,000 = $108,000."},
+	{i:"cf29",t:"t_cf_ocf",q:"Sale price is $50,000, book value $70,000 and tax rate 25%. After-tax salvage is:",a:["$45,000","$50,000","$55,000","$70,000"],c:2,e:"Loss = −20,000 creates tax relief of 5,000, so after-tax salvage = $55,000."},
+	{i:"cf30",t:"t_cf_ocf",q:"OCF is $80,000, capex is $15,000, ΔNWC is $9,000 and after-tax salvage is $4,000. FCF is:",a:["$60,000","$68,000","$90,000","$100,000"],c:0,e:"FCF = 80,000 − 15,000 − 9,000 + 4,000 = $60,000."},
+	{i:"cf31",t:"t_cf_risk",q:"If a forecast uses nominal sales and nominal costs, the discount rate should be:",a:["Real","Nominal","Zero","The inflation rate only"],c:1,e:"Nominal cash flows must be discounted at nominal rates."},
+	{i:"cf32",t:"t_cf_risk",q:"A downside scenario lowers unit sales and selling price while raising unit cost. This is best described as:",a:["Sensitivity analysis","Scenario analysis","Payback","A sunk-cost test"],c:1,e:"Several linked assumptions change at once."},
+	{i:"cf33",t:"t_cf_risk",q:"A $250,000 rise in annual cash cost at a 30% tax rate reduces annual FCF by:",a:["$75,000","$175,000","$250,000","$325,000"],c:1,e:"After-tax effect = 250,000 × (1 − .30) = $175,000."},
+	{i:"cf34",t:"t_cf_risk",q:"Which assumption is sensitivity analysis best suited to test?",a:["Only the project name","Whether NPV is most sensitive to sales volume, price, cost or salvage","Whether taxes exist","Whether sunk costs should be included"],c:1,e:"Sensitivity analysis identifies which input drives value the most."},
+	{i:"cf35",t:"t_cf_risk",q:"If a project has base NPV $5.0m and a marketing-cost sensitivity effect of −$1.8m, revised NPV is:",a:["$1.8m","$3.2m","$5.0m","$6.8m"],c:1,e:"Revised NPV = 5.0 − 1.8 = $3.2m."},
+	{i:"cf36",t:"t_cf_risk",q:"The biggest practical benefit of scenario analysis is that it:",a:["Guarantees the correct forecast","Shows project value under coherent combinations of assumptions","Eliminates discounting","Turns sunk costs into relevant costs"],c:1,e:"Scenario analysis helps the analyst see best/base/worst cases, not just one-variable shocks."},
+	{i:"rr12",t:"t_rr_returns",q:"A stock rises from $50 to $57 and pays a $1 dividend. Total return is:",a:["14%","16%","2%","12%"],c:1,e:"Return = (57 − 50 + 1)/50 = 16%."},
+	{i:"rr13",t:"t_rr_returns",q:"A stock begins at $80, ends at $76 and pays a $4 dividend. Total return is:",a:["0%","5%","−5%","10%"],c:0,e:"Capital loss is −$4 and dividend is +$4, so total return is zero."},
+	{i:"rr14",t:"t_rr_returns",q:"Returns of 10% and 30% with probabilities 0.4 and 0.6 have expected return:",a:["18%","20%","22%","24%"],c:2,e:"E(R) = .4×10% + .6×30% = 22%."},
+	{i:"rr15",t:"t_rr_returns",q:"A project has possible returns −20%, 15%, 40% with probabilities .2, .5, .3. Expected return is:",a:["15.5%","20.5%","35.0%","11.0%"],c:0,e:"E(R)=.2(−20)+.5(15)+.3(40)=−4+7.5+12=15.5%."},
+	{i:"rr16",t:"t_rr_returns",q:"Variance uses squared deviations mainly because:",a:["Negative deviations should cancel positives","It gives weight to distance from the mean without cancellation","It removes risk","It converts returns to cash"],c:1,e:"Squaring prevents positive and negative deviations from cancelling."},
+	{i:"rr17",t:"t_rr_returns",q:"Which investment class had the highest average return and highest standard deviation in the lecture summary?",a:["T-bills","Long-term government bonds","Common stocks","Cash"],c:2,e:"Common stocks had the highest return and highest volatility."},
+	{i:"rr18",t:"t_rr_port",q:"A portfolio is 60% in A with expected return 12% and 40% in B with expected return 6%. Expected return is:",a:["7.2%","9.6%","10.0%","18.0%"],c:1,e:"E(Rp)=.6×12%+.4×6%=9.6%."},
+	{i:"rr19",t:"t_rr_port",q:"A portfolio is 30% in a 20% return asset and 70% in an 8% return asset. Expected return is:",a:["11.6%","14.0%","20.0%","8.0%"],c:0,e:"0.3×20% + 0.7×8% = 6% + 5.6% = 11.6%."},
+	{i:"rr20",t:"t_rr_port",q:"If two stocks have correlation less than +1, portfolio risk will be:",a:["Exactly the weighted average of their standard deviations","Below the weighted average of their standard deviations","Always zero","Always above both stocks' risk"],c:1,e:"Any correlation below +1 creates some diversification benefit."},
+	{i:"rr21",t:"t_rr_port",q:"If two assets are perfectly positively correlated, diversification:",a:["Provides no risk reduction beyond weighted averaging","Eliminates all risk","Creates negative risk","Raises expected return automatically"],c:0,e:"With ρ=+1 the assets move in lockstep."},
+	{i:"rr22",t:"t_rr_port",q:"Asset A has σ=20%, Asset B has σ=10%, weights 50/50 and ρ=0. Portfolio σ is closest to:",a:["11.18%","15.00%","30.00%","5.00%"],c:0,e:"σp=√(.5².2² + .5².1²)=√.0125=11.18%."},
+	{i:"rr23",t:"t_rr_port",q:"A 50/50 portfolio of two assets with σA=20%, σB=10% and ρ=+1 has σ:",a:["0%","11.18%","15%","30%"],c:2,e:"With perfect positive correlation, σp = .5×20% + .5×10% = 15%."},
+	{i:"rr24",t:"t_rr_cov",q:"Covariance is negative when:",a:["Two assets tend to move in opposite directions","Two assets always have positive returns","Risk is zero","Returns are identical"],c:0,e:"Negative covariance means one tends to be above its mean when the other is below its mean."},
+	{i:"rr25",t:"t_rr_cov",q:"Correlation standardises covariance by dividing by:",a:["The risk-free rate","The product of the two standard deviations","The sum of the two expected returns","The market return"],c:1,e:"ρAB = CovAB / (σAσB)."},
+	{i:"rr26",t:"t_rr_cov",q:"Which is unique risk?",a:["Global interest-rate shock","Financial crisis","A lawsuit against one firm","Unexpected inflation across the economy"],c:2,e:"A firm-specific lawsuit is diversifiable unique risk."},
+	{i:"rr27",t:"t_rr_cov",q:"Which is market risk?",a:["A strike at one factory","A CEO resignation","An economy-wide interest rate jump","A warehouse fire"],c:2,e:"Economy-wide interest-rate shocks affect broad portfolios."},
+	{i:"rr28",t:"t_rr_cov",q:"For a well-diversified investor, the risk that should be priced is:",a:["Unique risk","Systematic risk","Accounting risk only","Inventory risk"],c:1,e:"Investors can diversify unique risk, so only systematic risk earns a premium."},
+	{i:"rr29",t:"t_rr_capm",q:"Rf is 4%, beta 0.8 and market risk premium 6%. Required return is:",a:["4.8%","8.8%","10.0%","12.0%"],c:1,e:"4% + .8×6% = 8.8%."},
+	{i:"rr30",t:"t_rr_capm",q:"Rf is 3%, expected market return is 11% and beta is 1.5. CAPM return is:",a:["12%","15%","19.5%","14%"],c:1,e:"Market premium = 8%; return = 3% + 1.5×8% = 15%."},
+	{i:"rr31",t:"t_rr_capm",q:"A stock with beta 0 has expected return under CAPM equal to:",a:["The market return","The risk-free rate","Zero","The dividend yield"],c:1,e:"With beta 0, the market risk premium term drops out."},
+	{i:"rr32",t:"t_rr_capm",q:"If beta doubles while Rf and the market risk premium stay fixed, the asset's:",a:["Risk premium doubles","Risk-free rate doubles","Total risk disappears","Dividend must double"],c:0,e:"CAPM risk premium = beta × market risk premium."},
+	{i:"rr33",t:"t_rr_capm",q:"A beta below 1 usually describes a stock that is:",a:["More sensitive than the market","Less sensitive than the market","Risk-free","Impossible to value"],c:1,e:"Beta below 1 means lower systematic risk than the market portfolio."},
+	{i:"rr34",t:"t_rr_capm",q:"The market risk premium is:",a:["E(Rm) − Rf","Rf − E(Rm)","Beta × Rf","Dividend / price"],c:0,e:"It is the extra return investors require for holding the market instead of the risk-free asset."},
+	{i:"rr35",t:"t_rr_capm",q:"If Security K has higher standard deviation but lower beta than Security C, CAPM predicts:",a:["K must have higher expected return","C may have higher expected return because beta is what matters","Both have the same return","Standard deviation is irrelevant for all decisions"],c:1,e:"CAPM prices systematic risk, not diversifiable total volatility."},
+	{i:"rr36",t:"t_rr_capm",q:"A stock's beta measures its sensitivity to:",a:["Firm-specific news only","Movements in the market portfolio","Its own dividend growth","Book value changes"],c:1,e:"Beta captures systematic co-movement with the market."},
+	{i:"ma12",t:"t_ma_types",q:"A conglomerate merger combines firms that are:",a:["Direct competitors","Supplier and distributor","In unrelated industries","Both controlled by regulators"],c:2,e:"Conglomerate deals join unrelated lines of business."},
+	{i:"ma13",t:"t_ma_types",q:"Cost-reduction synergies are often easier to realise than revenue synergies because they usually involve:",a:["Guessing future customers","Cutting duplicated resources and overlapping costs","Ignoring tax","Paying a higher premium"],c:1,e:"Cost cuts are more directly controllable than hoped-for new revenue."},
+	{i:"ma14",t:"t_ma_types",q:"Managers using free cash flow to buy targets mainly to increase firm size is an example of:",a:["Agency motive","Pure tax motive","Risk-free arbitrage","A staggered board"],c:0,e:"Empire building uses resources to grow managerial power rather than shareholder value."},
+	{i:"ma15",t:"t_ma_types",q:"The market for corporate control disciplines managers because underperforming firms may:",a:["Be acquired and have management replaced","Never trade","Avoid all regulation","Pay no taxes"],c:0,e:"Poor performance can attract bidders who believe they can run the assets better."},
+	{i:"ma16",t:"t_ma_types",q:"A merger to gain unused tax losses is primarily motivated by:",a:["Tax considerations","Hubris","Horizontal integration","Greenmail"],c:0,e:"Tax shields or loss carryforwards can have value to a profitable acquirer."},
+	{i:"ma17",t:"t_ma_types",q:"Market power as a motive is legally constrained by:",a:["Antitrust/competition rules","Depreciation methods","CAPM","Payback cutoffs"],c:0,e:"Mergers that reduce competition can be blocked or constrained."},
+	{i:"ma18",t:"t_ma_process",q:"Due diligence is best described as:",a:["A rights offering to target shareholders","A detailed review of the target's operations, history and prospects","A guaranteed takeover premium","A dividend recapitalisation"],c:1,e:"Due diligence tests what the bidder thinks it is buying."},
+	{i:"ma19",t:"t_ma_process",q:"A tender offer is:",a:["An offer to buy shares from target shareholders","An accounting depreciation method","A bond coupon reset","A project sensitivity table"],c:0,e:"The bidder offers target shareholders a price for their shares."},
+	{i:"ma20",t:"t_ma_process",q:"An exchange ratio tells target shareholders:",a:["How many bidder shares they receive for each target share","The tax rate","The target's book value","The poison-pill trigger"],c:0,e:"Stock-swap offers are stated as bidder shares per target share."},
+	{i:"ma21",t:"t_ma_process",q:"If target management supports the bid and negotiates with the bidder, the takeover is:",a:["Friendly","Hostile","Greenmail","A poison pill"],c:0,e:"Board support and negotiation indicate a friendly deal."},
+	{i:"ma22",t:"t_ma_process",q:"An LBO normally uses:",a:["Substantial borrowed funds to acquire a firm","Only retained earnings","No debt","Only trade credit"],c:0,e:"Leveraged buyouts are funded heavily with debt."},
+	{i:"ma23",t:"t_ma_process",q:"A management buyout is an LBO led by:",a:["The government","The firm's own management","Customers","Auditors"],c:1,e:"An MBO occurs when managers lead the buyout group."},
+	{i:"ma24",t:"t_ma_eval",q:"Target value is $200m, synergies $60m and offer price $245m. Bidder NPV is:",a:["$15m","−$15m","$60m","$245m"],c:0,e:"NPV = 200 + 60 − 245 = $15m."},
+	{i:"ma25",t:"t_ma_eval",q:"Target market value is $80m and offer price is $110m. The takeover premium is:",a:["$30m","$80m","$110m","$190m"],c:0,e:"Premium = offer price − pre-bid target value = $30m."},
+	{i:"ma26",t:"t_ma_eval",q:"A target trades at $20 per share and a bidder offers $28. The percentage premium is:",a:["20%","28%","40%","80%"],c:2,e:"Premium = (28 − 20)/20 = 40%."},
+	{i:"ma27",t:"t_ma_eval",q:"Bidder value $900m, target value $250m and synergies $100m. Combined value is:",a:["$1,050m","$1,150m","$1,250m","$1,300m"],c:2,e:"900 + 250 + 100 = $1,250m."},
+	{i:"ma28",t:"t_ma_eval",q:"If a bidder pays a $70m premium for $50m of synergies, bidder NPV from the premium/synergy tradeoff is:",a:["+$20m","−$20m","+$120m","$0"],c:1,e:"Synergies are $20m short of covering the premium."},
+	{i:"ma29",t:"t_ma_eval",q:"A bidder has 10m shares and issues 2m shares. Combined firm value is $720m. Post-merger share price is:",a:["$50","$60","$72","$360"],c:1,e:"720m / 12m shares = $60."},
+	{i:"ma30",t:"t_ma_def",q:"A supermajority provision requires:",a:["A very high shareholder vote to approve a merger","Only one director to approve a bid","The bidder to pay in stock","The firm to issue debt"],c:0,e:"It raises the voting threshold for approval."},
+	{i:"ma31",t:"t_ma_def",q:"A fair-price amendment usually lets the board require:",a:["Any price it considers fair before a merger proceeds","No premium","A zero coupon","Immediate liquidation"],c:0,e:"The amendment makes low-price, two-tier bids harder."},
+	{i:"ma32",t:"t_ma_def",q:"Greenmail occurs when a target:",a:["Buys back an unfriendly bidder's stake at a premium to end the threat","Issues shares to all investors equally","Finds a white knight","Cuts marketing cost"],c:0,e:"Greenmail pays the bidder to go away, usually with a standstill agreement."},
+	{i:"ma33",t:"t_ma_def",q:"A golden parachute is:",a:["A generous severance package if managers lose jobs after a takeover","A rights issue to shareholders","A tax-loss carryforward","A tender offer"],c:0,e:"It compensates managers if a takeover removes them."},
+	{i:"ma34",t:"t_ma_def",q:"A white squire is:",a:["A passive friendly investor that buys a substantial block","A hostile bidder","A poison-pill trigger","A court order"],c:0,e:"A white squire supports management without necessarily acquiring the whole company."},
+	{i:"ma35",t:"t_ma_def",q:"Recapitalisation as a defense makes the target less attractive by:",a:["Changing capital structure, often adding debt and paying out cash","Reducing all assets to zero","Cancelling shareholder votes","Forcing CAPM to rise"],c:0,e:"Debt issuance and payouts can reduce the cash or flexibility a bidder wanted."},
+	{i:"ma36",t:"t_ma_def",q:"A poison pill triggered at 15% where a 15% raider owns 150,000 of 1,000,000 shares and non-raiders buy 2 new shares each creates total shares of:",a:["1,300,000","1,700,000","2,700,000","3,000,000"],c:2,e:"Non-raider shares = 850,000; new shares = 1,700,000; total = 2,700,000."}
+	].forEach(q=>QB.push(q));
+
+	[
+	{i:"cf37",t:"t_cf_rel",q:"A new product forces a price cut on an old product, reducing after-tax cash flow by $18,000 a year. This is:",a:["Erosion to deduct","A sunk cost","A financing cost","A terminal value"],c:0,e:"The loss is caused by the new project, so it is incremental and should be deducted."},
+	{i:"cf38",t:"t_cf_rel",q:"A project uses a patent developed internally five years ago. The original development cost should be:",a:["Included at original cost","Ignored if already spent and unrecoverable","Treated as interest","Added to NWC"],c:1,e:"Past R&D is sunk unless the patent has a current alternative use or sale value."},
+	{i:"cf39",t:"t_cf_rel",q:"A project will require a new supervisor hired only if the project goes ahead. The supervisor salary is:",a:["Incremental","Sunk","Not a cash flow","A financing cost"],c:0,e:"The salary occurs only with the project."},
+	{i:"cf40",t:"t_cf_rel",q:"Which statement is correct?",a:["Opportunity costs are ignored because no cash is paid","Opportunity costs are relevant because accepting the project sacrifices an alternative benefit","Sunk costs and opportunity costs are the same","Interest is always included in OCF"],c:1,e:"Opportunity cost is the value of the best alternative use given up."},
+	{i:"cf41",t:"t_cf_rel",q:"A competitor would have taken 30% of old-product sales even without the new product. Those unavoidable lost sales should be:",a:["Deducted from the new project","Not charged to the new project","Added to depreciation","Treated as NWC"],c:1,e:"Only losses caused by the project are incremental."},
+	{i:"cf42",t:"t_cf_rel",q:"Relevant cash flows are measured:",a:["Before considering project acceptance","As the difference between cash flows with the project and without the project","Only from accounting book values","Only after financing flows"],c:1,e:"Incremental analysis compares with-versus-without project cash flows."},
+	{i:"cf43",t:"t_cf_initial",q:"Equipment costs $600,000, installation is $45,000, training is $15,000 and ΔNWC is $80,000. CF0 is:",a:["−$645,000","−$660,000","−$740,000","−$680,000"],c:2,e:"CF0 = −(600,000+45,000+15,000+80,000) = −$740,000."},
+	{i:"cf44",t:"t_cf_initial",q:"Inventory increases $90,000, receivables increase $55,000, payables increase $30,000. ΔNWC is:",a:["$115,000","$175,000","$60,000","$30,000"],c:0,e:"90,000 + 55,000 − 30,000 = $115,000."},
+	{i:"cf45",t:"t_cf_initial",q:"Cash + inventory + receivables total $300,000 and payables are $125,000. NWC is:",a:["$125,000","$175,000","$300,000","$425,000"],c:1,e:"NWC = current assets − current liabilities = 300,000 − 125,000 = $175,000."},
+	{i:"cf46",t:"t_cf_initial",q:"NWC rises from $40,000 to $75,000 in year 1. The year-1 cash-flow effect is:",a:["+$35,000","−$35,000","+$115,000","$0"],c:1,e:"An increase in NWC absorbs cash, so ΔNWC is an outflow."},
+	{i:"cf47",t:"t_cf_initial",q:"NWC falls from $75,000 to $20,000 in the final year. The terminal cash-flow effect is:",a:["−$55,000","+$55,000","−$95,000","$0"],c:1,e:"A decrease in NWC releases cash."},
+	{i:"cf48",t:"t_cf_initial",q:"An unused asset has book value $30,000, market value $42,000 and tax basis equal to book value. Ignoring tax, opportunity cost is:",a:["$30,000","$42,000","$12,000","$0"],c:1,e:"The market value is the cash sale forgone."},
+	{i:"cf49",t:"t_cf_ocf",q:"Sales $500,000, cash costs $310,000, depreciation $60,000 and tax 30%. OCF is:",a:["$151,000","$130,000","$190,000","$91,000"],c:0,e:"EBIT=130,000; OCF=130,000(.70)+60,000=$151,000."},
+	{i:"cf50",t:"t_cf_ocf",q:"Sales $900,000, cash costs $650,000, depreciation $100,000, tax 40%. OCF is:",a:["$90,000","$190,000","$250,000","$150,000"],c:1,e:"EBIT=150,000; OCF=150,000(.60)+100,000=$190,000."},
+	{i:"cf51",t:"t_cf_ocf",q:"EBIT is negative $20,000, depreciation $50,000 and tax rate 30%. Assuming tax losses can be used immediately, OCF is:",a:["$36,000","$30,000","$64,000","−$20,000"],c:0,e:"OCF = −20,000(1−.30)+50,000 = −14,000+50,000 = $36,000."},
+	{i:"cf52",t:"t_cf_ocf",q:"A project has OCF $120,000, capex $0, ΔNWC $15,000 and no salvage in year 2. FCF is:",a:["$105,000","$120,000","$135,000","$15,000"],c:0,e:"FCF = 120,000 − 15,000 = $105,000."},
+	{i:"cf53",t:"t_cf_ocf",q:"A final-year project has OCF $80,000, NWC recovery $25,000 and after-tax salvage $40,000. FCF is:",a:["$55,000","$80,000","$145,000","$120,000"],c:2,e:"Recovery and salvage are inflows: 80,000 + 25,000 + 40,000 = $145,000."},
+	{i:"cf54",t:"t_cf_ocf",q:"Straight-line depreciation on $90,000 equipment over 3 years is:",a:["$10,000","$30,000","$45,000","$90,000"],c:1,e:"90,000 / 3 = $30,000 per year."},
+	{i:"cf55",t:"t_cf_risk",q:"If unit price is the variable changed while all other assumptions are fixed, the analysis is:",a:["Sensitivity analysis","Scenario analysis","A merger valuation","A poison pill"],c:0,e:"One input changes at a time."},
+	{i:"cf56",t:"t_cf_risk",q:"A worst-case scenario should normally combine:",a:["High price, high volume, low costs","Low price, low volume, high costs","Only a different tax rate","Only a different project name"],c:1,e:"Scenario assumptions should be internally consistent."},
+	{i:"cf57",t:"t_cf_risk",q:"If nominal revenue grows with inflation, using a real discount rate would:",a:["Match correctly","Mismatch cash flows and discount rate","Always produce zero NPV","Eliminate risk"],c:1,e:"Nominal cash flows must be paired with a nominal discount rate."},
+	{i:"cf58",t:"t_cf_risk",q:"A $600,000 annual cost shock for 4 years has after-tax effect $390,000 if the tax rate is:",a:["25%","30%","35%","40%"],c:2,e:"600,000 × (1 − T) = 390,000, so 1 − T = .65 and T = 35%."},
+	{i:"cf59",t:"t_cf_risk",q:"Which input is often tested in sensitivity analysis for a new product?",a:["Sales volume","The original sunk R&D cost","The company logo","The board's age"],c:0,e:"Volume is uncertain and directly drives cash flows."},
+	{i:"cf60",t:"t_cf_risk",q:"A project with positive base NPV but negative worst-case NPV should be:",a:["Automatically rejected","Studied for the probability and severity of downside outcomes","Accepted without review","Converted to a sunk cost"],c:1,e:"Scenario analysis informs risk judgment; it does not mechanically decide by one scenario."},
+	{i:"rr37",t:"t_rr_returns",q:"A $100 investment grows to $112 with no dividend. Return is:",a:["10%","12%","112%","−12%"],c:1,e:"(112−100)/100 = 12%."},
+	{i:"rr38",t:"t_rr_returns",q:"A stock bought for $25 falls to $22 and pays $1. Total return is:",a:["−8%","−12%","4%","8%"],c:0,e:"(22−25+1)/25 = −2/25 = −8%."},
+	{i:"rr39",t:"t_rr_returns",q:"Returns of 5%, 5%, and 5% have standard deviation:",a:["0%","5%","15%","Cannot be computed"],c:0,e:"There is no dispersion around the mean."},
+	{i:"rr40",t:"t_rr_returns",q:"Expected return is 12%. A scenario return is 20%. Its deviation is:",a:["8%","−8%","32%","12%"],c:0,e:"Deviation = 20% − 12% = 8%."},
+	{i:"rr41",t:"t_rr_returns",q:"T-bills have low standard deviation mainly because:",a:["Their short maturity makes price stable and repayment highly predictable","They have no issuer","They are common stock","They pay dividends"],c:0,e:"Short government securities have stable values and low default risk."},
+	{i:"rr42",t:"t_rr_returns",q:"Risk premium means:",a:["Expected return above the risk-free rate","Dividend yield only","Book return","Coupon divided by price"],c:0,e:"Risk premium compensates investors for bearing risk beyond the risk-free asset."},
+	{i:"rr43",t:"t_rr_port",q:"Weights in a portfolio should sum to:",a:["0","1 or 100%","The risk-free rate","Beta"],c:1,e:"Portfolio weights allocate the full investment."},
+	{i:"rr44",t:"t_rr_port",q:"A portfolio is 40% in A and 60% in B. A earns 25%, B earns −5%. Portfolio return is:",a:["7%","10%","20%","−30%"],c:0,e:".4×25% + .6×(−5%) = 10% − 3% = 7%."},
+	{i:"rr45",t:"t_rr_port",q:"If adding a security reduces portfolio standard deviation without reducing expected return much, the benefit is:",a:["Diversification","Greenmail","Depreciation","Sunk cost"],c:0,e:"Diversification is the risk reduction from combining imperfectly correlated assets."},
+	{i:"rr46",t:"t_rr_port",q:"The portfolio-risk formula includes correlation because:",a:["Expected return uses correlation","Co-movement determines how much deviations offset","Correlation sets taxes","Correlation equals beta"],c:1,e:"Risk depends on how asset returns move together."},
+	{i:"rr47",t:"t_rr_port",q:"A 50/50 portfolio of two assets with σ=10% each and ρ=−1 can have σ:",a:["0%","10%","20%","50%"],c:0,e:"Equal opposite movements offset perfectly."},
+	{i:"rr48",t:"t_rr_port",q:"Portfolio expected return can be increased by shifting weight toward:",a:["The asset with the higher expected return","The asset with the lower expected return","The asset with lower book value","The older security"],c:0,e:"Expected return is a weighted average."},
+	{i:"rr49",t:"t_rr_cov",q:"A correlation of 0 means:",a:["No linear co-movement","Perfect negative co-movement","Perfect positive co-movement","Zero risk"],c:0,e:"Zero correlation means no linear relationship, not no risk."},
+	{i:"rr50",t:"t_rr_cov",q:"Adding many stocks can remove most:",a:["Market risk","Unique risk","Risk-free return","Inflation"],c:1,e:"Firm-specific risk diversifies away."},
+	{i:"rr51",t:"t_rr_cov",q:"Oil price shocks and interest-rate changes are examples of:",a:["Market risk","Unique risk","Accounting risk","No risk"],c:0,e:"They affect broad parts of the economy and market."},
+	{i:"rr52",t:"t_rr_cov",q:"A stock's total risk is measured by:",a:["Standard deviation of returns","Beta only","Dividend payout","Par value"],c:0,e:"Standard deviation captures total volatility."},
+	{i:"rr53",t:"t_rr_cov",q:"A diversified portfolio's total risk is mostly:",a:["Unique risk","Systematic risk","Sunk risk","Zero"],c:1,e:"Diversification removes most unique risk."},
+	{i:"rr54",t:"t_rr_cov",q:"If covariance is positive, correlation will be positive when:",a:["Both standard deviations are positive","Expected return is negative","Beta is zero","Taxes are high"],c:0,e:"Standard deviations are positive, so the sign of covariance carries into correlation."},
+	{i:"rr55",t:"t_rr_capm",q:"Rf 6%, beta 1.2, market return 14%. CAPM return is:",a:["9.6%","15.6%","16.8%","20.0%"],c:1,e:"Market premium = 8%; 6% + 1.2×8% = 15.6%."},
+	{i:"rr56",t:"t_rr_capm",q:"Rf 2%, beta 2.0, market premium 7%. Required return is:",a:["9%","14%","16%","7%"],c:2,e:"2% + 2×7% = 16%."},
+	{i:"rr57",t:"t_rr_capm",q:"If beta is negative, CAPM can imply an expected return:",a:["Below the risk-free rate","Always above the market return","Exactly zero","Equal to standard deviation"],c:0,e:"A negative beta hedges market risk, so its required return may be below Rf."},
+	{i:"rr58",t:"t_rr_capm",q:"Under CAPM, the risk premium for beta 0.75 and market premium 8% is:",a:["6%","8%","10.67%","0.75%"],c:0,e:".75 × 8% = 6%."},
+	{i:"rr59",t:"t_rr_capm",q:"A stock with beta 1 should have required return equal to:",a:["Rf","Expected market return","Zero","Dividend yield"],c:1,e:"Rf + 1×market premium = E(Rm)."},
+	{i:"rr60",t:"t_rr_capm",q:"The security market line plots expected return against:",a:["Beta","Standard deviation only","Book value","Coupon rate"],c:0,e:"The SML is the CAPM relationship between beta and expected return."},
+	{i:"ma37",t:"t_ma_types",q:"Economies of scale arise when a larger company can:",a:["Spread fixed costs over more output","Avoid all taxes","Pay no premium","Ignore shareholders"],c:0,e:"Fixed costs per unit fall as volume rises."},
+	{i:"ma38",t:"t_ma_types",q:"Combining complementary resources means:",a:["Each firm supplies something the other needs to create more value together","Both firms are identical","There are no synergies","The target disappears legally"],c:0,e:"Complementary assets can create synergy."},
+	{i:"ma39",t:"t_ma_types",q:"A merger wave is:",a:["A period of unusually high takeover activity followed by quieter periods","A single tender offer","A poison pill","A stock split"],c:0,e:"Merger activity tends to cluster in waves."},
+	{i:"ma40",t:"t_ma_types",q:"Booming stock markets can encourage stock-financed deals because bidder shares are:",a:["Often more valuable as acquisition currency","Worth zero","Illegal to issue","Always debt"],c:0,e:"A high share price makes stock a stronger payment currency."},
+	{i:"ma41",t:"t_ma_types",q:"Undervaluation as a motive means the bidder believes:",a:["The target is worth more than its current market price","The target has no assets","The target cannot be bought","The premium is irrelevant"],c:0,e:"The bidder sees a bargain relative to intrinsic value."},
+	{i:"ma42",t:"t_ma_types",q:"Revenue-enhancement synergies are harder to realise because:",a:["Future customer behaviour is uncertain","Costs are never uncertain","They require no execution","They are always illegal"],c:0,e:"Revenue synergies depend on market response and execution."},
+	{i:"ma43",t:"t_ma_process",q:"In an asset acquisition, payment usually goes to:",a:["The target firm","Only target shareholders directly","The regulator","The bidder's auditors"],c:0,e:"The bidder buys assets from the target company."},
+	{i:"ma44",t:"t_ma_process",q:"In a statutory merger, the target typically:",a:["Ceases to exist as a separate legal entity","Always remains listed","Buys the bidder","Issues T-bills"],c:0,e:"Assets and liabilities are combined into the acquirer."},
+	{i:"ma45",t:"t_ma_process",q:"Regulatory approval is especially concerned with:",a:["Competition and antitrust effects","Depreciation schedules only","Dividend timing only","The CEO's age"],c:0,e:"Regulators review whether deals harm competition or violate rules."},
+	{i:"ma46",t:"t_ma_process",q:"A proxy contest attempts to:",a:["Win shareholder votes to replace directors","Compute WACC","Price a bond","Recover NWC"],c:0,e:"Dissidents solicit votes to change control of the board."},
+	{i:"ma47",t:"t_ma_process",q:"A divestiture may occur when a company:",a:["Spins off or sells a business unit","Issues a poison pill","Computes beta","Pays coupon interest"],c:0,e:"Divestiture separates a unit from the parent."},
+	{i:"ma48",t:"t_ma_process",q:"A corporate raider is usually associated with:",a:["A hostile takeover attempt","A friendly dividend","A tax audit","An annuity"],c:0,e:"A raider seeks control, often without target-board support."},
+	{i:"ma49",t:"t_ma_eval",q:"Target value $300m, synergies $90m, price $410m. Bidder NPV is:",a:["−$20m","+$20m","+$90m","+$110m"],c:0,e:"300 + 90 − 410 = −$20m."},
+	{i:"ma50",t:"t_ma_eval",q:"A target is worth $12 per share before a bid and receives a $15 offer. Premium is:",a:["20%","25%","3%","80%"],c:1,e:"(15−12)/12 = 25%."},
+	{i:"ma51",t:"t_ma_eval",q:"If synergies are $120m and the premium is $80m, the bidder's value gain from synergies net of premium is:",a:["$40m","$80m","$120m","−$40m"],c:0,e:"120 − 80 = $40m."},
+	{i:"ma52",t:"t_ma_eval",q:"A cash-financed deal generally leaves target shareholders with:",a:["No ownership in the combined firm after sale","A fixed fraction of bidder shares","All synergies forever","Board control"],c:0,e:"Cash sellers exit; stock sellers remain owners."},
+	{i:"ma53",t:"t_ma_eval",q:"In stock-financed acquisitions, gains are shared because target shareholders:",a:["Own part of the combined firm","Receive no payment","Pay the premium","Lose all voting rights"],c:0,e:"They receive bidder shares and participate in post-deal value."},
+	{i:"ma54",t:"t_ma_eval",q:"Bidder has 8m shares, issues 2m new shares, combined value $500m. Post-merger price is:",a:["$50","$62.50","$40","$25"],c:0,e:"500m / 10m = $50."},
+	{i:"ma55",t:"t_ma_def",q:"Litigation as a takeover defense involves:",a:["Suing or appealing to regulators to delay/block the bid","Issuing coupons","Computing NPV","Paying normal dividends"],c:0,e:"Targets may challenge the bid legally or through regulators."},
+	{i:"ma56",t:"t_ma_def",q:"A poison pill can make a bid too expensive by:",a:["Diluting the acquirer's economic and voting position","Reducing target shares to zero","Eliminating taxes","Guaranteeing synergy"],c:0,e:"Cheap shares for others dilute the hostile bidder."},
+	{i:"ma57",t:"t_ma_def",q:"A staggered board usually means:",a:["Only a fraction of directors are elected each year","All directors are elected daily","No directors exist","Only creditors vote"],c:0,e:"Staggering slows control of the board."},
+	{i:"ma58",t:"t_ma_def",q:"A white knight differs from greenmail because a white knight:",a:["Is a friendlier acquirer, not a payoff to the hostile bidder","Is always a court case","Is a tax shield","Is the same as a poison pill"],c:0,e:"The white knight offers an alternative transaction."},
+	{i:"ma59",t:"t_ma_def",q:"Golden parachutes can create value if they:",a:["Reduce managers' incentive to block a value-creating takeover","Always prevent all bids","Eliminate shareholder voting","Force lower premiums"],c:0,e:"Managers may be less defensive if protected personally."},
+	{i:"ma60",t:"t_ma_def",q:"A poison pill with 2,700,000 post-trigger shares and raider ownership of 150,000 shares leaves raider voting power closest to:",a:["5.56%","15.00%","20.00%","2.70%"],c:0,e:"150,000 / 2,700,000 = 5.56%."}
+	].forEach(q=>QB.push(q));
+
+		/* ===== app ===== */
 /* ============ modules & topics ============ */
 const MODULES=[
 {id:"m1",n:"Foundations",lec:"Lecture 1",hue:"#2F6F5E",cats:[],topics:[
