@@ -22,7 +22,7 @@ one).
 | Time value | Lecture 3 — time value of money & applications | 113 |
 | Bonds | Lecture 4 — bond valuation & analysis | 86 |
 | Stocks | Lecture 5 — stock valuation & market efficiency | 88 |
-| Cost of Capital | Lecture 6 — cost of capital estimation | 61 |
+| Cost of Capital | Lecture 6 — cost of capital estimation | 62 |
 | Capital Budgeting | Lecture 7 — capital budgeting analysis | 75 |
 | Project Cash Flows | Lecture 8 — cash-flow estimation | 60 |
 | Risk & Return | Lecture 9 — introduction to risk and return | 60 |
@@ -32,12 +32,14 @@ one).
 
 | Tool | What it is |
 |---|---|
+| Quiz 2 prep | 25-question simulator for bonds, stocks, cost of capital, capital budgeting techniques, and project cash flows |
+| Final exam prep | 25-question full-course mixed simulator across every Managerial Finance lecture |
 | Teach mode | 41 lessons — one per topic, covering Lectures 1-10 — that explain each idea from scratch |
 | Formula map | A framework for selecting the right formula |
 | Case room | 11 current cases — the MBA Decision minicase plus lecture breakouts through Lecture 10 |
 | Calculator | 67 formulas with step-by-step workings |
 
-**750 drill questions in total**, across 41 topics.
+**751 drill questions in total**, across 41 topics.
 
 ## First run
 
@@ -124,6 +126,58 @@ but never tested on displayed as `0%`, identical to one you had never opened.
 Because formula sheets are usually provided, drill questions should emphasise
 setup, computation, and interpretation rather than asking students to identify
 or recite formulas.
+
+## Prep modes
+
+Two simulator tools sit at the top of Study tools:
+
+- **Quiz 2 prep** draws 25 multiple-choice questions from the 371-question Quiz 2
+  scope: bond valuation, stock valuation, cost of capital calculation, capital
+  budgeting techniques, and capital budgeting cash flows.
+- **Final exam prep** draws 25 mixed questions from the full 751-question Managerial Finance
+  bank.
+
+Both reuse the same mastered-question records as normal drills, so missed items
+stay high priority. Hints are turned off in these prep attempts to make them
+feel closer to an assessment, while the flag-question option remains available.
+
+## Hints
+
+Every drill question has a **Hint** button, in two stages.
+
+1. **Think it through** — a method prompt for that topic: what to ask yourself,
+   where the trap usually is. It never names the answer. There is one for each
+   of the 41 topics.
+2. **Narrow the options** — strikes out two wrong answers, leaving a choice of
+   two.
+
+There is a deliberate cost. Answering correctly after a hint is still marked
+correct, but it does not advance the streak, so the question comes back to be
+answered unaided before it retires. Your existing streak holds rather than
+resetting — a hint costs progress, not ground. The drill summary reports how
+many you used.
+
+## Difficulty
+
+Every question carries a level, shown as dots beside the question number:
+
+- **Recall** — definitions and identification
+- **Apply** — a single-step calculation, or applying a rule to a case
+- **Analyse** — multi-step calculations, traps, and questions where two rules
+  conflict
+
+Levels are assigned by ranking each question against the others *in its own
+topic* on calculation depth, scenario length and trap markers, then splitting
+into thirds. They measure relative difficulty within a topic, not an absolute
+standard.
+
+Drills adapt. When a lecture is new to you the batch runs roughly 6 recall, 3
+apply, 1 analyse. As questions retire that inverts to 1 / 3 / 6. The target
+level never crowds the others out entirely, so the basics stay warm and you
+meet the occasional hard question early.
+
+Difficulty only ever breaks ties. Questions you missed still come first,
+whatever their level.
 
 ## Academic integrity notice
 

@@ -1,4 +1,4 @@
-const CACHE = "mbaassist-v6";
+const CACHE = "mbaassist-v8";
 const SHELL = ["./", "./index.html", "./manifest.webmanifest", "./assets/study-hero.png"];
 
 self.addEventListener("install", e => {
