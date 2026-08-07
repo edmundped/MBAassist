@@ -138,8 +138,10 @@ Two simulator tools sit at the top of Study tools:
   bank.
 
 Both reuse the same mastered-question records as normal drills, so missed items
-stay high priority. Hints are turned off in these prep attempts to make them
-feel closer to an assessment, while the flag-question option remains available.
+stay high priority. Hints stay available because prep is meant to teach as well
+as test: a hinted correct answer is still marked correct, but it does not retire
+the question until the student can answer it unaided. The flag-question option
+remains available.
 
 ## Hints
 

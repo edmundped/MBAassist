@@ -5049,7 +5049,7 @@ function renderDrillIntro(){
       <div class="tbar" style="height:3px;border-radius:3px;background:var(--line);margin:16px 0 14px;overflow:hidden">
         <i style="display:block;height:100%;width:${s.pct}%;background:${WORLD.hue};border-radius:3px"></i>
       </div>
-      <p class="warn" style="margin-bottom:14px">This is a ${WORLD.prepSize||25}-question prep simulator. Hints are off so it feels closer to the real assessment, but flagged-question review still works.</p>
+      <p class="warn" style="margin-bottom:14px">This is a ${WORLD.prepSize||25}-question coached prep batch. Use hints when you are stuck; the explanation appears after each answer so the batch teaches as well as tests.</p>
       <button class="next" data-prep-start="${WORLD.id}" type="button">Start ${WORLD.prepSize||25} questions</button>
     </div>`;
     return;
@@ -5084,7 +5084,7 @@ function startDrill(ids,size,label,opts={}){
 function startPrep(id){
   const m=MODULES.find(x=>x.id===id&&x.prepOnly); if(!m) return;
   DRILL=null;
-  startDrill(prepIds(m),m.prepSize||25,m.prepLabel||m.n,{exam:true,prep:id,worldId:id});
+  startDrill(prepIds(m),m.prepSize||25,m.prepLabel||m.n,{prep:id,worldId:id});
 }
 function topicMod(tid){return (TOPIC[tid]&&TOPIC[tid].mod)||MODULES[0];}
 /* One length for every single-concept drill, and it is always shown on the
@@ -5116,7 +5116,7 @@ function renderQ(){
         `<button class="optbtn" data-pick="${slot}"><span class="k">${String.fromCharCode(65+slot)}</span><span>${q.a[orig]}</span></button>`
       ).join("")}</div>
       <div id="hintBox"></div>
-      ${d.exam?"":`<button class="hintbtn" id="hintBtn" type="button">Hint</button>`}
+      <button class="hintbtn" id="hintBtn" type="button">Hint</button>
       <div class="flagbar">
         <button class="flagbtn${flag?" on":""}" data-flag="${q.i}" type="button">${flag?"Flagged":"Flag question"}</button>
       </div>
@@ -5218,7 +5218,7 @@ function finishDrill(){
     </div>
     <div class="congrats"><b>${praise}</b><span>${d.retiredNow?`${d.retiredNow} question${d.retiredNow===1?"":"s"} retired in this batch.`:"No new retirements yet; missed items will return first."}</span></div>
     <div class="panel">
-      <p class="eyebrow" style="margin-bottom:12px">${d.exam?d.label:"This drill"}</p>
+      <p class="eyebrow" style="margin-bottom:12px">${d.prep?d.label:"This drill"}</p>
       <div class="deltas">
         ${Object.entries(byTopic).map(([tid,v])=>
           `<div class="delta"><span>${TOPIC[tid]?TOPIC[tid].n:tid}</span><span>${v.r}/${v.n}</span></div>`).join("")}
