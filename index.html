@@ -449,7 +449,11 @@ body.dark .flagbtn.on{background:#2D2413;color:#F3C46B;border-color:#8A6A24}
 .exam-action .ti{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;background:color-mix(in srgb,var(--accent) 14%,transparent);flex:none}
 .exam-choice{display:grid;grid-template-columns:1fr;gap:10px;margin-top:12px}
 .exam-choice .tool-row{align-items:flex-start}
-.written-list{display:flex;flex-direction:column;gap:10px}
+.written-list{display:flex;flex-direction:column;gap:14px}
+.written-group{display:flex;flex-direction:column;gap:8px}
+.written-group-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-end;padding:2px 2px 0}
+.written-group-head b{font-size:13px;letter-spacing:.02em;text-transform:uppercase;color:var(--ink)}
+.written-group-head span{font-size:12px;color:var(--ink-3)}
 .written-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
 .written-head{width:100%;text-align:left;padding:15px;display:flex;gap:12px;align-items:flex-start;cursor:pointer;list-style:none}
 .written-head::-webkit-details-marker{display:none}
@@ -3807,7 +3811,215 @@ const SLIDE_SAMPLES=[
    setup:["Identify the trigger event, such as crossing an ownership threshold.","Identify the right granted to other shareholders.","Trace how the acquirer's ownership or cost changes after the trigger."],
    solution:["A poison pill can make a hostile bid much more expensive by allowing other shareholders to buy shares cheaply.","That dilution pressures the bidder to negotiate with the board instead of bypassing it.","The value impact depends on whether the defense blocks value-destroying bids or entrenches management against value-creating bids."]}
 ];
-const EXAM_WRITTEN_SAMPLES=[...WRITTEN_SAMPLES,...SLIDE_SAMPLES];
+const PRACTICE_SAMPLES=[
+  {id:"pa01",cat:"Individual assignment practice",topic:"Assignment-style - Agency and governance",title:"Separation of ownership and management",
+   prompt:"Explain why corporations separate ownership from management, then use agency-cost reasoning to analyze workplace shirking, merger self-interest, and short-term bonus behavior.",
+   hint:"The common thread is delegated authority. Ask where the agent's personal incentive diverges from shareholder value.",
+   setup:["Define principal and agent.","For each situation: identify the conflict, the cost created, and a control short of dismissal.","Controls can include monitoring, better incentives, clearer policy, stronger board oversight, and performance measures that include quality and long-term value."],
+   solution:["Separation exists because shareholders supply capital while professional managers specialize in operating the firm.","Shirking creates productivity and fairness costs; controls include monitoring, clear breaks policy, and performance feedback.","A CEO negotiating for personal post-merger power creates a conflict over control benefits; controls include board approval, disclosure, recusal, and independent valuation.","A manager cutting experienced staff to boost a short-term bonus creates service-quality and reputation costs; controls include multi-period performance metrics and customer-quality measures."]},
+  {id:"pa02",cat:"Individual assignment practice",topic:"Assignment-style - Time value of money",title:"Uneven cash flows across time",
+   prompt:"A company expects cash flows of $100,000 in year 1, $200,000 in years 2 and 3, and $300,000 in years 4 and 5. Required return is 7%. Find the value at year 5, today, and year 3.",
+   hint:"Pick the target date first. Compound earlier cash flows forward and discount later cash flows backward.",
+   setup:["FV at year 5 = sum CFt(1.07)^(5-t).","PV today = sum CFt/(1.07)^t.","Value at year 3 = compound years 1-2 forward to year 3, include year 3 cash flow, and discount years 4-5 back to year 3."],
+   solution:["Year-5 value = 100,000(1.07)^4 + 200,000(1.07)^3 + 200,000(1.07)^2 + 300,000(1.07) + 300,000.","Today value = 100,000/1.07 + 200,000/1.07^2 + 200,000/1.07^3 + 300,000/1.07^4 + 300,000/1.07^5.","Year-3 value = 100,000(1.07)^2 + 200,000(1.07) + 200,000 + 300,000/1.07 + 300,000/1.07^2."]},
+  {id:"pa03",cat:"Individual assignment practice",topic:"Assignment-style - Perpetuity funding",title:"Ashesi fellowship fund",
+   prompt:"A company wants to create a fund in 30 years that pays $100,000 per year forever at 5%. It saves annually starting now for 30 years and earns 10% APR with semiannual compounding. Find the annual saving needed.",
+   hint:"First find the amount needed at year 30. Then turn that target into an annual deposit problem using the effective annual return.",
+   setup:["Fund required at year 30 = perpetuity payment / discount rate.","Convert 10% APR semiannual to EAR: (1+0.10/2)^2 - 1.","Because savings start now, this is an annuity due."],
+   solution:["Required fund at year 30 = 100,000 / 0.05 = $2,000,000.","EAR = 1.05^2 - 1 = 10.25%.","Solve deposit x annuity-due FV factor at 10.25% for 30 deposits.","Deposit = target / {[(1+r)^30 - 1]/r x (1+r)}."]},
+  {id:"pa04",cat:"Individual assignment practice",topic:"Assignment-style - Retirement planning",title:"Retirement savings deposits",
+   prompt:"A friend turns 25 today, wants to withdraw $10,000 on each birthday from age 56 through 65, and can earn 8%. Find the annual deposit from age 26 through 55, then the lump-sum deposit at age 26 that would cover the same plan.",
+   hint:"Value the withdrawals at retirement first, then discount or amortize that retirement target back through the savings period.",
+   setup:["At age 55, value the 10 withdrawals as an annuity one period before the first withdrawal.","Annual deposits from 26 through 55 form a 30-payment ordinary annuity ending at age 55.","Lump sum at age 26 grows for 29 years to age 55."],
+   solution:["Retirement need at age 55 = 10,000 x PVIFA(8%,10).","Annual deposit = retirement need / FVIFA(8%,30).","Lump-sum deposit at age 26 = retirement need / 1.08^29.","The timeline matters more than the formula label: draw ages 25, 26, 55, 56 and 65 before calculating."]},
+  {id:"pa05",cat:"Individual assignment practice",topic:"Assignment-style - Mortgage amortization",title:"Mortgage outstanding and refinancing",
+   prompt:"A $250,000 mortgage is amortized over 25 years at 9% with annual payments of $25,451.56. Find principal outstanding after the third payment, interest in the third payment, outstanding balance after five years, total interest/principal paid over five years, and the new payment if refinanced after five years at 7%.",
+   hint:"A mortgage balance is the present value of the remaining payments immediately after a payment date.",
+   setup:["Interest in a year = beginning balance x rate.","Principal paid = payment - interest.","Balance after a payment = previous balance - principal paid.","Alternative shortcut: balance after k payments = payment x PVIFA(rate, remaining payments)."],
+   solution:["Build an amortization table for years 1-5, separating interest and principal each year.","After the third payment, the outstanding balance equals the PV at 9% of the remaining 22 payments.","After five payments, the outstanding balance equals the PV at 9% of the remaining 20 payments.","New refinanced payment = balance after year 5 / PVIFA(7%,20)."]},
+
+  {id:"pb01",cat:"Bond valuation practice",topic:"Bond practice - Kumi Thompson",title:"Two coupon bonds and reinvestment risk",
+   prompt:"Two 5-year bonds have $1,000 par and 12% YTM. Bond A pays a 6% annual coupon; Bond B pays a 14% annual coupon. Value both at 12%, then at 15% and 9%; compare sensitivity, number of bonds purchasable with GHC20,000, annual coupon income, and realized ending value if coupons reinvest at 10%.",
+   hint:"This is a full bond-pricing case. Separate price sensitivity from reinvestment-risk exposure.",
+   setup:["Price each bond with coupon x PVIFA(y,n) + par x PVIF(y,n).","Number of bonds = investment / price.","Annual coupon income = number of bonds x coupon per bond.","Reinvested coupons at 10% use FVIFA(10%,5)."],
+   solution:["At 12%, Bond A is about GHC783.71 and Bond B about GHC1,072.10.","At 15%, prices fall to about GHC698.31 and GHC966.48; at 9%, prices rise to about GHC883.31 and GHC1,194.48.","Bond A has the larger percentage price sensitivity because its lower coupons place more value in the distant principal repayment.","Kumi can buy about 25.52 A bonds or 18.66 B bonds. With coupons reinvested at 10%, ending wealth is about GHC34,867.49 for A and GHC34,599.79 for B; the lower-coupon bond is less exposed to reinvestment risk."]},
+  {id:"pb02",cat:"Bond valuation practice",topic:"Bond practice - Pecos Manufacturing",title:"Discount bond path to par",
+   prompt:"Pecos issued a 15-year, 12% annual coupon, GHC1,000 par bond. Required return is fixed at 14%. Find value with 15, 12, 9, 6, 3 and 1 year remaining, then explain the price path.",
+   hint:"A coupon below required return creates a discount bond. As maturity approaches, price moves toward par.",
+   setup:["Coupon = 120.","For each maturity n, price = 120 x PVIFA(14%,n) + 1,000 x PVIF(14%,n)."],
+   solution:["Approximate prices: 15 years GHC877.16; 12 years GHC886.79; 9 years GHC901.07; 6 years GHC922.23; 3 years GHC953.57; 1 year GHC982.46.","The bond remains below par because coupon rate is below YTM.","The discount shrinks as maturity approaches because the par repayment is nearer."]},
+  {id:"pb03",cat:"Bond valuation practice",topic:"Bond practice - Zero-coupon YTM",title:"Ultra-High zero-coupon decision",
+   prompt:"A 5-year zero-coupon bond has GHC1,000 face value and sells for GHC580. Compute YTM and decide whether to buy if comparable bonds yield 13%.",
+   hint:"A zero-coupon bond has one future cash flow.",
+   setup:["YTM = (FV / price)^(1/n) - 1."],
+   solution:["YTM = (1,000/580)^(1/5) - 1 = 11.51%.","Because comparable-risk bonds yield 13%, this bond is overpriced at GHC580.","Do not buy unless the price falls enough to offer at least the market-required yield."]},
+  {id:"pb04",cat:"Bond valuation practice",topic:"Bond practice - Coupon bond pricing",title:"Callagan Ventures bond",
+   prompt:"A 10-year 7% coupon bond with GHC1,000 face value is offered. Find the highest price at a required return of 8.5%, then at 6%.",
+   hint:"When required return rises above coupon, the bond sells at a discount; when it falls below coupon, it sells at a premium.",
+   setup:["Coupon = 70.","Price = 70 x PVIFA(r,10) + 1,000 x PVIF(r,10)."],
+   solution:["At 8.5%, price is about GHC901.58.","At 6%, price is about GHC1,073.60.","The fair offer price is the intrinsic value at the investor's required return."]},
+  {id:"pb05",cat:"Bond valuation practice",topic:"Bond practice - Duration intuition",title:"Maturity, coupon and price sensitivity",
+   prompt:"Explain why long-maturity bonds fluctuate more than short-maturity bonds for the same YTM change, and why a 20-year 8% coupon bond falls more than a 20-year 15% coupon bond when rates rise sharply.",
+   hint:"The key word is duration: how much of the value is tied to distant cash flows.",
+   setup:["Longer maturity means cash flows are discounted over more periods.","Lower coupon means more value is concentrated in the distant par repayment."],
+   solution:["Long-maturity bonds have higher duration, so a discount-rate change has more time to compound through present value.","For equal maturity, the lower-coupon bond has higher duration because less cash is returned early.","Therefore the 8% coupon bond has the greater percentage decline when rates rise."]},
+  {id:"pb06",cat:"Bond valuation practice",topic:"Bond practice - Semiannual YTM",title:"Discount coupon bond YTM",
+   prompt:"A GHC1,000 bond sells for GHC935, pays an 8% coupon semiannually, and has 10 years remaining. Decide whether YTM is above or below coupon, then find semiannual, nominal annual, and effective annual YTM.",
+   hint:"Price below par means yield exceeds coupon. Semiannual payments require 20 periods.",
+   setup:["Semiannual coupon = 40.","Solve 935 = 40 x PVIFA(r,20) + 1,000 x PVIF(r,20).","Nominal annual YTM = 2r; effective annual YTM = (1+r)^2 - 1."],
+   solution:["Because price is below par, YTM is above the 8% coupon rate.","Semiannual YTM is about 4.50%.","Nominal annual YTM is about 9.00%; effective annual YTM is about 9.20%."]},
+  {id:"pb07",cat:"Bond valuation practice",topic:"Bond practice - Zero-coupon semiannual",title:"Zero-coupon bond quoted semiannually",
+   prompt:"A zero-coupon GHC1,000 par bond sells for GHC312 and matures in 10 years. Compute semiannual YTM, nominal annual YTM, and effective annual YTM.",
+   hint:"Use 20 semiannual periods for a 10-year bond when the problem asks for semiannual yield.",
+   setup:["Semiannual r = (1,000/312)^(1/20) - 1.","Nominal annual = 2r.","Effective annual = (1+r)^2 - 1."],
+   solution:["Semiannual YTM is about 5.997%, or 6.00%.","Nominal annual YTM is about 11.99%, or 12.00%.","Effective annual YTM is about 12.35%."]},
+
+  {id:"ps01",cat:"Stock valuation practice",topic:"Stock practice - Constant growth",title:"Gordon Growth and Brigapenski",
+   prompt:"Solve the constant-growth stock problems: Gordon has D1=GHC4, r=16%, g=6%; Brigapenski just paid D0=GHC2, r=16%, g=8%. Find current values and future values requested.",
+   hint:"Use D1 in the numerator. If D0 is given, grow it once first.",
+   setup:["P0 = D1 / (r - g).","Future price under constant growth: Pt = P0(1+g)^t."],
+   solution:["Gordon: P0 = 4/(0.16-0.06) = GHC40.00; P4 = 40(1.06)^4 = GHC50.50.","Brigapenski: D1 = 2(1.08) = GHC2.16; P0 = 2.16/(0.16-0.08) = GHC27.00; P5 = 27(1.08)^5 = GHC39.67."]},
+  {id:"ps02",cat:"Stock valuation practice",topic:"Stock practice - Nonconstant growth",title:"Brigapenski supernormal growth",
+   prompt:"Using Brigapenski's D0=GHC2 and r=16%, value the stock if dividends grow 20% for three years and 8% forever after.",
+   hint:"Discount the high-growth dividends individually and attach a terminal value at the end of year 3.",
+   setup:["D1=2.40, D2=2.88, D3=3.456, D4=3.732.","P3 = D4/(0.16-0.08).","P0 = D1/1.16 + D2/1.16^2 + (D3+P3)/1.16^3."],
+   solution:["P3 = 3.732/0.08 = GHC46.65.","P0 = 2.069 + 2.141 + 32.104 = about GHC36.31."]},
+  {id:"ps03",cat:"Stock valuation practice",topic:"Stock practice - Dividend policy",title:"Dividends, preferred stock and common stock",
+   prompt:"Explain why a company might choose not to pay dividends, and compare preferred and common stock prices if both just paid a GHC2 dividend.",
+   hint:"Think about growth opportunities, financing flexibility, taxes, dividend stability, and growth in common dividends.",
+   setup:["No-dividend decision: compare reinvestment opportunities with shareholder payout value.","Preferred is often a fixed perpetuity; common may grow."],
+   solution:["A company may retain earnings for positive-NPV projects, avoid flotation costs, preserve flexibility, manage tax preferences, avoid signaling problems, or comply with restrictions.","Preferred stock is typically valued as D/r.","Common stock can be worth more if dividends are expected to grow: D1/(r-g)."]},
+  {id:"ps04",cat:"Stock valuation practice",topic:"Stock practice - Constant-growth applications",title:"Jackson, Blue Cheese, Staal and Keenan",
+   prompt:"Solve these constant-growth items: Jackson D0=1.45, g=6%, r=11%; Blue Cheese D1=1.89, g=5%, P0=38; Staal D1=3.40, g=4.5%, r=11%; Keenan dividend yield=6.9%, g=4.8%.",
+   hint:"Every one is a rearrangement of Gordon growth.",
+   setup:["P0 = D1/(r-g).","r = D1/P0 + g.","Dividend yield + capital gains yield = total return."],
+   solution:["Jackson: P0=GHC30.74; P3=GHC36.61; P15=GHC73.67.","Blue Cheese required return = 1.89/38 + 5% = 9.97%; dividend yield 4.97%, capital gains yield 5.00%.","Staal P0 = 3.40/(0.11-0.045) = GHC52.31.","Keenan required return = 6.9% + 4.8% = 11.70%."]},
+  {id:"ps05",cat:"Stock valuation practice",topic:"Stock practice - Yield split and finite dividends",title:"Current dividend and finite annuity stock",
+   prompt:"A stock sells for GHC59, required return is 11%, and total return is split equally between dividend yield and capital gains yield. Find D0. Then value a stock paying GHC8.50 annually for 11 years only at 12%.",
+   hint:"If yield is split equally, dividend yield = growth = 5.5%. A fixed finite dividend stream is an annuity.",
+   setup:["D1 = P0 x dividend yield.","D0 = D1/(1+g).","Finite-dividend stock price = dividend x PVIFA(r,n)."],
+   solution:["D1 = 59 x 5.5% = GHC3.245; D0 = 3.245/1.055 = GHC3.08.","Finite dividend value = 8.50 x PVIFA(12%,11) = GHC50.47."]},
+  {id:"ps06",cat:"Stock valuation practice",topic:"Stock practice - Supernormal growth",title:"Janicex, Thirsty Cactus and Chartreuse",
+   prompt:"Practice multi-stage dividend valuation for Janicex (D0=1.90, 24% for 3 years then 6%, r=11%), Thirsty Cactus (D0=1.30, 23% for 8 years then 6%, r=12%), and Chartreuse (D0=1.94, 18% for 11 years then 5%, r=12%).",
+   hint:"The structure is always: forecast dividends, compute terminal value at the last high-growth year, discount all cash flows.",
+   setup:["Terminal value at horizon H = D(H+1)/(r-gstable).","P0 = PV of all high-growth dividends + PV of terminal value."],
+   solution:["Janicex value is about GHC63.30.","Thirsty Cactus value is about GHC64.82.","Chartreuse value is about GHC81.25.","For each, most of the value often sits in the terminal value, so the stable-growth assumption matters heavily."]},
+  {id:"ps07",cat:"Stock valuation practice",topic:"Stock practice - Holding return and multi-stage valuation",title:"Acme, Health and Delphi",
+   prompt:"Solve: Acme just paid D0=GHC1, P0=GHC20, g=6%; Health stock bought at GHC20 pays GHC1 and is sold for GHC23; Delphi pays D0=GHC2, grows 15% for 3 years, 10% for 3 years, then 5% forever with r=18%.",
+   hint:"Separate one-period returns from dividend-discount valuation.",
+   setup:["Acme r = D1/P0 + g.","Health holding return = (D1 + P1 - P0)/P0.","Delphi: forecast D1-D6, compute P6 from D7/(r-g), discount all back."],
+   solution:["Acme required return = 1.06/20 + 6% = 11.30%; dividend yield 5.30%, capital gains yield 6.00%.","Health return = (1 + 23 - 20)/20 = 20.00%.","Delphi value is about GHC22.65."]},
+  {id:"ps08",cat:"Stock valuation practice",topic:"Stock practice - Strategy and EMH",title:"Growth strategy and market efficiency",
+   prompt:"Use North Great Timber's alternatives to compare share prices under different growth/risk tradeoffs, then explain EMH versions and implications for technical analysis, fundamental analysis, active/passive management and resource allocation.",
+   hint:"Higher growth does not automatically mean higher price if required return rises too.",
+   setup:["Constant-growth price = D1/(r-g).","Weak-form EMH: past prices reflected.","Semi-strong: public information reflected.","Strong-form: public and private information reflected."],
+   solution:["North Great Timber: present strategy and retail integration both value at about GHC37.50; timber expansion values at GHC30.00 because risk rises more than growth helps.","Technical analysis is challenged by weak-form efficiency; public fundamental analysis is challenged by semi-strong efficiency.","Passive investing becomes attractive when markets are efficient, but some active analysis is needed to keep prices informative."]},
+
+  {id:"pc01",cat:"Cost of capital practice",topic:"WACC practice - Component costs",title:"Lancaster Engineering target WACC",
+   prompt:"LEI has target weights of 25% debt, 15% preferred and 60% common equity. Debt costs 12% before tax, tax rate is 40%, preferred pays GHC11 and sells for GHC95, D0=GHC3.60, P0=GHC54, g=9%. Compute component costs and WACC.",
+   hint:"Debt is after tax; preferred is not tax adjusted; equity uses D1.",
+   setup:["kd after tax = kd(1-T).","kp = Dp/Pp.","ks = D1/P0 + g.","WACC = weighted average of component costs."],
+   solution:["After-tax debt cost = 12%(1-0.40)=7.20%.","Preferred cost = 11/95 = 11.58%.","D1 = 3.60(1.09)=3.924; equity cost = 3.924/54 + 9% = 16.27%.","WACC = 0.25(7.20%) + 0.15(11.58%) + 0.60(16.27%) = 13.30%."]},
+  {id:"pc02",cat:"Cost of capital practice",topic:"WACC practice - CAPM and weights",title:"Simple WACC with CAPM",
+   prompt:"A company has GHC10,000 equity, GHC2,000 debt at 4%, beta 1.2, risk-free rate 0.5%, and market risk premium 5%. Compute WACC.",
+   hint:"No tax rate is given, so use the debt cost as stated.",
+   setup:["ke = rf + beta x market risk premium.","Weights use total market value of capital."],
+   solution:["ke = 0.5% + 1.2(5%) = 6.50%.","Equity weight = 10,000/12,000 = 83.33%; debt weight = 16.67%.","WACC = 0.8333(6.50%) + 0.1667(4.00%) = 6.08%."]},
+  {id:"pc03",cat:"Cost of capital practice",topic:"WACC practice - Flotation costs",title:"K Ltd component costs",
+   prompt:"Compute K Ltd's cost of new debt with flotation, preferred stock cost, and internal/common equity cost using the data from the practice pack.",
+   hint:"Flotation reduces net proceeds. Preferred dividends are not tax deductible.",
+   setup:["Debt: find market price, reduce by flotation, solve yield on net proceeds, then tax-adjust.","Preferred: dividend / net proceeds.","Internal equity: D1/P0 + g; new equity uses net proceeds after flotation."],
+   solution:["Debt market price at 17% is about GHC941.90; net proceeds after 9% flotation are GHC857.13; pre-tax cost is about 18.69%; after-tax cost about 13.08%.","Preferred dividend = 18% x 400 = GHC72; net proceeds = 968 - 68 = GHC900; cost = 8.00%.","Internal equity cost = 3.40/47 + 5% = 12.23%; new equity with 14% flotation is about 13.41%."]},
+  {id:"pc04",cat:"Cost of capital practice",topic:"WACC practice - Apollonia",title:"Apollonia WACC and CAPM cross-check",
+   prompt:"For Apollonia, compute costs of ordinary equity, preference equity and bond debt; market values; WACC; then compute CAPM equity cost using T-bill rate 25%, market return 26.23% and beta 0.21.",
+   hint:"Use retention x ROE for growth when dividend growth is not directly given.",
+   setup:["g = ROE x retention ratio.","ke DGM = D1/P0 + g.","kp = preferred dividend/current preferred price.","Bond cost is the market yield if given.","CAPM ke = rf + beta(rm-rf)."],
+   solution:["Using the stated assumptions, preference cost is 8.00%, ordinary equity cost about 25.87%, and bond cost 10.00%.","Market values are about GHC3.25m ordinary equity, GHC1.00m preference equity, and GHC1,386.28 bond value under the stated bond issue data.","WACC is about 21.66%, mostly driven by ordinary equity.","CAPM equity cost = 25% + 0.21(26.23%-25%) = 25.26%."]},
+  {id:"pc05",cat:"Cost of capital practice",topic:"WACC practice - Lean and KONECT",title:"Market-value WACC and dual equity estimates",
+   prompt:"Compute B.B. Lean's WACC using market-value weights and CAPM. Then estimate KONECT's cost of equity using both CAPM and dividend growth.",
+   hint:"Use market values for WACC weights. For KONECT, CAPM and DGM should be close.",
+   setup:["Lean equity value = shares x price; debt value = face value x quote.","Lean ke = rf + beta x MRP; after-tax debt = YTM(1-T).","KONECT CAPM ke = rf + beta x MRP; DGM ke = D1/P0 + g."],
+   solution:["Lean equity value = GHC28.0m; debt value = GHC4.65m; ke=13.18%; after-tax kd=7.26%; WACC about 12.34%.","KONECT CAPM cost = 10.80%.","KONECT DGM cost = 1.20(1.08)/45 + 8% = 10.88%."]},
+  {id:"pc06",cat:"Cost of capital practice",topic:"WACC practice - Capital structure weights",title:"INVERT book versus market weights",
+   prompt:"INVERT has 8m shares at GHC73 with book value GHC7/share, plus two bond issues: GHC85m at 97% of par and GHC50m at 108% of par. Compute book and market capital structure weights and state which is more relevant.",
+   hint:"Book equity uses book value per share. Market equity uses current share price.",
+   setup:["Book equity = shares x book value/share; book debt = face values.","Market equity = shares x market price; market debt = quoted percentages x face values."],
+   solution:["Book weights: equity 29.32%, debt 70.68%.","Market weights: equity 81.06%, debt 18.94%.","Market weights are more relevant for WACC because they reflect current opportunity costs and investor valuations."]},
+  {id:"pc07",cat:"Cost of capital practice",topic:"WACC practice - Preferred versus debt",title:"Accounting Suites WACC",
+   prompt:"Accounting Suites targets 60% common, 5% preferred and 35% debt. Costs are 12% equity, 5% preferred, 7% pretax debt, tax rate 35%. Compute WACC and explain why preferred stock is not necessarily cheaper than debt.",
+   hint:"Compare preferred cost to debt after tax, not before tax.",
+   setup:["After-tax debt cost = 7%(1-35%).","WACC = 0.60ke + 0.05kp + 0.35kd(1-T)."],
+   solution:["After-tax debt cost = 4.55%.","WACC = 0.60(12%) + 0.05(5%) + 0.35(4.55%) = 9.04%.","Preferred at 5% is actually more expensive than debt after tax because preferred dividends are not tax deductible."]},
+  {id:"pc08",cat:"Cost of capital practice",topic:"WACC practice - WMCC and breakpoints",title:"Comprehensive WMCC problem",
+   prompt:"A firm has retained earnings, new common equity with flotation, preferred stock, debt, target weights of 15% debt, 40% preferred and 45% equity, and a debt ceiling. Compute component costs, breakpoints and the weighted marginal cost of capital schedule.",
+   hint:"Breakpoints tell you when a cheaper source is exhausted and the marginal cost changes.",
+   setup:["Retained earnings available = net income x retention ratio.","Equity breakpoint = retained earnings / equity weight.","Debt breakpoint = maximum cheap debt / debt weight.","Compute WACC below and above each breakpoint."],
+   solution:["Retained earnings = GHC13.5m; equity breakpoint = 13.5m/0.45 = GHC30m.","Debt breakpoint = 24m/0.15 = GHC160m, so equity is the binding breakpoint first.","Component costs are about: retained equity 13.50%, new equity 14.33%, preferred 11.46%, after-tax debt 9.04%.","WMCC is about 12.01% up to GHC30m and about 12.39% above GHC30m until the next breakpoint."]},
+  {id:"pc09",cat:"Cost of capital practice",topic:"WACC practice - Titan Mining",title:"Market-value WACC for project discounting",
+   prompt:"Titan Mining has 8.5m common shares at $34, beta 1.25, 250,000 preferred shares at $91, and 135,000 semiannual bonds at 114% of par. Market risk premium is 7.5%, T-bills yield 4%, and tax rate is 35%. Find market-value capital structure and project discount rate.",
+   hint:"The project uses WACC only if its risk matches the firm's typical project.",
+   setup:["Equity value = shares x price.","Preferred value = preferred shares x price.","Debt value = bonds x par x quote.","ke = rf + beta x MRP; kp = preferred dividend/preferred price; kd is bond YTM adjusted for tax."],
+   solution:["Market values: common $289.0m, preferred $22.75m, debt $153.9m.","Weights are about 62.06% common, 4.89% preferred, 33.05% debt.","Use WACC as the discount rate only for projects with the same risk as Titan's normal operations."]},
+
+  {id:"pq01",cat:"Quiz 2 calculation practice",topic:"Quiz 2 - Bond valuation",title:"One-year-forward bond price",
+   prompt:"A 3-year annual coupon bond with 7% coupon and 10% YTM is worth $904.90 today. If interest rates stay at 10%, what will it be worth one year from now?",
+   hint:"One year later, there are two coupon payments and the principal left.",
+   setup:["Price at year 1 = 70/1.10 + (70+1,000)/1.10^2."],
+   solution:["P1 = 63.64 + 884.30 = $947.93.","A discount bond rises toward par over time if YTM remains constant."]},
+  {id:"pq02",cat:"Quiz 2 calculation practice",topic:"Quiz 2 - Stock valuation",title:"Small constant-growth stock",
+   prompt:"A stock just paid a $0.55 dividend. Dividends grow at 5% forever and required return is 12.5%. Find today's stock price.",
+   hint:"Grow the just-paid dividend once to get D1.",
+   setup:["D1 = 0.55(1.05).","P0 = D1/(r-g)."],
+   solution:["D1 = 0.5775.","P0 = 0.5775/(0.125-0.05) = $7.70."]},
+  {id:"pq03",cat:"Quiz 2 calculation practice",topic:"Quiz 2 - Capital budgeting",title:"NPV of three-year annuity",
+   prompt:"A project costs $100,000 and returns $45,000 annually for three years. Opportunity cost of capital is 14%. Compute NPV.",
+   hint:"The inflows are an ordinary annuity.",
+   setup:["NPV = 45,000 x PVIFA(14%,3) - 100,000."],
+   solution:["PVIFA(14%,3) = 2.3216.","PV inflows = $104,473.44.","NPV = $4,473.44."]},
+  {id:"pq04",cat:"Quiz 2 calculation practice",topic:"Quiz 2 - Cash-flow estimation",title:"Initial net working capital",
+   prompt:"Inventory will increase by $146,000, accounts payable by $87,000, and receivables of $80,000 will rise by 20%. Find the initial NWC requirement.",
+   hint:"Payables reduce the cash tied up in working capital.",
+   setup:["Change in NWC = inventory increase + receivables increase - payables increase."],
+   solution:["Receivables increase = 0.20 x 80,000 = 16,000.","Change in NWC = 146,000 + 16,000 - 87,000 = $75,000."]},
+  {id:"pq05",cat:"Quiz 2 calculation practice",topic:"Quiz 2 - Operating cash flow",title:"OCF from EBIT",
+   prompt:"Sales are $542,000, costs are $389,300, depreciation is $82,400, and tax rate is 31%. Compute operating cash flow.",
+   hint:"Depreciation is noncash but reduces taxable income.",
+   setup:["EBIT = sales - costs - depreciation.","OCF = EBIT(1-T) + depreciation."],
+   solution:["EBIT = 542,000 - 389,300 - 82,400 = 70,300.","OCF = 70,300(0.69) + 82,400 = $130,907."]},
+  {id:"pq06",cat:"Quiz 2 calculation practice",topic:"Quiz 2 - Flotation and WACC",title:"Project cost with flotation",
+   prompt:"A project requires $136,000 in external financing. Equity flotation cost is 11%, debt flotation cost is 4.5%, and target D/E is 0.45. Find the initial cost including flotation.",
+   hint:"Convert D/E into debt and equity weights, then compute weighted flotation cost.",
+   setup:["Equity weight = 1/(1+0.45); debt weight = 0.45/(1+0.45).","Weighted flotation cost = wE fE + wD fD.","Gross amount needed = net amount / (1 - weighted flotation cost)."],
+   solution:["Weighted flotation cost = (1/1.45)(11%) + (0.45/1.45)(4.5%) = 8.9826%.","Gross amount = 136,000/(1-0.089826) = about $149,422."]},
+  {id:"pq07",cat:"Quiz 2 calculation practice",topic:"Quiz 2 - WACC and CAPM",title:"WACC and required equity return",
+   prompt:"Compute WACC for a no-tax firm worth $2,000,000 with $600,000 debt costing 10% and equity costing 15%. Then compute required equity return for beta 1.3, risk-free 5%, and market return 10%.",
+   hint:"For the CAPM item, market risk premium is market return minus risk-free rate.",
+   setup:["WACC = wD kd + wE ke.","CAPM = rf + beta(rm-rf)."],
+   solution:["Debt weight = 600,000/2,000,000 = 30%; equity weight = 70%.","WACC = 0.30(10%) + 0.70(15%) = 13.5%.","CAPM return = 5% + 1.3(10%-5%) = 11.5%."]}
+];
+const EXAM_WRITTEN_SAMPLES=[...WRITTEN_SAMPLES,...SLIDE_SAMPLES,...PRACTICE_SAMPLES];
+const WRITTEN_CATEGORY_ORDER=[
+  "Individual assignment practice",
+  "Bond valuation practice",
+  "Stock valuation practice",
+  "Cost of capital practice",
+  "Quiz 2 calculation practice",
+  "Capital budgeting and cash flows",
+  "Lecture slide examples",
+  "Risk, return and M&A",
+  "Exam sample questions"
+];
+function writtenCategory(w){
+  if(w.cat) return w.cat;
+  const t=(w.topic||"").toLowerCase();
+  if(w.id&&w.id.startsWith("sl")) return "Lecture slide examples";
+  if(/bond/.test(t)) return "Bond valuation practice";
+  if(/stock|emh|market efficiency/.test(t)) return "Stock valuation practice";
+  if(/wacc|cost of capital|capm|preferred/.test(t)) return "Cost of capital practice";
+  if(/budget|cash flow|working capital|npv|eac|payback|operating cash/.test(t)) return "Capital budgeting and cash flows";
+  if(/portfolio|risk|merger|acquisition/.test(t)) return "Risk, return and M&A";
+  return "Exam sample questions";
+}
 const TOPIC={}; MODULES.forEach(m=>m.topics.forEach(t=>{t.mod=m; TOPIC[t.id]=t;}));
 const BY_TOPIC={}; QB.forEach(q=>{(BY_TOPIC[q.t]=BY_TOPIC[q.t]||[]).push(q);});
 const QMAP={}; QB.forEach(q=>QMAP[q.i]=q);
@@ -5560,16 +5772,16 @@ function startFinalMcq(){
 function renderWrittenSamples(){
   if(!WORLD||WORLD.id!=="mfinal") openWorld("mfinal","drill");
   const done=EXAM_WRITTEN_SAMPLES.filter(w=>WDONE[w.id]).length;
-  $("#drillPane").innerHTML=`
-    <button class="back" data-exam-menu type="button">&#8592; Exam prep</button>
-    <div class="notice">
-      <b>Written sample practice</b>
-      <p>Attempt each question on paper first. Open the hint only if stuck, then compare your setup and solution outline. Completed: ${done}/${EXAM_WRITTEN_SAMPLES.length}.</p>
-    </div>
-    <div class="written-list">
-      ${EXAM_WRITTEN_SAMPLES.map((w,ix)=>`<details class="written-card">
+  const groups={};
+  EXAM_WRITTEN_SAMPLES.forEach(w=>{const c=writtenCategory(w); (groups[c]=groups[c]||[]).push(w);});
+  const ordered=[
+    ...WRITTEN_CATEGORY_ORDER.filter(c=>groups[c]),
+    ...Object.keys(groups).filter(c=>!WRITTEN_CATEGORY_ORDER.includes(c)).sort()
+  ];
+  let n=0;
+  const renderCard=w=>`<details class="written-card">
         <summary class="written-head">
-          <span class="wnum">${String(ix+1).padStart(2,"0")}</span>
+          <span class="wnum">${String(++n).padStart(2,"0")}</span>
           <span><b>${esc(w.title)}</b><span>${esc(w.topic)} · ${WDONE[w.id]?"completed":"not completed"}</span></span>
         </summary>
         <div class="written-body">
@@ -5588,7 +5800,18 @@ function renderWrittenSamples(){
           </details>
           <button class="ghost" data-written-done="${w.id}" type="button">${WDONE[w.id]?"Mark incomplete":"Mark completed"}</button>
         </div>
-      </details>`).join("")}
+      </details>`;
+  $("#drillPane").innerHTML=`
+    <button class="back" data-exam-menu type="button">&#8592; Exam prep</button>
+    <div class="notice">
+      <b>Written sample practice</b>
+      <p>Attempt each question on paper first. Open the hint only if stuck, then compare your setup and solution outline. Completed: ${done}/${EXAM_WRITTEN_SAMPLES.length}. The lecture-slide examples remain included, with added assignment and practice-pack questions grouped by topic.</p>
+    </div>
+    <div class="written-list">
+      ${ordered.map(c=>`<section class="written-group">
+        <div class="written-group-head"><b>${esc(c)}</b><span>${groups[c].length} questions</span></div>
+        ${groups[c].map(renderCard).join("")}
+      </section>`).join("")}
     </div>`;
 }
 function startDrill(ids,size,label,opts={}){
