@@ -5176,16 +5176,10 @@ let DRILL=null;
 function renderDrillIntro(){
   if(WORLD&&WORLD.prepOnly){
     if(WORLD.id==="mfinal"){
-      const core=statsFor(FINAL_CORE_TOPICS), full=statsFor(allIds());
       const writtenDone=Object.keys(WDONE).filter(id=>WDONE[id]).length;
       $("#drillPane").innerHTML=`<div class="panel">
         <p class="eyebrow" style="margin-bottom:10px">Final exam prep</p>
         <p style="font-size:14.5px;color:var(--ink-2);line-height:1.55">Use MCQs first for fast retrieval. The order is quiz questions first, then sample questions, then generated practice. Written samples build setup, timelines, formulas and interpretation.</p>
-        <div class="deltas" style="margin-bottom:12px">
-          <div class="delta"><span>Core MCQ mastery</span><span>${core.retired}/${core.total}</span></div>
-          <div class="delta"><span>Full bank mastery</span><span>${full.retired}/${full.total}</span></div>
-          <div class="delta"><span>Written samples completed</span><span>${writtenDone}/${WRITTEN_SAMPLES.length}</span></div>
-        </div>
         <div class="exam-choice">
           <button class="tool-row" data-final-mcq type="button" style="--tc:#0E6E85">
             <span class="ti">${moduleIcon("mq2",100,"#0E6E85")}</span>
