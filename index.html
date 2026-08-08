@@ -3409,7 +3409,7 @@ const MODULES=[
 	 "t_cb_npv","t_cb_pay","t_cb_irr","t_cb_mex","t_cb_pi",
 	 "t_cf_rel","t_cf_initial","t_cf_ocf","t_cf_risk"
 	]},
-	{id:"mfinal",n:"Final exam prep",lec:"Full-course simulator",hue:"#6B4AA0",cats:[],topics:[],prepOnly:true,prepSize:25,prepLabel:"Final exam prep"},
+	{id:"mfinal",n:"Final exam prep",lec:"Exam workspace",hue:"#6B4AA0",cats:[],topics:[],prepOnly:true,prepSize:10,prepLabel:"Final exam prep"},
 	{id:"mt",n:"Teach mode",lec:"Guided computation",hue:"#1F7A8C",cats:[],topics:[],teachOnly:true},
 {id:"mf",n:"Formula map",lec:"Selection framework",hue:"#7A5A2B",cats:[],topics:[],frameworkOnly:true},
 {id:"mc",n:"Case room",lec:"Cases & analysis",hue:"#5C6B33",cats:[],topics:[],caseOnly:true},
@@ -3420,6 +3420,12 @@ const SAMPLE=new Set(["g01","g02","g03","g04","d01","d02","d03","d04","d05","d06
 const QUIZ1_TOPICS=["t_goal","t_dec","t_mkt","t_sing","t_comp","t_multi","t_ann","t_app"];
 const QUIZ2_TOPICS=[...MODULES.find(m=>m.id==="mq2").prepIds];
 const FINAL_CORE_TOPICS=[...new Set([...QUIZ1_TOPICS,...QUIZ2_TOPICS])];
+const EXAM_QUIZ_IDS=new Set([
+  "g01","g02","g03","g04","d01","d02","d03","d04","d05","d06",
+  "b13","y12","n06","n08","b01","b09","n13","y03","y04","x02","x06","x07",
+  "w07","w09","w11","np03","np05","np08","np09","np11","ir08","pb08","eq02","eq05",
+  "cf05","cf06","cf07","cf13","cf23","cf28","cf31","f03","f05","f08","f09","f16","rr10"
+]);
 const WRITTEN_SAMPLES=[
   {id:"we01",topic:"Bond valuation",title:"Zero-coupon bond issue rate",
    prompt:"Ten years ago, a company issued a 10-year zero-coupon bond with $1,000 maturity value for $600. Find the interest rate at issue.",
@@ -3499,7 +3505,7 @@ function readSession(){
   return s;
 }
 let SESSION=readSession();
-let M={}, DRILLNO=0, FLAGS={}, LDONE={};
+let M={}, DRILLNO=0, FLAGS={}, LDONE={}, WDONE={};
 function saveSession(){
   try{localStorage.setItem(SKEY,JSON.stringify(SESSION));}catch(_){}
 }
@@ -3513,11 +3519,11 @@ function pkey(){return "mba512-progress-"+SESSION.id;}
 function fkey(){return "mba512-flags-"+SESSION.id;}
 function loadProgress(){
   try{const d=JSON.parse(localStorage.getItem(pkey())||"null");
-    M=(d&&d.m)||{}; DRILLNO=(d&&d.drill)||0; LDONE=(d&&d.lessons)||{};}catch(_){M={};DRILLNO=0;LDONE={};}
+    M=(d&&d.m)||{}; DRILLNO=(d&&d.drill)||0; LDONE=(d&&d.lessons)||{}; WDONE=(d&&d.written)||{};}catch(_){M={};DRILLNO=0;LDONE={};WDONE={};}
   try{FLAGS=JSON.parse(localStorage.getItem(fkey())||"{}")||{};}catch(_){FLAGS={};}
 }
 function saveProgress(){
-  try{localStorage.setItem(pkey(),JSON.stringify({m:M,drill:DRILLNO,lessons:LDONE}));}catch(_){}
+  try{localStorage.setItem(pkey(),JSON.stringify({m:M,drill:DRILLNO,lessons:LDONE,written:WDONE}));}catch(_){}
 }
 function saveFlags(){
   try{localStorage.setItem(fkey(),JSON.stringify(FLAGS));}catch(_){}
@@ -3604,6 +3610,12 @@ function priority(id){
   if(r.s<RETIRE) return 2;
   return 3;
 }
+function sourceTier(q,mode){
+  if(mode!=="final") return 0;
+  if(EXAM_QUIZ_IDS.has(q.i)) return 0;
+  if(SAMPLE.has(q.i)) return 1;
+  return 2;
+}
 /* ---- adaptive difficulty ----------------------------------------------
    Strength for a set of topics = share of their questions already retired,
    nudged by how warm the current streaks are. Weak -> lean on recall items
@@ -3625,17 +3637,17 @@ function targetLevel(ids){
   return s<0.25?1:s<0.60?2:3;
 }
 
-function buildQueue(ids,size){
+function buildQueue(ids,size,opts={}){
   const items=[];
   ids.forEach(tid=>(BY_TOPIC[tid]||[]).forEach(q=>{
     const r=rec(q.i);
-    items.push({q, cool:r.d>=DRILLNO-1?1:0, p:priority(q.i), d:r.d, r:Math.random()});
+    items.push({q, tier:sourceTier(q,opts.sourceMode), cool:r.d>=DRILLNO-1?1:0, p:priority(q.i), d:r.d, r:Math.random()});
   }));
   if(!items.length) return [];
   /* cool: anything served in the drill just gone waits a round, so a correct
      answer means recall rather than short-term memory. It still returns
      straight after if the pool is too small to fill the batch otherwise.   */
-  items.sort((a,b)=> a.cool-b.cool || a.p-b.p || a.d-b.d || a.r-b.r);
+  items.sort((a,b)=> a.tier-b.tier || a.cool-b.cool || a.p-b.p || a.d-b.d || a.r-b.r);
 
   /* Difficulty mix follows demonstrated strength. The target level dominates
      but never crowds the others out, so a weak learner still meets the odd
@@ -3660,7 +3672,7 @@ function buildQueue(ids,size){
     used.add(it.q.i); out.push(it);
   }
   /* restore priority order so missed questions still come first */
-  out.sort((a,b)=> a.cool-b.cool || a.p-b.p || a.d-b.d || a.r-b.r);
+  out.sort((a,b)=> a.tier-b.tier || a.cool-b.cool || a.p-b.p || a.d-b.d || a.r-b.r);
   return out.slice(0,Math.min(size,out.length)).map(x=>x.q);
 }
 function recordAnswer(id,ok,hinted){
@@ -3715,6 +3727,7 @@ const TOOL_DESC={
 function renderHome(){
   const all=statsFor(allIds());
   const finalCore=statsFor(FINAL_CORE_TOPICS);
+  const writtenDone=Object.keys(WDONE).filter(id=>WDONE[id]).length;
   $("#railPct").textContent=all.pct+"%";
   $("#railBar").style.width=all.pct+"%";
 
@@ -3725,17 +3738,13 @@ function renderHome(){
   $("#heroStreak").textContent = all.pct===100 ? "All questions retired" : st>1 ? st+"-day streak" : "Course mastery";
 
   $("#examSpotlight").innerHTML=`
-    <p class="eyebrow">Exam tomorrow</p>
+    <p class="eyebrow">Exam</p>
     <h3>Final exam prep</h3>
-    <p>Start with Quiz 1, Quiz 2 and lecturer-style MCQs, then move into the broader bank and written samples. Use this for learning only; sit the exam on your own.</p>
+    <p>One modular prep space for MCQs and written samples. MCQs serve quiz questions first, then sample questions, then generated practice.</p>
     <div class="exam-actions">
       <button class="exam-action" data-mod="mfinal" type="button">
         <span class="ti">${moduleIcon("mfinal",100,"#6B4AA0")}</span>
-        <span><b>Open exam prep</b><span>MCQ simulator + guided written samples</span></span>
-      </button>
-      <button class="exam-action" data-final-mcq type="button">
-        <span class="ti">${moduleIcon("mq2",100,"#0E6E85")}</span>
-        <span><b>Start core MCQs now</b><span>${finalCore.retired}/${finalCore.total} core questions retired</span></span>
+        <span><b>Open exam prep</b><span>MCQ mastery ${finalCore.retired}/${finalCore.total} · written ${writtenDone}/${WRITTEN_SAMPLES.length}</span></span>
       </button>
     </div>`;
 
@@ -5166,18 +5175,24 @@ function renderDrillIntro(){
   if(WORLD&&WORLD.prepOnly){
     if(WORLD.id==="mfinal"){
       const core=statsFor(FINAL_CORE_TOPICS), full=statsFor(allIds());
+      const writtenDone=Object.keys(WDONE).filter(id=>WDONE[id]).length;
       $("#drillPane").innerHTML=`<div class="panel">
         <p class="eyebrow" style="margin-bottom:10px">Final exam prep</p>
-        <p style="font-size:14.5px;color:var(--ink-2);line-height:1.55">Use MCQs first for fast retrieval across Quiz 1, Quiz 2 and sample-style questions. Then use written samples to practise setup, timelines, formulas and interpretation.</p>
+        <p style="font-size:14.5px;color:var(--ink-2);line-height:1.55">Use MCQs first for fast retrieval. The order is quiz questions first, then sample questions, then generated practice. Written samples build setup, timelines, formulas and interpretation.</p>
+        <div class="deltas" style="margin-bottom:12px">
+          <div class="delta"><span>Core MCQ mastery</span><span>${core.retired}/${core.total}</span></div>
+          <div class="delta"><span>Full bank mastery</span><span>${full.retired}/${full.total}</span></div>
+          <div class="delta"><span>Written samples completed</span><span>${writtenDone}/${WRITTEN_SAMPLES.length}</span></div>
+        </div>
         <div class="exam-choice">
           <button class="tool-row" data-final-mcq type="button" style="--tc:#0E6E85">
             <span class="ti">${moduleIcon("mq2",100,"#0E6E85")}</span>
-            <span class="tbody"><b>MCQ prep</b><span>25 coached questions. Core first: ${core.retired}/${core.total} retired, then the full ${full.total}-question bank.</span></span>
+            <span class="tbody"><b>MCQ prep</b><span>10 coached questions at a time. Quiz questions, then samples, then generated bank.</span></span>
             <span class="arrow">›</span>
           </button>
           <button class="tool-row" data-written-samples type="button" style="--tc:#6B4AA0">
             <span class="ti">${moduleIcon("mc",100,"#6B4AA0")}</span>
-            <span class="tbody"><b>Written samples</b><span>${WRITTEN_SAMPLES.length} guided problems with hints, setup and solution outlines.</span></span>
+            <span class="tbody"><b>Written samples</b><span>${WRITTEN_SAMPLES.length} guided problems · ${writtenDone} completed.</span></span>
             <span class="arrow">›</span>
           </button>
         </div>
@@ -5226,21 +5241,22 @@ function startFinalMcq(){
   const ids=core.retired<core.total?FINAL_CORE_TOPICS:allIds();
   const label=core.retired<core.total?"Final exam prep · core first":"Final exam prep · full bank";
   DRILL=null;
-  startDrill(ids,25,label,{prep:"mfinal",worldId:"mfinal"});
+  startDrill(ids,10,label,{prep:"mfinal",worldId:"mfinal",sourceMode:"final"});
 }
 function renderWrittenSamples(){
   if(!WORLD||WORLD.id!=="mfinal") openWorld("mfinal","drill");
+  const done=Object.keys(WDONE).filter(id=>WDONE[id]).length;
   $("#drillPane").innerHTML=`
     <button class="back" data-exam-menu type="button">&#8592; Exam prep</button>
     <div class="notice">
       <b>Written sample practice</b>
-      <p>Attempt each question on paper first. Open the hint only if stuck, then compare your setup and solution outline.</p>
+      <p>Attempt each question on paper first. Open the hint only if stuck, then compare your setup and solution outline. Completed: ${done}/${WRITTEN_SAMPLES.length}.</p>
     </div>
     <div class="written-list">
       ${WRITTEN_SAMPLES.map((w,ix)=>`<details class="written-card">
         <summary class="written-head">
           <span class="wnum">${String(ix+1).padStart(2,"0")}</span>
-          <span><b>${esc(w.title)}</b><span>${esc(w.topic)}</span></span>
+          <span><b>${esc(w.title)}</b><span>${esc(w.topic)} · ${WDONE[w.id]?"completed":"not completed"}</span></span>
         </summary>
         <div class="written-body">
           <p class="prompt">${esc(w.prompt)}</p>
@@ -5256,13 +5272,14 @@ function renderWrittenSamples(){
             <summary>Solution outline</summary>
             <div><ol class="steps">${w.solution.map(x=>`<li>${esc(x)}</li>`).join("")}</ol></div>
           </details>
+          <button class="ghost" data-written-done="${w.id}" type="button">${WDONE[w.id]?"Mark incomplete":"Mark completed"}</button>
         </div>
       </details>`).join("")}
     </div>`;
 }
 function startDrill(ids,size,label,opts={}){
   DRILLNO++;
-  const q=buildQueue(ids,size);
+  const q=buildQueue(ids,size,opts);
   if(!q.length){ $("#drillPane").innerHTML=`<div class="panel empty-state"><h3>No questions here yet</h3><p>Try another topic.</p></div>`; return; }
   DRILL={q,i:0,res:[],label,ids,answered:false,retiredNow:0,exam:!!opts.exam,prep:opts.prep||""};
   if(opts.worldId) openWorld(opts.worldId,"drill");
@@ -5298,7 +5315,7 @@ function renderQ(){
         <span class="eyebrow">${TOPIC[q.t]?TOPIC[q.t].n:""}</span>
         <span class="eyebrow num"><i class="lvl l${q.L||2}" title="${LEVEL_NAME[q.L||2]}">${"\u2022".repeat(q.L||2)}</i> ${d.i+1}/${d.q.length}</span>
       </div>
-      ${SAMPLE.has(q.i)?`<span class="tag" style="margin-bottom:11px">Lecturer sample</span>`:""}
+      ${EXAM_QUIZ_IDS.has(q.i)?`<span class="tag" style="margin-bottom:11px">Quiz question</span>`:SAMPLE.has(q.i)?`<span class="tag" style="margin-bottom:11px">Lecturer sample</span>`:""}
       <p class="qtext">${q.q}</p>
       <div class="opts">${d.order.map((orig,slot)=>
         `<button class="optbtn" data-pick="${slot}"><span class="k">${String.fromCharCode(65+slot)}</span><span>${q.a[orig]}</span></button>`
@@ -5392,7 +5409,9 @@ function finishDrill(){
   });
   const line=pct===100?"Clean sweep.":pct>=80?"Strong. The misses come back first next time.":
     pct>=50?"Worth re-reading the notes for the weakest concept below.":"Re-read these concepts, then drill them again.";
-  const praise=pct===100?"Excellent work. You handled the full batch.":pct>=80?"Good batch. You are building reliable recall.":pct>=50?"Progress made. Now target the missed topics.":"This is useful diagnostic work. Re-read the concept, then try again.";
+  const praise=d.prep==="mfinal"
+    ? (pct===100?"Excellent exam-prep batch. You handled all 10 cleanly.":pct>=80?"Strong exam-prep batch. That is the kind of recall you want under time pressure.":pct>=50?"Progress made. Now target the missed topics before the next 10.":"Useful diagnostic batch. Slow down, review the concepts, then take another 10.")
+    : (pct===100?"Excellent work. You handled the full batch.":pct>=80?"Good batch. You are building reliable recall.":pct>=50?"Progress made. Now target the missed topics.":"This is useful diagnostic work. Re-read the concept, then try again.");
   /* A drill used to end by dumping you at the course home, two levels up from
      whatever you were working on. Offer the way back to its own lecture. */
   const homeMod=(d.ids&&d.ids.length===1&&topicMod(d.ids[0]))||WORLD;
@@ -5451,6 +5470,13 @@ document.addEventListener("click",e=>{
   if(e.target.closest("[data-final-mcq]")){ startFinalMcq(); return; }
   if(e.target.closest("[data-written-samples]")){ renderWrittenSamples(); return; }
   if(e.target.closest("[data-exam-menu]")){ DRILL=null; renderDrillIntro(); return; }
+  const wd=e.target.closest("[data-written-done]");
+  if(wd){
+    const id=wd.dataset.writtenDone;
+    WDONE[id]=!WDONE[id];
+    saveProgress(); renderHome(); renderWrittenSamples();
+    return;
+  }
 
   const mod=e.target.closest("[data-mod]");
   if(mod){
@@ -5586,13 +5612,13 @@ $("#newSess").onclick=()=>{
   SESSION.started=!!SESSION.name;
   SESSION.oriented=wasOriented;   /* clearing progress shouldn't replay the tour */
   saveSession();
-  M={}; DRILLNO=0; FLAGS={}; LDONE={}; LESSON_ID=null;
+  M={}; DRILLNO=0; FLAGS={}; LDONE={}; WDONE={}; LESSON_ID=null;
   saveProgress(); saveFlags(); renderSession(); renderHome(); location.hash="finance"; show("home");
 };
 
 /* progress backup & restore */
 $("#exportProg").onclick=()=>{
-  const data={v:3,exported:new Date().toISOString(),session:SESSION,m:M,drill:DRILLNO,flags:FLAGS,lessons:LDONE};
+  const data={v:4,exported:new Date().toISOString(),session:SESSION,m:M,drill:DRILLNO,flags:FLAGS,lessons:LDONE,written:WDONE};
   const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
   const a=document.createElement("a");
   a.href=URL.createObjectURL(blob);
@@ -5610,7 +5636,7 @@ $("#importFile").onchange=e=>{
       if(!d||typeof d.m!=="object") throw 0;
       if(!confirm("Restore this backup? It will replace the progress currently on this device.")) return;
       if(d.session&&d.session.id){ SESSION=d.session; localStorage.setItem(SKEY,JSON.stringify(SESSION)); }
-      M=d.m||{}; DRILLNO=d.drill||0; FLAGS=d.flags||{}; LDONE=d.lessons||{}; LESSON_ID=null;
+      M=d.m||{}; DRILLNO=d.drill||0; FLAGS=d.flags||{}; LDONE=d.lessons||{}; WDONE=d.written||{}; LESSON_ID=null;
       saveProgress(); saveFlags();
       $("#learnerName").value=SESSION.name||"";
       renderSession(); renderHome();
