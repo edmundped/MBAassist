@@ -375,6 +375,8 @@ body.dark .welcome-form{background:rgba(29,25,18,.78);border-color:rgba(60,51,39
   color:var(--bg);font-size:15.5px;font-weight:620;letter-spacing:-.01em;
 }
 .next:active{opacity:.85}
+.qnav{display:flex;gap:9px;margin-top:14px}
+.qnav .next,.qnav .ghost{margin-top:0;flex:1}
 .ghost{
   width:100%;padding:13px;border-radius:11px;border:1px solid var(--line);
   background:var(--surface);font-size:14.5px;font-weight:560;color:var(--ink-2);
@@ -2291,8 +2293,8 @@ QB.push(
 {i:"y14",t:"t_byield",L:3,q:"A bond with a coupon rate of 8% trades at $950. Its current yield is closest to:",a:["9.50%","8.42%","8.00%","7.60%"],c:1,e:"80 / 950 = 8.42%."},
 {i:"y15",t:"t_byield",L:1,q:"After-tax return is calculated by:",a:["Converting each cash flow to its after-tax value first","Taxing the price only","Ignoring the coupon","Taxing the face value"],c:0,e:"Coupon income and capital gains may be taxed differently, so each is adjusted."},
 {i:"y16",t:"t_byield",L:3,q:"You buy a 5% annual coupon bond for $1,000 par and sell for $1,030 a year later. With a 35% marginal rate and half the capital gain taxable, the after-tax coupon income is:",a:["$50.00","$17.50","$24.75","$32.50"],c:3,e:"Tax = 0.35 x 50 = $17.50, so after-tax coupon = 50 - 17.50 = $32.50."},
-{i:"y17",t:"t_byield",L:2,q:"In the same case, tax on the $30 capital gain at 35% on half the gain is:",a:["$30.00","$17.50","$5.25","$10.50"],c:2,e:"0.35 x 0.5 x 30 = $5.25, leaving an after-tax gain of $24.75."},
-{i:"y18",t:"t_byield",L:2,q:"In the same case, the after-tax rate of return is closest to:",a:["3.25%","5.73%","8.00%","5.00%"],c:1,e:"(32.50 + 24.75) / 1,000 = 0.05725, or 5.725%."},
+{i:"y17",t:"t_byield",L:2,q:"A bond sold after one year has a $30 capital gain. If 50% of the gain is taxable at a 35% marginal tax rate, the tax on the gain is:",a:["$30.00","$17.50","$5.25","$10.50"],c:2,e:"0.35 x 0.5 x 30 = $5.25, leaving an after-tax gain of $24.75."},
+{i:"y18",t:"t_byield",L:2,q:"You buy a 5% annual coupon bond for $1,000 and sell it one year later for $1,030. The tax rate is 35%, and only half the capital gain is taxable. The after-tax rate of return is closest to:",a:["3.25%","5.73%","8.00%","5.00%"],c:1,e:"After-tax coupon = 50 x (1-0.35) = $32.50. Tax on gain = 0.35 x 0.5 x 30 = $5.25, so after-tax gain = $24.75. Return = (32.50 + 24.75) / 1,000 = 5.725%."},
 {i:"y19",t:"t_byield",L:2,q:"Which measure would you quote to an investor who intends to hold a bond to maturity?",a:["Yield to maturity","Current yield","Coupon rate","Dividend yield"],c:0,e:"YTM captures both income and the pull to par over the full life."},
 {i:"y20",t:"t_byield",L:2,q:"A bond bought at par and held to maturity, with coupons reinvested at the YTM, returns:",a:["More than the coupon rate","Less than the coupon rate","Zero","The coupon rate, which equals the YTM at par"],c:3,e:"At par the coupon rate and YTM coincide."},
 {i:"k01",t:"t_brisk",L:1,q:"Interest rate risk is:",a:["The risk of inflation only","The risk of early conversion","The risk that bond prices change as market rates fluctuate","The risk the issuer defaults"],c:2,e:"Rate movements change the present value of the bond's fixed cash flows."},
@@ -2328,7 +2330,7 @@ QB.push(
 {i:"t09",t:"t_sbasic",L:3,q:"A share costs $40, pays a $2 dividend, and is expected to sell for $44 in one year. Expected return is:",a:["5%","10%","15%","20%"],c:2,e:"Return = (2 + 44 - 40) / 40 = 6 / 40 = 15%."},
 {i:"t10",t:"t_sbasic",L:2,q:"Expected return can be split into:",a:["Payout ratio plus plowback ratio","P/E plus dividend yield","Dividend yield plus capital gains yield","Coupon yield plus current yield"],c:2,e:"r = Div1/P0 + (P1 - P0)/P0."},
 {i:"t11",t:"t_sbasic",L:3,q:"Blue Sky shares sell for $75, are expected to pay $3 in dividends and to be worth $81 in a year. The expected return is:",a:["16%","12%","4%","8%"],c:1,e:"(3 + 81 - 75) / 75 = 9 / 75 = 12%."},
-{i:"t12",t:"t_sbasic",L:2,q:"For Blue Sky above, the dividend yield and capital gains yield are:",a:["4% and 8%","8% and 4%","12% and 0%","3% and 9%"],c:0,e:"Dividend yield = 3/75 = 4%; capital gains yield = 6/75 = 8%."},
+{i:"t12",t:"t_sbasic",L:2,q:"Blue Sky shares sell for $75, are expected to pay a $3 dividend, and are expected to sell for $81 in one year. The dividend yield and capital gains yield are:",a:["4% and 8%","8% and 4%","12% and 0%","3% and 9%"],c:0,e:"Dividend yield = 3/75 = 4%; capital gains yield = 6/75 = 8%."},
 {i:"t13",t:"t_sbasic",L:2,q:"Valuation by comparables typically uses:",a:["The firm's own coupon rate","The risk-free rate only","The inventory turnover","Price-earnings and price-to-book ratios of similar firms"],c:3,e:"It is a quick first approach to estimating market value."},
 {i:"t14",t:"t_sbasic",L:3,q:"The industry average P/E is 12 and a firm earns $1.50 per share. The implied price is:",a:["$13.50","$12.00","$18.00","$8.00"],c:2,e:"12 x 1.50 = $18.00 per share."},
 {i:"t15",t:"t_sbasic",L:1,q:"Intrinsic value is:",a:["Last year's closing price","The present value of expected future cash flows from the security","The book value of equity","The par value of the share"],c:1,e:"It indicates the fair price given expectations."},
@@ -2349,7 +2351,7 @@ QB.push(
 {i:"w14",t:"t_ddm",L:2,q:"For a firm with non-constant growth, the correct approach is to:",a:["Ignore the early dividends","Use the P/E ratio only","Discount each dividend separately until growth settles, then apply the DDM for the terminal value","Use constant growth from year one"],c:2,e:"Value the irregular phase piece by piece, then value the stable phase as a growing perpetuity."},
 {i:"w15",t:"t_ddm",L:3,q:"Div3 is expected to be $4.20, then dividends grow at 5% forever with r = 12%. The terminal value at year 3 is:",a:["$60.00","$63.00","$35.00","$50.40"],c:1,e:"Div4 = 4.20 x 1.05 = 4.41; P3 = 4.41 / (0.12 - 0.05) = $63.00."},
 {i:"w16",t:"t_ddm",L:1,q:"A firm's last dividend was GHc 10, growing 20% in year 1 and 15% in year 2. Div2 equals:",a:["GHc 13.80","GHc 11.50","GHc 13.50","GHc 12.00"],c:0,e:"Div1 = 10 x 1.20 = 12; Div2 = 12 x 1.15 = GHc 13.80."},
-{i:"w17",t:"t_ddm",L:1,q:"Continuing that example, if growth then settles at 5% forever, Div3 equals:",a:["GHc 13.80","GHc 15.87","GHc 12.60","GHc 14.49"],c:3,e:"Div3 = 13.80 x 1.05 = GHc 14.49."},
+{i:"w17",t:"t_ddm",L:1,q:"A firm's Div2 is GHc 13.80. If dividend growth settles at 5% forever after year 2, Div3 equals:",a:["GHc 13.80","GHc 15.87","GHc 12.60","GHc 14.49"],c:3,e:"Div3 = 13.80 x 1.05 = GHc 14.49."},
 {i:"w18",t:"t_ddm",L:2,q:"With r = 20% and g = 5%, the terminal value at the end of year 2 from Div3 of GHc 14.49 is:",a:["GHc 289.80","GHc 82.80","GHc 96.60","GHc 72.45"],c:2,e:"P2 = 14.49 / (0.20 - 0.05) = 14.49 / 0.15 = GHc 96.60."},
 {i:"w19",t:"t_ddm",L:2,q:"Mitex has EPS of $2 and pays out 50% in dividends. Its current dividend is:",a:["$4.00","$1.00","$2.00","$0.50"],c:1,e:"0.50 x 2 = $1.00 per share."},
 {i:"w20",t:"t_ddm",L:3,q:"Phoenix will pay $1 next year, $2 in year 2 and $3 in year 3, then grow at 6% with r = 14%. The value at year 3 is:",a:["$39.75","$37.50","$21.43","$50.00"],c:0,e:"Div4 = 3 x 1.06 = 3.18; P3 = 3.18 / (0.14 - 0.06) = $39.75."},
@@ -2478,7 +2480,7 @@ QB.push(
 
 /* ---- t_sbasic (t): stock market & returns ---- */
 {i:"t17",t:"t_sbasic",L:3,q:"A stock bought at $40 pays a $2 dividend and rises to $44. The total return is:",a:["10%","15%","5%","20%"],c:1,e:"r = (2 + 44 − 40)/40 = 6/40 = 15%."},
-{i:"t18",t:"t_sbasic",L:3,q:"For the same stock ($40 → $44, $2 dividend), the dividend yield is:",a:["5%","10%","15%","2%"],c:0,e:"Dividend yield = 2/40 = 5%; the remaining 10% is the capital gains yield."},
+{i:"t18",t:"t_sbasic",L:3,q:"A stock is bought for $40, expected to sell for $44, and pays a $2 dividend. The dividend yield is:",a:["5%","10%","15%","2%"],c:0,e:"Dividend yield = 2/40 = 5%; the remaining 10% is the capital gains yield."},
 {i:"t19",t:"t_sbasic",L:2,q:"A share earns $5 EPS and trades at $60. Its P/E ratio is:",a:["5","12","8.3","300"],c:1,e:"P/E = price ÷ EPS = 60 / 5 = 12."},
 {i:"t20",t:"t_sbasic",L:2,q:"Total return on a share splits cleanly into:",a:["Coupon yield and current yield","Dividend yield and capital gains yield","Interest and principal","Growth and inflation"],c:1,e:"r = (Div1 + P1 − P0)/P0 = dividend yield + capital gains yield."},
 {i:"t21",t:"t_sbasic",L:2,q:"A seasoned equity offering (SEO) and an IPO are both:",a:["Secondary market trades","Primary market issues that raise cash for the firm","Share repurchases","Money market instruments"],c:1,e:"Both are primary issues; the IPO is the first, the SEO a later one."},
@@ -2549,9 +2551,9 @@ QB.push(
 {i:"np08",t:"t_cb_npv",L:2,q:"The two hardest — and most critical — inputs to get right in any NPV analysis are:",a:["The company's tax rate and its dividend policy","The amount and timing of the cash flows, and the appropriate discount rate","The number of shares outstanding and the share price","The firm's credit rating and its auditor's opinion"],c:1,e:"Everything in NPV analysis comes down to correctly forecasting cash flows and picking the right discount rate."},
 {i:"np09",t:"t_cb_npv",L:1,q:"A positive NPV signals that a project is expected to:",a:["Add value and increase shareholder wealth","Break even exactly","Reduce the firm's tax bill only","Have no risk"],c:0,e:"NPV is a direct dollar measure of expected value added to owners."},
 {i:"np10",t:"t_cb_npv",L:3,q:"You can buy a building today for $350,000 and are guaranteed to sell it for $400,000 in one year. At a 7% opportunity cost of capital, the NPV of this deal is closest to:",a:["$23,832","$50,000","$7,143","-$23,832"],c:0,e:"NPV = -350,000 + 400,000/1.07 = 23,832."},
-{i:"np11",t:"t_cb_npv",L:3,q:"Using the same building deal, but with a riskier 12% required return (matching stock-market risk), NPV is closest to:",a:["$23,832","$7,143","-$7,143","$0"],c:1,e:"NPV = -350,000 + 400,000/1.12 = 7,143. A higher required return lowers NPV."},
+{i:"np11",t:"t_cb_npv",L:3,q:"You can buy a building today for $350,000 and are guaranteed to sell it for $400,000 in one year. With a riskier 12% required return, NPV is closest to:",a:["$23,832","$7,143","-$7,143","$0"],c:1,e:"NPV = -350,000 + 400,000/1.12 = 7,143. A higher required return lowers NPV."},
 {i:"np12",t:"t_cb_npv",L:3,q:"A firm considers equipment costing $500,000, expected to generate $150,000, $200,000 and $250,000 in years 1-3. At a 10% required return, the NPV is closest to:",a:["+$10,519","-$10,519","+$100,000","-$100,000"],c:1,e:"NPV = -500,000 + 150,000/1.10 + 200,000/1.10^2 + 250,000/1.10^3 = -10,519."},
-{i:"np13",t:"t_cb_npv",L:2,q:"Given the equipment project above (NPV ≈ -$10,519 at 10%), the firm should:",a:["Accept it — the cash flows are attractive","Reject it — it destroys value at the required return","Accept it only if the payback is under 2 years","Accept it because year-3 cash flow is the largest"],c:1,e:"A negative NPV means the project earns less than the required return, so it should be rejected."},
+{i:"np13",t:"t_cb_npv",L:2,q:"An equipment project has NPV of approximately -$10,519 at the required 10% return. The firm should:",a:["Accept it — the cash flows are attractive","Reject it — it destroys value at the required return","Accept it only if the payback is under 2 years","Accept it because year-3 cash flow is the largest"],c:1,e:"A negative NPV means the project earns less than the required return, so it should be rejected."},
 {i:"np14",t:"t_cb_npv",L:3,q:"A project costs $200,000 and returns $80,000, $90,000 and $100,000 in years 1-3. At a 12% required return, NPV is closest to:",a:["+$14,354","-$14,354","+$70,000","+$270,000"],c:0,e:"NPV = -200,000 + 80,000/1.12 + 90,000/1.12^2 + 100,000/1.12^3 = +14,354."},
 {i:"np15",t:"t_cb_npv",L:3,q:"Projects X and Y both cost $40,000 and both last 4 years, at a 9% required return. X pays $15,000 a year for 4 years (NPV ≈ $8,596); Y pays $25,000, $20,000, $10,000 and $5,000 (NPV ≈ $11,033). If X and Y are mutually exclusive, the firm should choose:",a:["X, because its cash flows are equal each year","Y, because it has the higher NPV","Neither, because a level cash flow is always safer","X, because it is simpler to compute"],c:1,e:"With equal lives, the higher-NPV project wins — here, Y."},
 
@@ -2567,9 +2569,9 @@ QB.push(
 {i:"pb09",t:"t_cb_pay",L:2,q:"Discounted payback improves on ordinary payback by correcting for:",a:["The time value of money","Cash flows after the cutoff date","Estimation of the discount rate","Project risk entirely"],c:0,e:"It fixes one flaw (ignoring the time value of money) but not the other (ignoring cash flows past the cutoff)."},
 {i:"pb10",t:"t_cb_pay",L:2,q:"Even discounted payback still shares one flaw with ordinary payback — it:",a:["Ignores cash flows that occur after the arbitrary cutoff date","Ignores the initial investment","Cannot use a discount rate","Only works for bonds"],c:0,e:"Both versions of payback throw away information about what happens beyond the cutoff, so both can reject good long-run projects."},
 {i:"pb11",t:"t_cb_pay",L:2,q:"A project costs $2,000 and returns $1,000 in year 1, $1,000 in year 2 and $10,000 in year 3. Its payback period is:",a:["1 year","2 years","3 years","It never pays back"],c:1,e:"Cumulative cash flow is exactly zero after year 2 (-2,000+1,000+1,000), so payback is 2 years."},
-{i:"pb12",t:"t_cb_pay",L:3,q:"Using the same project (cost $2,000; cash flows $1,000, $1,000, $10,000) discounted at 10%, and assuming cash flows occur evenly within the year, the discounted payback period is closest to:",a:["2.00 years","2.04 years","3.00 years","1.09 years"],c:1,e:"Discounted cumulative cash flow is -2,000, -1,091, -264, +7,249; recovery happens 264/7,513 ≈ 0.04 of the way into year 3, so about 2.04 years."},
+{i:"pb12",t:"t_cb_pay",L:3,q:"A project costs $2,000 and returns $1,000, $1,000, and $10,000 in years 1-3. Discounted at 10%, and assuming cash flows occur evenly within the year, the discounted payback period is closest to:",a:["2.00 years","2.04 years","3.00 years","1.09 years"],c:1,e:"Discounted cumulative cash flow is -2,000, -1,091, -264, +7,249; recovery happens 264/7,513 ≈ 0.04 of the way into year 3, so about 2.04 years."},
 {i:"pb13",t:"t_cb_pay",L:2,q:"A project costs $15,000 and pays $6,000 a year for 4 years. Its (undiscounted) payback period is:",a:["2.0 years","2.5 years","3.0 years","4.0 years"],c:1,e:"Cumulative after year 2 is -3,000; that is half of year 3's $6,000 cash flow, so payback = 2.5 years."},
-{i:"pb14",t:"t_cb_pay",L:3,q:"Using the same project (cost $15,000; $6,000/year for 4 years) discounted at 10%, and assuming cash flows occur evenly within the year, the discounted payback period is closest to:",a:["2.50 years","3.02 years","4.00 years","1.85 years"],c:1,e:"Discounting delays recovery past the undiscounted 2.5-year mark — here to about 3.02 years."},
+{i:"pb14",t:"t_cb_pay",L:3,q:"A project costs $15,000 and pays $6,000 a year for 4 years. Discounted at 10%, and assuming cash flows occur evenly within the year, the discounted payback period is closest to:",a:["2.50 years","3.02 years","4.00 years","1.85 years"],c:1,e:"Discounting delays recovery past the undiscounted 2.5-year mark — here to about 3.02 years."},
 {i:"pb15",t:"t_cb_pay",L:3,q:"A project costs $9,000 and returns $3,000, $4,000 and $5,000 in years 1-3. Its (undiscounted) payback period is closest to:",a:["2.0 years","2.4 years","2.8 years","3.0 years"],c:1,e:"Cumulative after year 2 is -2,000; that is 2,000/5,000 = 0.4 of year 3, so payback = 2.4 years."},
 
 /* ---- t_cb_irr: Internal rate of return (prefix ir) ---- */
@@ -2586,7 +2588,7 @@ QB.push(
 {i:"ir11",t:"t_cb_irr",L:3,q:"A project costs $100,000 and returns $40,000 a year for 4 years. NPV at 10% is $26,795 and NPV at 25% is -$5,536. Using the interpolation method, IRR is approximately:",a:["10.0%","15.0%","22.4%","30.0%"],c:2,e:"IRR ≈ 10 + [26,795/(26,795-(-5,536))] × (25-10) ≈ 22.4%."},
 {i:"ir12",t:"t_cb_irr",L:3,q:"A project costs $60,000 and returns $25,000 a year for 3 years. NPV at 10% is $2,171 and NPV at 20% is -$7,338. Using the interpolation method, IRR is approximately:",a:["10.0%","12.3%","20.0%","5.0%"],c:1,e:"IRR ≈ 10 + [2,171/(2,171-(-7,338))] × (20-10) ≈ 12.3%."},
 {i:"ir13",t:"t_cb_irr",L:3,q:"You can buy a building for $350,000 that pays $16,000 a year for 3 years and sells for $450,000 at the end of year 3 (so year 3's cash flow is $466,000). At trial rates of 10% (NPV = +$27,881) and 15% (NPV = -$17,586), the interpolated IRR is closest to:",a:["10.0%","13.1%","15.0%","20.0%"],c:1,e:"IRR ≈ 10 + [27,881/(27,881-(-17,586))] × (15-10) ≈ 13.07%."},
-{i:"ir14",t:"t_cb_irr",L:3,q:"For the building investment above, the exact IRR (found by a financial calculator rather than interpolation) is closest to:",a:["10.0%","13.0%","15.0%","20.0%"],c:1,e:"The exact IRR is about 12.96% — very close to, but not identical to, the interpolated 13.07% estimate."},
+{i:"ir14",t:"t_cb_irr",L:3,q:"A building investment costs $350,000, pays $16,000 in years 1 and 2, then pays $466,000 in year 3 including sale proceeds. The exact IRR is closest to:",a:["10.0%","13.0%","15.0%","20.0%"],c:1,e:"The exact IRR is about 12.96% — very close to, but not identical to, an interpolated 13.07% estimate."},
 {i:"ir15",t:"t_cb_irr",L:2,q:"If a firm's cost of capital is 12% and a project's IRR (found by interpolation) is 13.07%, the firm should:",a:["Reject the project — the IRR is too close to the cost of capital","Accept the project — its return exceeds the cost of capital","Wait until the cost of capital falls","Use payback instead to decide"],c:1,e:"IRR > cost of capital means accept, regardless of how close the two numbers look."},
 
 /* ---- t_cb_mex: Unequal lives, timing & replacement (prefix eq) ---- */
@@ -2604,7 +2606,7 @@ QB.push(
 {i:"eq12",t:"t_cb_mex",L:2,q:"Comparing Machine D (EAC ≈ $9,610) and Machine E (EAC ≈ $11,450), the cost-minimizing firm should choose:",a:["Machine E, because its total upfront cost is lower","Machine D, because its equivalent annual cost is lower","Either — total PV of costs already tells us which is cheaper","Machine E, because it has a shorter life"],c:1,e:"Machine D's lower EAC means it is cheaper on a fair, per-year basis, even though it costs more upfront."},
 {i:"eq13",t:"t_cb_mex",L:3,q:"An old machine costs $12,000 a year to run and will last two more years. A new machine costs $25,000, runs at $8,000 a year, lasts 5 years, and the opportunity cost of capital is 6% — giving the new machine an EAC of about $13,935. The firm should:",a:["Replace now — the new machine is more efficient","Wait — the new machine's equivalent annual cost is higher than what it costs to keep running the old one","Replace immediately regardless of cost","Compare only the upfront purchase prices"],c:1,e:"$13,935 (new machine EAC) exceeds $12,000 (old machine's annual cost), so keep the old machine for now."},
 {i:"eq14",t:"t_cb_mex",L:3,q:"Machine F costs $20,000, lasts 4 years and costs $5,000 a year to run; Machine G costs $30,000, lasts 6 years and costs $3,000 a year to run, both at 8%. Machine F's equivalent annual cost is closest to:",a:["$11,038","$9,489","$20,000","$5,000"],c:0,e:"PV of F's costs ≈ $36,561; divided by the 4-year annuity factor at 8% (3.3121) ≈ $11,038."},
-{i:"eq15",t:"t_cb_mex",L:2,q:"Using the same figures, Machine G's equivalent annual cost is closest to $9,489, versus Machine F's roughly $11,038. The firm should choose:",a:["Machine F, since it costs less upfront","Machine G, since its equivalent annual cost is lower","Either, since both have positive cash flows","Machine F, since it has a shorter life"],c:1,e:"Lower EAC wins — here, Machine G, even though it costs more to buy and lasts longer."},
+{i:"eq15",t:"t_cb_mex",L:2,q:"Machine F has equivalent annual cost of about $11,038, while Machine G has equivalent annual cost of about $9,489. The firm should choose:",a:["Machine F, since it costs less upfront","Machine G, since its equivalent annual cost is lower","Either, since both have positive cash flows","Machine F, since it has a shorter life"],c:1,e:"Lower EAC wins — here, Machine G, even though it costs more to buy and lasts longer."},
 
 /* ---- t_cb_pi: Capital rationing & profitability index (prefix pi) ---- */
 {i:"pi01",t:"t_cb_pi",L:1,q:"Capital rationing refers to:",a:["Unlimited funds being available for any positive-NPV project","A limit set on the amount of funds available for investment","A tax on capital gains","The requirement to pay dividends before investing"],c:1,e:"Rationing means the firm cannot fund every positive-NPV project it finds."},
@@ -2620,7 +2622,7 @@ QB.push(
 {i:"pi11",t:"t_cb_pi",L:3,q:"Project N costs $7m and has a PV of future cash flows of $10m (NPV = $3m). Its profitability index on a PV basis is closest to:",a:["0.43","1.43","0.70","3.00"],c:1,e:"PI = 10/7 ≈ 1.43."},
 {i:"pi12",t:"t_cb_pi",L:3,q:"Five candidate projects (cost, PI on a PV basis): L costs $3m at PI 1.33; M costs $5m at PI 1.20; N costs $7m at PI 1.43; O costs $6m at PI 1.33; P costs $4m at PI 1.25. With a $20m budget, which set should the firm fund?",a:["M only, since it is listed first","N, then L and O, then P — ranked by highest PI first until the $20m budget is used up","All five projects, regardless of the budget","P only, since it has the lowest cost"],c:1,e:"N (7) + L (3) + O (6) + P (4) = $20m exactly, funding every project except the lowest-PI one, M."},
 {i:"pi13",t:"t_cb_pi",L:3,q:"A project costs $8,000 and pays $3,000, $4,000 and $5,000 in years 1-3 at a 10% required return. Its profitability index on a PV basis is closest to:",a:["0.22","1.22","2.22","0.78"],c:1,e:"PV of inflows ≈ $9,790; PI = 9,790/8,000 ≈ 1.22."},
-{i:"pi14",t:"t_cb_pi",L:3,q:"Using the same project (cost $8,000; PI ≈ 1.22 on a PV basis), the profitability index on an NPV basis is closest to:",a:["1.22","0.22","2.22","-0.22"],c:1,e:"NPV-basis PI is always the PV-basis PI minus 1, so about 0.22."},
+{i:"pi14",t:"t_cb_pi",L:3,q:"A project costs $8,000 and has a profitability index of about 1.22 on a PV-of-cash-flows basis. The profitability index on an NPV basis is closest to:",a:["1.22","0.22","2.22","-0.22"],c:1,e:"NPV-basis PI is always the PV-basis PI minus 1, so about 0.22."},
 {i:"pi15",t:"t_cb_pi",L:2,q:"Project Small costs $50,000 with a PV of cash flows of $70,000 (PI ≈ 0.40 on an NPV basis). Project Large costs $5,000,000 with a PV of cash flows of $5,500,000 (PI ≈ 0.10 on an NPV basis). With no budget limit and the firm choosing only one, it should choose:",a:["Small, since it has the higher PI","Large, since it has the far higher NPV in dollar terms","Neither, since both have a PI below 1.0 on the NPV basis","Small, since it costs less"],c:1,e:"Large creates $500,000 of value versus Small's $20,000 — NPV in dollars is what counts when funds aren't constrained."}
 );
 
@@ -2944,7 +2946,7 @@ const CASES=[
 	{i:"cf11",t:"t_cf_risk",L:3,q:"Sensitivity analysis differs from scenario analysis because sensitivity analysis:",a:["Changes one assumption at a time","Always ignores taxes","Changes every assumption at once","Can only be used after a project is accepted"],c:0,e:"Sensitivity analysis isolates one variable; scenario analysis changes several related variables together."},
 	{i:"cf12",t:"t_cf_risk",L:1,q:"A $1m increase in annual marketing cost at a 40% tax rate reduces annual FCF by:",a:["$0.4m","$0.6m","$1.0m","$1.4m"],c:1,e:"A cash cost reduces after-tax cash flow by cost × (1 − tax rate) = 1.0 × 0.60 = $0.6m."},
 	{i:"rr01",t:"t_rr_returns",L:3,q:"A stock bought for $63.01 sells for $103.64 and pays a $1.40 dividend. Total percentage return is closest to:",a:["64.48%","66.70%","2.22%","41.03%"],c:1,e:"Return = (103.64 − 63.01 + 1.40) / 63.01 = 66.70%."},
-	{i:"rr02",t:"t_rr_returns",L:2,q:"Using the same stock, the dividend yield is closest to:",a:["2.22%","64.48%","66.70%","1.35%"],c:0,e:"Dividend yield = 1.40 / 63.01 = 2.22%."},
+	{i:"rr02",t:"t_rr_returns",L:2,q:"A stock was bought for $63.01 and paid a $1.40 dividend during the year. The dividend yield is closest to:",a:["2.22%","64.48%","66.70%","1.35%"],c:0,e:"Dividend yield = 1.40 / 63.01 = 2.22%."},
 	{i:"rr03",t:"t_rr_returns",L:3,q:"An asset returns −8%, 5% and 18% with equal probabilities. Expected return is:",a:["1%","5%","8%","15%"],c:1,e:"E(R) = (−8 + 5 + 18)/3 = 5%."},
 	{i:"rr04",t:"t_rr_returns",L:3,q:"A gold stock returns 20%, 3% and −20% with equal probabilities. Expected return is:",a:["0%","1%","3%","20%"],c:1,e:"E(R) = (20 + 3 − 20)/3 = 1%."},
 	{i:"rr05",t:"t_rr_port",L:3,q:"A portfolio is 75% in Auto with expected return 5% and 25% in Gold with expected return 1%. Expected portfolio return is:",a:["1.00%","3.00%","4.00%","5.00%"],c:2,e:"E(Rp) = 0.75×5% + 0.25×1% = 4.00%."},
@@ -5302,7 +5304,14 @@ function shuffled(n){
 }
 function renderQ(){
   const d=DRILL, q=d.q[d.i];
-  d.order=shuffled(q.a.length);            // display slot -> original option index
+  d.orders=d.orders||{};
+  d.picks=d.picks||{};
+  d.order=d.orders[d.i]||shuffled(q.a.length);            // display slot -> original option index
+  d.orders[d.i]=d.order;
+  const answered=d.res[d.i]!==undefined;
+  const chosen=d.picks[d.i];
+  const rightSlot=d.order.indexOf(q.c);
+  const chosenSlot=answered?d.order.indexOf(chosen):-1;
   const flag=FLAGS[q.i];
   const dots=d.q.map((_,ix)=>{
     const r=d.res[ix];
@@ -5318,18 +5327,34 @@ function renderQ(){
       ${EXAM_QUIZ_IDS.has(q.i)?`<span class="tag" style="margin-bottom:11px">Quiz question</span>`:SAMPLE.has(q.i)?`<span class="tag" style="margin-bottom:11px">Lecturer sample</span>`:""}
       <p class="qtext">${q.q}</p>
       <div class="opts">${d.order.map((orig,slot)=>
-        `<button class="optbtn" data-pick="${slot}"><span class="k">${String.fromCharCode(65+slot)}</span><span>${q.a[orig]}</span></button>`
+        `<button class="optbtn${answered?(slot===rightSlot?" right":slot===chosenSlot?" wrong":""):""}" data-pick="${slot}" ${answered?"disabled":""}><span class="k">${String.fromCharCode(65+slot)}</span><span>${q.a[orig]}</span></button>`
       ).join("")}</div>
       <div id="hintBox"></div>
-      <button class="hintbtn" id="hintBtn" type="button">Hint</button>
+      ${answered?"":`<button class="hintbtn" id="hintBtn" type="button">Hint</button>`}
       <div class="flagbar">
         <button class="flagbtn${flag?" on":""}" data-flag="${q.i}" type="button">${flag?"Flagged":"Flag question"}</button>
       </div>
       <p class="flag-note">${flag?`Flag note: ${esc(flag.note||"Needs review.")}`:"If a question, answer, or explanation seems faulty, flag it for review."}</p>
-      <div id="verdictBox" aria-live="polite"></div>
+      <div id="verdictBox" aria-live="polite">${answered?verdictHtml(d,q,chosenSlot,rightSlot):""}</div>
+      ${!answered&&d.i>0?`<div class="qnav"><button class="ghost" data-q-prev type="button">Previous</button></div>`:""}
     </div>`;
-  d.answered=false; d.hintStage=0;
+  d.answered=answered; d.hintStage=0;
   const hb=$("#hintBtn"); if(hb) hb.onclick=useHint;
+}
+function verdictHtml(d,q,chosenSlot,rightSlot){
+  const ok=d.res[d.i], r=rec(q.i);
+  const status=r.s>=RETIRE?"Retired — it will not come back until the rest are done."
+    :ok?((d.hinted&&d.hinted[d.i])?"Correct with a hint, so the streak holds rather than advances. It comes back to be answered unaided.":"One more correct answer in a row retires this question.")
+    :"This one returns near the front of the queue.";
+  return `<div class="verdict ${ok?"y":"n"}">
+      <b>${ok?"Correct":"Answer: "+String.fromCharCode(65+rightSlot)+". "+q.a[q.c]}</b>
+      ${q.e}
+      <span class="src">${status}</span>
+    </div>
+    <div class="qnav">
+      ${d.i>0?`<button class="ghost" data-q-prev type="button">Previous</button>`:""}
+      <button class="next" data-q-next type="button">${d.i+1<d.q.length?"Next question":"See results"}</button>
+    </div>`;
 }
 
 /* ---- assist: method prompt first, then narrow the options ---- */
@@ -5373,6 +5398,7 @@ function answer(slot){
   const d=DRILL; if(d.answered) return; d.answered=true;
   const q=d.q[d.i], chosen=d.order[slot], ok=chosen===q.c;
   const rightSlot=d.order.indexOf(q.c);
+  d.picks=d.picks||{}; d.picks[d.i]=chosen;
   d.res[d.i]=ok;
   const wasHinted=!!(d.hinted&&d.hinted[d.i]);
   const t=recordAnswer(q.i,ok,wasHinted);
@@ -5384,22 +5410,8 @@ function answer(slot){
     if(ix===rightSlot) b.classList.add("right");
     else if(ix===slot) b.classList.add("wrong");
   });
-  const r=rec(q.i);
-  const status=r.s>=RETIRE?"Retired — it will not come back until the rest are done."
-    :ok?(wasHinted?"Correct with a hint, so the streak holds rather than advances. It comes back to be answered unaided.":"One more correct answer in a row retires this question.")
-    :"This one returns near the front of the queue.";
-  $("#verdictBox").innerHTML=`
-    <div class="verdict ${ok?"y":"n"}">
-      <b>${ok?"Correct":"Answer: "+String.fromCharCode(65+rightSlot)+". "+q.a[q.c]}</b>
-      ${q.e}
-      <span class="src">${status}</span>
-    </div>
-    <button class="next" id="nextBtn">${d.i+1<d.q.length?"Next question":"See results"}</button>`;
+  $("#verdictBox").innerHTML=verdictHtml(d,q,slot,rightSlot);
   document.querySelectorAll(".dots i")[d.i].className=ok?"ok":"no";
-  $("#nextBtn").onclick=()=>{
-    if(d.i+1<d.q.length){ d.i++; renderQ(); window.scrollTo({top:0,behavior:"smooth"}); }
-    else finishDrill();
-  };
 }
 function finishDrill(){
   const d=DRILL, right=d.res.filter(Boolean).length, pct=Math.round(right/d.q.length*100);
@@ -5466,6 +5478,18 @@ function renderSession(){
 document.addEventListener("click",e=>{
   const course=e.target.closest("[data-course]");
   if(course&&course.dataset.course==="finance"){ location.hash="finance"; show("home"); renderHome(); return; }
+
+  if(e.target.closest("[data-q-prev]")){
+    if(DRILL&&DRILL.i>0){ DRILL.i--; renderQ(); window.scrollTo({top:0,behavior:"smooth"}); }
+    return;
+  }
+  if(e.target.closest("[data-q-next]")){
+    if(!DRILL) return;
+    if(DRILL.res[DRILL.i]===undefined) return;
+    if(DRILL.i+1<DRILL.q.length){ DRILL.i++; renderQ(); window.scrollTo({top:0,behavior:"smooth"}); }
+    else finishDrill();
+    return;
+  }
 
   if(e.target.closest("[data-final-mcq]")){ startFinalMcq(); return; }
   if(e.target.closest("[data-written-samples]")){ renderWrittenSamples(); return; }
