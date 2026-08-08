@@ -425,6 +425,48 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .flagbtn.on{border-color:#B7791F;background:#FFF7E6;color:#7A4D00}
 body.dark .flagbtn.on{background:#2D2413;color:#F3C46B;border-color:#8A6A24}
 .flag-note{font-size:12px;color:var(--ink-3);line-height:1.45;margin-top:8px}
+.exam-spotlight{
+  position:relative;overflow:hidden;border:1px solid var(--line);border-radius:18px;
+  background:
+    radial-gradient(circle at 92% 8%,rgba(176,122,46,.22),transparent 32%),
+    linear-gradient(135deg,var(--surface),var(--raised));
+  padding:17px;margin:0 0 18px;
+}
+.exam-spotlight:before{
+  content:"";position:absolute;inset:0 auto 0 0;width:5px;background:var(--accent);
+}
+.exam-spotlight h3{font-size:22px;letter-spacing:-.025em;margin:5px 0 7px}
+.exam-spotlight p{font-size:14px;color:var(--ink-2);line-height:1.5;max-width:58ch}
+.exam-actions{display:grid;grid-template-columns:1fr;gap:9px;margin-top:14px}
+.exam-action{
+  width:100%;text-align:left;border:1px solid var(--line);border-radius:13px;
+  background:var(--surface);padding:13px;display:flex;align-items:center;gap:12px;
+}
+.exam-action b{display:block;font-size:14.5px;font-weight:650}
+.exam-action span{display:block;font-size:12.5px;color:var(--ink-3);margin-top:1px;line-height:1.4}
+.exam-action .ti{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;background:color-mix(in srgb,var(--accent) 14%,transparent);flex:none}
+.exam-choice{display:grid;grid-template-columns:1fr;gap:10px;margin-top:12px}
+.exam-choice .tool-row{align-items:flex-start}
+.written-list{display:flex;flex-direction:column;gap:10px}
+.written-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.written-head{width:100%;text-align:left;padding:15px;display:flex;gap:12px;align-items:flex-start;cursor:pointer;list-style:none}
+.written-head::-webkit-details-marker{display:none}
+.written-head .wnum{font-family:var(--mono);font-size:11px;color:var(--ink-3);width:24px;flex:none;padding-top:2px}
+.written-head b{display:block;font-size:15px;font-weight:650;letter-spacing:-.012em;line-height:1.35}
+.written-head span{display:block;font-size:12.5px;color:var(--ink-3);margin-top:3px}
+.written-body{border-top:1px solid var(--line);padding:0 15px 15px}
+.written-body p,.written-body li{font-size:14px;color:var(--ink-2);line-height:1.56}
+.written-body ul{margin:9px 0 0;padding-left:18px}
+.written-body .prompt{color:var(--ink);font-weight:560;margin:13px 0 10px}
+.reveal-box{margin-top:11px;border:1px dashed var(--line-2);border-radius:11px;overflow:hidden}
+.reveal-box summary{cursor:pointer;list-style:none;padding:11px 12px;font-size:13.5px;font-weight:650;color:var(--accent)}
+.reveal-box summary::-webkit-details-marker{display:none}
+.reveal-box div{border-top:1px dashed var(--line);padding:11px 12px;background:var(--raised)}
+.steps{margin:0;padding-left:18px}
+.steps li{margin-bottom:7px}
+@media (min-width:620px){
+  .exam-actions,.exam-choice{grid-template-columns:1fr 1fr}
+}
 .formula-map{display:flex;flex-direction:column;gap:10px}
 .map-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:15px}
 .map-card h3{font-size:16px;margin-bottom:7px}
@@ -802,6 +844,8 @@ body.dark .lvl.l1{color:#7FD3B8}body.dark .lvl.l2{color:#E3BE6A}body.dark .lvl.l
     <b>Learning use only</b>
     <p>This app is for private study and practice before graded work. MBA512 bars AI chatbots for quizzes, assignments, case analysis, and exams; use this to learn the material, then complete deliverables on your own.</p>
   </div>
+
+  <section class="exam-spotlight" id="examSpotlight"></section>
 
   <div class="sec-head"><span class="eyebrow">Lectures</span><span class="sub">learn &amp; drill each week</span></div>
   <div class="grid" id="moduleGrid"></div>
@@ -3373,6 +3417,71 @@ const MODULES=[
 ];
 
 const SAMPLE=new Set(["g01","g02","g03","g04","d01","d02","d03","d04","d05","d06","s01","s10","s11","a03","a09","a10","a11","a12","a13"]);
+const QUIZ1_TOPICS=["t_goal","t_dec","t_mkt","t_sing","t_comp","t_multi","t_ann","t_app"];
+const QUIZ2_TOPICS=[...MODULES.find(m=>m.id==="mq2").prepIds];
+const FINAL_CORE_TOPICS=[...new Set([...QUIZ1_TOPICS,...QUIZ2_TOPICS])];
+const WRITTEN_SAMPLES=[
+  {id:"we01",topic:"Bond valuation",title:"Zero-coupon bond issue rate",
+   prompt:"Ten years ago, a company issued a 10-year zero-coupon bond with $1,000 maturity value for $600. Find the interest rate at issue.",
+   hint:"A zero-coupon bond has only one cash flow: the face value at maturity. You are solving for r from PV, FV and t.",
+   setup:["PV = 600","FV = 1,000","t = 10 years","Formula: r = (FV/PV)^(1/t) - 1"],
+   solution:["Compute the ratio: 1,000 / 600 = 1.6667.","Take the 10th root: 1.6667^(1/10) = 1.0524.","Subtract 1: r = 0.0524, or about 5.24% per year."]},
+  {id:"we02",topic:"Portfolio return",title:"Expected return and portfolio weights",
+   prompt:"A stock has expected return 14%. A risk-free asset earns 2.1%. Find the expected return on an equal-weight portfolio, then find the stock/risk-free weights for a 9% portfolio return.",
+   hint:"Portfolio expected return is a weighted average. For the target return, let w be the stock weight and 1-w be the risk-free weight.",
+   setup:["Equal weight: E(Rp)=0.5(14%)+0.5(2.1%)","Target: 9% = w(14%) + (1-w)(2.1%)"],
+   solution:["Equal-weight return = 7.00% + 1.05% = 8.05%.","Solve target: 9 = 14w + 2.1 - 2.1w.","6.9 = 11.9w, so w = 57.98% in the stock and 42.02% in the risk-free asset."]},
+  {id:"we03",topic:"Portfolio risk",title:"Two-stock expected return and risk",
+   prompt:"Use a state-probability table to compute each stock's expected return, standard deviation, covariance, correlation, and the portfolio standard deviation.",
+   hint:"Do not average the returns casually. Multiply each state return by its probability, then use deviations from expected return for variance and covariance.",
+   setup:["E(R) = sum of probability x return.","Variance = sum of probability x deviation squared.","Covariance = sum of probability x deviation A x deviation B.","Portfolio variance = wA^2 sigmaA^2 + wB^2 sigmaB^2 + 2wAwB covariance."],
+   solution:["Compute E(R) for each asset first.","Build a table with each state, probability, each asset's deviation from its own expected return, squared deviations, and cross-products.","Standard deviation is the square root of variance. Correlation = covariance / (sigmaA x sigmaB).","Use the requested portfolio weights in the portfolio variance formula, then take the square root."]},
+  {id:"we04",topic:"WACC",title:"Multiplex Entertainment WACC",
+   prompt:"Compute WACC for a firm with common stock, preferred stock, and semiannual bonds. Use CAPM for equity, preferred dividend yield for preferred stock, and bond YTM after tax for debt.",
+   hint:"This is a component-cost problem. Find market values first, then costs, then weights. The coupon rate is not the cost of debt.",
+   setup:["Equity market value = shares x price.","Preferred market value = preferred shares x preferred price.","Debt market value = number of bonds x quoted bond price.","RE = Rf + beta x market risk premium.","Rpref = annual preferred dividend / preferred price.","After-tax RD = YTM x (1 - tax rate)."],
+   solution:["Compute each market value and total firm value V.","Compute equity cost with CAPM.","Solve the bond YTM using the market price, coupon, maturity and semiannual periods; convert to nominal annual YTM if needed.","Apply the tax shield to debt only.","WACC = wE RE + wP RP + wD RD(1 - T)."]},
+  {id:"we05",topic:"Equivalent annual cost",title:"Linux versus Windows operating systems",
+   prompt:"Linux costs $50,000 with $6,000 annual maintenance for 4 years. Windows costs $75,000 with $4,500 annual maintenance for 6 years. Discount rate is 8%. Which should be chosen if each can be replicated?",
+   hint:"Different lives mean raw PV is not enough. Convert each option into an equivalent annual cost.",
+   setup:["PV cost = initial cost + annual maintenance x PVIFA(r,n).","EAC = PV cost / PVIFA(r,n).","Choose the lower EAC when benefits are equivalent."],
+   solution:["Linux PV cost = 50,000 + 6,000 x PVIFA(8%,4) = about 69,872.76.","Linux EAC = 69,872.76 / PVIFA(8%,4) = about 21,096.04 per year.","Windows PV cost = 75,000 + 4,500 x PVIFA(8%,6) = about 95,802.96.","Windows EAC = 95,802.96 / PVIFA(8%,6) = about 20,723.65 per year.","Choose Windows because it has the lower equivalent annual cost."]},
+  {id:"we06",topic:"Stock valuation",title:"Non-constant growth stock price",
+   prompt:"A firm's latest EPS is $4, payout ratio is 25%, growth is 20% for four years, then 5% forever. Required return is 10%. Find today's stock price and related future prices.",
+   hint:"Convert EPS to dividends using the payout ratio, value the high-growth dividends one by one, then use Gordon growth once growth becomes stable.",
+   setup:["D0 = EPS0 x payout ratio.","Grow EPS and dividends by 20% for years 1-4.","Terminal value at year 4 = D5 / (r - gstable).","P0 = PV of D1-D4 + PV of terminal value."],
+   solution:["D0 = 4 x 25% = 1.00.","D1-D4 grow at 20%: 1.20, 1.44, 1.728, 2.0736.","D5 = D4 x 1.05 = 2.1773.","P4 = D5 / (10% - 5%) = 43.5456.","Discount D1-D4 and P4 back to today at 10% for P0 of about 34.74.","For one-year holding price, value the remaining dividends as of year 1; expected return = (D1 + P1 - P0) / P0."]},
+  {id:"we07",topic:"Capital budgeting cash flows",title:"Operating cash flow from sales, costs and depreciation",
+   prompt:"Sales are $542,000, costs are $389,300, depreciation is $82,400, and tax rate is 31%. Compute operating cash flow.",
+   hint:"Depreciation is subtracted to compute taxes, then added back because it is not a cash outflow.",
+   setup:["EBIT = sales - costs - depreciation.","OCF = EBIT(1 - tax rate) + depreciation."],
+   solution:["EBIT = 542,000 - 389,300 - 82,400 = 70,300.","After-tax EBIT = 70,300 x 69% = 48,507.","OCF = 48,507 + 82,400 = 130,907."]},
+  {id:"we08",topic:"Net working capital",title:"Initial NWC requirement",
+   prompt:"New inventory is $146,000, accounts payable increases by $87,000, and accounts receivable of $80,000 will rise by 20%. Compute the initial NWC requirement.",
+   hint:"Inventory and receivables tie up cash. Payables provide supplier financing and reduce the cash requirement.",
+   setup:["Change in NWC = increase in inventory + increase in receivables - increase in payables."],
+   solution:["Increase in receivables = 20% x 80,000 = 16,000.","Change in NWC = 146,000 + 16,000 - 87,000 = 75,000.","The project needs a $75,000 initial NWC investment."]},
+  {id:"we09",topic:"Bond pricing",title:"Semiannual coupon bond price",
+   prompt:"Price a 6.5% semiannual coupon bond with $1,000 face value, 3 years to maturity, and 6% required annual return.",
+   hint:"Semiannual means adjust all three moving parts: coupon, rate, and number of periods.",
+   setup:["Coupon per half-year = 6.5% x 1,000 / 2 = 32.50.","Period yield = 6% / 2 = 3%.","Number of periods = 3 x 2 = 6.","Price = coupon x PVIFA(3%,6) + 1,000 / 1.03^6."],
+   solution:["PV of coupons = 32.50 x PVIFA(3%,6).","PV of face value = 1,000 / 1.03^6.","Add the two present values for a price of about 1,013.54.","Because coupon rate is slightly above yield, the price is slightly above par."]},
+  {id:"we10",topic:"CAPM",title:"Required return from beta",
+   prompt:"A firm has beta 1.5, risk-free rate 6%, and market risk premium 9%. Compute the cost of equity.",
+   hint:"If the market risk premium is already given, do not subtract the risk-free rate again.",
+   setup:["RE = Rf + beta x market risk premium."],
+   solution:["Risk premium for the firm = 1.5 x 9% = 13.5%.","Cost of equity = 6% + 13.5% = 19.5%."]},
+  {id:"we11",topic:"NPV",title:"Three-year project NPV",
+   prompt:"A project costs $100,000 and returns $45,000 annually for three years. Opportunity cost of capital is 14%. Compute NPV.",
+   hint:"This is an annuity inflow minus an initial outflow.",
+   setup:["PV of inflows = 45,000 x PVIFA(14%,3).","NPV = PV inflows - 100,000."],
+   solution:["PVIFA(14%,3) = [1 - 1/(1.14)^3] / 0.14.","PV inflows = 45,000 x 2.3216 = about 104,473.","NPV = 104,473 - 100,000 = about 4,473."]},
+  {id:"we12",topic:"Mergers and acquisitions",title:"Combined firm value and bidder gain",
+   prompt:"Bidder B is worth $500,000, target T is worth $75,000, and expected synergy is $50,000. Find combined firm value and explain how price paid affects bidder NPV.",
+   hint:"Treat the acquisition as capital budgeting: benefit minus cost.",
+   setup:["Combined value = bidder standalone value + target standalone value + synergy.","Bidder NPV in a cash deal = target value + synergy - price paid."],
+   solution:["Combined value = 500,000 + 75,000 + 50,000 = 625,000.","The maximum value created by acquiring the target is 75,000 + 50,000 = 125,000.","If the bidder pays more than 125,000, bidder shareholders lose value; if it pays less, they keep some synergy."]}
+];
 const TOPIC={}; MODULES.forEach(m=>m.topics.forEach(t=>{t.mod=m; TOPIC[t.id]=t;}));
 const BY_TOPIC={}; QB.forEach(q=>{(BY_TOPIC[q.t]=BY_TOPIC[q.t]||[]).push(q);});
 const QMAP={}; QB.forEach(q=>QMAP[q.i]=q);
@@ -3605,6 +3714,7 @@ const TOOL_DESC={
 };
 function renderHome(){
   const all=statsFor(allIds());
+  const finalCore=statsFor(FINAL_CORE_TOPICS);
   $("#railPct").textContent=all.pct+"%";
   $("#railBar").style.width=all.pct+"%";
 
@@ -3613,6 +3723,21 @@ function renderHome(){
   $("#heroGreet").textContent=nm?("Akwaaba, "+nm.split(/\s+/)[0]):"Akwaaba";
   const st=touchStreak();
   $("#heroStreak").textContent = all.pct===100 ? "All questions retired" : st>1 ? st+"-day streak" : "Course mastery";
+
+  $("#examSpotlight").innerHTML=`
+    <p class="eyebrow">Exam tomorrow</p>
+    <h3>Final exam prep</h3>
+    <p>Start with Quiz 1, Quiz 2 and lecturer-style MCQs, then move into the broader bank and written samples. Use this for learning only; sit the exam on your own.</p>
+    <div class="exam-actions">
+      <button class="exam-action" data-mod="mfinal" type="button">
+        <span class="ti">${moduleIcon("mfinal",100,"#6B4AA0")}</span>
+        <span><b>Open exam prep</b><span>MCQ simulator + guided written samples</span></span>
+      </button>
+      <button class="exam-action" data-final-mcq type="button">
+        <span class="ti">${moduleIcon("mq2",100,"#0E6E85")}</span>
+        <span><b>Start core MCQs now</b><span>${finalCore.retired}/${finalCore.total} core questions retired</span></span>
+      </button>
+    </div>`;
 
   /* lectures only — these carry progress */
   const lectures=MODULES.filter(isLectureModule);
@@ -3627,7 +3752,7 @@ function renderHome(){
   }).join("");
 
   /* study tools — utilities, not masterable, so not cubes */
-  const tools=MODULES.filter(m=>m.calcOnly||m.caseOnly||m.frameworkOnly||m.teachOnly||m.prepOnly);
+  const tools=MODULES.filter(m=>(m.calcOnly||m.caseOnly||m.frameworkOnly||m.teachOnly||m.prepOnly)&&m.id!=="mfinal");
   const order={mq2:0,mfinal:1,mt:2,mf:3,mc:4,m0:5};
   $("#toolsList").innerHTML=tools.sort((a,b)=>order[a.id]-order[b.id]).map(m=>{
     const d=TOOL_DESC[m.id]; const desc=typeof d==="function"?d():d;
@@ -5039,6 +5164,30 @@ function advanceLesson(){
 let DRILL=null;
 function renderDrillIntro(){
   if(WORLD&&WORLD.prepOnly){
+    if(WORLD.id==="mfinal"){
+      const core=statsFor(FINAL_CORE_TOPICS), full=statsFor(allIds());
+      $("#drillPane").innerHTML=`<div class="panel">
+        <p class="eyebrow" style="margin-bottom:10px">Final exam prep</p>
+        <p style="font-size:14.5px;color:var(--ink-2);line-height:1.55">Use MCQs first for fast retrieval across Quiz 1, Quiz 2 and sample-style questions. Then use written samples to practise setup, timelines, formulas and interpretation.</p>
+        <div class="exam-choice">
+          <button class="tool-row" data-final-mcq type="button" style="--tc:#0E6E85">
+            <span class="ti">${moduleIcon("mq2",100,"#0E6E85")}</span>
+            <span class="tbody"><b>MCQ prep</b><span>25 coached questions. Core first: ${core.retired}/${core.total} retired, then the full ${full.total}-question bank.</span></span>
+            <span class="arrow">›</span>
+          </button>
+          <button class="tool-row" data-written-samples type="button" style="--tc:#6B4AA0">
+            <span class="ti">${moduleIcon("mc",100,"#6B4AA0")}</span>
+            <span class="tbody"><b>Written samples</b><span>${WRITTEN_SAMPLES.length} guided problems with hints, setup and solution outlines.</span></span>
+            <span class="arrow">›</span>
+          </button>
+        </div>
+      </div>
+      <div class="notice" style="margin-top:10px">
+        <b>Study guardrail</b>
+        <p>This area is for practice before the exam. Do not use it during any graded assessment.</p>
+      </div>`;
+      return;
+    }
     const ids=prepIds(WORLD), s=statsFor(ids);
     const scope=WORLD.id==="mq2"
       ?"Bond valuation, stock valuation, cost of capital, capital budgeting techniques, and capital budgeting cash flows."
@@ -5071,6 +5220,45 @@ function renderDrillIntro(){
       <button class="lenbtn" data-drill="module" data-size="20">20<span>exam prep</span></button>
     </div>
   </div>`;
+}
+function startFinalMcq(){
+  const core=statsFor(FINAL_CORE_TOPICS);
+  const ids=core.retired<core.total?FINAL_CORE_TOPICS:allIds();
+  const label=core.retired<core.total?"Final exam prep · core first":"Final exam prep · full bank";
+  DRILL=null;
+  startDrill(ids,25,label,{prep:"mfinal",worldId:"mfinal"});
+}
+function renderWrittenSamples(){
+  if(!WORLD||WORLD.id!=="mfinal") openWorld("mfinal","drill");
+  $("#drillPane").innerHTML=`
+    <button class="back" data-exam-menu type="button">&#8592; Exam prep</button>
+    <div class="notice">
+      <b>Written sample practice</b>
+      <p>Attempt each question on paper first. Open the hint only if stuck, then compare your setup and solution outline.</p>
+    </div>
+    <div class="written-list">
+      ${WRITTEN_SAMPLES.map((w,ix)=>`<details class="written-card">
+        <summary class="written-head">
+          <span class="wnum">${String(ix+1).padStart(2,"0")}</span>
+          <span><b>${esc(w.title)}</b><span>${esc(w.topic)}</span></span>
+        </summary>
+        <div class="written-body">
+          <p class="prompt">${esc(w.prompt)}</p>
+          <details class="reveal-box">
+            <summary>Hint</summary>
+            <div><p>${esc(w.hint)}</p></div>
+          </details>
+          <details class="reveal-box">
+            <summary>Setup</summary>
+            <div><ul>${w.setup.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>
+          </details>
+          <details class="reveal-box">
+            <summary>Solution outline</summary>
+            <div><ol class="steps">${w.solution.map(x=>`<li>${esc(x)}</li>`).join("")}</ol></div>
+          </details>
+        </div>
+      </details>`).join("")}
+    </div>`;
 }
 function startDrill(ids,size,label,opts={}){
   DRILLNO++;
@@ -5260,9 +5448,14 @@ document.addEventListener("click",e=>{
   const course=e.target.closest("[data-course]");
   if(course&&course.dataset.course==="finance"){ location.hash="finance"; show("home"); renderHome(); return; }
 
+  if(e.target.closest("[data-final-mcq]")){ startFinalMcq(); return; }
+  if(e.target.closest("[data-written-samples]")){ renderWrittenSamples(); return; }
+  if(e.target.closest("[data-exam-menu]")){ DRILL=null; renderDrillIntro(); return; }
+
   const mod=e.target.closest("[data-mod]");
   if(mod){
     const m=MODULES.find(x=>x.id===mod.dataset.mod);
+    if(m&&m.id==="mfinal"){ DRILL=null; openWorld(m.id,"drill"); return; }
     if(m&&m.prepOnly){ startPrep(m.id); return; }
     DRILL=null; openWorld(mod.dataset.mod); return;
   }
