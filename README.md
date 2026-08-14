@@ -1,9 +1,99 @@
 # MBAassist
 
-A scalable MBA course learning workspace. The first live course is MBA512
-Managerial Finance; Cross-Border Business is present as a coming-soon course.
-Everything is in one self-contained `index.html` — no build step, no
+A scalable MBA course learning workspace. Two live courses: **MBA512
+Managerial Finance** and **Sustainable Leadership & Ethical Business**
+(Module 3, Seminar 673). Cross-Border Business is present as a coming-soon
+course. Everything is in one self-contained `index.html` — no build step, no
 dependencies, works offline.
+
+---
+
+# Sustainable Leadership & Ethical Business
+
+A weekend intensive, so this course works nothing like the finance one. There
+is no question bank to grind and no score. It opens on whatever is next, holds
+the frameworks and case facts, and gives you somewhere to keep **your own
+words** for the two written deliverables.
+
+## It knows what day it is
+
+The course reads the device clock and decides which of five states you are in.
+Time picks the **default screen only** — it never hides anything. Any tab is
+always one tap away, and **Jump to another day** cycles the states manually if
+the clock is wrong or you want to read ahead.
+
+| State | What opens |
+|---|---|
+| Before Friday | Reflection one, due before the Friday session |
+| Friday | The lens grid and the compass |
+| Saturday | The live studio block, with the run sheet and build timers |
+| Sunday | The culture and governance cards Part A diagnoses with |
+| After | The group case report, then the individual strategy report, counting down |
+
+On Saturday it goes finer than the day. Between 09h20 and 09h50 you are in the
+Part A build window and it opens on the storyboard sheet; at 10h20 it rolls to
+Part B. Those timings come from the student pack — the facilitators keep the
+real clock.
+
+### If the dates move
+
+One line, near the top of the Sustainable Leadership block in `index.html`:
+
+```js
+const SL_DATES={fri:"2026-08-14",sat:"2026-08-15",sun:"2026-08-16"};
+```
+
+Both report deadlines are derived from the Sunday date (two weeks and three
+weeks), so changing these three dates fixes everything downstream. Ghana is on
+GMT year-round with no daylight saving, so the device clock is safe to trust.
+
+## The five tabs
+
+**Now** — one card, one action. Built for a phone on the way to campus rather
+than a dashboard.
+
+**Prep** — 23 cards across the three days, two to four minutes each. Each has
+the idea, why it matters and what to watch for. Twenty carry a quick check with
+a real answer; the three that don't are the ones where the reading itself says
+there is no single right answer. A check locks once you answer it.
+
+**Decide** — the HBR Vestenborg/Greenspan supplier case, worked through the
+Markkula framework. You choose which option each of the six lenses favours, and
+the app shows you where they split, because the framework states plainly that
+the lenses may lead to different answers. Only after all six are placed does it
+offer the publicity test and reveal what the two practitioners actually said —
+neither of whom terminated the relationship. Below that, O'Toole's compass as a
+hard budget of twenty tokens, so liberty, equality, efficiency and community
+cannot all be funded; and Wells Fargo's two competing diagnoses side by side.
+
+**Saturday** — pick your group's material once and the screen becomes yours:
+your anchor case, your guiding question, the six chain stages to fill, and the
+seven elements of the enterprise sketch. Thirty-minute build timers and a
+three-minute pitch timer, matching the pack.
+
+**After** — where most of the marks are. The group case report structured as
+symptom, root, frameworks applied or not, and a remedy with a named owner and a
+first move. Then Part A: stated values against enacted behaviour, the structures
+sustaining the gap, and interventions that each need a level, an owner, a
+sequence and an indicator — with the level picked from Taylor's five. Then Part
+B's eight governance areas.
+
+## What it will not do
+
+It holds frameworks, case facts and your own notes. It does not write your
+reflections or your reports, and nothing in it is a grade or an estimate of one.
+Progress is device-local; export before clearing your browser.
+
+## Known gap
+
+Part B benchmarks against GRI, ISSB, IFRS S1 and S2, TCFD and the Ghana Stock
+Exchange ESG Disclosure Manual. No reading for these had been circulated when
+this was built, and Giving Voice to Values is named as a required framework for
+Part A with no source either. Both are flagged in the app.
+
+---
+
+# Managerial Finance
 
 ## What it does
 

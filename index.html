@@ -521,6 +521,64 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .sl-trail-item{background:var(--surface);border:1px solid var(--line);border-radius:11px;padding:11px 12px}
 .sl-trail-item b{display:block;font-size:13px;margin-bottom:3px}
 .sl-trail-item span{display:block;font-size:12.5px;color:var(--ink-2);line-height:1.4}
+.sl-now{
+  background:linear-gradient(160deg,color-mix(in srgb,#2F6F5E 13%,var(--surface)),var(--surface));
+  border:1px solid color-mix(in srgb,#2F6F5E 32%,var(--line));
+  border-radius:var(--r);padding:17px 16px 15px;
+}
+.sl-now h3{font-size:20px;letter-spacing:-.02em;margin:5px 0 8px}
+.sl-now p{font-size:14.5px;color:var(--ink-2);line-height:1.55}
+.sl-now .sl-jump{margin-top:13px}
+.sl-daycard{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;
+  background:var(--surface);border:1px solid var(--line);border-radius:12px;
+  padding:13px 14px;text-align:left;cursor:pointer;
+}
+.sl-daycard.on{border-color:#2F6F5E;box-shadow:inset 0 0 0 1px #2F6F5E}
+.sl-daycard .dl b{display:block;font-size:14.5px}
+.sl-daycard .dl span{display:block;font-size:12.5px;color:var(--ink-3);margin-top:2px}
+.sl-daycard .dr{font-family:var(--mono);font-size:13px;color:var(--ink-3);flex:none}
+.sl-runsheet{display:flex;flex-direction:column;gap:1px;margin-top:6px}
+.sl-run{display:flex;gap:11px;align-items:baseline;padding:8px 10px;border-radius:8px}
+.sl-run b{font-family:var(--mono);font-size:12.5px;color:var(--ink-3);flex:none;width:44px}
+.sl-run span{font-size:13.5px;color:var(--ink-2)}
+.sl-run.past{opacity:.45}
+.sl-run.on{background:color-mix(in srgb,#2F6F5E 14%,var(--surface))}
+.sl-run.on b,.sl-run.on span{color:var(--ink);font-weight:650}
+.sl-timer{position:sticky;top:118px;z-index:11;display:flex;align-items:center;gap:10px;
+  background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:0 14px}
+.sl-timer:empty{display:none}
+.sl-timer b{font-family:var(--mono);font-size:26px;font-weight:650;padding:9px 0}
+.sl-timer b.low{color:var(--no)}
+.sl-timer span{font-size:12.5px;color:var(--ink-3)}
+.sl-choice.mini{display:inline-block;width:auto;margin:0 6px 6px 0;padding:7px 12px;font-size:13px}
+.sl-choice.right{border-color:var(--yes);background:var(--yes-bg)}
+.sl-choice.wrong{border-color:var(--no);background:var(--no-bg)}
+.sl-opts{display:flex;flex-wrap:wrap;margin-top:4px}
+.sl-lens{padding:11px 0;border-top:1px solid var(--line)}
+.sl-lens:first-of-type{border-top:0;padding-top:2px}
+.sl-q{font-size:13.5px;font-weight:650;color:var(--ink);line-height:1.45;margin-bottom:7px}
+.sl-check{margin-top:12px;padding-top:11px;border-top:1px solid var(--line)}
+.sl-stage{padding:11px 0;border-top:1px solid var(--line)}
+.sl-stage h4{font-size:13.5px;margin:0 0 5px}
+.sl-hint{font-size:12.5px!important;color:var(--ink-3)!important;line-height:1.45;margin:0 0 7px}
+.sl-alloc{display:flex;align-items:center;gap:9px;padding:7px 0}
+.sl-alloc .an{font-size:13.5px;font-weight:650;width:82px;flex:none}
+.sl-alloc b{font-family:var(--mono);font-size:15px;width:22px;text-align:center;flex:none}
+.sl-alloc .ab{flex:1;height:6px;border-radius:99px;background:var(--line);overflow:hidden}
+.sl-alloc .ab i{display:block;height:100%;background:#2F6F5E;border-radius:99px}
+.sl-step{width:32px;height:32px;flex:none;border-radius:9px;border:1px solid var(--line);
+  background:var(--surface);font-size:17px;line-height:1;cursor:pointer;color:var(--ink)}
+.sl-split{display:grid;gap:12px;margin-top:4px}
+.sl-split h4{font-size:13px;margin:0 0 5px;color:var(--ink)}
+.sl-iv{border:1px solid var(--line);border-radius:12px;padding:11px 12px;margin-bottom:9px}
+.sl-iv-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}
+.sl-iv-head b{font-family:var(--mono);font-size:13px;color:var(--ink-3)}
+.sl-x{background:none;border:0;font-size:12.5px;color:var(--no);cursor:pointer;padding:2px 0}
+.sl-trio{display:grid;gap:7px}
+.sl-trio .sl-text{min-height:44px}
+.sl-text.big{min-height:96px}
+@media(min-width:560px){.sl-split{grid-template-columns:1fr 1fr}.sl-trio{grid-template-columns:1fr 1fr 1fr}}
 .sl-archived-note{
   margin:0 0 12px;padding:11px 12px;border-radius:11px;
   background:#FFF7E6;border:1px solid #E7C98B;color:#7A4D00;
@@ -1000,7 +1058,7 @@ body.dark .lvl.l1{color:#7FD3B8}body.dark .lvl.l2{color:#E3BE6A}body.dark .lvl.l
     <div>
       <p class="eyebrow">Module 3 · Seminar 673</p>
       <h2>Sustainable Leadership &amp; Ethical Business</h2>
-      <p>Built for the weekend intensive: short prompts, quick group choices, low-friction evidence, and no long-form writing inside the app.</p>
+      <p>Opens on whatever is next. Short cards for the commute, build sheets for the room, and a place to keep your own words for the two reports.</p>
     </div>
     <div class="sl-hero-mark" aria-hidden="true">
       <svg viewBox="0 0 120 120">
@@ -1013,28 +1071,18 @@ body.dark .lvl.l1{color:#7FD3B8}body.dark .lvl.l2{color:#E3BE6A}body.dark .lvl.l
 
   <section class="sl-status panel">
     <div>
-      <p class="eyebrow">Progress trail</p>
-      <h3 id="slProgressTitle">0% captured</h3>
-      <p id="slProgressSub">Tap through the weekend activities to build a light grading trail.</p>
+      <p class="eyebrow" id="slPhase">Before the weekend</p>
+      <h3>Sustainable Leadership</h3>
+      <p id="slPhaseSub"></p>
     </div>
-  </section>
-
-  <section class="sl-mode panel">
-    <p class="eyebrow">Experience mode</p>
-    <div class="seg compact" id="slModeSeg">
-      <button data-sl-mode="summary" type="button">Summary</button>
-      <button data-sl-mode="full" type="button">Full</button>
-      <button data-sl-mode="facilitator" type="button">Facilitator</button>
-    </div>
-    <p id="slModeHelp" class="warn" style="margin-top:8px"></p>
   </section>
 
   <div class="seg sl-seg" id="slSeg">
-    <button class="on" data-sl-tab="today" type="button">Today</button>
-    <button data-sl-tab="read" type="button">Read</button>
+    <button class="on" data-sl-tab="now" type="button">Now</button>
+    <button data-sl-tab="prep" type="button">Prep</button>
     <button data-sl-tab="decide" type="button">Decide</button>
-    <button data-sl-tab="case" type="button">Case</button>
-    <button data-sl-tab="trail" type="button">Trail</button>
+    <button data-sl-tab="saturday" type="button">Saturday</button>
+    <button data-sl-tab="after" type="button">After</button>
   </div>
 
   <div id="slPane"></div>
@@ -4403,251 +4451,518 @@ function saveCourseArchive(){try{localStorage.setItem(COURSE_ARCHIVE_KEY,JSON.st
 function isCourseArchived(id){return !!COURSE_ARCHIVE[id];}
 function setCourseArchived(id,on){COURSE_ARCHIVE[id]=!!on; if(!on) delete COURSE_ARCHIVE[id]; saveCourseArchive();}
 
-const SL_KEY="mbaassist-sustainable-leadership-v1";
-const SL={
-  id:"sustain",
-  tabs:["today","read","decide","case","trail"],
-  micro:[
-    {id:"sl-core",src:"Sustainable Leadership Literature",time:"2 min",t:"Sustainable leadership is a balancing act",idea:"Integrates economic performance, social responsibility and environmental protection.",why:"Avoid treating sustainability as philanthropy. It is a leadership logic for competing claims.",watch:"When a case looks operational, ask what social or environmental claim is hidden."},
-    {id:"ethics-law",src:"Ethical Decision Framework",time:"2 min",t:"Ethics is wider than law or policy",idea:"A decision can be legal, culturally normal or financially attractive and still be ethically weak.",why:"This blocks shallow compliance answers.",watch:"Look for leaders saying 'we followed the rules' while stakeholders were harmed."},
-    {id:"culture-root",src:"Ethics and Corporate Culture",time:"3 min",t:"Culture is the root system",idea:"Failure often grows from shared assumptions, incentives, silence and tolerated behaviour.",why:"Diagnose the culture that produced a failure, not only the visible event.",watch:"Pressure targets, fear of speaking up, leadership hypocrisy and unclear accountability."},
-    {id:"compass",src:"Executive Compass",time:"2 min",t:"Good leaders navigate value conflict",idea:"Liberty, equality, efficiency and community are all legitimate, but they pull against each other.",why:"This prevents simplistic good-versus-bad debates.",watch:"Ask which value each stakeholder is defending before judging their position."},
-    {id:"material-world",src:"Material World",time:"3 min",t:"The digital economy is still material",idea:"Modern life depends on sand, salt, iron, copper, oil and lithium.",why:"Strategy connects to extraction, labour, emissions and scarcity.",watch:"Trace a product backwards until the hidden ethical burden appears."},
-    {id:"systems",src:"Wells Fargo",time:"2 min",t:"Bad systems overpower stated values",idea:"A hotline or code fails when incentives and leadership behaviour reward the opposite.",why:"Recommend governance remedies, not slogans.",watch:"Find the metric, bonus, structure or silence that made misconduct rational."}
-  ],
-  sessions:[
-    {d:"Friday",t:"Ethical foundations",f:"Move from sustainability language to leadership judgment.",a:["Read two microcards","Complete one ethical lens check","Submit one exit ticket"]},
-    {d:"Saturday",t:"Material World and supply-chain trade-offs",f:"Expose physical and human costs behind strategy.",a:["Run the compass slider","Complete the supplier case card","Capture one group first move"]},
-    {d:"Sunday",t:"Culture, governance and workplace diagnosis",f:"Connect scandals and ethical culture to students' own organisations.",a:["Diagnose culture red flags","Complete Wells Fargo card","Export your trail"]}
-  ],
-  checks:[
-    {id:"supplier-overtime",q:"A trusted supplier fails a labour audit during a critical launch. Workers exceeded overtime limits, but cancelling the supplier could harm workers and delay a sustainability campaign. Which lens should come first?",opts:["Justice","Utility","Common good","Rights"],a:"Justice",x:"Justice comes first because the issue concerns fair treatment and whether workers are carrying the cost of the launch."},
-    {id:"sales-pressure",q:"A bank rewards aggressive cross-selling. Employees fear missing targets and customers receive products they did not request. What is the root ethical design issue?",opts:["Incentive misalignment","Weak advertising","Low employee confidence","Customer impatience"],a:"Incentive misalignment",x:"The system rewards behaviour that conflicts with stated values, so the leadership problem is structural."},
-    {id:"nepotism",q:"A senior manager hires a relative into a scarce opportunity without open competition. Which concern should be named most directly?",opts:["Fairness","Innovation","Speed","Brand awareness"],a:"Fairness",x:"The issue is unequal access to opportunity and loss of trust in process."}
-  ],
-  cases:[
-    {id:"supplier",t:"Supplier Labor Audit",root:["Labor rights and launch pressure","Poor marketing timing","Low product demand","Accounting classification"],owner:["Chief sustainability officer","Factory supervisor only","External auditors only","Customers"],move:["Pause launch and co-create corrective plan","Terminate supplier immediately","Ignore if quality is high","Move audit date"]},
-    {id:"wells",t:"Wells Fargo Culture Failure",root:["Sales culture and incentive system","Customer education gap","Branch decoration","Product complexity only"],owner:["Board and executive leadership","Frontline employees only","Customers","Regulators only"],move:["Redesign targets, incentives and reporting protection","Fire more tellers","Increase product brochures","Rename the hotline"]}
-  ],
-  red:[
-    "Targets create pressure to cut ethical corners",
-    "Employees do not trust reporting channels",
-    "Leadership language conflicts with rewards",
-    "Bad news is softened before it travels upward",
-    "Suppliers carry hidden social or environmental costs",
-    "Policies exist but ownership is unclear",
-    "Short-term performance dominates stakeholder impact"
-  ],
-  compass:["Liberty","Equality","Efficiency","Community"],
-  prompts:["One leadership risk I will watch for is...","One value tension in this case is...","One first move I would recommend is..."]
-};
-let SLTAB="today";
-let SLSTATE=null;
-function slDefault(){return {mode:"summary",read:[],checks:{},cases:{},compass:{Liberty:50,Equality:50,Efficiency:50,Community:50},red:[],tickets:[],updated:null};}
+const SL_KEY="mbaassist-sustainable-leadership-v2";
+
+/* ---- THE ONE THING TO EDIT IF THE DATES MOVE ----
+   Set the three seminar dates as YYYY-MM-DD. Everything else
+   (which screen opens, the two report countdowns) follows from these. */
+const SL_DATES={fri:"2026-08-14",sat:"2026-08-15",sun:"2026-08-16"};
+const SL_REPORT_WEEKS={cases:2,final:3};
+
+/* Saturday's studio timings come straight from the student pack.
+   Friday and Sunday are day-level only until the times are confirmed. */
+const SL_SAT_BLOCKS=[
+  {from:"09:15",to:"09:20",t:"Framing",d:"Facilitators frame the session and confirm group stations."},
+  {from:"09:20",to:"09:50",t:"Part A build",d:"Thirty minutes to build the value chain storyboard.",go:"saturday"},
+  {from:"09:50",to:"10:20",t:"Part A plenary",d:"Five minutes per group: four to present, one for a question."},
+  {from:"10:20",to:"10:50",t:"Part B build",d:"Thirty minutes to design the indigenous enterprise.",go:"saturday"},
+  {from:"10:50",to:"11:10",t:"Boardroom pitches",d:"Three minutes each to an investment committee."},
+  {from:"11:10",to:"11:15",t:"Synthesis",d:"Plenary synthesis and carry forward into the afternoon."}
+];
+
+const SL_MATERIALS=[
+  {id:"sand",n:"Sand",g:1,anchor:"The construction boom in Accra and Kumasi; sand winning along the coast and rivers; cement dependence and the future of Ghanaian urbanisation.",q:"Concrete is building our cities and eroding our coasts and riverbeds. What would responsible leadership of the construction value chain look like?",note:"Glass, concrete and silicon. Spruce Pine quartz feeds nearly all the world's silicon; usable construction sand is getting scarce."},
+  {id:"salt",n:"Salt",g:2,anchor:"The Songor lagoon salt concession at Ada and the ambition to make Ghana the leading salt producer in West Africa, including community tensions around the concession.",q:"Salt could anchor a Ghanaian chemical industry. How should value creation be balanced against the customary rights of lagoon communities?",note:"Feedstock of the chemical industry — chlorine and caustic soda underpin water purification, pharmaceuticals, paper and PVC."},
+  {id:"iron",n:"Iron",g:3,anchor:"The Sheini hills iron ore deposits, the mandate of the Ghana Integrated Iron and Steel Development Corporation, and the scrap steel industry in Tema.",q:"Ghana wants an integrated steel industry in a decarbonising world. Is that vision viable, and what governance would it require?",note:"Roughly seven to eight percent of global CO2. The two levers are scrap recycling through electric arc furnaces and hydrogen-based green steel."},
+  {id:"copper",n:"Copper",g:4,anchor:"The Central African Copperbelt in Zambia and the Democratic Republic of Congo, and the copper demands of Ghana's own grid expansion and electrification agenda.",q:"The energy transition runs on African copper. Why has the Copperbelt struggled to convert geology into broad prosperity, and what should leaders do differently?",note:"Ore grades are falling, so every extra tonne moves more rock, energy and water — while electrification demands more copper than has ever been mined."},
+  {id:"oil",n:"Oil",g:5,anchor:"The Jubilee and TEN fields, the Ghana National Petroleum Corporation, local content rules, and the petrostate dilemma in an era of transition.",q:"Ghana became an oil producer late in the oil age. How should its leaders manage a declining resource ethically and strategically?",note:"Not just fuel — the feedstock for plastics, solvents, asphalt, synthetic fibres and the nitrogen fertiliser about half the world's food depends on."},
+  {id:"lithium",n:"Lithium",g:6,anchor:"The Ewoyaa lithium project, the Minerals Income Investment Fund equity stake, and the Green Minerals Policy requirement of local value addition.",q:"Lithium is Ghana's test case for doing minerals differently. What must leaders insist upon so that Ewoyaa does not repeat the history of gold?",note:"Extraction is dispersed but refining and cell manufacture are concentrated overwhelmingly in China."}
+];
+
+const SL_CHAIN=["Extraction","Processing","Manufacture","Distribution","Use","Afterlife"];
+
+const SL_SEVEN=[
+  {id:"venture",n:"The venture",h:"What the firm does, where it sits on the chain, and why that position captures more value than raw export."},
+  {id:"profit",n:"Profitability",h:"Who pays, what for, and a credible reason it makes money within five years. Name your first customer."},
+  {id:"safeguards",n:"Sustainability safeguards",h:"The environmental and social commitments built in from day one — and how they are verified, not just declared."},
+  {id:"ownership",n:"Indigenous ownership and capital",h:"How it is owned and financed. Be honest about collateral, licensing and competing with multinationals. Name the source of the money."},
+  {id:"legitimacy",n:"Community legitimacy",h:"How the venture keeps a social licence — traditional authorities, customary land rights, benefit sharing."},
+  {id:"governance",n:"Governance",h:"Board structure, the standards you report against, and the mechanism that stops commitments being dropped when margins tighten."},
+  {id:"alternatives",n:"Alternatives rejected",h:"At least one option you considered and rejected — a different chain position, a substitute, a circular model, or not extracting at all — and why yours beats it."}
+];
+
+const SL_LENSES=[
+  {id:"rights",n:"Rights",q:"Which option best protects and respects the moral rights of everyone with a stake?"},
+  {id:"justice",n:"Justice",q:"Which option treats people fairly, giving each what they are due?"},
+  {id:"utility",n:"Utilitarian",q:"Which option produces the greatest balance of good over harm across all stakeholders?"},
+  {id:"common",n:"Common good",q:"Which option best serves the community as a whole, not only some of its members?"},
+  {id:"virtue",n:"Virtue",q:"Which option lets you act as the sort of person, and company, you want to be?"},
+  {id:"care",n:"Care ethics",q:"Which option properly accounts for the relationships, concerns and feelings of each stakeholder?"}
+];
+
+const SL_VEST_OPTIONS=[
+  {id:"suspend",n:"Suspend",h:"Immediate suspension until Greenspan proves full compliance through independent verification. Standards met; EcoLuxe almost certainly slips."},
+  {id:"continue",n:"Continue",h:"Production continues under on-site monitoring, weekly reporting and formal corrective milestones. Launch timing preserved; if the violations surface it looks like tolerating child labour."},
+  {id:"hybrid",n:"Hybrid",h:"Suspend, but court other foam producers at the same time. Launch likely delayed; more options later."}
+];
+
+const SL_EXPERTS=[
+  {n:"Noel Kinder, SVP of sustainability at Lululemon",p:["Sit down with Minh first and reaffirm that compliance is not a bureaucratic exercise.","Give a defined window — say sixty days — for a credible remediation plan, then re-audit to see whether it is translating into real change.","How he responds is the test. Explaining violations away signals misaligned values; being collaborative signals a path forward. One meeting is not enough to judge.","The bunk beds may indicate the factory simply cannot absorb Vestenborg's demands — which points at production planning and lead times, where brands often bear responsibility.","If remediation fails, disengage responsibly: months of notice so the factory can replace the volume without mass layoffs."]},
+  {n:"Auret van Heerden, founder of Equiception Business and Human Rights",p:["Audit again and observe the factory over several days. The benign reading rests entirely on Minh's explanations, and Paula has not built trust with him.","Employing vulnerable youth does happen in parts of Asia, but labour shortages also push factories toward brokers far more nefarious than what Minh describes.","Start with root cause analysis, and it may point back at Vestenborg — rigid deadlines and unrealistic forecasts drive overtime violations.","UN and OECD guidance favours remediation over abrupt exit, because cutting ties costs workers their jobs. Most due diligence regimes require good faith effort, not guaranteed outcomes.","Engage NGOs confidentially and early. Brands that build that trust are often given time to fix problems quietly."]}
+];
+
+const SL_WELLS=[
+  {side:"What Stumpf said",p:["The scandal was the work of a few bad apples who did not honour the company's values.","There were no incentives to commit unethical behaviour."]},
+  {side:"What the board's own investigation found",p:["The wayward sales culture and performance management system.","A decentralised structure that gave division leaders too much autonomy.","Leadership's unwillingness to evaluate a sales model that had long been successful."]}
+];
+
+const SL_LEVELS=[
+  {id:"individual",n:"Individual",h:"Appraisal, recognition and reward systems; incentives that consider unintended consequences."},
+  {id:"interpersonal",n:"Interpersonal",h:"Whistleblowing and grievance mechanisms; protecting people who raise concerns."},
+  {id:"group",n:"Group",h:"Role and task clarity within teams; psychological safety; recruitment and socialisation."},
+  {id:"intergroup",n:"Inter-group",h:"Oversight functions; relationships between interdependent teams; clear accountability."},
+  {id:"interorg",n:"Inter-organisational",h:"How the firm behaves toward suppliers, customers, community and civil society."}
+];
+
+const SL_GOV=[
+  {id:"mandate",n:"Board mandate and competence"},
+  {id:"committee",n:"Committee structure"},
+  {id:"rights",n:"Decision rights"},
+  {id:"materiality",n:"Materiality determination"},
+  {id:"incentives",n:"Incentives"},
+  {id:"data",n:"Data integrity"},
+  {id:"assurance",n:"Assurance"},
+  {id:"disclosure",n:"Disclosure"}
+];
+
+const SL_CARDS=[
+  /* ---------- Friday: ethical foundations ---------- */
+  {id:"ethics-not",day:"fri",src:"Markkula Center",mins:2,t:"What ethics is not",
+   idea:"Ethics is about how we ought to act, and about character. It is not the same as feelings, religion, law, culturally accepted norms, or science.",
+   why:"It closes off the four cheapest answers in any case discussion: it felt right, it was legal, everyone here does it, the data says so.",
+   watch:"A leader defending conduct purely on legality or local custom. Law can deviate from what is ethical, and cultures carry both ethical and unethical customs.",
+   check:{q:"A manager says the practice is legal and normal in the industry. On the framework, what has he established?",opts:["That the practice is ethical","Neither — law and norms can both diverge from ethics","That the utilitarian lens is satisfied","That no further analysis is needed"],a:1,x:"The framework treats law and accepted norms as separate from ethics. Legality and normality are facts about the situation, not conclusions about it."}},
+
+  {id:"six-lenses",day:"fri",src:"Markkula Center",mins:3,t:"The six lenses",
+   idea:"Rights (dignity and duties), justice (each given their due), utilitarian (greatest balance of good over harm), common good (shared conditions and the vulnerable), virtue (what kind of person this makes me), care ethics (relationships, empathy, specific circumstances).",
+   why:"Naming which lens you are reasoning from is what separates an argument from an opinion.",
+   watch:"Care ethics and virtue are the two most often skipped, and they are usually the ones that make a hard case interesting.",
+   check:{q:"Which lens asks 'what kind of person will I become if I do this?'",opts:["Justice","Common good","Virtue","Rights"],a:2,x:"Virtue ethics asks whether an action is consistent with acting at your best, rather than weighing consequences or entitlements."}},
+
+  {id:"lenses-disagree",day:"fri",src:"Markkula Center",mins:2,t:"The lenses are meant to disagree",
+   idea:"The framework says outright that people may not agree on the content of a lens, and that different lenses may lead to different answers about what is ethical.",
+   why:"There is no lookup table. A strong answer states the lens it argues from, what that costs, and why the sacrifice is acceptable.",
+   watch:"Any argument that treats one lens as automatically superior to the others without saying why."},
+
+  {id:"ten-steps",day:"fri",src:"Markkula Center",mins:3,t:"The ten-step method",
+   idea:"Identify the ethical issues, get the facts, evaluate the alternatives through all six lenses, choose an option and test it, then implement and reflect on the outcome.",
+   why:"This is the process the module expects you to apply to a case, not just the vocabulary.",
+   watch:"Step eight is the publicity test: if you told someone you respect, or a public audience, which option you chose, what would they say?",
+   check:{q:"Where do the six lenses sit in the method?",opts:["At the start, to identify the issue","In the middle, to evaluate the alternative actions","At the end, to justify a decision already made","Alongside step ten, in reflection"],a:1,x:"Facts and options come first; the lenses are the instrument for evaluating options you have already laid out."}},
+
+  {id:"compass-points",day:"fri",src:"O'Toole, Executive's Compass",mins:3,t:"Four cardinal values",
+   idea:"Liberty (Locke, Smith, Friedman — freedom, property, free markets, shareholder primacy). Equality (Rousseau, Marx, Rawls — fairness, redistribution, dignity). Efficiency (utilitarian and economic logic — productivity and wealth creation, the default language of management). Community (Burke, Tocqueville — belonging, tradition, stewardship, the stakeholder view).",
+   why:"Each has a serious intellectual pedigree. Your critic is usually arguing from a legitimate cardinal point, not from ignorance.",
+   watch:"Efficiency is the house language of business, so it tends to win by default rather than by argument.",
+   check:{q:"Shareholders pressing for cost discipline are usually speaking from which points?",opts:["Equality and community","Liberty and efficiency","Community and justice","Equality and efficiency"],a:1,x:"O'Toole maps shareholders to liberty and efficiency, employees and unions to equality, and communities and regulators to community."}},
+
+  {id:"compass-tension",day:"fri",src:"O'Toole, Executive's Compass",mins:3,t:"Why you cannot have all four",
+   idea:"Liberty pulls against equality; efficiency pulls against community. Pursued alone, each produces a pathology: pure liberty gives social Darwinism, pure equality coercive levelling, pure efficiency a technocracy that treats people as inputs, pure community conformity and stagnation.",
+   why:"The executive's task is navigational, not solving. Know where you stand, know where your critics stand, and craft decisions that honour competing claims.",
+   watch:"Any plan that claims to maximise all four at once. No society has flourished by maximising a single value, and none has ranked them once and for all.",
+   check:{q:"On O'Toole's account, what does persistent corporate and political conflict indicate?",opts:["Bad faith by one side","Insufficient data","The predictable collision of legitimate values","A failure of communication"],a:2,x:"He argues the debate is interminable by design, which is why the compass orients rather than resolves."}},
+
+  {id:"payments",day:"fri",src:"Isebor, Business Ethics in Africa",mins:2,t:"Bribery, extortion, questionable payments",
+   idea:"A questionable payment raises doubts about legitimacy, ethics or legality. Bribery is a voluntary transaction to gain unfair advantage. Extortion obtains something through threat or force.",
+   why:"The distinction is direction of influence: bribery is transactional exchange, extortion is abuse of power and fear.",
+   watch:"The wider damage — eroded trust, uneven resource distribution, demoralised staff, deterred investment, and an uneven playing field that pushes ethical firms out of a market.",
+   check:{q:"What most cleanly distinguishes extortion from bribery?",opts:["The amount involved","Extortion relies on threat or force; bribery is a voluntary exchange","Bribery is legal in some jurisdictions","Extortion involves public officials"],a:1,x:"Both are illegal and unethical. Extortion carries intimidation; bribery is a transaction seeking preferential treatment."}},
+
+  {id:"nepotism",day:"fri",src:"Isebor, Business Ethics in Africa",mins:3,t:"Nepotism and its safeguards",
+   idea:"Two types: reciprocal (special treatment for financial considerations, loyalty or relationship) and entitlement (the belief that favourable treatment is deserved by connection, tied to elitism and privilege).",
+   why:"Attitudes vary by region — commonplace in some, unethical and legally exposed in others — so cultural context and legal counsel both matter.",
+   watch:"The concrete safeguards: advertise vacancies internally and externally, give equal opportunity, and delegate both the interview and the final decision to another manager.",
+   check:{q:"Which safeguard does the chapter give for a manager with a relative applying?",opts:["Disclose the relationship and proceed","Hand interviewing and the final decision to another manager","Pay the relative a lower starting salary","Require a longer probation period"],a:1,x:"Delegating the decision is the mechanism; disclosure alone leaves the conflict of interest in place."}},
+
+  {id:"reporting-fiduciary",day:"fri",src:"Isebor, Business Ethics in Africa",mins:3,t:"Reporting and fiduciary duty",
+   idea:"Unethical financial reporting is deliberate manipulation or misrepresentation — and it need not be outright falsehood; improper representation counts. Fiduciary duty carries loyalty (the organisation's interests above personal gain), care (sound judgement, diligence, real assessment of risk) and confidentiality.",
+   why:"Waste Management, Enron, WorldCom and Kraft Heinz are the worked examples; Enron fell from around ninety dollars to under one within a year.",
+   watch:"Whistleblower protection sits in the chapter's list of remedies for a reason — it is the mechanism that most often fails.",
+   check:{q:"Which is NOT one of the fiduciary duties named?",opts:["Duty of loyalty","Duty of care","Confidentiality","Duty of disclosure to competitors"],a:3,x:"The three named are loyalty, care and confidentiality, with breach carrying legal and reputational consequences."}},
+
+  {id:"environment",day:"fri",src:"Isebor, Business Ethics in Africa",mins:2,t:"When is an activity environmentally acceptable?",
+   idea:"Zsolnai's three criteria: non-negative impact on animal welfare, on ecosystem health, and on the overall wellbeing of the living planet.",
+   why:"It sets a floor — avoid causing harm, and avoid facilitating harm by others — rather than offsetting harm after the fact.",
+   watch:"Mitigating, managing and counterbalancing are three different commitments. Tree planting is the third and the weakest.",
+   check:{q:"On Zsolnai's criteria, what is the test for an acceptable business activity system?",opts:["Net positive impact after offsets","Non-negative impact on animal welfare, ecosystem health and the living planet","Compliance with local environmental law","Carbon neutrality by a stated date"],a:1,x:"The criteria are non-negative rather than net-of-offsets, which is a materially higher bar."}},
+
+  /* ---------- Saturday: Material World ---------- */
+  {id:"conway-argument",day:"sat",src:"Conway, Material World",mins:3,t:"The weightless economy is an illusion",
+   idea:"The story that we have moved to an ethereal economy of data and services is sustained by distance and invisibility. In recent years we have mined, quarried and pumped more raw material annually than our ancestors extracted across most of recorded history combined, and the pace is still rising.",
+   why:"Every smartphone, wind turbine and hospital begins in a mine, a quarry, a brine pool or an oil well.",
+   watch:"The line that carries the whole book: to burn less, we must mine more.",
+   check:{q:"What does Conway argue about the direction of extraction as economies digitise?",opts:["It is falling as services replace manufacturing","It is flat","It is accelerating rather than declining","It is shifting entirely to recycled sources"],a:2,x:"Digitisation has not dematerialised anything; the physical foundation is expanding beneath it."}},
+
+  {id:"conway-six",day:"sat",src:"Conway, Material World",mins:4,t:"The six materials",
+   idea:"Sand becomes glass, concrete and silicon. Salt is the feedstock of the chemical industry. Iron becomes steel, the skeleton, with no substitute at scale. Copper is the nervous system that every electron travels along. Oil is fuel and also plastics, solvents, fibres and fertiliser. Lithium is the irreplaceable heart of the rechargeable battery.",
+   why:"Conway treats them as load-bearing pillars rather than commodities — so embedded we have stopped noticing, and so interdependent that disruption in one ripples through all.",
+   watch:"Everyone reads the introduction; only your group reads your material's section. The teach-back depends on that asymmetry.",
+   check:{q:"Which material does Conway describe as the nervous system of the modern world?",opts:["Iron","Copper","Lithium","Silicon"],a:1,x:"Steel is the skeleton; copper carries the electrons. Ore grades are falling, so each extra tonne moves more rock, energy and water."}},
+
+  {id:"conway-themes",day:"sat",src:"Conway, Material World",mins:3,t:"Five themes that cut across",
+   idea:"Invisibility and fragility of long opaque supply chains. The energy transition is a material transition. Concentration and chokepoints — one mine, one island, one desert, one country. Unevenly distributed costs. Honesty rather than abstinence.",
+   why:"These are the argument hooks for the storyboard. The chain is the frame; the themes are what you actually say about it.",
+   watch:"The justice question sits in the fourth: burdens localise at the extraction frontier, usually in the Global South, while benefits diffuse to consumers worldwide.",
+   check:{q:"What does Conway advocate, given how dependent we are on extraction?",opts:["Abstinence from mining","Governing extraction well, investing in circularity and being candid","Substituting all six materials","Relocating extraction to wealthy countries"],a:1,x:"He is not anti-mining. The plea is for candour from societies that depend utterly on materials."}},
+
+  {id:"conway-ghana",day:"sat",src:"Conway, Material World",mins:3,t:"Where Ghana sits in the story",
+   idea:"Gold, bauxite, manganese, iron ore at Sheini, oil and gas in the Jubilee and TEN fields, industrial salt at the Songor lagoon, and now lithium at Ewoyaa — the country's first green minerals project.",
+   why:"The recurring failure Conway documents is resource-rich territories capturing little value while bearing most costs. The Minerals and Mining Act, the Minerals Income Investment Fund and the Green Minerals Policy are the instruments meant to escape that trap through local value addition.",
+   watch:"The four leadership questions the module is really asking: who governs extraction, who captures value, whose interests are structurally unrepresented, and what it would mean to lead a resource economy sustainably rather than extractively."},
+
+  /* ---------- Sunday: culture and governance ---------- */
+  {id:"culture-formal",day:"sun",src:"Ogbu / Johnson",mins:3,t:"Formal elements of culture",
+   idea:"Core values, vision and mission statements, codes of ethics, organisational structure, actions of top management, reward and performance evaluation systems, and culture champions.",
+   why:"These are the visible instruments — and the ones an organisation will hand you when you ask about its culture.",
+   watch:"Employees pay more attention to what top management does than to what it says, and reward systems are named the most potent determinant of ethical and unethical behaviour.",
+   check:{q:"Which formal element does the chapter identify as the most potent determinant of conduct?",opts:["Codes of ethics","Vision and mission statements","Reward and performance evaluation systems","Culture champions"],a:2,x:"Effort pivots toward whatever is incentivised. Wells Fargo is the worked example of exactly this."}},
+
+  {id:"culture-informal",day:"sun",src:"Ogbu / Johnson",mins:2,t:"Informal elements of culture",
+   idea:"Language, norms, artefacts and symbols and rituals, and stories.",
+   why:"Members look past the codes to the unwritten signals for what conduct is actually acceptable.",
+   watch:"Norms like 'no excuses for failure' or 'show me your numbers' pressure people to cut corners, whatever the code says. This is where stated and enacted values come apart.",
+   check:{q:"Why do the informal elements matter for a culture diagnosis?",opts:["They are easier to measure","They reveal the real expectations, whatever the codes say","They are set by the board","They replace the need for formal elements"],a:1,x:"If informal signals are out of sync with the ethical posture, something is fundamentally wrong — and that gap is precisely what Part A asks you to find."}},
+
+  {id:"cev",day:"sun",src:"Kaptein, in Ogbu",mins:4,t:"Corporate Ethical Virtue: eight dimensions",
+   idea:"Clarity, congruency of management, congruency of supervisors, feasibility, supportability, transparency, discussability, sanctionability.",
+   why:"They group three, two, three: the first three are self-regulating capacity, the next two self-providing, the last three self-correcting or self-cleansing.",
+   watch:"Sanctionability is the one that answers the module's recurring question about what stops commitments being quietly abandoned.",
+   check:{q:"Transparency, discussability and sanctionability together describe which capacity?",opts:["Self-regulating","Self-providing","Self-correcting","Self-financing"],a:2,x:"Clarity and the two congruency dimensions are self-regulating; feasibility and supportability are self-providing."}},
+
+  {id:"ebc",day:"sun",src:"Ardichvili, in Ogbu",mins:3,t:"Ethical Business Culture: five clusters",
+   idea:"Mission and value-driven, stakeholders' balance, leadership effectiveness, process integrity, long-term perspective.",
+   why:"It is offered as a toolkit for executives rather than a diagnostic instrument — a helicopter view of the blocks that build an ethical culture.",
+   watch:"Leadership effectiveness is defined as tone at the top: whether board and management actions exemplify the behaviour, not whether they endorse it.",
+   check:{q:"Which cluster covers commitment to sustainability principles over time?",opts:["Process integrity","Long-term perspective","Stakeholders' balance","Mission and value-driven"],a:1,x:"Long-term perspective is the extent to which behaviour reflects sustainability commitments and stakeholder interest over time."}},
+
+  {id:"five-levels",day:"sun",src:"Taylor, in Ogbu",mins:4,t:"Five levels of ethical culture",
+   idea:"Individual (incentives and reward systems), interpersonal (whistleblowing and grievance mechanisms), group (role clarity and psychological safety), inter-group (oversight functions and accountability), inter-organisational (behaviour toward suppliers, customers, community and civil society).",
+   why:"Part A of the final report asks you to state the level at which each intervention operates. This is that list.",
+   watch:"Taylor's critique is that most culture work over-invests in structure and compliance to remove bad apples, which misses the network of interactions underneath.",
+   check:{q:"An intervention protecting employees who raise ethical concerns operates at which level?",opts:["Individual","Interpersonal","Group","Inter-organisational"],a:1,x:"Grievance and whistleblowing mechanisms sit at the interpersonal level, where power asymmetry between levels of authority plays out."}},
+
+  {id:"wells-facts",day:"sun",src:"Markkula, Wells Fargo",mins:3,t:"Wells Fargo: the facts",
+   idea:"Eight is great — eight products per customer — was the mantra. In September 2016 the bank paid 185 million dollars in fines over more than two million unauthorised accounts, and confirmed it had dismissed over 5,300 employees for shady sales practices.",
+   why:"Pressure was hourly tracked, supervisors pushed, and compensation leaned heavily on bonuses.",
+   watch:"Senior leadership knew of aggressive practices as far back as 2004, with incidents identified from 2002. Some employees were fired for reporting misconduct through the ethics hotline.",
+   check:{q:"What happened to some employees who used the ethics hotline?",opts:["They were promoted","They were transferred","They were fired for reporting misconduct","Their reports were escalated to the board"],a:2,x:"The hotline existed and failed. A reporting channel that punishes its users is worse than none, which is the design lesson."}},
+
+  {id:"wells-system",day:"sun",src:"Markkula, Wells Fargo",mins:3,t:"Bad apples or bad system",
+   idea:"Stumpf said the scandal was a few bad apples who did not honour the company's values, and that there were no incentives to behave unethically. The board's own independent investigation named the sales culture and performance management system, a decentralised structure giving division leaders too much autonomy, and leadership's unwillingness to evaluate a long-successful sales model.",
+   why:"This is the move the whole module turns on, and it is the one the midsemester report grades: diagnose the roots, not the symptoms.",
+   watch:"The same shape recurs in the supplier case. Minh explains his own choices; van Heerden says look at Vestenborg's lead times and forecasts."},
+
+  {id:"avery-pyramid",day:"sun",src:"Liao, literature review",mins:4,t:"Avery and Bergsteiner's 23 practices",
+   idea:"Twenty-three practices arranged as a pyramid. Fourteen basic practices at the base — developing every employee, cooperative labour relations, a long-term perspective, wide stakeholder responsibility. Then higher-level practices: self-managing staff, team strength, knowledge sharing. Then three key performance drivers: innovation, emotional engagement and quality.",
+   why:"Lower practices support higher ones, and the higher ones depend on the base being in place — which is why importing a single practice rarely works.",
+   watch:"The honeybee and locust contrast: a stakeholder, long-horizon model against an extractive, short-horizon one.",
+   check:{q:"What sits at the top of the pyramid?",opts:["The fourteen basic practices","Key performance drivers and then the performance outcomes","Board governance","Regulatory compliance"],a:1,x:"Base practices, then higher-level practices, then the performance drivers, with brand, reputation and long-term stakeholder value as the outcome."}},
+
+  {id:"leadership-compare",day:"sun",src:"Liao, literature review",mins:4,t:"Four leadership styles, told apart",
+   idea:"Green transformational leadership adds a green value orientation to the four transformational dimensions. Ethical leadership centres on the leader-follower relationship and moral example. Responsible leadership extends to stakeholders through democratic consultation, taking the organisation's current situation as the starting point. Sustainable leadership is rooted in the triple bottom line of economy, society and environment.",
+   why:"The reflections and the reports will reward you for saying which one you mean and why the others do not fit.",
+   watch:"Liao's own caution: scholars have not converged on the connotation, dimensions or measurement of sustainable leadership, and it overlaps heavily with the other three. That is a legitimate criticism to make.",
+   check:{q:"What most distinguishes sustainable from responsible leadership?",opts:["It ignores social responsibility","It is rooted in the triple bottom line rather than starting from the organisation's current situation","It applies only in education","It relies on rewards and punishments"],a:1,x:"Both extend beyond followers to stakeholders. Sustainable leadership seeks balance across economic, social and ecological goals rather than pursuing social responsibility alone."}}
+];
+
+let SLTAB="now";
+let SLTIMER=null;
+
+function slDefault(){return {
+  read:[],checks:{},material:"",chain:{},seven:{},
+  vest:{},vestNote:"",vestSeen:false,compass:{Liberty:5,Equality:5,Efficiency:5,Community:5},
+  wells:{},notes:{},interventions:[],gov:{},override:"",name:"",updated:null
+};}
 function slLoad(){try{return Object.assign(slDefault(),JSON.parse(localStorage.getItem(SL_KEY)||"{}")||{});}catch(_){return slDefault();}}
-function slSave(){SLSTATE.updated=new Date().toISOString();try{localStorage.setItem(SL_KEY,JSON.stringify(SLSTATE));}catch(_){} renderSustain();}
-function slMicro(){
-  if(SLSTATE.mode==="summary") return SL.micro.filter(x=>["sl-core","ethics-law","culture-root"].includes(x.id));
-  if(SLSTATE.mode==="facilitator") return SL.micro.filter(x=>["compass","systems","material-world"].includes(x.id));
-  return SL.micro;
+let SLSTATE=slLoad();
+function slSave(rerender=true){
+  SLSTATE.updated=new Date().toISOString();
+  try{localStorage.setItem(SL_KEY,JSON.stringify(SLSTATE));}catch(_){}
+  if(rerender) renderSustain();
 }
-function slChecks(){
-  if(SLSTATE.mode==="summary") return SL.checks.slice(0,1);
-  if(SLSTATE.mode==="facilitator") return SL.checks.filter(x=>x.id!=="nepotism");
-  return SL.checks;
+
+/* ---- time ---- */
+function slMidnight(d){return new Date(d.getFullYear(),d.getMonth(),d.getDate());}
+function slParse(s){const p=s.split("-").map(Number);return new Date(p[0],p[1]-1,p[2]);}
+function slToday(){return slMidnight(new Date());}
+function slAddDays(d,n){const x=new Date(d);x.setDate(x.getDate()+n);return x;}
+function slDaysBetween(a,b){return Math.round((slMidnight(a)-slMidnight(b))/86400000);}
+function slFmt(d){return d.toLocaleDateString(undefined,{weekday:"short",day:"numeric",month:"short"});}
+function slMinsNow(){const d=new Date();return d.getHours()*60+d.getMinutes();}
+function slHm(s){const p=s.split(":").map(Number);return p[0]*60+p[1];}
+function slDue(kind){return slAddDays(slParse(SL_DATES.sun),7*SL_REPORT_WEEKS[kind]);}
+
+function slPhase(){
+  if(SLSTATE.override) return SLSTATE.override;
+  const t=+slToday(), fri=+slParse(SL_DATES.fri), sat=+slParse(SL_DATES.sat), sun=+slParse(SL_DATES.sun);
+  if(t<fri) return "before";
+  if(t===fri) return "fri";
+  if(t===sat) return "sat";
+  if(t===sun) return "sun";
+  if(t<=+slDue("final")) return "after";
+  return "done";
 }
-function slModeText(){
-  return {
-    summary:"Summary is the minimum viable weekend path: three microcards, one lens check, two case decisions, red flags and one exit ticket.",
-    full:"Full Studio exposes every microcard, ethical lens check, compass, case card, red-flag checklist and exit-ticket trail.",
-    facilitator:"Facilitator mode pushes discussion tools forward: value compass, system/culture prompts, group case cards and quick capture."
-  }[SLSTATE.mode||"summary"];
+function slSatBlock(){
+  const m=slMinsNow();
+  return SL_SAT_BLOCKS.find(b=>m>=slHm(b.from)&&m<slHm(b.to))||null;
 }
-function slModeLabel(){
-  return {summary:"Summary",full:"Full Studio",facilitator:"Facilitator"}[SLSTATE.mode||"summary"];
+function slPhaseName(p){return {before:"Before the weekend",fri:"Friday",sat:"Saturday",sun:"Sunday",after:"After the intensive",done:"Module complete"}[p];}
+
+/* ---- the one card that opens ---- */
+function slNow(){
+  const p=slPhase();
+  if(p==="before"){
+    const d=slDaysBetween(slParse(SL_DATES.fri),new Date());
+    return {tag:d===0?"Today":d===1?"Tomorrow":d+" days to go",
+      t:"Reading reflection one",
+      p:"The first of the two reflections is due before Friday — roughly 750 words on the assigned readings, with the instructions on Canvas. Work through the Friday cards, then write it in your own words outside the app.",
+      go:"prep",goLabel:"Friday cards"};
+  }
+  if(p==="fri") return {tag:"Friday",t:"Ethical foundations",
+    p:"Reflection one is due before today's session. In the room you are moving from sustainability language to leadership judgement — the six lenses and the compass are the instruments.",
+    go:"decide",goLabel:"Open the lens grid"};
+  if(p==="sat"){
+    const b=slSatBlock();
+    if(b) return {tag:b.from+" – "+b.to,t:b.t,p:b.d,go:b.go||"saturday",goLabel:b.go?"Open the build sheet":"Open Saturday"};
+    const m=slMinsNow();
+    if(m<slHm("09:15")) return {tag:"Starts 09:15",t:"Material World studio",
+      p:"Two hours, two builds, six groups. Arrive knowing your material — the build windows are thirty minutes each and the reading is what separates a strong storyboard from a shallow one.",
+      go:"saturday",goLabel:"Check your material"};
+    return {tag:"Saturday",t:"Carry it forward",
+      p:"The storyboard and the enterprise sketch both return in the afternoon strategy lab. Reflection two is due before tomorrow.",
+      go:"saturday",goLabel:"Review your sheets"};
+  }
+  if(p==="sun") return {tag:"Sunday",t:"Culture, governance and diagnosis",
+    p:"Reflection two was due before today. The frameworks from this morning — the five levels, CEV, EBC — are the ones Part A of the final report asks you to diagnose with.",
+    go:"prep",goLabel:"Sunday cards"};
+  if(p==="after"){
+    const dc=slDaysBetween(slDue("cases"),new Date()), df=slDaysBetween(slDue("final"),new Date());
+    return {tag:dc>=0?dc+" days to the group report":df+" days to the final report",
+      t:dc>=0?"Group case report":"Strategy report",
+      p:dc>=0?"Two thousand five hundred words on an African organisation facing a live sustainability or ethics failure. Diagnose the roots rather than the symptoms, say which decision frameworks were or were not applied, and name an owner and a first move."
+             :"Four to five thousand words on your own organisation, with real evidence. Part A diagnoses and shifts the ethics culture; Part B evaluates sustainability governance against global practice.",
+      go:"after",goLabel:"Open the report sheets"};
+  }
+  return {tag:"Module complete",t:"Everything is still here",
+    p:"Both reports are past their due dates. The cards, the case work and your notes stay on this device — use them for the next module or export them.",
+    go:"prep",goLabel:"Browse the cards"};
 }
-function slGrade(){
-  const reads=SLSTATE.read.filter(id=>slMicro().some(m=>m.id===id)).length;
-  const checks=Object.keys(SLSTATE.checks).filter(id=>slChecks().some(c=>c.id===id)).length;
-  const caseAnswers=Object.keys(SLSTATE.cases).length;
-  const flags=SLSTATE.red.length?1:0;
-  const tickets=SLSTATE.tickets.length;
-  const completion=Math.min(70,Math.round(slPct()*.7));
-  const decisions=Math.min(20,Math.round((checks+Math.min(caseAnswers,6))/8*20));
-  const reflection=Math.min(10,tickets?10:0);
-  return {reads,checks,caseAnswers,flags,tickets,completion,decisions,reflection,total:completion+decisions+reflection};
+
+function slCards(day){return SL_CARDS.filter(c=>c.day===day);}
+function slReadCount(day){return slCards(day).filter(c=>SLSTATE.read.includes(c.id)).length;}
+function slTag(s,alt){return `<span class="tag"${alt?` style="color:var(--no);border-color:var(--no-bg)"`:""}>${s}</span>`;}
+function slCard(meta,title,body){return `<article class="sl-card"><div class="sl-meta">${meta}</div><h3>${title}</h3>${body}</article>`;}
+function slField(path,ph,val,big){
+  return `<textarea class="sl-text${big?" big":""}" data-sl-field="${path}" placeholder="${esc(ph)}">${esc(val||"")}</textarea>`;
 }
-function slPct(){
-  const target=SLSTATE.mode==="full"?14:SLSTATE.mode==="facilitator"?10:8;
-  const done=SLSTATE.read.filter(id=>slMicro().some(m=>m.id===id)).length+Object.keys(SLSTATE.checks).filter(id=>slChecks().some(c=>c.id===id)).length+Object.keys(SLSTATE.cases).length+(SLSTATE.red.length?1:0)+SLSTATE.tickets.length;
-  return Math.min(100,Math.round(done/target*100));
+function slGet(obj,key){return (obj&&obj[key])||"";}
+function slMat(){return SL_MATERIALS.find(m=>m.id===SLSTATE.material)||null;}
+
+/* ---- timer ---- */
+function slStartTimer(mins,label){
+  if(SLTIMER) clearInterval(SLTIMER.h);
+  SLTIMER={end:Date.now()+mins*60000,label,h:setInterval(slTickTimer,1000)};
+  slTickTimer();
 }
-function slTag(s,warn=false){return `<span class="tag"${warn?` style="color:var(--no);border-color:var(--no-bg)"`:""}>${s}</span>`}
-function slCard(meta,title,body){return `<article class="sl-card"><div class="sl-meta">${meta}</div><h3>${title}</h3>${body}</article>`}
-function slTrailItems(){
-  const items=[];
-  SLSTATE.read.forEach(id=>{const m=SL.micro.find(x=>x.id===id); if(m) items.push(["Read",m.t]);});
-  Object.entries(SLSTATE.checks).forEach(([id,a])=>{const c=SL.checks.find(x=>x.id===id); if(c) items.push(["Lens check",`${c.q.slice(0,62)}... Answer: ${a}`]);});
-  Object.entries(SLSTATE.cases).forEach(([k,a])=>items.push(["Case decision",`${k.replace(":"," / ")}: ${a}`]));
-  if(SLSTATE.red.length) items.push(["Culture red flags",`${SLSTATE.red.length} selected`]);
-  SLSTATE.tickets.forEach((t,i)=>items.push([`Exit ticket ${i+1}`,t.text]));
-  return items;
+function slStopTimer(){ if(SLTIMER){clearInterval(SLTIMER.h);SLTIMER=null;} renderSustain(); }
+function slTickTimer(){
+  const box=$("#slTimer");
+  if(!box){ if(SLTIMER){clearInterval(SLTIMER.h);SLTIMER=null;} return; }
+  if(!SLTIMER){box.textContent="";return;}
+  const left=Math.max(0,Math.round((SLTIMER.end-Date.now())/1000));
+  const mm=String(Math.floor(left/60)).padStart(2,"0"), ss=String(left%60).padStart(2,"0");
+  box.innerHTML=`<b class="${left<=60?"low":""}">${mm}:${ss}</b><span>${SLTIMER.label}</span>`;
+  if(left===0){clearInterval(SLTIMER.h);SLTIMER=null;}
 }
+
 function renderSustain(){
-  if(!SLSTATE) SLSTATE=slLoad();
   const archived=isCourseArchived("sustain");
-  const grade=slGrade();
-  $("#slProgressTitle").textContent=`${slPct()}% captured`;
-  $("#slProgressSub").textContent=archived?"Archived: progress is preserved and the course is hidden from the active list.":`${slModeLabel()} mode · light score estimate ${grade.total}/100`;
-  $("#slModeHelp").textContent=slModeText();
-  $("#slModeSeg").querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.slMode===(SLSTATE.mode||"summary")));
+  const phase=slPhase();
+  $("#slPhase").textContent=slPhaseName(phase);
+  $("#slPhaseSub").textContent=archived
+    ? "Archived. Your work is preserved and the course is hidden from the active list."
+    : `${slFmt(slParse(SL_DATES.fri))} – ${slFmt(slParse(SL_DATES.sun))} · ${SLSTATE.read.length}/${SL_CARDS.length} cards read`;
   $("#slSeg").querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.slTab===SLTAB));
   const pane=$("#slPane");
   pane.className="sl-pane";
-  let html=archived?`<div class="sl-archived-note">This course is archived. Restore it from this page or show archived courses from the course hub.</div>`:"";
-  if(SLTAB==="today"){
-    const sessions=SLSTATE.mode==="summary"?SL.sessions.map(s=>({...s,a:s.a.slice(0,2)})):SL.sessions;
-    html+=slCard(slTag(slModeLabel())+slTag("On the go",true),"Start here",
-      `<p>Use this screen as the weekend run sheet. Jump only when the facilitator asks for evidence.</p>
-      <div class="sl-grade">
-        <div class="kvmini"><b>${grade.reads}</b><span>microcards read</span></div>
-        <div class="kvmini"><b>${grade.checks}</b><span>lens checks</span></div>
-        <div class="kvmini"><b>${grade.caseAnswers}</b><span>case choices</span></div>
-        <div class="kvmini"><b>${grade.tickets}</b><span>exit tickets</span></div>
-      </div>
-      <button class="sl-jump" data-sl-jump="read" type="button">Read the essentials <span>${slMicro().length} cards</span></button>
-      <button class="sl-jump" data-sl-jump="decide" type="button">Make a quick ethical call <span>${slChecks().length} prompts</span></button>
-      <button class="sl-jump" data-sl-jump="case" type="button">Capture group decisions <span>case cards</span></button>`);
-    html+=`<div class="sl-grid">${sessions.map(s=>slCard(slTag(s.d),s.t,`<p>${s.f}</p><ul class="sl-list">${s.a.map(x=>`<li>${x}</li>`).join("")}</ul>`)).join("")}</div>`;
-  }
-  if(SLTAB==="read"){
-    html+=`<div class="sl-grid">${slMicro().map(m=>{
-      const done=SLSTATE.read.includes(m.id);
-      return slCard(slTag(m.src)+slTag(m.time)+(done?slTag("Done"):""),m.t,
-        `<p><b>Key idea:</b> ${m.idea}</p><p><b>Why it matters:</b> ${m.why}</p><p><b>Watch for:</b> ${m.watch}</p><div class="sl-actions"><button class="${done?"ghost":"next"}" data-sl-read="${m.id}" type="button">${done?"Mark unread":"Mark read"}</button></div>`);
-    }).join("")}</div>`;
-  }
-  if(SLTAB==="decide"){
-    html+=slChecks().map(c=>slCard(slTag("Fast prompt"),"Ethical lens check",
-      `<p>${c.q}</p>${c.opts.map(o=>`<button class="sl-choice${SLSTATE.checks[c.id]===o?" on":""}" data-sl-check="${c.id}" data-value="${esc(o)}" type="button">${o}</button>`).join("")}${SLSTATE.checks[c.id]?`<div class="sl-feedback">${SLSTATE.checks[c.id]===c.a?c.x:`Recommended lens: ${c.a}. ${c.x}`}</div>`:""}`)).join("");
-    html+=slCard(slTag("Value tension"),"Executive compass slider",
-      `<p>Map the current case across O'Toole's four values. It is not a score; it makes trade-offs visible before discussion.</p>${SL.compass.map(v=>`<div class="sl-range"><label><span>${v}</span><span>${SLSTATE.compass[v]}</span></label><input type="range" min="0" max="100" value="${SLSTATE.compass[v]}" data-sl-compass="${v}"></div>`).join("")}`);
-  }
-  if(SLTAB==="case"){
-    html+=`<div class="sl-grid">${SL.cases.map(c=>{
-      const part=(field,label,arr)=>`<h3>${label}</h3>${arr.map(o=>`<button class="sl-choice${SLSTATE.cases[`${c.id}:${field}`]===o?" on":""}" data-sl-case="${c.id}:${field}" data-value="${esc(o)}" type="button">${o}</button>`).join("")}`;
-      return slCard(slTag("Group card"),c.t,part("root","Root failure",c.root)+part("owner","Named owner",c.owner)+part("move","First move",c.move));
-    }).join("")}</div>`;
-    html+=slCard(slTag("Own organisation")+slTag("No essay",true),"Culture red flag checklist",
-      `<p>Select what you can observe or reasonably evidence.</p>${SL.red.map(r=>`<label class="sl-red"><input type="checkbox" data-sl-red="${esc(r)}" ${SLSTATE.red.includes(r)?"checked":""}><span>${r}</span></label>`).join("")}`);
-  }
-  if(SLTAB==="trail"){
-    const prompt=SL.prompts[SLSTATE.tickets.length%SL.prompts.length];
-    const items=slTrailItems();
-    html+=slCard(slTag("Light grading"),"Participation snapshot",
-      `<p>This is not an exam score. It gives facilitators a quick completion trail without marking long essays.</p>
-      <div class="sl-grade">
-        <div class="kvmini"><b>${grade.completion}/70</b><span>completion</span></div>
-        <div class="kvmini"><b>${grade.decisions}/20</b><span>decision evidence</span></div>
-        <div class="kvmini"><b>${grade.reflection}/10</b><span>exit ticket</span></div>
-        <div class="kvmini"><b>${grade.total}/100</b><span>estimated total</span></div>
-      </div>`);
-    html+=slCard(slTag("30 seconds"),"Exit ticket",`<p>${prompt}</p><textarea id="slTicket" class="sl-text" placeholder="One sentence is enough."></textarea><div class="sl-actions"><button class="next" data-sl-ticket type="button">Save ticket</button><button class="ghost" data-sl-export type="button">Export trail</button><button class="ghost" data-sl-reset type="button">Reset trail</button></div>`);
-    html+=`<div class="sl-trail">${items.length?items.map(i=>`<div class="sl-trail-item"><b>${i[0]}</b><span>${esc(i[1])}</span></div>`).join(""):`<div class="empty">Your activity trail will appear here as you tap through the module.</div>`}</div>`;
-  }
-  pane.innerHTML=html;
-}
+  let html=archived?`<div class="sl-archived-note">This course is archived. Restore it from the course hub to bring it back to the active list.</div>`:"";
 
-function renderHome(){
-  const all=statsFor(allIds());
-  const finalCore=statsFor(FINAL_CORE_TOPICS);
-  const writtenDone=EXAM_WRITTEN_SAMPLES.filter(w=>WDONE[w.id]).length;
-  $("#railPct").textContent=all.pct+"%";
-  $("#railBar").style.width=all.pct+"%";
+  /* ===================== NOW ===================== */
+  if(SLTAB==="now"){
+    const n=slNow();
+    html+=`<article class="sl-now"><div class="sl-meta">${slTag(n.tag)}</div><h3>${n.t}</h3><p>${n.p}</p>
+      <button class="sl-jump" data-sl-jump="${n.go}" type="button">${n.goLabel} <span>›</span></button></article>`;
 
-  /* greeting + streak */
-  const nm=(SESSION.name||"").trim();
-  $("#heroGreet").textContent=nm?("Akwaaba, "+nm.split(/\s+/)[0]):"Akwaaba";
-  const st=touchStreak();
-  $("#heroStreak").textContent = all.pct===100 ? "All questions retired" : st>1 ? st+"-day streak" : "Course mastery";
-
-  $("#examSpotlight").innerHTML=`
-    <p class="eyebrow">Exam</p>
-    <h3>Final exam prep</h3>
-    <p>One modular prep space for MCQs and written samples. MCQs serve quiz questions first, then sample questions, then generated practice.</p>
-    <div class="exam-actions">
-      <button class="exam-action" data-mod="mfinal" type="button">
-        <span class="ti">${moduleIcon("mfinal",100,"#6B4AA0")}</span>
-        <span><b>Open exam prep</b><span>MCQ mastery ${finalCore.retired}/${finalCore.total} · written ${writtenDone}/${EXAM_WRITTEN_SAMPLES.length}</span></span>
-      </button>
-    </div>`;
-
-  /* lectures only — these carry progress */
-  const lectures=MODULES.filter(isLectureModule);
-  $("#moduleGrid").innerHTML=lectures.map(m=>{
-    const s=statsFor(modIds(m));
-    return `<button class="cube-card${s.pct===100?" done":""}" data-mod="${m.id}" style="--mod:${m.hue}">
-      <div class="top">${moduleIcon(m.id,s.pct,m.hue)}<span class="pct">${s.pct}%</span></div>
-      <h3>${m.n}</h3>
-      <div class="meta">${s.retired}/${s.total} retired</div>
-      <div class="tbar"><i style="width:${s.pct}%;background:${m.hue}"></i></div>
-    </button>`;
-  }).join("");
-
-  /* study tools — utilities, not masterable, so not cubes */
-  const tools=MODULES.filter(m=>(m.calcOnly||m.caseOnly||m.frameworkOnly||m.teachOnly||m.prepOnly)&&m.id!=="mfinal");
-  const order={mq2:0,mfinal:1,mt:2,mf:3,mc:4,m0:5};
-  $("#toolsList").innerHTML=tools.sort((a,b)=>order[a.id]-order[b.id]).map(m=>{
-    const d=TOOL_DESC[m.id]; const desc=typeof d==="function"?d():d;
-    return `<button class="tool-row" data-mod="${m.id}" style="--tc:${m.hue}">
-      <span class="ti">${moduleIcon(m.id,100,m.hue)}</span>
-      <span class="tbody"><b>${m.n}</b><span>${desc}</span></span>
-      <span class="arrow">›</span>
-    </button>`;
-  }).join("");
-
-  /* focus strip: the three weakest topics with work left */
-  const weak=MODULES.filter(isLectureModule).flatMap(m=>m.topics.map(t=>{
-    const s=statsFor([t.id]); return {t,m,s};
-  })).filter(x=>x.s.retired<x.s.total).sort((a,b)=>a.s.pct-b.s.pct||a.t.id.localeCompare(b.t.id)).slice(0,3);
-
-  const strip=$("#focusStack");
-  if(!weak.length){
-    strip.innerHTML=`<div class="panel empty-state"><h3>Every question retired</h3>
-      <p>You have answered all ${statsFor(allIds()).total} questions correctly twice running. Open any module to keep the material warm.</p></div>`;
-    return;
-  }
-  strip.innerHTML=
-    `<button class="focus" data-drill="all">
-      <span class="dot" style="background:var(--ink)"></span>
-      <span class="fbody"><b>Mixed drill</b><span>12 questions, weakest material first</span></span>
-      <span class="arrow">›</span>
-    </button>` +
-    weak.map(x=>`<button class="focus" data-drill="topic" data-topic="${x.t.id}">
-      <span class="dot" style="background:${x.m.hue}"></span>
-      <span class="fbody"><b>${x.t.n}</b><span>${x.m.lec} · ${x.s.retired}/${x.s.total} retired</span></span>
-      <span class="arrow">›</span>
-    </button>`).join("");
-}
-function renderCourseHub(){
-  const nm=(SESSION.name||"").trim().split(/\s+/)[0];
-  $("#courseGreeting").textContent=nm?`Welcome back, ${nm}`:"Welcome";
-  const tiles=[...document.querySelectorAll("[data-course-tile]")];
-  const archivedCount=tiles.filter(c=>isCourseArchived(c.dataset.courseTile)).length;
-  $("#archiveCount").textContent=archivedCount;
-  $("#archiveFilterLabel").textContent=SHOW_ARCHIVED?"Hide archived courses":"Show archived courses";
-  tiles.forEach(tile=>{
-    const id=tile.dataset.courseTile;
-    const archived=isCourseArchived(id);
-    tile.classList.toggle("hidden",archived&&!SHOW_ARCHIVED);
-    const card=tile.querySelector("[data-course]");
-    if(card) card.classList.toggle("archived",archived);
-    const btn=tile.querySelector("[data-course-archive]");
-    if(btn){
-      btn.textContent=archived?"Restore":"Archive";
-      btn.classList.toggle("danger",!archived);
+    if(phase==="sat"){
+      const cur=slSatBlock(), m=slMinsNow();
+      html+=slCard(slTag("Run sheet"),"Saturday, 09h15 to 11h15",
+        `<div class="sl-runsheet">${SL_SAT_BLOCKS.map(b=>{
+          const state=cur&&cur.t===b.t?"on":(m>=slHm(b.to)?"past":"");
+          return `<div class="sl-run ${state}"><b>${b.from}</b><span>${b.t}</span></div>`;
+        }).join("")}</div>
+        <p class="warn">Timings are from the student pack. The facilitators keep the real clock.</p>`);
     }
-  });
+
+    const days=[["fri","Friday","Ethical foundations"],["sat","Saturday","Material World"],["sun","Sunday","Culture and governance"]];
+    html+=`<div class="sl-grid">${days.map(([d,n2,s])=>{
+      const total=slCards(d).length, done=slReadCount(d);
+      return `<button class="sl-daycard${phase===d?" on":""}" data-sl-day="${d}" type="button">
+        <span class="dl"><b>${n2}</b><span>${s}</span></span>
+        <span class="dr">${done}/${total}</span></button>`;
+    }).join("")}</div>`;
+
+    html+=slCard(slTag("How this works"),"One rule",
+      `<p>This app holds the frameworks, the case facts and <b>your own words</b>. It does not write your reflections or your reports, and nothing in it is a grade. Every mark in this module is yours to earn.</p>
+      <p class="warn">Everything saves to this device only. Use Export from the menu below before you clear your browser.</p>
+      <div class="sl-actions"><button class="ghost" data-sl-export type="button">Export my work</button><button class="ghost" data-sl-jumpday type="button">Jump to another day</button></div>`);
+
+    if(SLSTATE.override) html+=`<div class="sl-archived-note">Showing <b>${slPhaseName(SLSTATE.override)}</b> instead of today. <button class="ghost" data-sl-clear-override type="button">Back to today</button></div>`;
+  }
+
+  /* ===================== PREP ===================== */
+  if(SLTAB==="prep"){
+    const day=SLSTATE.notes.__day||(["fri","sat","sun"].includes(phase)?phase:"fri");
+    html+=`<div class="seg compact" id="slDaySeg">${[["fri","Friday"],["sat","Saturday"],["sun","Sunday"]].map(([d,n])=>
+      `<button class="${d===day?"on":""}" data-sl-day="${d}" type="button">${n}</button>`).join("")}</div>`;
+    const cards=slCards(day);
+    html+=`<div class="sl-grid">${cards.map(c=>{
+      const done=SLSTATE.read.includes(c.id);
+      const ans=SLSTATE.checks[c.id];
+      let chk="";
+      if(c.check){
+        chk=`<div class="sl-check"><p class="sl-q">${c.check.q}</p>${c.check.opts.map((o,i)=>{
+          let cls="sl-choice";
+          if(ans!==undefined){ if(i===c.check.a) cls+=" right"; else if(i===ans) cls+=" wrong"; }
+          return `<button class="${cls}" data-sl-check="${c.id}" data-value="${i}" type="button">${o}</button>`;
+        }).join("")}${ans!==undefined?`<div class="sl-feedback">${c.check.x}</div>`:""}</div>`;
+      }
+      return slCard(slTag(c.src)+slTag(c.mins+" min")+(done?slTag("Read"):""),c.t,
+        `<p><b>The idea.</b> ${c.idea}</p><p><b>Why it matters.</b> ${c.why}</p><p><b>Watch for.</b> ${c.watch}</p>${chk}
+         <div class="sl-actions"><button class="${done?"ghost":"next"}" data-sl-read="${c.id}" type="button">${done?"Mark unread":"Mark read"}</button></div>`);
+    }).join("")}</div>`;
+  }
+
+  /* ===================== DECIDE ===================== */
+  if(SLTAB==="decide"){
+    const picked=SL_LENSES.filter(l=>SLSTATE.vest[l.id]).length;
+    const spread=[...new Set(SL_LENSES.map(l=>SLSTATE.vest[l.id]).filter(Boolean))];
+    html+=slCard(slTag("HBR case")+slTag("Vestenborg Home"),"A key supplier failed a labour audit",
+      `<p>Greenspan has supplied Vestenborg for fourteen years and makes the foam core for EcoLuxe, the biggest launch in a decade. The audit found overtime of 70 to 84 hours against a cap of 60, a partially blocked emergency exit, and two 14-year-old workers hired through a subcontractor on falsified documents. Minh says the boys were orphans from a roadside food stand, that pay was equal, and that the blocked exit was temporary while a rest area was installed. Vestenborg is about a third of Greenspan's volume, and no other supplier can make the foam inside the launch window.</p>
+      <p class="warn">Work each lens separately. The point is to find where they disagree, not to reach one answer.</p>`);
+
+    html+=SL_VEST_OPTIONS.map(o=>slCard(slTag("Option"),o.n,`<p>${o.h}</p>`)).join("");
+
+    html+=slCard(slTag("Six lenses")+slTag(picked+"/6 done"),"Which option does each lens favour?",
+      SL_LENSES.map(l=>`<div class="sl-lens"><p class="sl-q">${l.n}. ${l.q}</p>
+        <div class="sl-opts">${SL_VEST_OPTIONS.map(o=>
+          `<button class="sl-choice mini${SLSTATE.vest[l.id]===o.id?" on":""}" data-sl-vest="${l.id}" data-value="${o.id}" type="button">${o.n}</button>`).join("")}</div></div>`).join("")
+      +(picked===6?`<div class="sl-feedback">${spread.length===1
+        ? "All six lenses point the same way. That is worth interrogating — check whether you have reasoned from the lenses or worked backwards from a conclusion."
+        : `Your lenses split ${spread.length} ways. That split <b>is</b> the analysis: name the lens you are acting on and say what the others cost.`}</div>`:""));
+
+    if(picked===6){
+      html+=slCard(slTag("Step 8")+slTag("The publicity test"),"If you told someone you respect, what would they say?",
+        `${slField("vestNote","Your call, and the one line you would defend it with.",SLSTATE.vestNote,true)}
+         <div class="sl-actions"><button class="${SLSTATE.vestSeen?"ghost":"next"}" data-sl-experts type="button">${SLSTATE.vestSeen?"Hide the experts":"Show what two practitioners said"}</button></div>`);
+      if(SLSTATE.vestSeen) html+=SL_EXPERTS.map(x=>slCard(slTag("Expert response"),x.n,
+        `<ul class="sl-list">${x.p.map(p=>`<li>${p}</li>`).join("")}</ul>`)).join("")
+        +slCard(slTag("Notice"),"Neither terminated the relationship",
+          `<p>The intuitive answer to child labour is zero tolerance and immediate exit. Both practitioners land on investigation and remediation instead, for different reasons — and van Heerden points the root cause back at Vestenborg's own lead times and forecasts. That move, from the visible violation to the structure that produced it, is what the midsemester report is graded on.</p>`);
+    }
+
+    const used=Object.values(SLSTATE.compass).reduce((a,b)=>a+b,0);
+    html+=slCard(slTag("O'Toole")+slTag("20 tokens"),"The executive's compass",
+      `<p>Liberty pulls against equality; efficiency pulls against community. You have twenty tokens and cannot fund all four — that constraint is the whole point.</p>
+      ${Object.keys(SLSTATE.compass).map(v=>`<div class="sl-alloc">
+        <span class="an">${v}</span>
+        <button class="sl-step" data-sl-compass="${v}" data-delta="-1" type="button">−</button>
+        <b>${SLSTATE.compass[v]}</b>
+        <button class="sl-step" data-sl-compass="${v}" data-delta="1" type="button">+</button>
+        <span class="ab"><i style="width:${SLSTATE.compass[v]*5}%"></i></span></div>`).join("")}
+      <p class="warn">${used===20?"All twenty allocated. To fund one value further you must take from another.":(20-used)+" left to place."}</p>`);
+
+    html+=slCard(slTag("Markkula")+slTag("Wells Fargo"),"Two diagnoses of the same facts",
+      `<div class="sl-split">${SL_WELLS.map(w=>`<div><h4>${w.side}</h4><ul class="sl-list">${w.p.map(p=>`<li>${p}</li>`).join("")}</ul></div>`).join("")}</div>
+       <p class="sl-q" style="margin-top:12px">Wells Fargo had an ethics hotline and it did not work. Why not, and what would you design instead?</p>
+       ${slField("notes.wells","Your answer — you will want this for Part A.",slGet(SLSTATE.notes,"wells"),true)}`);
+  }
+
+  /* ===================== SATURDAY ===================== */
+  if(SLTAB==="saturday"){
+    const mat=slMat();
+    if(!mat){
+      html+=slCard(slTag("Start here"),"Which material is your group on?",
+        `<p>Every student reads Conway's introduction. You only read your own material's section — so pick your group and this screen becomes yours.</p>
+        <div class="sl-opts">${SL_MATERIALS.map(m=>`<button class="sl-choice" data-sl-material="${m.id}" type="button">Group ${m.g} · ${m.n}</button>`).join("")}</div>`);
+    } else {
+      html+=`<div id="slTimer" class="sl-timer"></div>`;
+      html+=slCard(slTag("Group "+mat.g)+slTag(mat.n),"Your guiding question",
+        `<p><b>${mat.q}</b></p><p><b>Anchor case.</b> ${mat.anchor}</p><p><b>From Conway.</b> ${mat.note}</p>
+         <div class="sl-actions"><button class="ghost" data-sl-material="" type="button">Change material</button></div>`);
+
+      html+=slCard(slTag("Part A")+slTag("30 min build"),"Value chain storyboard",
+        `<p>Trace the chain from ground to final use as a story. At each stage, note where sustainable leadership is exercised or absent.</p>
+        <div class="sl-actions"><button class="next" data-sl-timer="30|Part A build" type="button">Start 30 minutes</button>${SLTIMER?`<button class="ghost" data-sl-timer-stop type="button">Stop</button>`:""}</div>
+        ${SL_CHAIN.map(s=>`<div class="sl-stage"><h4>${s}</h4>${slField("chain."+s,"What happens here, and who holds the power?",slGet(SLSTATE.chain,s))}</div>`).join("")}
+        <div class="sl-stage"><h4>The ethical contention a leader cannot avoid</h4>${slField("chain.__contention","Name it plainly.",slGet(SLSTATE.chain,"__contention"),true)}</div>`);
+
+      const doneSeven=SL_SEVEN.filter(s=>slGet(SLSTATE.seven,s.id).trim()).length;
+      html+=slCard(slTag("Part B")+slTag(doneSeven+"/7"),"Indigenous enterprise sketch",
+        `<p>One slide, seven elements. Assume the class is an investment committee: lead with the venture and the money, and defend the safeguards as strategy rather than charity.</p>
+        <div class="sl-actions"><button class="next" data-sl-timer="30|Part B build" type="button">Start 30 minutes</button><button class="ghost" data-sl-timer="3|Boardroom pitch" type="button">3-min pitch</button></div>
+        ${SL_SEVEN.map((s,i)=>`<div class="sl-stage"><h4>${i+1}. ${s.n}</h4><p class="sl-hint">${s.h}</p>${slField("seven."+s.id,"",slGet(SLSTATE.seven,s.id))}</div>`).join("")}`);
+    }
+  }
+
+  /* ===================== AFTER ===================== */
+  if(SLTAB==="after"){
+    const dc=slDaysBetween(slDue("cases"),new Date()), df=slDaysBetween(slDue("final"),new Date());
+    html+=slCard(slTag("20%")+slTag(dc>=0?dc+" days left":"past due",dc<0),"Group case report · 2,500 words",
+      `<p>Due ${slFmt(slDue("cases"))}. An African organisation facing a live sustainability or ethics failure, in a team of four or five.</p>
+      <div class="sl-stage"><h4>The organisation and the visible failure</h4>${slField("notes.caseOrg","",slGet(SLSTATE.notes,"caseOrg"))}</div>
+      <div class="sl-stage"><h4>Symptoms — what everyone points at</h4>${slField("notes.caseSymptom","",slGet(SLSTATE.notes,"caseSymptom"))}</div>
+      <div class="sl-stage"><h4>Roots — the leadership and governance structures underneath</h4><p class="sl-hint">This is the graded move. Wells Fargo's board found sales culture, structure and unwillingness to review the model.</p>${slField("notes.caseRoot","",slGet(SLSTATE.notes,"caseRoot"),true)}</div>
+      <div class="sl-stage"><h4>Decision frameworks applied — or conspicuously not</h4>${slField("notes.caseFrame","",slGet(SLSTATE.notes,"caseFrame"))}</div>
+      <div class="sl-stage"><h4>Governance remedy · named owner · first move</h4>${slField("notes.caseRemedy","All three. A remedy with no owner is not a remedy.",slGet(SLSTATE.notes,"caseRemedy"),true)}</div>`);
+
+    html+=slCard(slTag("Part A · 20%")+slTag(df>=0?df+" days left":"past due",df<0),"Diagnosing and shifting ethics culture",
+      `<p>Due ${slFmt(slDue("final"))}, on your own organisation, with real evidence — interviews, documents, policies, observed practice.</p>
+      <div class="sl-stage"><h4>Stated values</h4>${slField("notes.stated","What the codes, posters and statements say.",slGet(SLSTATE.notes,"stated"))}</div>
+      <div class="sl-stage"><h4>Enacted behaviour</h4>${slField("notes.enacted","What actually happens, and how you know.",slGet(SLSTATE.notes,"enacted"))}</div>
+      <div class="sl-stage"><h4>Structures that sustain the divergence</h4><p class="sl-hint">Reward systems, structure, tone at the top, norms, whether concerns can be raised — CEV and the five levels both help here.</p>${slField("notes.structures","",slGet(SLSTATE.notes,"structures"),true)}</div>`);
+
+    html+=slCard(slTag("Part A"),"Interventions",
+      `<p class="sl-hint">Each one needs a level, an owner, a sequence and an indicator. That is the brief's own list.</p>
+      ${SLSTATE.interventions.map((iv,i)=>`<div class="sl-iv"><div class="sl-iv-head"><b>${i+1}</b><button class="sl-x" data-sl-iv-del="${i}" type="button">Remove</button></div>
+        ${slField("interventions."+i+".what","What the intervention is",iv.what)}
+        <div class="sl-opts">${SL_LEVELS.map(l=>`<button class="sl-choice mini${iv.level===l.id?" on":""}" data-sl-iv-level="${i}" data-value="${l.id}" type="button">${l.n}</button>`).join("")}</div>
+        ${iv.level?`<p class="sl-hint">${SL_LEVELS.find(l=>l.id===iv.level).h}</p>`:""}
+        <div class="sl-trio">${slField("interventions."+i+".owner","Owner",iv.owner)}${slField("interventions."+i+".seq","Sequence",iv.seq)}${slField("interventions."+i+".ind","Indicator",iv.ind)}</div>
+      </div>`).join("")}
+      <div class="sl-actions"><button class="next" data-sl-iv-add type="button">Add an intervention</button></div>`);
+
+    html+=slCard(slTag("Part B · 20%"),"Sustainability governance",
+      `<p>Eight areas to evaluate, then benchmark. The synthesis must be comparative: what would have to change, what should not be imported uncritically, and where the gap is capability rather than intent.</p>
+      ${SL_GOV.map(g=>`<div class="sl-stage"><h4>${g.n}</h4>${slField("gov."+g.id,"What you found, and the evidence for it.",slGet(SLSTATE.gov,g.id))}</div>`).join("")}
+      <p class="warn">Benchmarking runs against GRI, ISSB, IFRS S1 and S2, TCFD and the Ghana Stock Exchange ESG Disclosure Manual. No reading for these has been circulated yet — ask the facilitators before you start Part B.</p>`);
+
+    html+=slCard(slTag("Reminder"),"Your words, not the app's",
+      `<p>Everything above is a place to keep your own findings and phrasing so you are not starting from a blank page. The writing is yours.</p>
+      <div class="sl-actions"><button class="ghost" data-sl-export type="button">Export my work</button></div>`);
+  }
+
+  pane.innerHTML=html;
+  if(SLTIMER) slTickTimer();
 }
 
 /* ============ what's inside (orientation) ============ */
@@ -6344,11 +6659,18 @@ document.addEventListener("click",e=>{
   if(course&&course.dataset.course==="sustain"){ location.hash="sustain"; show("sustain"); return; }
 
   const slTab=e.target.closest("[data-sl-tab]");
-  if(slTab){ SLTAB=slTab.dataset.slTab; renderSustain(); return; }
-  const slMode=e.target.closest("[data-sl-mode]");
-  if(slMode){ SLSTATE.mode=slMode.dataset.slMode; slSave(); return; }
+  if(slTab){ SLTAB=slTab.dataset.slTab; renderSustain(); window.scrollTo({top:0,behavior:"smooth"}); return; }
   const slJump=e.target.closest("[data-sl-jump]");
   if(slJump){ SLTAB=slJump.dataset.slJump; renderSustain(); window.scrollTo({top:0,behavior:"smooth"}); return; }
+  const slDay=e.target.closest("[data-sl-day]");
+  if(slDay){ SLSTATE.notes.__day=slDay.dataset.slDay; SLTAB="prep"; slSave(); window.scrollTo({top:0,behavior:"smooth"}); return; }
+  if(e.target.closest("[data-sl-jumpday]")){
+    const opts=["before","fri","sat","sun","after"];
+    const cur=opts.indexOf(slPhase());
+    SLSTATE.override=opts[(cur+1)%opts.length];
+    slSave(); window.scrollTo({top:0,behavior:"smooth"}); return;
+  }
+  if(e.target.closest("[data-sl-clear-override]")){ SLSTATE.override=""; slSave(); return; }
   const slRead=e.target.closest("[data-sl-read]");
   if(slRead){
     const id=slRead.dataset.slRead;
@@ -6356,25 +6678,39 @@ document.addEventListener("click",e=>{
     slSave(); return;
   }
   const slCheck=e.target.closest("[data-sl-check]");
-  if(slCheck){ SLSTATE.checks[slCheck.dataset.slCheck]=slCheck.dataset.value; slSave(); return; }
-  const slCase=e.target.closest("[data-sl-case]");
-  if(slCase){ SLSTATE.cases[slCase.dataset.slCase]=slCase.dataset.value; slSave(); return; }
-  const slTicket=e.target.closest("[data-sl-ticket]");
-  if(slTicket){
-    const box=$("#slTicket"), text=box&&box.value.trim();
-    if(text){ SLSTATE.tickets.push({text,at:new Date().toISOString()}); slSave(); }
+  if(slCheck){
+    const id=slCheck.dataset.slCheck;
+    if(SLSTATE.checks[id]===undefined){ SLSTATE.checks[id]=Number(slCheck.dataset.value); slSave(); }
     return;
   }
+  const slVest=e.target.closest("[data-sl-vest]");
+  if(slVest){ SLSTATE.vest[slVest.dataset.slVest]=slVest.dataset.value; slSave(); return; }
+  if(e.target.closest("[data-sl-experts]")){ SLSTATE.vestSeen=!SLSTATE.vestSeen; slSave(); return; }
+  const slMaterial=e.target.closest("[data-sl-material]");
+  if(slMaterial){ SLSTATE.material=slMaterial.dataset.slMaterial; slSave(); window.scrollTo({top:0,behavior:"smooth"}); return; }
+  const slComp=e.target.closest("[data-sl-compass]");
+  if(slComp){
+    const v=slComp.dataset.slCompass, d=Number(slComp.dataset.delta);
+    const total=Object.values(SLSTATE.compass).reduce((a,b)=>a+b,0);
+    /* Twenty tokens, hard budget. Refusing the 21st token is the lesson. */
+    if(d>0&&total>=20) return;
+    SLSTATE.compass[v]=Math.max(0,(SLSTATE.compass[v]||0)+d);
+    slSave(); return;
+  }
+  const slTimer=e.target.closest("[data-sl-timer]");
+  if(slTimer){ const p=slTimer.dataset.slTimer.split("|"); slStartTimer(Number(p[0]),p[1]); return; }
+  if(e.target.closest("[data-sl-timer-stop]")){ slStopTimer(); return; }
+  if(e.target.closest("[data-sl-iv-add]")){ SLSTATE.interventions.push({what:"",level:"",owner:"",seq:"",ind:""}); slSave(); return; }
+  const ivDel=e.target.closest("[data-sl-iv-del]");
+  if(ivDel){ SLSTATE.interventions.splice(Number(ivDel.dataset.slIvDel),1); slSave(); return; }
+  const ivLevel=e.target.closest("[data-sl-iv-level]");
+  if(ivLevel){ SLSTATE.interventions[Number(ivLevel.dataset.slIvLevel)].level=ivLevel.dataset.value; slSave(); return; }
   if(e.target.closest("[data-sl-export]")){
-    const data={v:2,course:"Sustainable Leadership & Ethical Business",mode:slModeLabel(),archived:isCourseArchived("sustain"),progress:slPct(),grade:slGrade(),exported:new Date().toISOString(),state:SLSTATE};
+    const data={v:3,course:"Sustainable Leadership & Ethical Business (Module 3, Seminar 673)",dates:SL_DATES,exported:new Date().toISOString(),state:SLSTATE};
     const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
     const a=document.createElement("a");
-    a.href=URL.createObjectURL(blob); a.download="sustainable-leadership-trail-"+new Date().toISOString().slice(0,10)+".json";
+    a.href=URL.createObjectURL(blob); a.download="sustainable-leadership-"+new Date().toISOString().slice(0,10)+".json";
     document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(a.href);
-    return;
-  }
-  if(e.target.closest("[data-sl-reset]")){
-    if(confirm("Reset the Sustainable Leadership trail on this device?")){SLSTATE=slDefault();slSave();}
     return;
   }
 
@@ -6499,21 +6835,21 @@ $("#coursesBtn").onclick=()=>{ DRILL=null; CALC_CATS=null; location.hash=""; sho
 $("#courseWorldBtn").onclick=()=>{ DRILL=null; CALC_CATS=null; location.hash=""; show("courses"); };
 $("#sessBtn").onclick=()=>{ renderSession(); show("session"); };
 $("#archiveFilterBtn").onclick=()=>{ SHOW_ARCHIVED=!SHOW_ARCHIVED; renderCourseHub(); };
+/* Free-text fields save as you type. Deliberately no re-render here —
+   redrawing the pane mid-sentence would steal focus on a phone. */
 document.addEventListener("input",e=>{
-  const c=e.target.closest("[data-sl-compass]");
-  if(c){
-    SLSTATE.compass[c.dataset.slCompass]=Number(c.value);
-    const shown=c.closest(".sl-range")&&c.closest(".sl-range").querySelector("label span:last-child");
-    if(shown) shown.textContent=c.value;
-    SLSTATE.updated=new Date().toISOString();
-    try{localStorage.setItem(SL_KEY,JSON.stringify(SLSTATE));}catch(_){}
-    return;
+  const f=e.target.closest("[data-sl-field]");
+  if(!f) return;
+  const path=f.dataset.slField.split(".");
+  let node=SLSTATE;
+  for(let i=0;i<path.length-1;i++){
+    const k=/^\d+$/.test(path[i])?Number(path[i]):path[i];
+    if(node[k]===undefined||node[k]===null) node[k]={};
+    node=node[k];
   }
-  const r=e.target.closest("[data-sl-red]");
-  if(r){
-    SLSTATE.red=r.checked?[...new Set([...SLSTATE.red,r.dataset.slRed])]:SLSTATE.red.filter(x=>x!==r.dataset.slRed);
-    slSave();
-  }
+  node[path[path.length-1]]=f.value;
+  SLSTATE.updated=new Date().toISOString();
+  try{localStorage.setItem(SL_KEY,JSON.stringify(SLSTATE));}catch(_){}
 });
 $("#welcomeForm").onsubmit=e=>{
   e.preventDefault();
