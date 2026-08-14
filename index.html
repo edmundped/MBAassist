@@ -502,6 +502,12 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .sl-section-copy b{display:block;font-size:14px;line-height:1.25}
 .sl-section-copy span{display:block;font-size:12.5px;color:var(--ink-3);line-height:1.35;margin-top:2px}
 .sl-module-grid{display:grid;gap:8px}
+.sl-mini-flow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin:10px 0 2px}
+.sl-mini-flow span{
+  border:1px solid var(--line);background:var(--raised);border-radius:9px;padding:8px 7px;
+  font-size:11.5px;color:var(--ink-3);line-height:1.2;text-align:center;
+}
+.sl-mini-flow b{display:block;font-family:var(--mono);font-size:12px;color:var(--ink);margin-bottom:2px}
 .sl-work-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .sl-work-stat{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:12px}
 .sl-work-stat b{display:block;font-family:var(--mono);font-size:20px}
@@ -524,6 +530,8 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
   background:var(--ok-bg);border:1px solid var(--ok);color:var(--ok);
   font-size:13.5px;line-height:1.45;
 }
+.sl-feedback.no{background:var(--no-bg);border-color:var(--no);color:var(--no)}
+.sl-feedback b{display:block;margin-bottom:3px;color:inherit}
 .sl-list{margin:10px 0 0;padding-left:18px}
 .sl-list li{font-size:13.5px;color:var(--ink-2);line-height:1.45;margin-bottom:5px}
 .sl-range{display:grid;gap:7px;margin:10px 0}
@@ -4796,6 +4804,41 @@ function slProgressCounts(){
   const gov=SL_GOV.filter(g=>slGet(SLSTATE.gov,g.id).trim()).length;
   return {checks,chain,seven,reportFields,gov};
 }
+function slFlow(a,b,c){
+  return `<div class="sl-mini-flow"><span><b>1</b>${a}</span><span><b>2</b>${b}</span><span><b>3</b>${c}</span></div>`;
+}
+function slCheckFeedback(card,ans){
+  if(ans===undefined) return "";
+  const chk=card.check, picked=chk.opts[ans], right=chk.opts[chk.a];
+  if(ans===chk.a) return `<div class="sl-feedback"><b>Correct reasoning</b>${chk.x}</div>`;
+  const misses={
+    "ethics-not":[
+      "That jumps from social facts to ethical judgment. The framework explicitly warns that law and normal practice can still be ethically weak.",
+      "",
+      "The utilitarian lens has not been applied yet. You would still need to identify harms and benefits across stakeholders.",
+      "This stops the analysis too early. The framework is designed for cases where legality and custom are not enough."
+    ],
+    "six-lenses":["Justice asks about fair treatment and what people are due, not character formation.","Common good asks about shared conditions and community impact, not the leader's character.","","Rights asks about dignity and duties, not what kind of person the action makes you."],
+    "ten-steps":["The issue has to be named before the lenses can do useful work.","","That is motivated reasoning. The lenses should test options before you choose.","Reflection comes after action; the lenses sit earlier in the choice process."],
+    "compass-points":["Equality and community are more likely to be voiced by employees, unions, communities and regulators.","","Community and justice matter, but shareholder pressure in O'Toole is mainly liberty plus efficiency.","Equality is not the main shareholder language here; the pressure is freedom of capital and efficient returns."],
+    "payments":["Amount alone does not distinguish the concepts.","","Legality varies by jurisdiction, but the conceptual distinction here is threat versus voluntary exchange.","Public officials can be involved in bribery too; that is not the clean distinction."],
+    "nepotism":["Disclosure helps, but it does not remove the manager's decision power.","","Lower pay does not create equal access to opportunity.","Probation happens after hiring, so it does not fix the unfair selection process."],
+    "reporting-fiduciary":["Loyalty is one of the named fiduciary duties.","Care is one of the named fiduciary duties.","Confidentiality is one of the named fiduciary duties.",""],
+    "environment":["Offsets are weaker than Zsolnai's non-negative test.","","Compliance is a legal floor, not the ethical test in this reading.","Carbon neutrality is narrower than animal welfare, ecosystem health and planetary wellbeing."]
+  };
+  const miss=(misses[card.id]&&misses[card.id][ans])||(chk.miss&&chk.miss[ans]);
+  const why=miss||`You chose "${esc(picked)}", but this card is testing "${esc(card.t)}". The stronger answer is "${esc(right)}" because the reading points you back to the distinction in the card, not just to a surface association.`;
+  return `<div class="sl-feedback no"><b>Not quite</b>${why}<br><br><b>Better route</b>${chk.x}<br><br><span>Tap another option if you want to revise your answer.</span></div>`;
+}
+function slLensNudge(choice){
+  if(!choice) return "";
+  const n={
+    suspend:"This can work if you are prioritising immediate rights protection and zero tolerance. Your weakness to address: workers may lose income, and Vestenborg may be escaping its own role in creating pressure.",
+    continue:"This can work if you are arguing from remediation, care or utility. Your weakness to address: monitoring must be real and time-bound, otherwise it sounds like tolerating the violation.",
+    hybrid:"This can work if you are balancing risk control with accountability. Your weakness to address: a second supplier does not itself repair the harm at Greenspan."
+  }[choice];
+  return `<div class="sl-feedback"><b>Defend this choice</b>${n}</div>`;
+}
 function slField(path,ph,val,big){
   return `<textarea class="sl-text${big?" big":""}" data-sl-field="${path}" placeholder="${esc(ph)}">${esc(val||"")}</textarea>`;
 }
@@ -4884,10 +4927,11 @@ function renderSustain(){
           let cls="sl-choice";
           if(ans!==undefined){ if(i===c.check.a) cls+=" right"; else if(i===ans) cls+=" wrong"; }
           return `<button class="${cls}" data-sl-check="${c.id}" data-value="${i}" type="button">${o}</button>`;
-        }).join("")}${ans!==undefined?`<div class="sl-feedback">${c.check.x}</div>`:""}</div>`;
+        }).join("")}${slCheckFeedback(c,ans)}</div>`;
       }
       return slCard(slTag(c.src)+slTag(c.mins+" min")+(done?slTag("Read"):""),c.t,
-        `<p><b>The idea.</b> ${c.idea}</p><p><b>Why it matters.</b> ${c.why}</p><p><b>Watch for.</b> ${c.watch}</p>${chk}
+        `${slFlow("Learn the idea","Test the distinction","Mark for reuse")}
+         <p><b>The idea.</b> ${c.idea}</p><p><b>Why it matters.</b> ${c.why}</p><p><b>Watch for.</b> ${c.watch}</p>${chk}
          <div class="sl-actions"><button class="${done?"ghost":"next"}" data-sl-read="${c.id}" type="button">${done?"Mark unread":"Mark read"}</button></div>`);
     }).join("")}</div>`;
   }
@@ -4908,7 +4952,7 @@ function renderSustain(){
     html+=slCard(slTag("Six lenses")+slTag(picked+"/6 done"),"Which option does each lens favour?",
       SL_LENSES.map(l=>`<div class="sl-lens"><p class="sl-q">${l.n}. ${l.q}</p>
         <div class="sl-opts">${SL_VEST_OPTIONS.map(o=>
-          `<button class="sl-choice mini${SLSTATE.vest[l.id]===o.id?" on":""}" data-sl-vest="${l.id}" data-value="${o.id}" type="button">${o.n}</button>`).join("")}</div></div>`).join("")
+          `<button class="sl-choice mini${SLSTATE.vest[l.id]===o.id?" on":""}" data-sl-vest="${l.id}" data-value="${o.id}" type="button">${o.n}</button>`).join("")}</div>${slLensNudge(SLSTATE.vest[l.id])}</div>`).join("")
       +(picked===6?`<div class="sl-feedback">${spread.length===1
         ? "All six lenses point the same way. That is worth interrogating — check whether you have reasoned from the lenses or worked backwards from a conclusion."
         : `Your lenses split ${spread.length} ways. That split <b>is</b> the analysis: name the lens you are acting on and say what the others cost.`}</div>`:""));
@@ -4966,7 +5010,8 @@ function renderSustain(){
 
       html+=slSection("A","Part A build","Map the material chain before jumping to the enterprise idea.");
       html+=slCard(slTag("Part A")+slTag("30 min build"),"Value chain storyboard",
-        `<p>Trace the chain from ground to final use as a story. At each stage, note where sustainable leadership is exercised or absent.</p>
+        `${slFlow("Trace the chain","Name the power holder","Capture the ethical tension")}
+        <p>Trace the chain from ground to final use as a story. At each stage, note where sustainable leadership is exercised or absent.</p>
         <div class="sl-actions"><button class="next" data-sl-timer="30|Part A build" type="button">Start 30 minutes</button>${SLTIMER?`<button class="ghost" data-sl-timer-stop type="button">Stop</button>`:""}</div>
         ${SL_CHAIN.map(s=>`<div class="sl-stage"><h4>${s}</h4>${slField("chain."+s,"What happens here, and who holds the power?",slGet(SLSTATE.chain,s))}</div>`).join("")}
         <div class="sl-stage"><h4>The ethical contention a leader cannot avoid</h4>${slField("chain.__contention","Name it plainly.",slGet(SLSTATE.chain,"__contention"),true)}</div>`);
@@ -4974,7 +5019,8 @@ function renderSustain(){
       const doneSeven=SL_SEVEN.filter(s=>slGet(SLSTATE.seven,s.id).trim()).length;
       html+=slSection("B","Part B build","Turn the material analysis into an indigenous enterprise sketch.");
       html+=slCard(slTag("Part B")+slTag(doneSeven+"/7"),"Indigenous enterprise sketch",
-        `<p>One slide, seven elements. Assume the class is an investment committee: lead with the venture and the money, and defend the safeguards as strategy rather than charity.</p>
+        `${slFlow("Choose the chain position","Prove the money works","Defend safeguards as strategy")}
+        <p>One slide, seven elements. Assume the class is an investment committee: lead with the venture and the money, and defend the safeguards as strategy rather than charity.</p>
         <div class="sl-actions"><button class="next" data-sl-timer="30|Part B build" type="button">Start 30 minutes</button><button class="ghost" data-sl-timer="3|Boardroom pitch" type="button">3-min pitch</button></div>
         ${SL_SEVEN.map((s,i)=>`<div class="sl-stage"><h4>${i+1}. ${s.n}</h4><p class="sl-hint">${s.h}</p>${slField("seven."+s.id,"",slGet(SLSTATE.seven,s.id))}</div>`).join("")}`);
     }
@@ -4986,7 +5032,8 @@ function renderSustain(){
     html+=slSection("R","Reports workspace","Submission scaffolds only. The wording and evidence must still be yours.");
     html+=slSection("G","Group report","Start with symptoms, then force the root-cause diagnosis.");
     html+=slCard(slTag("20%")+slTag(dc>=0?dc+" days left":"past due",dc<0),"Group case report · 2,500 words",
-      `<p>Due ${slFmt(slDue("cases"))}. An African organisation facing a live sustainability or ethics failure, in a team of four or five.</p>
+      `${slFlow("Name the failure","Diagnose the root","Assign the first move")}
+      <p>Due ${slFmt(slDue("cases"))}. An African organisation facing a live sustainability or ethics failure, in a team of four or five.</p>
       <div class="sl-stage"><h4>The organisation and the visible failure</h4>${slField("notes.caseOrg","",slGet(SLSTATE.notes,"caseOrg"))}</div>
       <div class="sl-stage"><h4>Symptoms — what everyone points at</h4>${slField("notes.caseSymptom","",slGet(SLSTATE.notes,"caseSymptom"))}</div>
       <div class="sl-stage"><h4>Roots — the leadership and governance structures underneath</h4><p class="sl-hint">This is the graded move. Wells Fargo's board found sales culture, structure and unwillingness to review the model.</p>${slField("notes.caseRoot","",slGet(SLSTATE.notes,"caseRoot"),true)}</div>
@@ -4995,7 +5042,8 @@ function renderSustain(){
 
     html+=slSection("A","Individual report · Part A","Diagnose culture, then design interventions with owners and indicators.");
     html+=slCard(slTag("Part A · 20%")+slTag(df>=0?df+" days left":"past due",df<0),"Diagnosing and shifting ethics culture",
-      `<p>Due ${slFmt(slDue("final"))}, on your own organisation, with real evidence — interviews, documents, policies, observed practice.</p>
+      `${slFlow("Compare stated vs enacted","Find the sustaining structures","Design owned interventions")}
+      <p>Due ${slFmt(slDue("final"))}, on your own organisation, with real evidence — interviews, documents, policies, observed practice.</p>
       <div class="sl-stage"><h4>Stated values</h4>${slField("notes.stated","What the codes, posters and statements say.",slGet(SLSTATE.notes,"stated"))}</div>
       <div class="sl-stage"><h4>Enacted behaviour</h4>${slField("notes.enacted","What actually happens, and how you know.",slGet(SLSTATE.notes,"enacted"))}</div>
       <div class="sl-stage"><h4>Structures that sustain the divergence</h4><p class="sl-hint">Reward systems, structure, tone at the top, norms, whether concerns can be raised — CEV and the five levels both help here.</p>${slField("notes.structures","",slGet(SLSTATE.notes,"structures"),true)}</div>`);
@@ -5012,7 +5060,8 @@ function renderSustain(){
 
     html+=slSection("B","Individual report · Part B","Evaluate sustainability governance, then benchmark carefully.");
     html+=slCard(slTag("Part B · 20%"),"Sustainability governance",
-      `<p>Eight areas to evaluate, then benchmark. The synthesis must be comparative: what would have to change, what should not be imported uncritically, and where the gap is capability rather than intent.</p>
+      `${slFlow("Assess eight areas","Benchmark with care","Separate intent from capability")}
+      <p>Eight areas to evaluate, then benchmark. The synthesis must be comparative: what would have to change, what should not be imported uncritically, and where the gap is capability rather than intent.</p>
       ${SL_GOV.map(g=>`<div class="sl-stage"><h4>${g.n}</h4>${slField("gov."+g.id,"What you found, and the evidence for it.",slGet(SLSTATE.gov,g.id))}</div>`).join("")}
       <p class="warn">Benchmarking runs against GRI, ISSB, IFRS S1 and S2, TCFD and the Ghana Stock Exchange ESG Disclosure Manual. No reading for these has been circulated yet — ask the facilitators before you start Part B.</p>`);
 
@@ -6765,7 +6814,8 @@ document.addEventListener("click",e=>{
   const slCheck=e.target.closest("[data-sl-check]");
   if(slCheck){
     const id=slCheck.dataset.slCheck;
-    if(SLSTATE.checks[id]===undefined){ SLSTATE.checks[id]=Number(slCheck.dataset.value); slSave(); }
+    SLSTATE.checks[id]=Number(slCheck.dataset.value);
+    slSave();
     return;
   }
   const slVest=e.target.closest("[data-sl-vest]");

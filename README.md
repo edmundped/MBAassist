@@ -55,7 +55,9 @@ than a dashboard. It also carries the weekend map and export reminder.
 **Before** — 23 cards across the three days, two to four minutes each. Each has
 the idea, why it matters and what to watch for. Twenty carry a quick check with
 a real answer; the three that don't are the ones where the reading itself says
-there is no single right answer. A check locks once you answer it.
+there is no single right answer. Checks give coaching feedback: correct answers
+explain the reasoning, and inaccurate answers explain the misconception and let
+the student revise.
 
 **In Class** — the live class workspace. It links Friday's decision work,
 Saturday's Material World group studio and Sunday's diagnosis cards, then turns
@@ -71,6 +73,8 @@ offer the publicity test and reveal what the two practitioners actually said —
 neither of whom terminated the relationship. Below that, O'Toole's compass as a
 hard budget of twenty tokens, so liberty, equality, efficiency and community
 cannot all be funded; and Wells Fargo's two competing diagnoses side by side.
+Lens choices are coached rather than marked right or wrong: each option tells
+the student what that argument must defend.
 
 **Reports** — where most of the marks are. The group case report structured as
 symptom, root, frameworks applied or not, and a remedy with a named owner and a
