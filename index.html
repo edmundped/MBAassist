@@ -189,6 +189,7 @@ body.dark .welcome-form{background:rgba(29,25,18,.78);border-color:rgba(60,51,39
   font-size:13px;font-weight:620;text-align:left;
 }
 .course-archive-toggle .num{color:var(--ink-3)}
+.course-archive-toggle[disabled]{opacity:.9;cursor:default}
 .course-card.archived{opacity:.66}
 .course-card.archived:after{
   content:"Archived";position:absolute;right:12px;top:12px;border:1px solid var(--line);
@@ -4492,11 +4493,11 @@ function renderCourseHub(){
   const tiles=[...document.querySelectorAll("[data-course-tile]")];
   const archivedCount=tiles.filter(t=>isCourseArchived(t.dataset.courseTile)).length;
   $("#archiveCount").textContent=archivedCount;
-  $("#archiveFilterLabel").textContent=SHOW_ARCHIVED?"Hide archived courses":"Show archived courses";
+  $("#archiveFilterLabel").textContent="Archived courses remain available";
   tiles.forEach(tile=>{
     const id=tile.dataset.courseTile;
     const archived=isCourseArchived(id);
-    tile.classList.toggle("hidden",archived&&!SHOW_ARCHIVED);
+    tile.classList.remove("hidden");
     const card=tile.querySelector("[data-course]");
     if(card) card.classList.toggle("archived",archived);
     const btn=tile.querySelector("[data-course-archive]");
@@ -6994,7 +6995,7 @@ $("#backBtn").onclick=()=>{ DRILL=null; CALC_CATS=null; location.hash="finance";
 $("#coursesBtn").onclick=()=>{ DRILL=null; CALC_CATS=null; location.hash=""; show("courses"); };
 $("#courseWorldBtn").onclick=()=>{ DRILL=null; CALC_CATS=null; location.hash=""; show("courses"); };
 $("#sessBtn").onclick=()=>{ renderSession(); show("session"); };
-$("#archiveFilterBtn").onclick=()=>{ SHOW_ARCHIVED=!SHOW_ARCHIVED; renderCourseHub(); };
+$("#archiveFilterBtn").disabled=true;
 /* Free-text fields save as you type. Deliberately no re-render here —
    redrawing the pane mid-sentence would steal focus on a phone. */
 document.addEventListener("input",e=>{
