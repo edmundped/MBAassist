@@ -47,17 +47,23 @@ Both report deadlines are derived from the Sunday date (two weeks and three
 weeks), so changing these three dates fixes everything downstream. Ghana is on
 GMT year-round with no daylight saving, so the device clock is safe to trust.
 
-## The five tabs
+## The six course modules
 
 **Now** — one card, one action. Built for a phone on the way to campus rather
-than a dashboard.
+than a dashboard. It also carries the weekend map and export reminder.
 
-**Prep** — 23 cards across the three days, two to four minutes each. Each has
+**Before** — 23 cards across the three days, two to four minutes each. Each has
 the idea, why it matters and what to watch for. Twenty carry a quick check with
 a real answer; the three that don't are the ones where the reading itself says
 there is no single right answer. A check locks once you answer it.
 
-**Decide** — the HBR Vestenborg/Greenspan supplier case, worked through the
+**In Class** — the live class workspace. It links Friday's decision work,
+Saturday's Material World group studio and Sunday's diagnosis cards, then turns
+Saturday into a group sheet once the student picks a material: anchor case,
+guiding question, six chain stages, seven enterprise elements, thirty-minute
+build timers and a three-minute pitch timer.
+
+**Decisions** — the HBR Vestenborg/Greenspan supplier case, worked through the
 Markkula framework. You choose which option each of the six lenses favours, and
 the app shows you where they split, because the framework states plainly that
 the lenses may lead to different answers. Only after all six are placed does it
@@ -66,17 +72,16 @@ neither of whom terminated the relationship. Below that, O'Toole's compass as a
 hard budget of twenty tokens, so liberty, equality, efficiency and community
 cannot all be funded; and Wells Fargo's two competing diagnoses side by side.
 
-**Saturday** — pick your group's material once and the screen becomes yours:
-your anchor case, your guiding question, the six chain stages to fill, and the
-seven elements of the enterprise sketch. Thirty-minute build timers and a
-three-minute pitch timer, matching the pack.
-
-**After** — where most of the marks are. The group case report structured as
+**Reports** — where most of the marks are. The group case report structured as
 symptom, root, frameworks applied or not, and a remedy with a named owner and a
 first move. Then Part A: stated values against enacted behaviour, the structures
 sustaining the gap, and interventions that each need a level, an owner, a
 sequence and an indicator — with the level picked from Taylor's five. Then Part
 B's eight governance areas.
+
+**My Work** — a quiet device-local summary: cards read, checks answered,
+value-chain stages drafted, enterprise elements drafted, report fields started,
+governance areas started, and export.
 
 ## What it will not do
 

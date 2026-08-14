@@ -482,8 +482,30 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
   font-size:13.5px;font-weight:620;color:var(--ink);
 }
 .sl-jump span{font-size:12px;color:var(--ink-3);font-weight:500;line-height:1.35}
-.sl-seg{position:sticky;top:72px;z-index:12;background:var(--line)}
+.sl-seg{position:sticky;top:72px;z-index:12;background:var(--line);overflow-x:auto;-webkit-overflow-scrolling:touch}
+.sl-seg button{min-width:72px;display:flex;flex-direction:column;align-items:center;gap:3px}
+.sl-seg .sl-tab-ico{
+  width:22px;height:22px;border-radius:8px;display:grid;place-items:center;
+  background:var(--raised);font-family:var(--mono);font-size:12px;color:var(--ink-3);
+}
+.sl-seg button.on .sl-tab-ico{background:#2F6F5E;color:white}
 .sl-pane{display:flex;flex-direction:column;gap:10px}
+.sl-section{
+  display:flex;align-items:flex-start;gap:10px;margin:14px 1px 4px;
+}
+.sl-section:first-child{margin-top:0}
+.sl-section-ico{
+  width:32px;height:32px;border-radius:10px;display:grid;place-items:center;flex:none;
+  background:color-mix(in srgb,#2F6F5E 13%,var(--surface));border:1px solid color-mix(in srgb,#2F6F5E 28%,var(--line));
+  color:#2F6F5E;font-family:var(--mono);font-weight:700;font-size:14px;
+}
+.sl-section-copy b{display:block;font-size:14px;line-height:1.25}
+.sl-section-copy span{display:block;font-size:12.5px;color:var(--ink-3);line-height:1.35;margin-top:2px}
+.sl-module-grid{display:grid;gap:8px}
+.sl-work-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sl-work-stat{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:12px}
+.sl-work-stat b{display:block;font-family:var(--mono);font-size:20px}
+.sl-work-stat span{display:block;font-size:12.5px;color:var(--ink-3);margin-top:2px;line-height:1.35}
 .sl-card{
   background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
   padding:15px 16px;overflow:hidden;
@@ -578,7 +600,7 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .sl-trio{display:grid;gap:7px}
 .sl-trio .sl-text{min-height:44px}
 .sl-text.big{min-height:96px}
-@media(min-width:560px){.sl-split{grid-template-columns:1fr 1fr}.sl-trio{grid-template-columns:1fr 1fr 1fr}}
+@media(min-width:560px){.sl-split{grid-template-columns:1fr 1fr}.sl-trio{grid-template-columns:1fr 1fr 1fr}.sl-module-grid{grid-template-columns:1fr 1fr 1fr}}
 .sl-archived-note{
   margin:0 0 12px;padding:11px 12px;border-radius:11px;
   background:#FFF7E6;border:1px solid #E7C98B;color:#7A4D00;
@@ -1078,11 +1100,12 @@ body.dark .lvl.l1{color:#7FD3B8}body.dark .lvl.l2{color:#E3BE6A}body.dark .lvl.l
   </section>
 
   <div class="seg sl-seg" id="slSeg">
-    <button class="on" data-sl-tab="now" type="button">Now</button>
-    <button data-sl-tab="prep" type="button">Prep</button>
-    <button data-sl-tab="decide" type="button">Decide</button>
-    <button data-sl-tab="saturday" type="button">Saturday</button>
-    <button data-sl-tab="after" type="button">After</button>
+    <button class="on" data-sl-tab="now" type="button"><span class="sl-tab-ico">▶</span><span>Now</span></button>
+    <button data-sl-tab="prep" type="button"><span class="sl-tab-ico">◷</span><span>Before</span></button>
+    <button data-sl-tab="saturday" type="button"><span class="sl-tab-ico">▦</span><span>In Class</span></button>
+    <button data-sl-tab="decide" type="button"><span class="sl-tab-ico">◇</span><span>Decisions</span></button>
+    <button data-sl-tab="after" type="button"><span class="sl-tab-ico">▤</span><span>Reports</span></button>
+    <button data-sl-tab="work" type="button"><span class="sl-tab-ico">✓</span><span>My Work</span></button>
   </div>
 
   <div id="slPane"></div>
@@ -4762,6 +4785,17 @@ function slCards(day){return SL_CARDS.filter(c=>c.day===day);}
 function slReadCount(day){return slCards(day).filter(c=>SLSTATE.read.includes(c.id)).length;}
 function slTag(s,alt){return `<span class="tag"${alt?` style="color:var(--no);border-color:var(--no-bg)"`:""}>${s}</span>`;}
 function slCard(meta,title,body){return `<article class="sl-card"><div class="sl-meta">${meta}</div><h3>${title}</h3>${body}</article>`;}
+function slSection(icon,title,sub){
+  return `<div class="sl-section"><span class="sl-section-ico">${icon}</span><span class="sl-section-copy"><b>${title}</b><span>${sub}</span></span></div>`;
+}
+function slProgressCounts(){
+  const checks=Object.keys(SLSTATE.checks).length;
+  const chain=SL_CHAIN.filter(s=>slGet(SLSTATE.chain,s).trim()).length;
+  const seven=SL_SEVEN.filter(s=>slGet(SLSTATE.seven,s.id).trim()).length;
+  const reportFields=["caseOrg","caseSymptom","caseRoot","caseFrame","caseRemedy","stated","enacted","structures"].filter(k=>slGet(SLSTATE.notes,k).trim()).length;
+  const gov=SL_GOV.filter(g=>slGet(SLSTATE.gov,g.id).trim()).length;
+  return {checks,chain,seven,reportFields,gov};
+}
 function slField(path,ph,val,big){
   return `<textarea class="sl-text${big?" big":""}" data-sl-field="${path}" placeholder="${esc(ph)}">${esc(val||"")}</textarea>`;
 }
@@ -4800,10 +4834,12 @@ function renderSustain(){
   /* ===================== NOW ===================== */
   if(SLTAB==="now"){
     const n=slNow();
+    html+=slSection("N","Start with what is next","A single next action, then optional shortcuts.");
     html+=`<article class="sl-now"><div class="sl-meta">${slTag(n.tag)}</div><h3>${n.t}</h3><p>${n.p}</p>
       <button class="sl-jump" data-sl-jump="${n.go}" type="button">${n.goLabel} <span>›</span></button></article>`;
 
     if(phase==="sat"){
+      html+=slSection("C","Live class clock","Use this only as a session guide; facilitators keep the actual room timing.");
       const cur=slSatBlock(), m=slMinsNow();
       html+=slCard(slTag("Run sheet"),"Saturday, 09h15 to 11h15",
         `<div class="sl-runsheet">${SL_SAT_BLOCKS.map(b=>{
@@ -4813,6 +4849,7 @@ function renderSustain(){
         <p class="warn">Timings are from the student pack. The facilitators keep the real clock.</p>`);
     }
 
+    html+=slSection("B","Weekend map","Jump by day when you are reading ahead or catching up.");
     const days=[["fri","Friday","Ethical foundations"],["sat","Saturday","Material World"],["sun","Sunday","Culture and governance"]];
     html+=`<div class="sl-grid">${days.map(([d,n2,s])=>{
       const total=slCards(d).length, done=slReadCount(d);
@@ -4821,6 +4858,7 @@ function renderSustain(){
         <span class="dr">${done}/${total}</span></button>`;
     }).join("")}</div>`;
 
+    html+=slSection("W","Course evidence","Keep your own words here, then export before clearing the browser.");
     html+=slCard(slTag("How this works"),"One rule",
       `<p>This app holds the frameworks, the case facts and <b>your own words</b>. It does not write your reflections or your reports, and nothing in it is a grade. Every mark in this module is yours to earn.</p>
       <p class="warn">Everything saves to this device only. Use Export from the menu below before you clear your browser.</p>
@@ -4832,9 +4870,11 @@ function renderSustain(){
   /* ===================== PREP ===================== */
   if(SLTAB==="prep"){
     const day=SLSTATE.notes.__day||(["fri","sat","sun"].includes(phase)?phase:"fri");
+    html+=slSection("B","Before class cards","Short readings grouped by seminar day. These are the minimum path into the room.");
     html+=`<div class="seg compact" id="slDaySeg">${[["fri","Friday"],["sat","Saturday"],["sun","Sunday"]].map(([d,n])=>
       `<button class="${d===day?"on":""}" data-sl-day="${d}" type="button">${n}</button>`).join("")}</div>`;
     const cards=slCards(day);
+    html+=slSection(day==="fri"?"F":day==="sat"?"S":"U",`${{fri:"Friday foundations",sat:"Saturday material world",sun:"Sunday diagnosis"}[day]}`,`${slReadCount(day)}/${cards.length} cards marked read.`);
     html+=`<div class="sl-grid">${cards.map(c=>{
       const done=SLSTATE.read.includes(c.id);
       const ans=SLSTATE.checks[c.id];
@@ -4856,12 +4896,15 @@ function renderSustain(){
   if(SLTAB==="decide"){
     const picked=SL_LENSES.filter(l=>SLSTATE.vest[l.id]).length;
     const spread=[...new Set(SL_LENSES.map(l=>SLSTATE.vest[l.id]).filter(Boolean))];
+    html+=slSection("D","Decision studio","Practise ethical judgment before using the same moves in the reports.");
     html+=slCard(slTag("HBR case")+slTag("Vestenborg Home"),"A key supplier failed a labour audit",
       `<p>Greenspan has supplied Vestenborg for fourteen years and makes the foam core for EcoLuxe, the biggest launch in a decade. The audit found overtime of 70 to 84 hours against a cap of 60, a partially blocked emergency exit, and two 14-year-old workers hired through a subcontractor on falsified documents. Minh says the boys were orphans from a roadside food stand, that pay was equal, and that the blocked exit was temporary while a rest area was installed. Vestenborg is about a third of Greenspan's volume, and no other supplier can make the foam inside the launch window.</p>
       <p class="warn">Work each lens separately. The point is to find where they disagree, not to reach one answer.</p>`);
 
-    html+=SL_VEST_OPTIONS.map(o=>slCard(slTag("Option"),o.n,`<p>${o.h}</p>`)).join("");
+    html+=slSection("1","Alternatives","Separate the possible actions before applying the ethical lenses.");
+    html+=`<div class="sl-module-grid">${SL_VEST_OPTIONS.map(o=>slCard(slTag("Option"),o.n,`<p>${o.h}</p>`)).join("")}</div>`;
 
+    html+=slSection("2","Lens grid","Pick the option each lens favours. Agreement is useful; disagreement is the analysis.");
     html+=slCard(slTag("Six lenses")+slTag(picked+"/6 done"),"Which option does each lens favour?",
       SL_LENSES.map(l=>`<div class="sl-lens"><p class="sl-q">${l.n}. ${l.q}</p>
         <div class="sl-opts">${SL_VEST_OPTIONS.map(o=>
@@ -4871,6 +4914,7 @@ function renderSustain(){
         : `Your lenses split ${spread.length} ways. That split <b>is</b> the analysis: name the lens you are acting on and say what the others cost.`}</div>`:""));
 
     if(picked===6){
+      html+=slSection("3","Publicity test","Commit to a defensible call before seeing expert responses.");
       html+=slCard(slTag("Step 8")+slTag("The publicity test"),"If you told someone you respect, what would they say?",
         `${slField("vestNote","Your call, and the one line you would defend it with.",SLSTATE.vestNote,true)}
          <div class="sl-actions"><button class="${SLSTATE.vestSeen?"ghost":"next"}" data-sl-experts type="button">${SLSTATE.vestSeen?"Hide the experts":"Show what two practitioners said"}</button></div>`);
@@ -4880,6 +4924,7 @@ function renderSustain(){
           `<p>The intuitive answer to child labour is zero tolerance and immediate exit. Both practitioners land on investigation and remediation instead, for different reasons — and van Heerden points the root cause back at Vestenborg's own lead times and forecasts. That move, from the visible violation to the structure that produced it, is what the midsemester report is graded on.</p>`);
     }
 
+    html+=slSection("4","Value trade-offs","The compass forces prioritisation instead of listing every value as equally important.");
     const used=Object.values(SLSTATE.compass).reduce((a,b)=>a+b,0);
     html+=slCard(slTag("O'Toole")+slTag("20 tokens"),"The executive's compass",
       `<p>Liberty pulls against equality; efficiency pulls against community. You have twenty tokens and cannot fund all four — that constraint is the whole point.</p>
@@ -4891,6 +4936,7 @@ function renderSustain(){
         <span class="ab"><i style="width:${SLSTATE.compass[v]*5}%"></i></span></div>`).join("")}
       <p class="warn">${used===20?"All twenty allocated. To fund one value further you must take from another.":(20-used)+" left to place."}</p>`);
 
+    html+=slSection("5","System diagnosis","Use Wells Fargo to practise moving from visible misconduct to the structure beneath it.");
     html+=slCard(slTag("Markkula")+slTag("Wells Fargo"),"Two diagnoses of the same facts",
       `<div class="sl-split">${SL_WELLS.map(w=>`<div><h4>${w.side}</h4><ul class="sl-list">${w.p.map(p=>`<li>${p}</li>`).join("")}</ul></div>`).join("")}</div>
        <p class="sl-q" style="margin-top:12px">Wells Fargo had an ethics hotline and it did not work. Why not, and what would you design instead?</p>
@@ -4899,17 +4945,26 @@ function renderSustain(){
 
   /* ===================== SATURDAY ===================== */
   if(SLTAB==="saturday"){
+    html+=slSection("C","In-class workspace","Use this in the room. It keeps the group build separate from individual report notes.");
+    html+=`<div class="sl-module-grid">
+      <button class="sl-daycard" data-sl-jump="decide" type="button"><span class="dl"><b>Friday</b><span>Ethical lenses, compass, Vestenborg, Wells Fargo</span></span><span class="dr">D</span></button>
+      <button class="sl-daycard${phase==="sat"?" on":""}" data-sl-jump="saturday" type="button"><span class="dl"><b>Saturday</b><span>Material World group build and pitch timers</span></span><span class="dr">C</span></button>
+      <button class="sl-daycard" data-sl-day="sun" type="button"><span class="dl"><b>Sunday</b><span>Culture, governance and final report diagnosis cards</span></span><span class="dr">B</span></button>
+    </div>`;
     const mat=slMat();
     if(!mat){
+      html+=slSection("S","Saturday studio setup","Pick once and the rest of this screen becomes your group sheet.");
       html+=slCard(slTag("Start here"),"Which material is your group on?",
         `<p>Every student reads Conway's introduction. You only read your own material's section — so pick your group and this screen becomes yours.</p>
         <div class="sl-opts">${SL_MATERIALS.map(m=>`<button class="sl-choice" data-sl-material="${m.id}" type="button">Group ${m.g} · ${m.n}</button>`).join("")}</div>`);
     } else {
       html+=`<div id="slTimer" class="sl-timer"></div>`;
+      html+=slSection("S","Your group material","The anchor case and guiding question for the room.");
       html+=slCard(slTag("Group "+mat.g)+slTag(mat.n),"Your guiding question",
         `<p><b>${mat.q}</b></p><p><b>Anchor case.</b> ${mat.anchor}</p><p><b>From Conway.</b> ${mat.note}</p>
          <div class="sl-actions"><button class="ghost" data-sl-material="" type="button">Change material</button></div>`);
 
+      html+=slSection("A","Part A build","Map the material chain before jumping to the enterprise idea.");
       html+=slCard(slTag("Part A")+slTag("30 min build"),"Value chain storyboard",
         `<p>Trace the chain from ground to final use as a story. At each stage, note where sustainable leadership is exercised or absent.</p>
         <div class="sl-actions"><button class="next" data-sl-timer="30|Part A build" type="button">Start 30 minutes</button>${SLTIMER?`<button class="ghost" data-sl-timer-stop type="button">Stop</button>`:""}</div>
@@ -4917,6 +4972,7 @@ function renderSustain(){
         <div class="sl-stage"><h4>The ethical contention a leader cannot avoid</h4>${slField("chain.__contention","Name it plainly.",slGet(SLSTATE.chain,"__contention"),true)}</div>`);
 
       const doneSeven=SL_SEVEN.filter(s=>slGet(SLSTATE.seven,s.id).trim()).length;
+      html+=slSection("B","Part B build","Turn the material analysis into an indigenous enterprise sketch.");
       html+=slCard(slTag("Part B")+slTag(doneSeven+"/7"),"Indigenous enterprise sketch",
         `<p>One slide, seven elements. Assume the class is an investment committee: lead with the venture and the money, and defend the safeguards as strategy rather than charity.</p>
         <div class="sl-actions"><button class="next" data-sl-timer="30|Part B build" type="button">Start 30 minutes</button><button class="ghost" data-sl-timer="3|Boardroom pitch" type="button">3-min pitch</button></div>
@@ -4927,6 +4983,8 @@ function renderSustain(){
   /* ===================== AFTER ===================== */
   if(SLTAB==="after"){
     const dc=slDaysBetween(slDue("cases"),new Date()), df=slDaysBetween(slDue("final"),new Date());
+    html+=slSection("R","Reports workspace","Submission scaffolds only. The wording and evidence must still be yours.");
+    html+=slSection("G","Group report","Start with symptoms, then force the root-cause diagnosis.");
     html+=slCard(slTag("20%")+slTag(dc>=0?dc+" days left":"past due",dc<0),"Group case report · 2,500 words",
       `<p>Due ${slFmt(slDue("cases"))}. An African organisation facing a live sustainability or ethics failure, in a team of four or five.</p>
       <div class="sl-stage"><h4>The organisation and the visible failure</h4>${slField("notes.caseOrg","",slGet(SLSTATE.notes,"caseOrg"))}</div>
@@ -4935,6 +4993,7 @@ function renderSustain(){
       <div class="sl-stage"><h4>Decision frameworks applied — or conspicuously not</h4>${slField("notes.caseFrame","",slGet(SLSTATE.notes,"caseFrame"))}</div>
       <div class="sl-stage"><h4>Governance remedy · named owner · first move</h4>${slField("notes.caseRemedy","All three. A remedy with no owner is not a remedy.",slGet(SLSTATE.notes,"caseRemedy"),true)}</div>`);
 
+    html+=slSection("A","Individual report · Part A","Diagnose culture, then design interventions with owners and indicators.");
     html+=slCard(slTag("Part A · 20%")+slTag(df>=0?df+" days left":"past due",df<0),"Diagnosing and shifting ethics culture",
       `<p>Due ${slFmt(slDue("final"))}, on your own organisation, with real evidence — interviews, documents, policies, observed practice.</p>
       <div class="sl-stage"><h4>Stated values</h4>${slField("notes.stated","What the codes, posters and statements say.",slGet(SLSTATE.notes,"stated"))}</div>
@@ -4951,14 +5010,40 @@ function renderSustain(){
       </div>`).join("")}
       <div class="sl-actions"><button class="next" data-sl-iv-add type="button">Add an intervention</button></div>`);
 
+    html+=slSection("B","Individual report · Part B","Evaluate sustainability governance, then benchmark carefully.");
     html+=slCard(slTag("Part B · 20%"),"Sustainability governance",
       `<p>Eight areas to evaluate, then benchmark. The synthesis must be comparative: what would have to change, what should not be imported uncritically, and where the gap is capability rather than intent.</p>
       ${SL_GOV.map(g=>`<div class="sl-stage"><h4>${g.n}</h4>${slField("gov."+g.id,"What you found, and the evidence for it.",slGet(SLSTATE.gov,g.id))}</div>`).join("")}
       <p class="warn">Benchmarking runs against GRI, ISSB, IFRS S1 and S2, TCFD and the Ghana Stock Exchange ESG Disclosure Manual. No reading for these has been circulated yet — ask the facilitators before you start Part B.</p>`);
 
+    html+=slSection("W","Export","Save the device-local trail before you clear browser data.");
     html+=slCard(slTag("Reminder"),"Your words, not the app's",
       `<p>Everything above is a place to keep your own findings and phrasing so you are not starting from a blank page. The writing is yours.</p>
       <div class="sl-actions"><button class="ghost" data-sl-export type="button">Export my work</button></div>`);
+  }
+
+  /* ===================== MY WORK ===================== */
+  if(SLTAB==="work"){
+    const p=slProgressCounts();
+    html+=slSection("W","My work","A quiet summary of what has been captured on this device.");
+    html+=`<div class="sl-work-grid">
+      <div class="sl-work-stat"><b>${SLSTATE.read.length}/${SL_CARDS.length}</b><span>reading cards marked read</span></div>
+      <div class="sl-work-stat"><b>${p.checks}</b><span>quick checks answered</span></div>
+      <div class="sl-work-stat"><b>${p.chain}/${SL_CHAIN.length}</b><span>value-chain stages drafted</span></div>
+      <div class="sl-work-stat"><b>${p.seven}/${SL_SEVEN.length}</b><span>enterprise elements drafted</span></div>
+      <div class="sl-work-stat"><b>${p.reportFields}/8</b><span>group and culture report fields started</span></div>
+      <div class="sl-work-stat"><b>${p.gov}/${SL_GOV.length}</b><span>governance areas started</span></div>
+    </div>`;
+    html+=slSection("M","Move around","Jump back into the parts that create reusable evidence.");
+    html+=`<div class="sl-module-grid">
+      <button class="sl-daycard" data-sl-jump="prep" type="button"><span class="dl"><b>Before</b><span>Reading cards and checks</span></span><span class="dr">B</span></button>
+      <button class="sl-daycard" data-sl-jump="decide" type="button"><span class="dl"><b>Decisions</b><span>Lens grid, compass and Wells Fargo note</span></span><span class="dr">D</span></button>
+      <button class="sl-daycard" data-sl-jump="after" type="button"><span class="dl"><b>Reports</b><span>Group and individual report scaffolds</span></span><span class="dr">R</span></button>
+    </div>`;
+    html+=slSection("E","Export","Download a JSON trail of the notes and choices saved locally.");
+    html+=slCard(slTag("Device local"),"Export my work",
+      `<p>Progress is stored in this browser on this device. Export gives you a backup and a portable trail of your own notes.</p>
+      <div class="sl-actions"><button class="next" data-sl-export type="button">Export my work</button></div>`);
   }
 
   pane.innerHTML=html;
