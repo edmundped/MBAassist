@@ -1006,13 +1006,12 @@ body.dark .lvl.l1{color:#7FD3B8}body.dark .lvl.l2{color:#E3BE6A}body.dark .lvl.l
         <h2>Managerial Finance</h2>
         <p>Mastery practice, teach mode, case analysis, formula map, and calculator support for MBA512.</p>
       </button>
-      <div class="course-actions"><button class="mini-action" data-course-archive="finance" type="button">Archive</button></div>
     </div>
     <div class="course-tile" data-course-tile="sustain">
       <button class="course-card" data-course="sustain" style="--course:#2F6F5E" type="button">
         <span class="tag">Weekend</span>
         <h2>Sustainable Leadership</h2>
-        <p>Microcards, ethical lens checks, value compass, case cards, culture red flags, and exit tickets.</p>
+        <p>Before-class cards, in-class build sheets, ethical decision coaching, report scaffolds, and exportable notes.</p>
       </button>
       <div class="course-actions"><button class="mini-action" data-course-archive="sustain" type="button">Archive</button></div>
     </div>
@@ -4475,12 +4474,38 @@ const TOOL_DESC={
 
 /* ============ course archive + sustainable leadership ============ */
 const COURSE_ARCHIVE_KEY="mbaassist-course-archive";
+const COURSE_ARCHIVABLE=new Set(["sustain"]);
 let SHOW_ARCHIVED=false;
 let COURSE_ARCHIVE={};
 try{COURSE_ARCHIVE=JSON.parse(localStorage.getItem(COURSE_ARCHIVE_KEY)||"{}")||{};}catch(_){COURSE_ARCHIVE={};}
+if(COURSE_ARCHIVE.finance) delete COURSE_ARCHIVE.finance;
 function saveCourseArchive(){try{localStorage.setItem(COURSE_ARCHIVE_KEY,JSON.stringify(COURSE_ARCHIVE));}catch(_){}}
-function isCourseArchived(id){return !!COURSE_ARCHIVE[id];}
-function setCourseArchived(id,on){COURSE_ARCHIVE[id]=!!on; if(!on) delete COURSE_ARCHIVE[id]; saveCourseArchive();}
+function isCourseArchived(id){return COURSE_ARCHIVABLE.has(id)&&!!COURSE_ARCHIVE[id];}
+function setCourseArchived(id,on){
+  if(!COURSE_ARCHIVABLE.has(id)){delete COURSE_ARCHIVE[id]; saveCourseArchive(); return;}
+  COURSE_ARCHIVE[id]=!!on; if(!on) delete COURSE_ARCHIVE[id]; saveCourseArchive();
+}
+function renderCourseHub(){
+  const nm=(SESSION.name||"").trim().split(/\s+/)[0];
+  $("#courseGreeting").textContent=nm?`Welcome back, ${nm}`:"Welcome";
+  if(COURSE_ARCHIVE.finance){delete COURSE_ARCHIVE.finance; saveCourseArchive();}
+  const tiles=[...document.querySelectorAll("[data-course-tile]")];
+  const archivedCount=tiles.filter(t=>isCourseArchived(t.dataset.courseTile)).length;
+  $("#archiveCount").textContent=archivedCount;
+  $("#archiveFilterLabel").textContent=SHOW_ARCHIVED?"Hide archived courses":"Show archived courses";
+  tiles.forEach(tile=>{
+    const id=tile.dataset.courseTile;
+    const archived=isCourseArchived(id);
+    tile.classList.toggle("hidden",archived&&!SHOW_ARCHIVED);
+    const card=tile.querySelector("[data-course]");
+    if(card) card.classList.toggle("archived",archived);
+    const btn=tile.querySelector("[data-course-archive]");
+    if(btn){
+      btn.textContent=archived?"Restore":"Archive";
+      btn.classList.toggle("danger",!archived);
+    }
+  });
+}
 
 const SL_KEY="mbaassist-sustainable-leadership-v2";
 
@@ -7048,7 +7073,7 @@ $("#importFile").onchange=e=>{
       if(!confirm("Restore this backup? It will replace the progress currently on this device.")) return;
       if(d.session&&d.session.id){ SESSION=d.session; localStorage.setItem(SKEY,JSON.stringify(SESSION)); }
       M=d.m||{}; DRILLNO=d.drill||0; FLAGS=d.flags||{}; LDONE=d.lessons||{}; WDONE=d.written||{}; LESSON_ID=null;
-      COURSE_ARCHIVE=d.courseArchive||{}; saveCourseArchive();
+      COURSE_ARCHIVE=d.courseArchive||{}; delete COURSE_ARCHIVE.finance; saveCourseArchive();
       SLSTATE=Object.assign(slDefault(),d.sustainableLeadership||{}); try{localStorage.setItem(SL_KEY,JSON.stringify(SLSTATE));}catch(_){}
       saveProgress(); saveFlags();
       $("#learnerName").value=SESSION.name||"";
