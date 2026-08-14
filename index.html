@@ -169,11 +169,19 @@ body.dark .welcome-form{background:rgba(29,25,18,.78);border-color:rgba(60,51,39
 .course-card .tag{width:max-content}
 .course-card[disabled]{opacity:.72;cursor:not-allowed}
 .course-card:not([disabled]):active{transform:scale(.985)}
+.course-tile{display:flex;flex-direction:column;gap:7px}
+.course-tile .course-card{width:100%;flex:1}
 .course-actions{display:flex;gap:8px;margin-top:2px;position:relative;z-index:2}
 .course-actions .mini-action{
   min-height:34px;padding:7px 10px;border-radius:9px;border:1px solid var(--line);
   background:var(--raised);font-size:12px;font-weight:620;color:var(--ink-2);
 }
+.course-actions .mini-action.danger{color:var(--no)}
+.course-tile .archive-mini{
+  align-self:flex-start;min-height:32px;padding:6px 9px;border-radius:8px;border:1px solid var(--line);
+  background:var(--surface);font-size:11.5px;font-weight:620;color:var(--ink-3);
+}
+.course-tile .archive-mini:active{background:var(--raised)}
 .course-archive-toggle{
   width:100%;margin:0 0 12px;padding:11px 13px;border-radius:12px;
   border:1px solid var(--line);background:var(--surface);color:var(--ink-2);
@@ -455,6 +463,25 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .sl-status{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .sl-status h3{font-size:18px;margin:4px 0 3px}
 .sl-status p:not(.eyebrow){font-size:13px;color:var(--ink-2)}
+.sl-mode{display:grid;gap:10px}
+.sl-mode .seg{position:static;background:var(--line)}
+.sl-mode .warn{margin:0;font-size:12.5px;line-height:1.45}
+.sl-grade{
+  display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;
+}
+.sl-grade .kvmini{
+  border:1px solid var(--line);border-radius:10px;background:var(--raised);
+  padding:10px 11px;min-height:64px;
+}
+.sl-grade b{display:block;font-family:var(--mono);font-size:18px;font-weight:650}
+.sl-grade span{display:block;font-size:11.5px;color:var(--ink-3);line-height:1.25;margin-top:2px}
+.sl-jump{
+  width:100%;margin-top:10px;text-align:left;border:1px solid var(--line);
+  background:var(--surface);border-radius:12px;padding:12px 13px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  font-size:13.5px;font-weight:620;color:var(--ink);
+}
+.sl-jump span{font-size:12px;color:var(--ink-3);font-weight:500;line-height:1.35}
 .sl-seg{position:sticky;top:72px;z-index:12;background:var(--line)}
 .sl-pane{display:flex;flex-direction:column;gap:10px}
 .sl-card{
@@ -885,21 +912,29 @@ body.dark .lvl.l1{color:#7FD3B8}body.dark .lvl.l2{color:#E3BE6A}body.dark .lvl.l
     <span class="num" id="archiveCount">0</span>
   </button>
   <div class="grid">
-    <button class="course-card" data-course="finance" style="--course:#4A4FA0" type="button">
-      <span class="tag">Live</span>
-      <h2>Managerial Finance</h2>
-      <p>Mastery practice, teach mode, case analysis, formula map, and calculator support for MBA512.</p>
-    </button>
-    <button class="course-card" data-course="sustain" style="--course:#2F6F5E" type="button">
-      <span class="tag">Weekend</span>
-      <h2>Sustainable Leadership</h2>
-      <p>Microcards, ethical lens checks, value compass, case cards, culture red flags, and exit tickets.</p>
-    </button>
-    <button class="course-card" data-course="crossborder" style="--course:#8A4A78" type="button" disabled>
-      <span class="tag">Coming soon</span>
-      <h2>Cross-Border Business</h2>
-      <p>International strategy, market entry, trade, institutions, and global operating decisions.</p>
-    </button>
+    <div class="course-tile" data-course-tile="finance">
+      <button class="course-card" data-course="finance" style="--course:#4A4FA0" type="button">
+        <span class="tag">Live</span>
+        <h2>Managerial Finance</h2>
+        <p>Mastery practice, teach mode, case analysis, formula map, and calculator support for MBA512.</p>
+      </button>
+      <div class="course-actions"><button class="mini-action" data-course-archive="finance" type="button">Archive</button></div>
+    </div>
+    <div class="course-tile" data-course-tile="sustain">
+      <button class="course-card" data-course="sustain" style="--course:#2F6F5E" type="button">
+        <span class="tag">Weekend</span>
+        <h2>Sustainable Leadership</h2>
+        <p>Microcards, ethical lens checks, value compass, case cards, culture red flags, and exit tickets.</p>
+      </button>
+      <div class="course-actions"><button class="mini-action" data-course-archive="sustain" type="button">Archive</button></div>
+    </div>
+    <div class="course-tile" data-course-tile="crossborder">
+      <button class="course-card" data-course="crossborder" style="--course:#8A4A78" type="button" disabled>
+        <span class="tag">Coming soon</span>
+        <h2>Cross-Border Business</h2>
+        <p>International strategy, market entry, trade, institutions, and global operating decisions.</p>
+      </button>
+    </div>
   </div>
 </main>
 
@@ -982,7 +1017,16 @@ body.dark .lvl.l1{color:#7FD3B8}body.dark .lvl.l2{color:#E3BE6A}body.dark .lvl.l
       <h3 id="slProgressTitle">0% captured</h3>
       <p id="slProgressSub">Tap through the weekend activities to build a light grading trail.</p>
     </div>
-    <button class="ghost" id="slArchiveBtn" type="button">Archive course</button>
+  </section>
+
+  <section class="sl-mode panel">
+    <p class="eyebrow">Experience mode</p>
+    <div class="seg compact" id="slModeSeg">
+      <button data-sl-mode="summary" type="button">Summary</button>
+      <button data-sl-mode="full" type="button">Full</button>
+      <button data-sl-mode="facilitator" type="button">Facilitator</button>
+    </div>
+    <p id="slModeHelp" class="warn" style="margin-top:8px"></p>
   </section>
 
   <div class="seg sl-seg" id="slSeg">
@@ -4399,10 +4443,45 @@ const SL={
 };
 let SLTAB="today";
 let SLSTATE=null;
-function slDefault(){return {read:[],checks:{},cases:{},compass:{Liberty:50,Equality:50,Efficiency:50,Community:50},red:[],tickets:[],updated:null};}
+function slDefault(){return {mode:"summary",read:[],checks:{},cases:{},compass:{Liberty:50,Equality:50,Efficiency:50,Community:50},red:[],tickets:[],updated:null};}
 function slLoad(){try{return Object.assign(slDefault(),JSON.parse(localStorage.getItem(SL_KEY)||"{}")||{});}catch(_){return slDefault();}}
 function slSave(){SLSTATE.updated=new Date().toISOString();try{localStorage.setItem(SL_KEY,JSON.stringify(SLSTATE));}catch(_){} renderSustain();}
-function slPct(){const done=SLSTATE.read.length+Object.keys(SLSTATE.checks).length+Object.keys(SLSTATE.cases).length+(SLSTATE.red.length?1:0)+SLSTATE.tickets.length;return Math.min(100,Math.round(done/14*100));}
+function slMicro(){
+  if(SLSTATE.mode==="summary") return SL.micro.filter(x=>["sl-core","ethics-law","culture-root"].includes(x.id));
+  if(SLSTATE.mode==="facilitator") return SL.micro.filter(x=>["compass","systems","material-world"].includes(x.id));
+  return SL.micro;
+}
+function slChecks(){
+  if(SLSTATE.mode==="summary") return SL.checks.slice(0,1);
+  if(SLSTATE.mode==="facilitator") return SL.checks.filter(x=>x.id!=="nepotism");
+  return SL.checks;
+}
+function slModeText(){
+  return {
+    summary:"Summary is the minimum viable weekend path: three microcards, one lens check, two case decisions, red flags and one exit ticket.",
+    full:"Full Studio exposes every microcard, ethical lens check, compass, case card, red-flag checklist and exit-ticket trail.",
+    facilitator:"Facilitator mode pushes discussion tools forward: value compass, system/culture prompts, group case cards and quick capture."
+  }[SLSTATE.mode||"summary"];
+}
+function slModeLabel(){
+  return {summary:"Summary",full:"Full Studio",facilitator:"Facilitator"}[SLSTATE.mode||"summary"];
+}
+function slGrade(){
+  const reads=SLSTATE.read.filter(id=>slMicro().some(m=>m.id===id)).length;
+  const checks=Object.keys(SLSTATE.checks).filter(id=>slChecks().some(c=>c.id===id)).length;
+  const caseAnswers=Object.keys(SLSTATE.cases).length;
+  const flags=SLSTATE.red.length?1:0;
+  const tickets=SLSTATE.tickets.length;
+  const completion=Math.min(70,Math.round(slPct()*.7));
+  const decisions=Math.min(20,Math.round((checks+Math.min(caseAnswers,6))/8*20));
+  const reflection=Math.min(10,tickets?10:0);
+  return {reads,checks,caseAnswers,flags,tickets,completion,decisions,reflection,total:completion+decisions+reflection};
+}
+function slPct(){
+  const target=SLSTATE.mode==="full"?14:SLSTATE.mode==="facilitator"?10:8;
+  const done=SLSTATE.read.filter(id=>slMicro().some(m=>m.id===id)).length+Object.keys(SLSTATE.checks).filter(id=>slChecks().some(c=>c.id===id)).length+Object.keys(SLSTATE.cases).length+(SLSTATE.red.length?1:0)+SLSTATE.tickets.length;
+  return Math.min(100,Math.round(done/target*100));
+}
 function slTag(s,warn=false){return `<span class="tag"${warn?` style="color:var(--no);border-color:var(--no-bg)"`:""}>${s}</span>`}
 function slCard(meta,title,body){return `<article class="sl-card"><div class="sl-meta">${meta}</div><h3>${title}</h3>${body}</article>`}
 function slTrailItems(){
@@ -4417,25 +4496,39 @@ function slTrailItems(){
 function renderSustain(){
   if(!SLSTATE) SLSTATE=slLoad();
   const archived=isCourseArchived("sustain");
-  $("#slArchiveBtn").textContent=archived?"Restore course":"Archive course";
+  const grade=slGrade();
   $("#slProgressTitle").textContent=`${slPct()}% captured`;
-  $("#slProgressSub").textContent=archived?"Archived: progress is preserved and the course is hidden from the active list.":"Tap through short activities to build a light grading trail.";
+  $("#slProgressSub").textContent=archived?"Archived: progress is preserved and the course is hidden from the active list.":`${slModeLabel()} mode · light score estimate ${grade.total}/100`;
+  $("#slModeHelp").textContent=slModeText();
+  $("#slModeSeg").querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.slMode===(SLSTATE.mode||"summary")));
   $("#slSeg").querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.slTab===SLTAB));
   const pane=$("#slPane");
   pane.className="sl-pane";
   let html=archived?`<div class="sl-archived-note">This course is archived. Restore it from this page or show archived courses from the course hub.</div>`:"";
   if(SLTAB==="today"){
-    html+=`<div class="sl-grid">${SL.sessions.map(s=>slCard(slTag(s.d),s.t,`<p>${s.f}</p><ul class="sl-list">${s.a.map(x=>`<li>${x}</li>`).join("")}</ul>`)).join("")}</div>`;
+    const sessions=SLSTATE.mode==="summary"?SL.sessions.map(s=>({...s,a:s.a.slice(0,2)})):SL.sessions;
+    html+=slCard(slTag(slModeLabel())+slTag("On the go",true),"Start here",
+      `<p>Use this screen as the weekend run sheet. Jump only when the facilitator asks for evidence.</p>
+      <div class="sl-grade">
+        <div class="kvmini"><b>${grade.reads}</b><span>microcards read</span></div>
+        <div class="kvmini"><b>${grade.checks}</b><span>lens checks</span></div>
+        <div class="kvmini"><b>${grade.caseAnswers}</b><span>case choices</span></div>
+        <div class="kvmini"><b>${grade.tickets}</b><span>exit tickets</span></div>
+      </div>
+      <button class="sl-jump" data-sl-jump="read" type="button">Read the essentials <span>${slMicro().length} cards</span></button>
+      <button class="sl-jump" data-sl-jump="decide" type="button">Make a quick ethical call <span>${slChecks().length} prompts</span></button>
+      <button class="sl-jump" data-sl-jump="case" type="button">Capture group decisions <span>case cards</span></button>`);
+    html+=`<div class="sl-grid">${sessions.map(s=>slCard(slTag(s.d),s.t,`<p>${s.f}</p><ul class="sl-list">${s.a.map(x=>`<li>${x}</li>`).join("")}</ul>`)).join("")}</div>`;
   }
   if(SLTAB==="read"){
-    html+=`<div class="sl-grid">${SL.micro.map(m=>{
+    html+=`<div class="sl-grid">${slMicro().map(m=>{
       const done=SLSTATE.read.includes(m.id);
       return slCard(slTag(m.src)+slTag(m.time)+(done?slTag("Done"):""),m.t,
         `<p><b>Key idea:</b> ${m.idea}</p><p><b>Why it matters:</b> ${m.why}</p><p><b>Watch for:</b> ${m.watch}</p><div class="sl-actions"><button class="${done?"ghost":"next"}" data-sl-read="${m.id}" type="button">${done?"Mark unread":"Mark read"}</button></div>`);
     }).join("")}</div>`;
   }
   if(SLTAB==="decide"){
-    html+=SL.checks.map(c=>slCard(slTag("Fast prompt"),"Ethical lens check",
+    html+=slChecks().map(c=>slCard(slTag("Fast prompt"),"Ethical lens check",
       `<p>${c.q}</p>${c.opts.map(o=>`<button class="sl-choice${SLSTATE.checks[c.id]===o?" on":""}" data-sl-check="${c.id}" data-value="${esc(o)}" type="button">${o}</button>`).join("")}${SLSTATE.checks[c.id]?`<div class="sl-feedback">${SLSTATE.checks[c.id]===c.a?c.x:`Recommended lens: ${c.a}. ${c.x}`}</div>`:""}`)).join("");
     html+=slCard(slTag("Value tension"),"Executive compass slider",
       `<p>Map the current case across O'Toole's four values. It is not a score; it makes trade-offs visible before discussion.</p>${SL.compass.map(v=>`<div class="sl-range"><label><span>${v}</span><span>${SLSTATE.compass[v]}</span></label><input type="range" min="0" max="100" value="${SLSTATE.compass[v]}" data-sl-compass="${v}"></div>`).join("")}`);
@@ -4451,6 +4544,14 @@ function renderSustain(){
   if(SLTAB==="trail"){
     const prompt=SL.prompts[SLSTATE.tickets.length%SL.prompts.length];
     const items=slTrailItems();
+    html+=slCard(slTag("Light grading"),"Participation snapshot",
+      `<p>This is not an exam score. It gives facilitators a quick completion trail without marking long essays.</p>
+      <div class="sl-grade">
+        <div class="kvmini"><b>${grade.completion}/70</b><span>completion</span></div>
+        <div class="kvmini"><b>${grade.decisions}/20</b><span>decision evidence</span></div>
+        <div class="kvmini"><b>${grade.reflection}/10</b><span>exit ticket</span></div>
+        <div class="kvmini"><b>${grade.total}/100</b><span>estimated total</span></div>
+      </div>`);
     html+=slCard(slTag("30 seconds"),"Exit ticket",`<p>${prompt}</p><textarea id="slTicket" class="sl-text" placeholder="One sentence is enough."></textarea><div class="sl-actions"><button class="next" data-sl-ticket type="button">Save ticket</button><button class="ghost" data-sl-export type="button">Export trail</button><button class="ghost" data-sl-reset type="button">Reset trail</button></div>`);
     html+=`<div class="sl-trail">${items.length?items.map(i=>`<div class="sl-trail-item"><b>${i[0]}</b><span>${esc(i[1])}</span></div>`).join(""):`<div class="empty">Your activity trail will appear here as you tap through the module.</div>`}</div>`;
   }
@@ -4531,14 +4632,21 @@ function renderHome(){
 function renderCourseHub(){
   const nm=(SESSION.name||"").trim().split(/\s+/)[0];
   $("#courseGreeting").textContent=nm?`Welcome back, ${nm}`:"Welcome";
-  const cards=[...document.querySelectorAll("[data-course]")];
-  const archivedCount=cards.filter(c=>isCourseArchived(c.dataset.course)).length;
+  const tiles=[...document.querySelectorAll("[data-course-tile]")];
+  const archivedCount=tiles.filter(c=>isCourseArchived(c.dataset.courseTile)).length;
   $("#archiveCount").textContent=archivedCount;
   $("#archiveFilterLabel").textContent=SHOW_ARCHIVED?"Hide archived courses":"Show archived courses";
-  cards.forEach(c=>{
-    const archived=isCourseArchived(c.dataset.course);
-    c.classList.toggle("archived",archived);
-    c.classList.toggle("hidden",archived&&!SHOW_ARCHIVED);
+  tiles.forEach(tile=>{
+    const id=tile.dataset.courseTile;
+    const archived=isCourseArchived(id);
+    tile.classList.toggle("hidden",archived&&!SHOW_ARCHIVED);
+    const card=tile.querySelector("[data-course]");
+    if(card) card.classList.toggle("archived",archived);
+    const btn=tile.querySelector("[data-course-archive]");
+    if(btn){
+      btn.textContent=archived?"Restore":"Archive";
+      btn.classList.toggle("danger",!archived);
+    }
   });
 }
 
@@ -6223,12 +6331,24 @@ function renderSession(){
 
 /* ============ events ============ */
 document.addEventListener("click",e=>{
+  const courseArchive=e.target.closest("[data-course-archive]");
+  if(courseArchive){
+    const id=courseArchive.dataset.courseArchive;
+    setCourseArchived(id,!isCourseArchived(id));
+    renderCourseHub();
+    if(id==="sustain"&&VIEW==="sustain") renderSustain();
+    return;
+  }
   const course=e.target.closest("[data-course]");
   if(course&&course.dataset.course==="finance"){ location.hash="finance"; show("home"); renderHome(); return; }
   if(course&&course.dataset.course==="sustain"){ location.hash="sustain"; show("sustain"); return; }
 
   const slTab=e.target.closest("[data-sl-tab]");
   if(slTab){ SLTAB=slTab.dataset.slTab; renderSustain(); return; }
+  const slMode=e.target.closest("[data-sl-mode]");
+  if(slMode){ SLSTATE.mode=slMode.dataset.slMode; slSave(); return; }
+  const slJump=e.target.closest("[data-sl-jump]");
+  if(slJump){ SLTAB=slJump.dataset.slJump; renderSustain(); window.scrollTo({top:0,behavior:"smooth"}); return; }
   const slRead=e.target.closest("[data-sl-read]");
   if(slRead){
     const id=slRead.dataset.slRead;
@@ -6246,7 +6366,7 @@ document.addEventListener("click",e=>{
     return;
   }
   if(e.target.closest("[data-sl-export]")){
-    const data={v:1,course:"Sustainable Leadership & Ethical Business",archived:isCourseArchived("sustain"),progress:slPct(),exported:new Date().toISOString(),state:SLSTATE};
+    const data={v:2,course:"Sustainable Leadership & Ethical Business",mode:slModeLabel(),archived:isCourseArchived("sustain"),progress:slPct(),grade:slGrade(),exported:new Date().toISOString(),state:SLSTATE};
     const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
     const a=document.createElement("a");
     a.href=URL.createObjectURL(blob); a.download="sustainable-leadership-trail-"+new Date().toISOString().slice(0,10)+".json";
@@ -6379,11 +6499,6 @@ $("#coursesBtn").onclick=()=>{ DRILL=null; CALC_CATS=null; location.hash=""; sho
 $("#courseWorldBtn").onclick=()=>{ DRILL=null; CALC_CATS=null; location.hash=""; show("courses"); };
 $("#sessBtn").onclick=()=>{ renderSession(); show("session"); };
 $("#archiveFilterBtn").onclick=()=>{ SHOW_ARCHIVED=!SHOW_ARCHIVED; renderCourseHub(); };
-$("#slArchiveBtn").onclick=()=>{
-  const next=!isCourseArchived("sustain");
-  setCourseArchived("sustain",next);
-  renderSustain(); renderCourseHub();
-};
 document.addEventListener("input",e=>{
   const c=e.target.closest("[data-sl-compass]");
   if(c){
