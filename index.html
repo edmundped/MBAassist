@@ -4524,6 +4524,73 @@ COURSE_ARCHIVE={};
 function saveCourseArchive(){try{localStorage.setItem(COURSE_ARCHIVE_KEY,JSON.stringify(COURSE_ARCHIVE));}catch(_){}}
 function isCourseArchived(){return false;}
 function setCourseArchived(){COURSE_ARCHIVE={}; saveCourseArchive();}
+function renderHome(){
+  const all=statsFor(allIds());
+  const finalCore=statsFor(FINAL_CORE_TOPICS);
+  const writtenDone=EXAM_WRITTEN_SAMPLES.filter(w=>WDONE[w.id]).length;
+  $("#railPct").textContent=all.pct+"%";
+  $("#railBar").style.width=all.pct+"%";
+
+  const nm=(SESSION.name||"").trim();
+  $("#heroGreet").textContent=nm?("Akwaaba, "+nm.split(/\s+/)[0]):"Akwaaba";
+  const st=touchStreak();
+  $("#heroStreak").textContent = all.pct===100 ? "All questions retired" : st>1 ? st+"-day streak" : "Course mastery";
+
+  $("#examSpotlight").innerHTML=`
+    <p class="eyebrow">Exam</p>
+    <h3>Final exam prep</h3>
+    <p>One modular prep space for MCQs and written samples. MCQs serve quiz questions first, then sample questions, then generated practice.</p>
+    <div class="exam-actions">
+      <button class="exam-action" data-mod="mfinal" type="button">
+        <span class="ti">${moduleIcon("mfinal",100,"#6B4AA0")}</span>
+        <span><b>Open exam prep</b><span>MCQ mastery ${finalCore.retired}/${finalCore.total} · written ${writtenDone}/${EXAM_WRITTEN_SAMPLES.length}</span></span>
+      </button>
+    </div>`;
+
+  const lectures=MODULES.filter(isLectureModule);
+  $("#moduleGrid").innerHTML=lectures.map(m=>{
+    const s=statsFor(modIds(m));
+    return `<button class="cube-card${s.pct===100?" done":""}" data-mod="${m.id}" style="--mod:${m.hue}">
+      <div class="top">${moduleIcon(m.id,s.pct,m.hue)}<span class="pct">${s.pct}%</span></div>
+      <h3>${m.n}</h3>
+      <div class="meta">${s.retired}/${s.total} retired</div>
+      <div class="tbar"><i style="width:${s.pct}%;background:${m.hue}"></i></div>
+    </button>`;
+  }).join("");
+
+  const tools=MODULES.filter(m=>(m.calcOnly||m.caseOnly||m.frameworkOnly||m.teachOnly||m.prepOnly)&&m.id!=="mfinal");
+  const order={mq2:0,mfinal:1,mt:2,mf:3,mc:4,m0:5};
+  $("#toolsList").innerHTML=tools.sort((a,b)=>order[a.id]-order[b.id]).map(m=>{
+    const d=TOOL_DESC[m.id]; const desc=typeof d==="function"?d():d;
+    return `<button class="tool-row" data-mod="${m.id}" style="--tc:${m.hue}">
+      <span class="ti">${moduleIcon(m.id,100,m.hue)}</span>
+      <span class="tbody"><b>${m.n}</b><span>${desc}</span></span>
+      <span class="arrow">›</span>
+    </button>`;
+  }).join("");
+
+  const weak=MODULES.filter(isLectureModule).flatMap(m=>m.topics.map(t=>{
+    const s=statsFor([t.id]); return {t,m,s};
+  })).filter(x=>x.s.retired<x.s.total).sort((a,b)=>a.s.pct-b.s.pct||a.t.id.localeCompare(b.t.id)).slice(0,3);
+
+  const strip=$("#focusStack");
+  if(!weak.length){
+    strip.innerHTML=`<div class="panel empty-state"><h3>Every question retired</h3>
+      <p>You have answered all ${statsFor(allIds()).total} questions correctly twice running. Open any module to keep the material warm.</p></div>`;
+    return;
+  }
+  strip.innerHTML=
+    `<button class="focus" data-drill="all">
+      <span class="dot" style="background:var(--ink)"></span>
+      <span class="fbody"><b>Mixed drill</b><span>12 questions, weakest material first</span></span>
+      <span class="arrow">›</span>
+    </button>` +
+    weak.map(x=>`<button class="focus" data-drill="topic" data-topic="${x.t.id}">
+      <span class="dot" style="background:${x.m.hue}"></span>
+      <span class="fbody"><b>${x.t.n}</b><span>${x.m.lec} · ${x.s.retired}/${x.s.total} retired</span></span>
+      <span class="arrow">›</span>
+    </button>`).join("");
+}
 function renderCourseHub(){
   const nm=(SESSION.name||"").trim().split(/\s+/)[0];
   $("#courseGreeting").textContent=nm?`Welcome back, ${nm}`:"Welcome";
