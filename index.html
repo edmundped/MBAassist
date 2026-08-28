@@ -996,10 +996,6 @@ body.dark .lvl.l1{color:#7FD3B8}body.dark .lvl.l2{color:#E3BE6A}body.dark .lvl.l
     </div>
   </section>
   <p class="eyebrow sec-label" style="margin-top:8px">Courses</p>
-  <button class="course-archive-toggle" id="archiveFilterBtn" type="button">
-    <span id="archiveFilterLabel">Show archived courses</span>
-    <span class="num" id="archiveCount">0</span>
-  </button>
   <div class="grid">
     <div class="course-tile" data-course-tile="finance">
       <button class="course-card" data-course="finance" style="--course:#4A4FA0" type="button">
@@ -1014,13 +1010,12 @@ body.dark .lvl.l1{color:#7FD3B8}body.dark .lvl.l2{color:#E3BE6A}body.dark .lvl.l
         <h2>Sustainable Leadership</h2>
         <p>Before-class cards, in-class build sheets, ethical decision coaching, report scaffolds, and exportable notes.</p>
       </button>
-      <div class="course-actions"><button class="mini-action" data-course-archive="sustain" type="button">Archive</button></div>
     </div>
     <div class="course-tile" data-course-tile="crossborder">
-      <button class="course-card" data-course="crossborder" style="--course:#8A4A78" type="button" disabled>
-        <span class="tag">Coming soon</span>
+      <button class="course-card" data-course="crossborder" style="--course:#8A4A78" type="button">
+        <span class="tag">Mounted</span>
         <h2>Cross-Border Business</h2>
-        <p>International strategy, market entry, trade, institutions, and global operating decisions.</p>
+        <p>International strategy, market entry, trade, institutions, and global operating decisions. Buildout starts here.</p>
       </button>
     </div>
   </div>
@@ -1117,6 +1112,53 @@ body.dark .lvl.l1{color:#7FD3B8}body.dark .lvl.l2{color:#E3BE6A}body.dark .lvl.l
   </div>
 
   <div id="slPane"></div>
+</main>
+
+<!-- ============ CROSS-BORDER BUSINESS ============ -->
+<main id="crossborderView" class="wrap hidden">
+  <section class="course-intro">
+    <div>
+      <p class="eyebrow" id="crossborderGreet">Cross-Border Business</p>
+      <h2>Cross-Border Business workspace</h2>
+      <p>This course is mounted and ready for buildout. We can now add modules, cases, quiz prep, teach mode, and written-answer practice without disturbing Managerial Finance.</p>
+    </div>
+    <div class="mentor mini-mentor" aria-hidden="true">
+      <svg viewBox="0 0 620 260">
+        <path d="M80 210h460" stroke="var(--line-2)" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="330" cy="126" r="82" fill="var(--surface)" stroke="var(--line-2)" stroke-width="3"/>
+        <path d="M248 126h164M330 44c28 30 43 57 43 82s-15 52-43 82M330 44c-28 30-43 57-43 82s15 52 43 82" fill="none" stroke="var(--accent)" stroke-width="7" stroke-linecap="round"/>
+        <path class="chart-line" d="M160 166c48-54 94-54 138 0s90 54 138 0" fill="none" stroke="var(--gold)" stroke-width="8" stroke-linecap="round"/>
+        <circle class="pulse" cx="458" cy="86" r="10" fill="var(--accent)"/>
+      </svg>
+    </div>
+  </section>
+  <p class="eyebrow sec-label">Build slots</p>
+  <div class="tools">
+    <div class="tool-card">
+      <span>01</span>
+      <h3>Learn</h3>
+      <p>Concept notes, examples, and quick checks by topic.</p>
+    </div>
+    <div class="tool-card">
+      <span>02</span>
+      <h3>Quiz Prep</h3>
+      <p>Session-based question batches with explanations and flagged-question review.</p>
+    </div>
+    <div class="tool-card">
+      <span>03</span>
+      <h3>Cases</h3>
+      <p>Structured case prompts, frameworks, hints, and answer planning support.</p>
+    </div>
+    <div class="tool-card">
+      <span>04</span>
+      <h3>Teach Mode</h3>
+      <p>Step-by-step guided practice for concepts that need deeper explanation.</p>
+    </div>
+  </div>
+  <div class="notice" style="margin-top:18px">
+    <b>Ready for content</b>
+    <p>Send the Cross-Border syllabus, slide decks, sample questions, or case files and we can populate this workspace using the same modular structure as Managerial Finance.</p>
+  </div>
 </main>
 
 <!-- ============ SESSION ============ -->
@@ -4473,39 +4515,32 @@ const TOOL_DESC={
   m0:()=>`${F.length} worked calculators, every step shown`
 };
 
-/* ============ course archive + sustainable leadership ============ */
+/* ============ course hub + sustainable leadership ============ */
 const COURSE_ARCHIVE_KEY="mbaassist-course-archive";
-const COURSE_ARCHIVABLE=new Set(["sustain"]);
 let SHOW_ARCHIVED=false;
 let COURSE_ARCHIVE={};
 try{COURSE_ARCHIVE=JSON.parse(localStorage.getItem(COURSE_ARCHIVE_KEY)||"{}")||{};}catch(_){COURSE_ARCHIVE={};}
-if(COURSE_ARCHIVE.finance) delete COURSE_ARCHIVE.finance;
+COURSE_ARCHIVE={};
 function saveCourseArchive(){try{localStorage.setItem(COURSE_ARCHIVE_KEY,JSON.stringify(COURSE_ARCHIVE));}catch(_){}}
-function isCourseArchived(id){return COURSE_ARCHIVABLE.has(id)&&!!COURSE_ARCHIVE[id];}
-function setCourseArchived(id,on){
-  if(!COURSE_ARCHIVABLE.has(id)){delete COURSE_ARCHIVE[id]; saveCourseArchive(); return;}
-  COURSE_ARCHIVE[id]=!!on; if(!on) delete COURSE_ARCHIVE[id]; saveCourseArchive();
-}
+function isCourseArchived(){return false;}
+function setCourseArchived(){COURSE_ARCHIVE={}; saveCourseArchive();}
 function renderCourseHub(){
   const nm=(SESSION.name||"").trim().split(/\s+/)[0];
   $("#courseGreeting").textContent=nm?`Welcome back, ${nm}`:"Welcome";
-  if(COURSE_ARCHIVE.finance){delete COURSE_ARCHIVE.finance; saveCourseArchive();}
+  COURSE_ARCHIVE={}; saveCourseArchive();
   const tiles=[...document.querySelectorAll("[data-course-tile]")];
-  const archivedCount=tiles.filter(t=>isCourseArchived(t.dataset.courseTile)).length;
-  $("#archiveCount").textContent=archivedCount;
-  $("#archiveFilterLabel").textContent="Archived courses remain available";
   tiles.forEach(tile=>{
-    const id=tile.dataset.courseTile;
-    const archived=isCourseArchived(id);
     tile.classList.remove("hidden");
     const card=tile.querySelector("[data-course]");
-    if(card) card.classList.toggle("archived",archived);
+    if(card) card.classList.remove("archived");
     const btn=tile.querySelector("[data-course-archive]");
-    if(btn){
-      btn.textContent=archived?"Restore":"Archive";
-      btn.classList.toggle("danger",!archived);
-    }
+    if(btn) btn.remove();
   });
+}
+
+function renderCrossBorder(){
+  const nm=(SESSION.name||"").trim().split(/\s+/)[0];
+  $("#crossborderGreet").textContent=nm?`Ready, ${nm}`:"Cross-Border Business";
 }
 
 const SL_KEY="mbaassist-sustainable-leadership-v2";
@@ -5186,18 +5221,20 @@ function show(v){
   $("#courseView").classList.toggle("hidden",v!=="courses");
   $("#homeView").classList.toggle("hidden",v!=="home");
   $("#sustainView").classList.toggle("hidden",v!=="sustain");
+  $("#crossborderView").classList.toggle("hidden",v!=="crossborder");
   $("#sessView").classList.toggle("hidden",v!=="session");
   $("#worldView").classList.toggle("hidden",v!=="world");
   $("#coursesBtn").classList.toggle("hidden",v==="courses"||v==="welcome"||v==="intro");
   $("#sessBtn").classList.toggle("hidden",v==="welcome"||v==="intro");
-  $("#homeEyebrow").textContent=v==="courses"||v==="welcome"||v==="intro"?"MBAassist":v==="sustain"?"Module 3 · Sustainable Leadership":"MBA512 · Managerial Finance";
-  $("#homeTitle").textContent=v==="welcome"?"Welcome":v==="intro"?"Getting started":v==="courses"?"Course workspace":v==="sustain"?"Sustainable Leadership":"Managerial Finance";
+  $("#homeEyebrow").textContent=v==="courses"||v==="welcome"||v==="intro"?"MBAassist":v==="sustain"?"Module 3 · Sustainable Leadership":v==="crossborder"?"Cross-Border Business":"MBA512 · Managerial Finance";
+  $("#homeTitle").textContent=v==="welcome"?"Welcome":v==="intro"?"Getting started":v==="courses"?"Course workspace":v==="sustain"?"Sustainable Leadership":v==="crossborder"?"Cross-Border Business":"Managerial Finance";
   $("#topbarHome").classList.toggle("hidden",v==="world");
   $("#topbarWorld").classList.toggle("hidden",v!=="world");
   if(v!=="world") document.body.classList.remove("in-lecture");  /* accent back to the app default */
   if(v==="courses") renderCourseHub();
   if(v==="intro") renderIntro();
   if(v==="sustain") renderSustain();
+  if(v==="crossborder") renderCrossBorder();
   window.scrollTo({top:0,behavior:"instant"in document.documentElement.style?"instant":"auto"});
 }
 function openWorld(id,pane){
@@ -6817,6 +6854,7 @@ document.addEventListener("click",e=>{
   const course=e.target.closest("[data-course]");
   if(course&&course.dataset.course==="finance"){ location.hash="finance"; show("home"); renderHome(); return; }
   if(course&&course.dataset.course==="sustain"){ location.hash="sustain"; show("sustain"); return; }
+  if(course&&course.dataset.course==="crossborder"){ location.hash="crossborder"; show("crossborder"); return; }
 
   const slTab=e.target.closest("[data-sl-tab]");
   if(slTab){ SLTAB=slTab.dataset.slTab; renderSustain(); window.scrollTo({top:0,behavior:"smooth"}); return; }
@@ -6995,7 +7033,6 @@ $("#backBtn").onclick=()=>{ DRILL=null; CALC_CATS=null; location.hash="finance";
 $("#coursesBtn").onclick=()=>{ DRILL=null; CALC_CATS=null; location.hash=""; show("courses"); };
 $("#courseWorldBtn").onclick=()=>{ DRILL=null; CALC_CATS=null; location.hash=""; show("courses"); };
 $("#sessBtn").onclick=()=>{ renderSession(); show("session"); };
-$("#archiveFilterBtn").disabled=true;
 /* Free-text fields save as you type. Deliberately no re-render here —
    redrawing the pane mid-sentence would steal focus on a phone. */
 document.addEventListener("input",e=>{
@@ -7074,7 +7111,7 @@ $("#importFile").onchange=e=>{
       if(!confirm("Restore this backup? It will replace the progress currently on this device.")) return;
       if(d.session&&d.session.id){ SESSION=d.session; localStorage.setItem(SKEY,JSON.stringify(SESSION)); }
       M=d.m||{}; DRILLNO=d.drill||0; FLAGS=d.flags||{}; LDONE=d.lessons||{}; WDONE=d.written||{}; LESSON_ID=null;
-      COURSE_ARCHIVE=d.courseArchive||{}; delete COURSE_ARCHIVE.finance; saveCourseArchive();
+      COURSE_ARCHIVE={}; saveCourseArchive();
       SLSTATE=Object.assign(slDefault(),d.sustainableLeadership||{}); try{localStorage.setItem(SL_KEY,JSON.stringify(SLSTATE));}catch(_){}
       saveProgress(); saveFlags();
       $("#learnerName").value=SESSION.name||"";
@@ -7106,6 +7143,7 @@ function routeFromHash(){
   const h=(location.hash||"").replace("#","");
   if(h==="finance"){ show("home"); renderHome(); return; }
   if(h==="sustain"){ show("sustain"); return; }
+  if(h==="crossborder"){ show("crossborder"); return; }
   if(h){ const [mid,pane]=h.split("/"); if(MODULES.some(m=>m.id===mid)){ openWorld(mid,pane); return; } }
   show("courses");
 }
@@ -7116,6 +7154,7 @@ addEventListener("hashchange",()=>{
   if(!next){ DRILL=null; show("courses"); return; }
   if(next==="finance"){ DRILL=null; show("home"); renderHome(); return; }
   if(next==="sustain"){ DRILL=null; show("sustain"); return; }
+  if(next==="crossborder"){ DRILL=null; show("crossborder"); return; }
   const [mid,pane]=next.split("/");
   if(MODULES.some(m=>m.id===mid)) openWorld(mid,pane);
 });

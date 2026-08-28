@@ -1,10 +1,11 @@
 # MBAassist
 
-A scalable MBA course learning workspace. Two live courses: **MBA512
-Managerial Finance** and **Sustainable Leadership & Ethical Business**
-(Module 3, Seminar 673). Cross-Border Business is present as a coming-soon
-course. Everything is in one self-contained `index.html` — no build step, no
-dependencies, works offline.
+A scalable MBA course learning workspace. Three courses are mounted in the app:
+**MBA512 Managerial Finance**, **Sustainable Leadership & Ethical Business**
+(Module 3, Seminar 673), and **Cross-Border Business**. Managerial Finance and
+Sustainable Leadership have built learning tools; Cross-Border Business now has
+a live workspace ready for buildout. Everything is in one self-contained
+`index.html` — no build step, no dependencies, works offline.
 
 ---
 
