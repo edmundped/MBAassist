@@ -12,12 +12,14 @@ v1 guided workspace for Week 1 and the course-long capstone arc. Everything is i
 # Cross-Border Business
 
 The Cross-Border workspace follows the course assessment shape rather than the
-Managerial Finance question-bank model. It has six tabs:
+Managerial Finance question-bank model. Learners first land on a course overview
+with what the course is about, the four-week schedule, expectations, and a clear
+Week 1 entry point. It has six tabs:
 
 | Tab | Purpose |
 |---|---|
-| Now | Three learner actions: prepare for class, build the deal, practise for quiz/exam |
-| Prepare | Week 1 concept and case-prep cards, with read tracking |
+| Course | Course purpose, schedule, expectations, and the Week 1 entry point |
+| Week 1 | Market-entry resources, in-app article readers, concept cards, and case prep |
 | Structures | Entry-mode comparator, risk allocation matrix, and negotiation prep |
 | Deliverables | Own-words canvases for interim deliverables and the capstone |
 | Practice | Objective MCQs plus judgment prompts with counterargument practice |
@@ -25,13 +27,18 @@ Managerial Finance question-bank model. It has six tabs:
 
 V1 includes Week 1 content from the course outline, AfCFTA and FDI tralac
 guides, plus prompt-level preparation for MTN Investing in Africa, Attijariwafa
-Bank: Egypt Expansion, and Peak Investment Capital. Copyrighted case text is
-not reproduced; the app gives frameworks and questions to prepare with.
+Bank: Egypt Expansion, and Peak Investment Capital. The tralac guides have
+in-app study readers; copyrighted case text is not reproduced, so the app gives
+frameworks and questions to prepare with.
 
 Cross-Border notes and progress are saved in the same browser and included in
 the existing backup/restore flow. The workspace is intentionally a study aid:
 it structures thinking but does not draft graded case analyses or capstone
 submissions.
+
+On the course hub, long-press a course card to remove it from the personal
+workspace. Removed courses can be shown and restored from the same hub; no
+course data is deleted.
 
 ---
 

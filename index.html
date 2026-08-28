@@ -192,10 +192,17 @@ body.dark .welcome-form{background:rgba(29,25,18,.78);border-color:rgba(60,51,39
 .course-archive-toggle[disabled]{opacity:.9;cursor:default}
 .course-card.archived{opacity:.66}
 .course-card.archived:after{
-  content:"Archived";position:absolute;right:12px;top:12px;border:1px solid var(--line);
+  content:"Removed";position:absolute;right:12px;top:12px;border:1px solid var(--line);
   border-radius:999px;padding:3px 7px;background:var(--surface);
   font-family:var(--mono);font-size:10px;color:var(--ink-3);text-transform:uppercase;
 }
+.course-action-panel{
+  margin-top:7px;border:1px solid var(--line);border-radius:12px;background:var(--surface);
+  padding:10px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;
+}
+.course-action-panel span{font-size:12.5px;color:var(--ink-3);line-height:1.4;flex:1 1 160px}
+.course-action-panel button{border:1px solid var(--line);border-radius:9px;background:var(--raised);padding:8px 10px;font-size:12.5px;font-weight:650;color:var(--ink)}
+.course-action-panel button.danger{color:var(--no)}
 .cube-card{
   position:relative;background:var(--surface);border:1px solid var(--line);
   border-radius:var(--r);padding:15px 14px 13px;text-align:left;
@@ -475,8 +482,16 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .cb-kicker .kvmini{border:1px solid var(--line);border-radius:11px;background:var(--raised);padding:10px}
 .cb-kicker b{display:block;font-family:var(--mono);font-size:17px}.cb-kicker span{font-size:11.5px;color:var(--ink-3)}
 .cb-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:15px;margin-bottom:10px}
+.cb-card[type=button]{width:100%;text-align:left;color:var(--ink)}
 .cb-card h3{font-size:17px;margin:4px 0 7px}.cb-card p,.cb-card li{font-size:14px;color:var(--ink-2);line-height:1.55}
 .cb-card ul{margin:8px 0 0;padding-left:18px}.cb-card .prompt{color:var(--ink);font-weight:620}
+.cb-card.resource{display:flex;flex-direction:column;gap:8px}
+.cb-reader{border:1px solid var(--line);border-radius:var(--r);background:var(--surface);overflow:hidden;margin-top:10px}
+.cb-reader-head{padding:15px;border-bottom:1px solid var(--line);background:var(--raised)}
+.cb-reader-head h3{font-size:18px;margin:4px 0 6px}.cb-reader-head p{font-size:13px;color:var(--ink-3);line-height:1.45}
+.cb-reader-body{padding:15px}.cb-reader-body h4{font-size:14px;margin:16px 0 6px}.cb-reader-body h4:first-child{margin-top:0}
+.cb-reader-body p,.cb-reader-body li{font-size:14px;color:var(--ink-2);line-height:1.58}.cb-reader-body ul{padding-left:18px;margin:8px 0}
+.cb-mini-link{border:1px solid var(--line);border-radius:10px;background:var(--raised);padding:9px 10px;font-size:12.5px;font-weight:650;color:var(--ink);text-align:left}
 .cb-grid{display:grid;grid-template-columns:1fr;gap:10px}
 .cb-pillrow{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
 .cb-pill{border:1px solid var(--line);border-radius:999px;background:var(--raised);padding:8px 10px;font-size:12.5px;color:var(--ink-2);font-weight:620}
@@ -1027,26 +1042,24 @@ body.dark .lvl.l1{color:#7FD3B8}body.dark .lvl.l2{color:#E3BE6A}body.dark .lvl.l
   <div class="grid">
     <div class="course-tile" data-course-tile="finance">
       <button class="course-card" data-course="finance" style="--course:#4A4FA0" type="button">
-        <span class="tag">Live</span>
         <h2>Managerial Finance</h2>
         <p>Mastery practice, teach mode, case analysis, formula map, and calculator support for MBA512.</p>
       </button>
     </div>
     <div class="course-tile" data-course-tile="sustain">
       <button class="course-card" data-course="sustain" style="--course:#2F6F5E" type="button">
-        <span class="tag">Weekend</span>
         <h2>Sustainable Leadership</h2>
         <p>Before-class cards, in-class build sheets, ethical decision coaching, report scaffolds, and exportable notes.</p>
       </button>
     </div>
     <div class="course-tile" data-course-tile="crossborder">
       <button class="course-card" data-course="crossborder" style="--course:#8A4A78" type="button">
-        <span class="tag">Mounted</span>
         <h2>Cross-Border Business</h2>
-        <p>International strategy, market entry, trade, institutions, and global operating decisions. Buildout starts here.</p>
+        <p>International strategy, market entry, trade, institutions, and global operating decisions.</p>
       </button>
     </div>
   </div>
+  <div class="notice hidden" id="courseManage" style="margin-top:14px"></div>
 </main>
 
 <!-- ============ WHAT'S INSIDE (orientation) ============ -->
@@ -1170,8 +1183,8 @@ body.dark .lvl.l1{color:#7FD3B8}body.dark .lvl.l2{color:#E3BE6A}body.dark .lvl.l
   </section>
 
   <div class="seg sl-seg" id="cbSeg">
-    <button class="on" data-cb-tab="now" type="button"><span class="sl-tab-ico">1</span><span>Now</span></button>
-    <button data-cb-tab="before" type="button"><span class="sl-tab-ico">2</span><span>Prepare</span></button>
+    <button class="on" data-cb-tab="overview" type="button"><span class="sl-tab-ico">1</span><span>Course</span></button>
+    <button data-cb-tab="week1" type="button"><span class="sl-tab-ico">2</span><span>Week 1</span></button>
     <button data-cb-tab="structures" type="button"><span class="sl-tab-ico">3</span><span>Structures</span></button>
     <button data-cb-tab="deliverables" type="button"><span class="sl-tab-ico">4</span><span>Deliverables</span></button>
     <button data-cb-tab="practice" type="button"><span class="sl-tab-ico">5</span><span>Practice</span></button>
@@ -4540,10 +4553,10 @@ const COURSE_ARCHIVE_KEY="mbaassist-course-archive";
 let SHOW_ARCHIVED=false;
 let COURSE_ARCHIVE={};
 try{COURSE_ARCHIVE=JSON.parse(localStorage.getItem(COURSE_ARCHIVE_KEY)||"{}")||{};}catch(_){COURSE_ARCHIVE={};}
-COURSE_ARCHIVE={};
+let COURSE_ACTION="";
 function saveCourseArchive(){try{localStorage.setItem(COURSE_ARCHIVE_KEY,JSON.stringify(COURSE_ARCHIVE));}catch(_){}}
-function isCourseArchived(){return false;}
-function setCourseArchived(){COURSE_ARCHIVE={}; saveCourseArchive();}
+function isCourseArchived(id){return !!COURSE_ARCHIVE[id];}
+function setCourseArchived(id,on){COURSE_ARCHIVE[id]=!!on; if(!on) delete COURSE_ARCHIVE[id]; saveCourseArchive();}
 function renderHome(){
   const all=statsFor(allIds());
   const finalCore=statsFor(FINAL_CORE_TOPICS);
@@ -4614,21 +4627,39 @@ function renderHome(){
 function renderCourseHub(){
   const nm=(SESSION.name||"").trim().split(/\s+/)[0];
   $("#courseGreeting").textContent=nm?`Welcome back, ${nm}`:"Welcome";
-  COURSE_ARCHIVE={}; saveCourseArchive();
   const tiles=[...document.querySelectorAll("[data-course-tile]")];
+  const hidden=tiles.filter(t=>isCourseArchived(t.dataset.courseTile));
   tiles.forEach(tile=>{
-    tile.classList.remove("hidden");
+    const id=tile.dataset.courseTile, archived=isCourseArchived(id);
+    tile.classList.toggle("hidden",archived&&!SHOW_ARCHIVED);
     const card=tile.querySelector("[data-course]");
-    if(card) card.classList.remove("archived");
+    if(card) card.classList.toggle("archived",archived);
     const btn=tile.querySelector("[data-course-archive]");
     if(btn) btn.remove();
+    const old=tile.querySelector(".course-action-panel");
+    if(old) old.remove();
+    if(COURSE_ACTION===id){
+      const panel=document.createElement("div");
+      panel.className="course-action-panel";
+      panel.innerHTML=`<span>${archived?"Bring this course back to your workspace.":"Remove this course from your personal workspace. Your progress stays saved."}</span>
+        <button class="${archived?"":"danger"}" data-course-action="${id}" data-course-action-kind="${archived?"restore":"remove"}" type="button">${archived?"Bring back":"Remove"}</button>
+        <button data-course-action-kind="cancel" type="button">Cancel</button>`;
+      tile.appendChild(panel);
+    }
   });
+  const manage=$("#courseManage");
+  manage.classList.toggle("hidden",!hidden.length);
+  manage.innerHTML=hidden.length?`<b>${hidden.length} course${hidden.length===1?"":"s"} removed from this workspace</b><p>Long-press a visible course to remove it. <button class="cb-mini-link" data-course-show-hidden type="button">${SHOW_ARCHIVED?"Hide removed courses":"Show removed courses"}</button></p>`:"";
 }
 
 function renderCrossBorder(){
   const nm=(SESSION.name||"").trim().split(/\s+/)[0];
   $("#crossborderGreet").textContent=nm?`Ready, ${nm}`:"Cross-Border Business";
   const p=cbProgress();
+  if(!CB_RENDER[CBTAB]) CBTAB="overview";
+  const title={overview:"Course overview",week1:"Market entry and cross-border expansion",structures:"Deal structure tools",deliverables:"Deliverable canvases",practice:"Quiz and exam practice",work:"My Work"}[CBTAB];
+  $("#cbPhaseTitle").textContent=title;
+  $("#cbPhase").textContent=CBTAB==="week1"?"Week 1 / Market entry":"Cross-Border workspace";
   $("#cbPhaseSub").textContent=`${p.read}/${CB_CARDS.length} prep cards read · ${p.deliv}/${CB_DELIVERABLES.length} deliverable canvases started · ${p.structures} structure choices saved.`;
   document.querySelectorAll("#cbSeg button").forEach(b=>b.classList.toggle("on",b.dataset.cbTab===CBTAB));
   const pane=$("#cbPane");
@@ -4636,7 +4667,7 @@ function renderCrossBorder(){
 }
 
 const CB_KEY="mbaassist-crossborder-v1";
-let CBTAB="now";
+let CBTAB="overview", CB_READER="";
 const CB_WEEKENDS=[
   {id:"w1",n:"Weekend 1",t:"Market entry and cross-border expansion",due:"Individual case analysis, group deal-concept proposal, quiz"},
   {id:"w2",n:"Weekend 2",t:"Structuring and negotiating cross-border transactions",due:"Simulation reflection brief"},
@@ -4656,6 +4687,35 @@ const CB_CARDS=[
   {id:"cb10",w:"w3",tag:"Preview",t:"Finance and risk allocation",src:"Course outline",p:"Weekend 3 links the deal to project finance, blended finance, sovereign debt, arbitration, sovereign immunity and enforcement. The key question becomes who bears which risk and why.",q:"A good structure makes risk visible before it prices it."},
   {id:"cb11",w:"w4",tag:"Preview",t:"ESG and the social licence",src:"Course outline",p:"Weekend 4 asks whether the deal can survive beyond legal close. Community consent, ESG standards, ethics and long-term value shape execution risk.",q:"A deal can be legal and still lose its social licence."}
 ];
+const CB_RESOURCES=[
+  {id:"afcfta",w:"w1",kind:"Article",t:"The AfCFTA and Africa's development agenda",source:"tralac guide",read:true,why:"Use this to explain what AfCFTA changes, what is still under negotiation, and why firms still need country-level execution plans."},
+  {id:"fdi",w:"w1",kind:"Article",t:"Foreign direct investment in Africa",source:"tralac working paper",read:true,why:"Use this for FDI flows, motivations, host-country benefits, policy context and why African markets differ by sector and institution."},
+  {id:"wipo",w:"w1",kind:"Reference",t:"About Intellectual Property",source:"WIPO",read:false,why:"Use this to refresh the difference between patents, trademarks, copyright, designs, trade secrets and technology transfer."},
+  {id:"unctad",w:"w1",kind:"Report",t:"World Investment Report 2024 - Africa fact sheet",source:"UNCTAD",read:false,why:"Use this for current investment-flow context and sector signals."},
+  {id:"distance",w:"w1",kind:"Framework",t:"Distance Still Matters",source:"Ghemawat",read:false,why:"Use this to separate cultural, administrative, geographic and economic distance before recommending a market."},
+  {id:"voids",w:"w1",kind:"Framework",t:"Strategies That Fit Emerging Markets",source:"Khanna, Palepu and Sinha",read:false,why:"Use this to diagnose institutional voids instead of blaming vague country risk."},
+  {id:"mtn",w:"w1",kind:"Case",t:"MTN: Investing in Africa",source:"IMD case",read:false,why:"Use this for market-entry sequencing, capability transfer, timing and management bandwidth."},
+  {id:"atw",w:"w1",kind:"Case",t:"Attijariwafa Bank: Egypt Expansion",source:"HBS case",read:false,why:"Use this to separate market attractiveness from acquisition fit and execution risk."},
+  {id:"peak",w:"w1",kind:"Case",t:"Peak Investment Capital",source:"HBS case",read:false,why:"Use this for adapting a transaction/investment model to Ghana's financing, sourcing and management constraints."}
+];
+const CB_ARTICLES={
+  afcfta:{title:"The AfCFTA and Africa's development agenda",source:"tralac guide, as at May 2025",note:"In-app study version based on the course resource. Use the original PDF for full detail and citation.",sections:[
+    ["Core idea","AfCFTA is a continental legal and policy framework intended to deepen intra-African trade and support structural transformation. It aims to create a single market for goods and services, improve movement of business persons and investment, expand intra-African trade, support competitiveness, and promote industrial development."],
+    ["Architecture","The agreement has protocols on trade in goods, trade in services, dispute settlement, investment, intellectual property rights and competition policy. Digital trade and women and youth in trade were added later. For deal analysis, this means AfCFTA is not one rule; it is a package of market-access, regulatory and dispute mechanisms."],
+    ["Goods and rules of origin","Tariff liberalisation can improve the economics of regional trade, but rules of origin determine whether a product qualifies for preferential treatment. A firm still has to check where value is added, whether the product-specific rule is settled, and whether documentation can be handled reliably."],
+    ["Services and regulation","Services liberalisation depends on schedules of specific commitments and regulatory frameworks. Financial services, communications, transport, business services and tourism are priority sectors. For a bank, telecom, logistics or advisory business, the country schedule and domestic regulator still matter."],
+    ["Dispute settlement","The AfCFTA dispute settlement system is modelled on the WTO and is mainly state-state. Private firms do not simply sue through AfCFTA because a trade measure hurts them. They may need domestic remedies, trade remedies, or government support."],
+    ["How to use it in a case answer","Avoid saying AfCFTA makes Africa one market. A stronger answer says which barrier AfCFTA helps reduce, which domestic barrier remains, and what the firm should do in contract, compliance, logistics or partner selection."]
+  ]},
+  fdi:{title:"Foreign direct investment in Africa",source:"tralac working paper, 2019",note:"In-app study version based on the course resource. Use the original PDF for full detail and citation.",sections:[
+    ["Core idea","FDI analysis is not just capital entering a country. It asks why the investor is entering, what the host economy gains, what constraints the investor faces, and how policy affects the deal."],
+    ["Investment motives","A practical case answer should ask whether the investor is market-seeking, resource-seeking, efficiency-seeking, strategic-asset-seeking or capability-seeking. The motive affects entry mode, partner choice, location, risk tolerance and expected host-country benefits."],
+    ["Africa is not one investment story","FDI patterns vary by country, sector and commodity exposure. More diversified economies can show different resilience from commodity-dependent markets. A recommendation should therefore be country-specific and sector-specific."],
+    ["Intra-African investment","African firms investing across Africa are a major course theme. They may bring better contextual knowledge than distant multinationals, but they still face regulation, foreign exchange, management depth, financing and local legitimacy issues."],
+    ["Greenfield and acquisitions","Greenfield investment can create new capacity and jobs but takes time and execution capability. Acquisitions can provide speed and market access but bring price, integration, control and regulatory risks."],
+    ["How to use it in a case answer","A stronger answer connects FDI to development and deal feasibility: what capital or capability enters, who benefits, what policy risk appears, and why the chosen structure fits those realities."]
+  ]}
+};
 const CB_DELIVERABLES=[
   {id:"case1",w:"W1 Sat",t:"Individual case analysis",h:"Use this to structure your thinking. The app should not write the submission.",fields:["Decision problem","Relevant facts from the case","Two viable options","Recommendation","Main risk and mitigation"]},
   {id:"deal",w:"W1 Sun",t:"Group deal-concept proposal",h:"Start the capstone early. Keep it short, concrete and testable.",fields:["Target market and why","Problem or opportunity","Preferred entry mode","Local partner or stakeholder logic","Top three risks"]},
@@ -4723,9 +4783,9 @@ function cbCardTag(card){
   const done=CBSTATE.read.includes(card.id);
   return `<button class="cb-pill${done?" on":""}" data-cb-read="${card.id}" type="button">${done?"Read":"Mark read"}</button>`;
 }
-function cbNow(){
+function cbOverview(){
   const p=cbProgress();
-  return `<div class="notice"><b>Learning use only</b><p>Cross-Border includes graded case work, participation and a capstone. This workspace helps you prepare and structure your own thinking; it should not write assessed submissions for you.</p></div>
+  return `<div class="notice"><b>What this course is about</b><p>Cross-Border Transactions in Africa studies how international business deals on the continent are structured, financed, negotiated and executed, and what happens when they go wrong. The course blends law, finance, strategy, negotiation, ethics and sustainability.</p></div>
   <div class="cb-kicker">
     <div class="kvmini"><b>${p.read}/${CB_CARDS.length}</b><span>prep cards read</span></div>
     <div class="kvmini"><b>${p.deliv}/${CB_DELIVERABLES.length}</b><span>deliverables started</span></div>
@@ -4733,20 +4793,37 @@ function cbNow(){
     <div class="kvmini"><b>${p.quizSeen}/${CB_QUIZ.length}</b><span>quiz items attempted</span></div>
   </div>
   <div class="cb-top-actions">
-    <button class="cb-action" data-cb-tab="before" type="button"><b>Prepare for class</b><span>Read the Week 1 cards, then test yourself with quick checks and case prompts.</span></button>
+    <button class="cb-action" data-cb-tab="week1" type="button"><b>Week 1 / Market entry</b><span>Open the Weekend 1 resources, article readers, concept cards, case prep and quiz checks.</span></button>
     <button class="cb-action" data-cb-tab="deliverables" type="button"><b>Build my deal</b><span>Start the capstone from Weekend 1: market, structure, risks, financing and social licence.</span></button>
     <button class="cb-action" data-cb-tab="practice" type="button"><b>Practice for quiz/exam</b><span>Objective questions get scored. Judgment prompts get counterarguments instead of fake precision.</span></button>
   </div>
-  <p class="eyebrow sec-label">Four-week journey</p>
-  <div class="cb-grid">${CB_WEEKENDS.map(w=>`<div class="cb-card"><p class="eyebrow">${w.n}</p><h3>${w.t}</h3><p>${w.due}</p></div>`).join("")}</div>`;
+  <p class="eyebrow sec-label">Schedule and expectations</p>
+  <div class="cb-grid">${CB_WEEKENDS.map((w,i)=>`<button class="cb-card${i===0?"":" resource"}" ${i===0?`data-cb-tab="week1"`:""} type="button"><p class="eyebrow">${w.n}</p><h3>${w.t}</h3><p>${w.due}</p></button>`).join("")}</div>
+  <div class="cb-card"><h3>How to use this space</h3><ul><li>Read and prepare before class so you can contribute, because participation carries real weight.</li><li>Use canvases to structure your own work, not to generate graded submissions.</li><li>For judgment topics, write both the recommendation and the strongest counterargument.</li><li>Build the capstone gradually from Week 1 instead of waiting for the final weekend.</li></ul></div>`;
 }
-function cbBefore(){
-  const groups=CB_WEEKENDS.map(w=>({w,cards:CB_CARDS.filter(c=>c.w===w.id)})).filter(g=>g.cards.length);
-  return groups.map(g=>`<p class="eyebrow sec-label">${g.w.n} - ${g.w.t}</p>
-    <div class="cb-grid">${g.cards.map(c=>`<div class="cb-card">
-      <p class="eyebrow">${c.tag} · ${c.src}</p><h3>${c.t}</h3><p>${c.p}</p>
-      <div class="cb-check"><p class="prompt">${c.q}</p>${cbCardTag(c)}</div>
-    </div>`).join("")}</div>`).join("");
+function cbArticleReader(){
+  const art=CB_ARTICLES[CB_READER];
+  if(!art) return "";
+  return `<div class="cb-reader">
+    <div class="cb-reader-head"><p class="eyebrow">${art.source}</p><h3>${art.title}</h3><p>${art.note}</p><button class="cb-mini-link" data-cb-reader="" type="button">Close reader</button></div>
+    <div class="cb-reader-body">${art.sections.map(s=>`<h4>${s[0]}</h4><p>${s[1]}</p>`).join("")}</div>
+  </div>`;
+}
+function cbWeek1(){
+  const cards=CB_CARDS.filter(c=>c.w==="w1");
+  const resources=CB_RESOURCES.filter(r=>r.w==="w1");
+  return `<div class="notice"><b>Weekend 1 focus</b><p>Market entry and cross-border expansion. By the end, learners should explain the frameworks governing trade and investment in Africa, analyse a market-entry decision, and recommend an entry mode and sequence.</p></div>
+  <p class="eyebrow sec-label">Resources</p>
+  <div class="cb-grid">${resources.map(r=>`<div class="cb-card resource">
+    <p class="eyebrow">${r.kind} · ${r.source}</p><h3>${r.t}</h3><p>${r.why}</p>
+    ${r.read?`<button class="cb-mini-link" data-cb-reader="${r.id}" type="button">Read in app</button>`:`<p class="warn">Use the linked or distributed course material for the full text.</p>`}
+  </div>`).join("")}</div>
+  ${cbArticleReader()}
+  <p class="eyebrow sec-label">Concept and case prep</p>
+  <div class="cb-grid">${cards.map(c=>`<div class="cb-card">
+    <p class="eyebrow">${c.tag} · ${c.src}</p><h3>${c.t}</h3><p>${c.p}</p>
+    <div class="cb-check"><p class="prompt">${c.q}</p>${cbCardTag(c)}</div>
+  </div>`).join("")}</div>`;
 }
 function cbStructures(){
   const choice=CBSTATE.structure.choice||"";
@@ -4792,7 +4869,7 @@ function cbWork(){
   <div class="cb-card"><h3>Next best move</h3><p>${capStarted<2?"Start the capstone deal concept: target market, structure and top risks.":p.read<CB_CARDS.length?"Finish the Week 1 prep cards, especially the case prompts.":"Move into practice and sharpen the counterarguments."}</p></div>
   <div class="cb-card"><h3>Export reminder</h3><p>Your Cross-Border notes are saved in this browser only. Use the main session backup after major updates so you can restore progress on another device.</p></div>`;
 }
-const CB_RENDER={now:cbNow,before:cbBefore,structures:cbStructures,deliverables:cbDeliverables,practice:cbPractice,work:cbWork};
+const CB_RENDER={overview:cbOverview,week1:cbWeek1,structures:cbStructures,deliverables:cbDeliverables,practice:cbPractice,work:cbWork};
 
 const SL_KEY="mbaassist-sustainable-leadership-v2";
 
@@ -7094,6 +7171,14 @@ function renderSession(){
 
 /* ============ events ============ */
 document.addEventListener("click",e=>{
+  const showHidden=e.target.closest("[data-course-show-hidden]");
+  if(showHidden){ SHOW_ARCHIVED=!SHOW_ARCHIVED; COURSE_ACTION=""; renderCourseHub(); return; }
+  const courseAction=e.target.closest("[data-course-action-kind]");
+  if(courseAction){
+    const kind=courseAction.dataset.courseActionKind;
+    if(kind==="remove"||kind==="restore") setCourseArchived(courseAction.dataset.courseAction,kind==="remove");
+    COURSE_ACTION=""; renderCourseHub(); return;
+  }
   const courseArchive=e.target.closest("[data-course-archive]");
   if(courseArchive){
     const id=courseArchive.dataset.courseArchive;
@@ -7103,12 +7188,15 @@ document.addEventListener("click",e=>{
     return;
   }
   const course=e.target.closest("[data-course]");
+  if(course&&COURSE_SUPPRESS_CLICK){ COURSE_SUPPRESS_CLICK=false; return; }
   if(course&&course.dataset.course==="finance"){ location.hash="finance"; show("home"); renderHome(); return; }
   if(course&&course.dataset.course==="sustain"){ location.hash="sustain"; show("sustain"); return; }
   if(course&&course.dataset.course==="crossborder"){ location.hash="crossborder"; show("crossborder"); return; }
 
   const cbTab=e.target.closest("[data-cb-tab]");
   if(cbTab){ CBTAB=cbTab.dataset.cbTab; renderCrossBorder(); window.scrollTo({top:0,behavior:"smooth"}); return; }
+  const cbReader=e.target.closest("[data-cb-reader]");
+  if(cbReader){ CB_READER=cbReader.dataset.cbReader; renderCrossBorder(); if(CB_READER) document.querySelector(".cb-reader")?.scrollIntoView({behavior:"smooth",block:"start"}); return; }
   const cbRead=e.target.closest("[data-cb-read]");
   if(cbRead){
     const id=cbRead.dataset.cbRead;
@@ -7302,6 +7390,29 @@ document.addEventListener("click",e=>{
   if(p&&p.dataset.id) openFormula(p.dataset.id);
 });
 
+let COURSE_PRESS_TIMER=null, COURSE_PRESS_TARGET="", COURSE_SUPPRESS_CLICK=false;
+document.addEventListener("pointerdown",e=>{
+  const course=e.target.closest("[data-course]");
+  if(!course) return;
+  COURSE_PRESS_TARGET=course.dataset.course;
+  clearTimeout(COURSE_PRESS_TIMER);
+  COURSE_PRESS_TIMER=setTimeout(()=>{
+    COURSE_ACTION=COURSE_PRESS_TARGET;
+    COURSE_SUPPRESS_CLICK=true;
+    if(isCourseArchived(COURSE_ACTION)) SHOW_ARCHIVED=true;
+    renderCourseHub();
+  },620);
+});
+["pointerup","pointercancel","pointerleave"].forEach(ev=>document.addEventListener(ev,()=>clearTimeout(COURSE_PRESS_TIMER)));
+document.addEventListener("contextmenu",e=>{
+  const course=e.target.closest("[data-course]");
+  if(!course) return;
+  e.preventDefault();
+  COURSE_ACTION=course.dataset.course;
+  if(isCourseArchived(COURSE_ACTION)) SHOW_ARCHIVED=true;
+  renderCourseHub();
+});
+
 $("#backBtn").onclick=()=>{ DRILL=null; CALC_CATS=null; location.hash="finance"; show("home"); renderHome(); };
 $("#coursesBtn").onclick=()=>{ DRILL=null; CALC_CATS=null; location.hash=""; show("courses"); };
 $("#courseWorldBtn").onclick=()=>{ DRILL=null; CALC_CATS=null; location.hash=""; show("courses"); };
@@ -7395,7 +7506,7 @@ $("#importFile").onchange=e=>{
       if(!confirm("Restore this backup? It will replace the progress currently on this device.")) return;
       if(d.session&&d.session.id){ SESSION=d.session; localStorage.setItem(SKEY,JSON.stringify(SESSION)); }
       M=d.m||{}; DRILLNO=d.drill||0; FLAGS=d.flags||{}; LDONE=d.lessons||{}; WDONE=d.written||{}; LESSON_ID=null;
-      COURSE_ARCHIVE={}; saveCourseArchive();
+      COURSE_ARCHIVE=d.courseArchive||{}; saveCourseArchive();
       SLSTATE=Object.assign(slDefault(),d.sustainableLeadership||{}); try{localStorage.setItem(SL_KEY,JSON.stringify(SLSTATE));}catch(_){}
       CBSTATE=cbNormalize(d.crossBorder||{}); cbSave();
       saveProgress(); saveFlags();
