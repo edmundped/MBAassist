@@ -464,6 +464,34 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .sl-status{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .sl-status h3{font-size:18px;margin:4px 0 3px}
 .sl-status p:not(.eyebrow){font-size:13px;color:var(--ink-2)}
+.cb-top-actions{display:grid;grid-template-columns:1fr;gap:10px;margin:14px 0}
+.cb-action{
+  border:1px solid var(--line);border-radius:15px;background:var(--surface);
+  padding:14px;text-align:left;display:flex;gap:12px;align-items:flex-start;
+}
+.cb-action b{display:block;font-size:15px}
+.cb-action span{display:block;font-size:12.5px;color:var(--ink-3);line-height:1.45;margin-top:3px}
+.cb-kicker{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px}
+.cb-kicker .kvmini{border:1px solid var(--line);border-radius:11px;background:var(--raised);padding:10px}
+.cb-kicker b{display:block;font-family:var(--mono);font-size:17px}.cb-kicker span{font-size:11.5px;color:var(--ink-3)}
+.cb-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:15px;margin-bottom:10px}
+.cb-card h3{font-size:17px;margin:4px 0 7px}.cb-card p,.cb-card li{font-size:14px;color:var(--ink-2);line-height:1.55}
+.cb-card ul{margin:8px 0 0;padding-left:18px}.cb-card .prompt{color:var(--ink);font-weight:620}
+.cb-grid{display:grid;grid-template-columns:1fr;gap:10px}
+.cb-pillrow{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.cb-pill{border:1px solid var(--line);border-radius:999px;background:var(--raised);padding:8px 10px;font-size:12.5px;color:var(--ink-2);font-weight:620}
+.cb-pill.on{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 14%,var(--surface));color:var(--ink)}
+.cb-field{width:100%;min-height:92px;border:1px solid var(--line);border-radius:12px;background:var(--raised);color:var(--ink);font:inherit;font-size:14px;line-height:1.5;padding:12px;margin-top:10px;resize:vertical}
+.cb-field:focus{outline:2px solid var(--ink-3);outline-offset:-1px}
+.cb-check{border-top:1px solid var(--line);margin-top:12px;padding-top:12px}
+.cb-check button,.cb-quiz button{display:block;width:100%;text-align:left;border:1px solid var(--line);border-radius:11px;background:var(--raised);padding:10px 11px;margin-top:7px;color:var(--ink)}
+.cb-check button.right,.cb-quiz button.right{border-color:var(--yes);background:color-mix(in srgb,var(--yes) 13%,var(--surface))}
+.cb-check button.wrong,.cb-quiz button.wrong{border-color:var(--no);background:color-mix(in srgb,var(--no) 12%,var(--surface))}
+.cb-matrix{display:grid;grid-template-columns:1fr;gap:8px;margin-top:10px}
+.cb-risk{border:1px solid var(--line);border-radius:12px;background:var(--raised);padding:11px}
+.cb-risk b{font-size:13.5px}.cb-risk select{width:100%;margin-top:8px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);padding:9px;font:inherit}
+.cb-dealbar{height:5px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:8px}.cb-dealbar i{display:block;height:100%;background:var(--accent)}
+@media (min-width:720px){.cb-top-actions{grid-template-columns:repeat(3,1fr)}.cb-grid{grid-template-columns:1fr 1fr}.cb-kicker{grid-template-columns:repeat(4,1fr)}.cb-matrix{grid-template-columns:1fr 1fr}}
 .sl-mode{display:grid;gap:10px}
 .sl-mode .seg{position:static;background:var(--line)}
 .sl-mode .warn{margin:0;font-size:12.5px;line-height:1.45}
@@ -1116,13 +1144,13 @@ body.dark .lvl.l1{color:#7FD3B8}body.dark .lvl.l2{color:#E3BE6A}body.dark .lvl.l
 
 <!-- ============ CROSS-BORDER BUSINESS ============ -->
 <main id="crossborderView" class="wrap hidden">
-  <section class="course-intro">
+  <section class="sl-hero">
     <div>
       <p class="eyebrow" id="crossborderGreet">Cross-Border Business</p>
-      <h2>Cross-Border Business workspace</h2>
-      <p>This course is mounted and ready for buildout. We can now add modules, cases, quiz prep, teach mode, and written-answer practice without disturbing Managerial Finance.</p>
+      <h2>Cross-Border Transactions in Africa</h2>
+      <p>A guided workspace for market entry, deal structure, risk allocation, negotiation, finance, enforcement, ESG, and the capstone build.</p>
     </div>
-    <div class="mentor mini-mentor" aria-hidden="true">
+    <div class="sl-hero-mark" aria-hidden="true">
       <svg viewBox="0 0 620 260">
         <path d="M80 210h460" stroke="var(--line-2)" stroke-width="3" stroke-linecap="round"/>
         <circle cx="330" cy="126" r="82" fill="var(--surface)" stroke="var(--line-2)" stroke-width="3"/>
@@ -1132,33 +1160,25 @@ body.dark .lvl.l1{color:#7FD3B8}body.dark .lvl.l2{color:#E3BE6A}body.dark .lvl.l
       </svg>
     </div>
   </section>
-  <p class="eyebrow sec-label">Build slots</p>
-  <div class="tools">
-    <div class="tool-card">
-      <span>01</span>
-      <h3>Learn</h3>
-      <p>Concept notes, examples, and quick checks by topic.</p>
+
+  <section class="sl-status panel">
+    <div>
+      <p class="eyebrow" id="cbPhase">Week 1 build</p>
+      <h3 id="cbPhaseTitle">Market entry and cross-border expansion</h3>
+      <p id="cbPhaseSub"></p>
     </div>
-    <div class="tool-card">
-      <span>02</span>
-      <h3>Quiz Prep</h3>
-      <p>Session-based question batches with explanations and flagged-question review.</p>
-    </div>
-    <div class="tool-card">
-      <span>03</span>
-      <h3>Cases</h3>
-      <p>Structured case prompts, frameworks, hints, and answer planning support.</p>
-    </div>
-    <div class="tool-card">
-      <span>04</span>
-      <h3>Teach Mode</h3>
-      <p>Step-by-step guided practice for concepts that need deeper explanation.</p>
-    </div>
+  </section>
+
+  <div class="seg sl-seg" id="cbSeg">
+    <button class="on" data-cb-tab="now" type="button"><span class="sl-tab-ico">1</span><span>Now</span></button>
+    <button data-cb-tab="before" type="button"><span class="sl-tab-ico">2</span><span>Prepare</span></button>
+    <button data-cb-tab="structures" type="button"><span class="sl-tab-ico">3</span><span>Structures</span></button>
+    <button data-cb-tab="deliverables" type="button"><span class="sl-tab-ico">4</span><span>Deliverables</span></button>
+    <button data-cb-tab="practice" type="button"><span class="sl-tab-ico">5</span><span>Practice</span></button>
+    <button data-cb-tab="work" type="button"><span class="sl-tab-ico">6</span><span>My Work</span></button>
   </div>
-  <div class="notice" style="margin-top:18px">
-    <b>Ready for content</b>
-    <p>Send the Cross-Border syllabus, slide decks, sample questions, or case files and we can populate this workspace using the same modular structure as Managerial Finance.</p>
-  </div>
+
+  <div id="cbPane"></div>
 </main>
 
 <!-- ============ SESSION ============ -->
@@ -4608,7 +4628,171 @@ function renderCourseHub(){
 function renderCrossBorder(){
   const nm=(SESSION.name||"").trim().split(/\s+/)[0];
   $("#crossborderGreet").textContent=nm?`Ready, ${nm}`:"Cross-Border Business";
+  const p=cbProgress();
+  $("#cbPhaseSub").textContent=`${p.read}/${CB_CARDS.length} prep cards read · ${p.deliv}/${CB_DELIVERABLES.length} deliverable canvases started · ${p.structures} structure choices saved.`;
+  document.querySelectorAll("#cbSeg button").forEach(b=>b.classList.toggle("on",b.dataset.cbTab===CBTAB));
+  const pane=$("#cbPane");
+  pane.innerHTML=CB_RENDER[CBTAB]();
 }
+
+const CB_KEY="mbaassist-crossborder-v1";
+let CBTAB="now";
+const CB_WEEKENDS=[
+  {id:"w1",n:"Weekend 1",t:"Market entry and cross-border expansion",due:"Individual case analysis, group deal-concept proposal, quiz"},
+  {id:"w2",n:"Weekend 2",t:"Structuring and negotiating cross-border transactions",due:"Simulation reflection brief"},
+  {id:"w3",n:"Weekend 3",t:"Cross-border finance and sovereign transactions",due:"Individual case analysis, reflection memo"},
+  {id:"w4",n:"Weekend 4",t:"Dispute resolution, ESG, and the capstone",due:"Capstone report, presentation, final sit-in test"}
+];
+const CB_CARDS=[
+  {id:"cb1",w:"w1",tag:"Concept",t:"What counts as a cross-border transaction",src:"Course outline",p:"A cross-border transaction joins parties, assets, capital, laws or performance obligations across national borders. The course treats these deals as legal, financial, strategic and negotiation problems at the same time.",q:"When you read a case, name the parties, the countries, the asset or activity, and the decision that must be made."},
+  {id:"cb2",w:"w1",tag:"FDI",t:"FDI is more than money moving in",src:"tralac FDI guide, 2019",p:"FDI matters because it can bring capital, technology, jobs, managerial capability and market access. The strategic question is what the host market gains and what the investor can realistically control.",q:"Ask whether the deal is market-seeking, resource-seeking, efficiency-seeking or capability-seeking."},
+  {id:"cb3",w:"w1",tag:"AfCFTA",t:"AfCFTA changes the opportunity set, not the whole risk map",src:"tralac AfCFTA guide, as at May 2025",p:"AfCFTA aims to create a single continental market and liberalise most intra-African tariffs, but rules of origin, services commitments and several annexes still matter. It reduces some trade friction while leaving country-level execution risk alive.",q:"Do not write 'AfCFTA solves market entry'. Write which barrier it helps with and which barrier remains."},
+  {id:"cb4",w:"w1",tag:"Institutions",t:"Regulatory diversity is a deal variable",src:"Course outline",p:"African markets cannot be treated as one uniform block. Licensing, exchange controls, sector regulators, courts, tax, labour rules and informal institutions can change the economics of the same business model.",q:"In every recommendation, include one regulatory risk and one mitigation."},
+  {id:"cb5",w:"w1",tag:"Entry",t:"Entry mode follows what you need to control",src:"Course outline",p:"Acquisition, joint venture, minority investment, PPP, greenfield and licensing each trade off control, speed, capital at risk, local dependence and exit difficulty.",q:"Do not pick a structure first. Pick the strategic priority first, then test which structures survive."},
+  {id:"cb6",w:"w1",tag:"Case",t:"MTN Investing in Africa",src:"IMD case - prompts only",p:"Use the case to practise expansion sequencing under uncertainty: where to enter, how fast to move, what capabilities travel, and what management bandwidth can bear.",q:"Prepare to defend one country/sequence and the strongest reason not to pick it."},
+  {id:"cb7",w:"w1",tag:"Case",t:"Attijariwafa Bank: Egypt Expansion",src:"HBS case - prompts only",p:"Use the case to test market attractiveness against distance, regulation, acquisition integration and strategic fit. The question is not only whether Egypt is attractive, but whether this acquisition is the right route.",q:"Separate market attractiveness from deal attractiveness."},
+  {id:"cb8",w:"w1",tag:"Case",t:"Peak Investment Capital",src:"HBS case - prompts only",p:"Use the case to practise adapting an investment model to Ghanaian institutional conditions: sourcing, financing, management depth, growth capital and local operating constraints.",q:"Ask which part of the original model breaks first in the local context."},
+  {id:"cb9",w:"w2",tag:"Preview",t:"Negotiation and control",src:"Course outline",p:"Weekend 2 moves from whether to enter into how to structure and negotiate the transaction. Control, governance, deadlock, exit, culture and enforcement start doing real work.",q:"Carry forward your Week 1 market choice and ask: what terms would make this deal bankable and governable?"},
+  {id:"cb10",w:"w3",tag:"Preview",t:"Finance and risk allocation",src:"Course outline",p:"Weekend 3 links the deal to project finance, blended finance, sovereign debt, arbitration, sovereign immunity and enforcement. The key question becomes who bears which risk and why.",q:"A good structure makes risk visible before it prices it."},
+  {id:"cb11",w:"w4",tag:"Preview",t:"ESG and the social licence",src:"Course outline",p:"Weekend 4 asks whether the deal can survive beyond legal close. Community consent, ESG standards, ethics and long-term value shape execution risk.",q:"A deal can be legal and still lose its social licence."}
+];
+const CB_DELIVERABLES=[
+  {id:"case1",w:"W1 Sat",t:"Individual case analysis",h:"Use this to structure your thinking. The app should not write the submission.",fields:["Decision problem","Relevant facts from the case","Two viable options","Recommendation","Main risk and mitigation"]},
+  {id:"deal",w:"W1 Sun",t:"Group deal-concept proposal",h:"Start the capstone early. Keep it short, concrete and testable.",fields:["Target market and why","Problem or opportunity","Preferred entry mode","Local partner or stakeholder logic","Top three risks"]},
+  {id:"sim",w:"W2 Sat",t:"Simulation reflection brief",h:"Capture what happened in negotiation and what you would change.",fields:["Your position","Other side's interests","BATNA and fallback","What worked","What you would do differently"]},
+  {id:"case2",w:"W3 Sat",t:"Individual case analysis",h:"Use the finance/enforcement lens rather than repeating Week 1 market entry.",fields:["Decision problem","Financing or enforcement issue","Risk allocation","Recommendation","Counterargument"]},
+  {id:"memo",w:"W3 Sun",t:"Reflection memo",h:"Turn the simulation into judgment, not narration.",fields:["Stakeholder map","Ethical tension","Legal route","Commercial consequence","Final position"]},
+  {id:"capstone",w:"W4 Sat",t:"Final capstone build",h:"Accumulate this from Week 1. Do not wait until the presentation weekend.",fields:["Target market","Transaction structure","Financing plan","Risk allocation","Dispute resolution","ESG and social licence","Panel defence questions"]}
+];
+const CB_STRUCTURES=[
+  {id:"acq",n:"Acquisition",h:"Fast control, but higher integration, regulatory and capital exposure."},
+  {id:"jv",n:"Joint venture",h:"Local knowledge and shared risk, but governance and deadlock must be designed."},
+  {id:"minority",n:"Minority stake",h:"Lower capital at risk, but limited control and weaker ability to force change."},
+  {id:"ppp",n:"PPP",h:"Useful for public infrastructure, but state capacity, politics and long-term allocation matter."},
+  {id:"greenfield",n:"Greenfield",h:"Maximum design control, slower speed and heavier execution burden."},
+  {id:"license",n:"Licensing",h:"Asset-light and fast, but weaker control over execution and brand protection."}
+];
+const CB_RISKS=["Political","Currency","Regulatory","Demand","Construction","Partner","Environmental","Enforcement"];
+const CB_RISK_PARTIES=["Sponsor","Local partner","State","Lender","Insurer/DFI","Shared"];
+const CB_QUIZ=[
+  {q:"A firm enters another African country by buying control of an existing local operator. The closest structure is:",a:["Licensing","Acquisition","Greenfield","State-state dispute"],c:1,e:"Buying control of an existing business is an acquisition. The next question is whether the control is worth the integration and regulatory risk."},
+  {q:"The AfCFTA is best treated in market-entry analysis as:",a:["A full replacement for domestic regulation","A continental framework that can reduce some trade frictions","A guarantee that private firms can sue states directly","A substitute for country-risk analysis"],c:1,e:"AfCFTA matters, but country-level regulation, rules of origin, services commitments and execution risk still remain."},
+  {q:"Rules of origin primarily answer which question?",a:["Which court hears the dispute","Whether a product qualifies for preferential tariff treatment","Who owns the local subsidiary","How much debt the project can carry"],c:1,e:"Rules of origin determine the economic nationality of goods for preferential treatment."},
+  {q:"In a Week 1 case recommendation, market attractiveness and deal attractiveness should be:",a:["Collapsed into one point","Separated, because an attractive market can still be a poor transaction","Ignored if the brand is strong","Replaced by financial ratios only"],c:1,e:"A market can be attractive while the timing, target, price, structure or integration risk is weak."},
+  {q:"A joint venture is most likely to create trouble when the parties fail to design:",a:["A dividend discount model","Deadlock, control, exit and governance provisions","A tariff schedule","A press release"],c:1,e:"JV value depends heavily on governance and the terms for disagreement, exit and control."},
+  {q:"The best first step before choosing entry mode is to identify:",a:["The preferred legal adviser","The strategic priority and what must be controlled","The final presentation font","The longest reading"],c:1,e:"Structure follows priority. Speed, control, capital at risk and local dependence point to different structures."},
+  {q:"FDI analysis should consider host-country benefits because:",a:["They determine whether the investor earns any profit automatically","They shape legitimacy, policy support and stakeholder acceptance","They replace shareholder analysis","They remove currency risk"],c:1,e:"Jobs, technology, taxes, capability transfer and development contribution affect political and social support."},
+  {q:"A private firm affected by an AfCFTA trade measure should remember that the state-state mechanism is normally used by:",a:["Any consumer directly","State parties","Only banks","Only arbitral tribunals"],c:1,e:"The AfCFTA dispute settlement system is state-state; private parties usually work through governments or domestic routes."},
+  {q:"Peak Investment Capital is useful for studying:",a:["Only public-private partnerships","Adapting an acquisition model to local capital, sourcing and management constraints","Sovereign immunity only","Bond duration"],c:1,e:"The case highlights institutional adaptation: deal sourcing, financing, managerial depth and growth capital."},
+  {q:"Attijariwafa's Egypt decision is a good prompt for:",a:["Separating market size from acquisition fit","Ignoring cultural and regulatory distance","Treating all banking markets as identical","Choosing greenfield by default"],c:0,e:"The case asks whether Egypt is attractive and whether the Barclays Egypt acquisition is the right path into it."},
+  {q:"MTN's expansion problem is mainly about:",a:["No strategic choice because every market is equal","Sequencing, capability transfer, timing and management bandwidth","Only accounting depreciation","Only final exam technique"],c:1,e:"The case is a market-entry and sequencing problem under country and execution uncertainty."},
+  {q:"A good capstone deal concept should include:",a:["Only a company name","Target market, structure, financing logic, risk allocation and social licence position","Only a slogan","Only a list of readings"],c:1,e:"The panel will test the deal as a system: why this market, why this structure, who funds it, who bears risk and why it should be accepted."}
+];
+function cbDefault(){return {read:[],checks:{},notes:{},deliverables:{},structure:{priority:"",choice:"",risks:{}},quiz:{picks:{},right:0,seen:0}};}
+let CBSTATE=cbLoad();
+function cbNormalize(s){
+  const d=cbDefault(), out=Object.assign(d,s||{});
+  out.read=Array.isArray(out.read)?out.read:[];
+  out.notes=out.notes||{}; out.deliverables=out.deliverables||{};
+  out.structure=Object.assign(d.structure,out.structure||{});
+  out.structure.risks=out.structure.risks||{};
+  out.quiz=Object.assign(d.quiz,out.quiz||{});
+  out.quiz.picks=out.quiz.picks||{};
+  return out;
+}
+function cbLoad(){try{return cbNormalize(JSON.parse(localStorage.getItem(CB_KEY)||"{}")||{});}catch(_){return cbDefault();}}
+function cbSave(){try{localStorage.setItem(CB_KEY,JSON.stringify(CBSTATE));}catch(_){}}
+function cbGet(path){
+  return path.split(".").reduce((o,k)=>o&&o[k]!==undefined?o[k]:"",CBSTATE);
+}
+function cbSet(path,val){
+  const parts=path.split("."); let node=CBSTATE;
+  for(let i=0;i<parts.length-1;i++){ if(!node[parts[i]]) node[parts[i]]={}; node=node[parts[i]]; }
+  node[parts.at(-1)]=val; cbSave();
+}
+function cbProgress(){
+  const read=CBSTATE.read.length;
+  const deliv=CB_DELIVERABLES.filter(d=>(CBSTATE.deliverables[d.id]&&Object.values(CBSTATE.deliverables[d.id]).some(Boolean))).length;
+  const structures=(CBSTATE.structure.choice?1:0)+Object.values(CBSTATE.structure.risks||{}).filter(Boolean).length;
+  return {read,deliv,structures,quizSeen:Object.keys(CBSTATE.quiz.picks||{}).length};
+}
+function cbField(path,ph,big=false){
+  return `<textarea class="cb-field${big?" big":""}" data-cb-field="${path}" placeholder="${esc(ph)}">${esc(cbGet(path)||"")}</textarea>`;
+}
+function cbCardTag(card){
+  const done=CBSTATE.read.includes(card.id);
+  return `<button class="cb-pill${done?" on":""}" data-cb-read="${card.id}" type="button">${done?"Read":"Mark read"}</button>`;
+}
+function cbNow(){
+  const p=cbProgress();
+  return `<div class="notice"><b>Learning use only</b><p>Cross-Border includes graded case work, participation and a capstone. This workspace helps you prepare and structure your own thinking; it should not write assessed submissions for you.</p></div>
+  <div class="cb-kicker">
+    <div class="kvmini"><b>${p.read}/${CB_CARDS.length}</b><span>prep cards read</span></div>
+    <div class="kvmini"><b>${p.deliv}/${CB_DELIVERABLES.length}</b><span>deliverables started</span></div>
+    <div class="kvmini"><b>${p.structures}</b><span>structure choices</span></div>
+    <div class="kvmini"><b>${p.quizSeen}/${CB_QUIZ.length}</b><span>quiz items attempted</span></div>
+  </div>
+  <div class="cb-top-actions">
+    <button class="cb-action" data-cb-tab="before" type="button"><b>Prepare for class</b><span>Read the Week 1 cards, then test yourself with quick checks and case prompts.</span></button>
+    <button class="cb-action" data-cb-tab="deliverables" type="button"><b>Build my deal</b><span>Start the capstone from Weekend 1: market, structure, risks, financing and social licence.</span></button>
+    <button class="cb-action" data-cb-tab="practice" type="button"><b>Practice for quiz/exam</b><span>Objective questions get scored. Judgment prompts get counterarguments instead of fake precision.</span></button>
+  </div>
+  <p class="eyebrow sec-label">Four-week journey</p>
+  <div class="cb-grid">${CB_WEEKENDS.map(w=>`<div class="cb-card"><p class="eyebrow">${w.n}</p><h3>${w.t}</h3><p>${w.due}</p></div>`).join("")}</div>`;
+}
+function cbBefore(){
+  const groups=CB_WEEKENDS.map(w=>({w,cards:CB_CARDS.filter(c=>c.w===w.id)})).filter(g=>g.cards.length);
+  return groups.map(g=>`<p class="eyebrow sec-label">${g.w.n} - ${g.w.t}</p>
+    <div class="cb-grid">${g.cards.map(c=>`<div class="cb-card">
+      <p class="eyebrow">${c.tag} · ${c.src}</p><h3>${c.t}</h3><p>${c.p}</p>
+      <div class="cb-check"><p class="prompt">${c.q}</p>${cbCardTag(c)}</div>
+    </div>`).join("")}</div>`).join("");
+}
+function cbStructures(){
+  const choice=CBSTATE.structure.choice||"";
+  return `<div class="notice"><b>Structure before answer</b><p>Pick the deal priority first, then test structures. This is coached judgment, not a single-answer calculator.</p></div>
+  <div class="cb-card"><h3>1. What is the deal optimising for?</h3>${cbField("structure.priority","Example: enter quickly, protect IP, retain control, reduce capital at risk, satisfy local ownership expectations.",true)}</div>
+  <div class="cb-card"><h3>2. Structure comparator</h3><p>Choose the structure you would currently defend, then use the note to sharpen your reasoning.</p>
+    <div class="cb-pillrow">${CB_STRUCTURES.map(s=>`<button class="cb-pill${choice===s.id?" on":""}" data-cb-structure="${s.id}" type="button">${s.n}</button>`).join("")}</div>
+    ${choice?`<p style="margin-top:12px"><b>${CB_STRUCTURES.find(s=>s.id===choice).n}:</b> ${CB_STRUCTURES.find(s=>s.id===choice).h}</p>`:""}</div>
+  <div class="cb-card"><h3>3. Risk allocation matrix</h3><p>For each risk, assign the party best placed to manage, absorb or price it. If no one party can carry it alone, choose shared and explain why in your notes.</p>
+    <div class="cb-matrix">${CB_RISKS.map(r=>`<div class="cb-risk"><b>${r} risk</b><select data-cb-risk="${r}"><option value="">Assign risk</option>${CB_RISK_PARTIES.map(p=>`<option ${CBSTATE.structure.risks[r]===p?"selected":""}>${p}</option>`).join("")}</select></div>`).join("")}</div>
+    ${cbField("structure.riskNote","Explain the two risk allocations you expect the instructor or panel to challenge.",true)}</div>
+  <div class="cb-card"><h3>4. Negotiation prep</h3><ul><li>Positions: what each side says it wants.</li><li>Interests: why those positions matter.</li><li>BATNA: what each side can do if there is no deal.</li><li>Objective criteria: market data, law, standards, precedent or policy.</li></ul>${cbField("structure.negotiation","Draft your negotiation prep in your own words.",true)}</div>`;
+}
+function cbDeliverables(){
+  return `<div class="notice"><b>Own words only</b><p>These canvases organise your thinking. They intentionally do not generate final paragraphs for graded work.</p></div>
+  ${CB_DELIVERABLES.map(d=>{const started=d.fields.filter(f=>cbGet(`deliverables.${d.id}.${f}`)).length; return `<div class="cb-card">
+    <p class="eyebrow">${d.w} · ${started}/${d.fields.length} started</p><h3>${d.t}</h3><p>${d.h}</p>
+    <div class="cb-dealbar"><i style="width:${Math.round(started/d.fields.length*100)}%"></i></div>
+    ${d.fields.map(f=>`<label><p class="prompt" style="margin-top:13px">${f}</p>${cbField(`deliverables.${d.id}.${f}`,"Write the points you can defend from the reading, class discussion or case evidence.")}</label>`).join("")}
+  </div>`;}).join("")}`;
+}
+function cbPractice(){
+  return `<div class="notice"><b>Practice model</b><p>MCQs are for objective recall. For judgment topics, practise making a defensible argument and naming the strongest counterargument.</p></div>
+  <p class="eyebrow sec-label">Objective checks</p><div class="cb-quiz">${CB_QUIZ.map((q,qi)=>{const pick=CBSTATE.quiz.picks[qi]; return `<div class="cb-card"><h3>${qi+1}. ${q.q}</h3>${q.a.map((a,ai)=>`<button class="${pick!==undefined?(ai===q.c?"right":ai===pick?"wrong":""):""}" data-cb-q="${qi}" data-cb-a="${ai}" ${pick!==undefined?"disabled":""} type="button">${String.fromCharCode(65+ai)}. ${a}</button>`).join("")}${pick!==undefined?`<p style="margin-top:10px">${q.e}</p>`:""}</div>`;}).join("")}</div>
+  <p class="eyebrow sec-label">Judgment reps</p>
+  <div class="cb-grid">
+    <div class="cb-card"><h3>MTN expansion sequence</h3><p class="prompt">Which market should be next, and what would make your recommendation wrong?</p>${cbField("notes.j_mtn","Argue one side, then name the counterargument.")}</div>
+    <div class="cb-card"><h3>Attijariwafa Egypt entry</h3><p class="prompt">Is the acquisition route stronger than waiting or entering differently?</p>${cbField("notes.j_atw","Separate market attractiveness from transaction attractiveness.")}</div>
+    <div class="cb-card"><h3>Peak Investment Capital</h3><p class="prompt">Which imported model assumption breaks first in Ghana?</p>${cbField("notes.j_peak","Tie the answer to financing, sourcing, management or growth capital.")}</div>
+    <div class="cb-card"><h3>AfCFTA and private firms</h3><p class="prompt">What can AfCFTA help with, and what must the firm still manage locally?</p>${cbField("notes.j_afcfta","Avoid broad claims. Name the barrier and the remaining risk.")}</div>
+  </div>`;
+}
+function cbWork(){
+  const p=cbProgress();
+  const cap=CB_DELIVERABLES.find(d=>d.id==="capstone");
+  const capStarted=cap.fields.filter(f=>cbGet(`deliverables.capstone.${f}`)).length;
+  return `<div class="cb-kicker">
+    <div class="kvmini"><b>${p.read}</b><span>cards read</span></div>
+    <div class="kvmini"><b>${p.deliv}</b><span>canvases started</span></div>
+    <div class="kvmini"><b>${p.quizSeen}</b><span>quiz attempts</span></div>
+    <div class="kvmini"><b>${capStarted}/${cap.fields.length}</b><span>capstone fields</span></div>
+  </div>
+  <div class="cb-card"><h3>Next best move</h3><p>${capStarted<2?"Start the capstone deal concept: target market, structure and top risks.":p.read<CB_CARDS.length?"Finish the Week 1 prep cards, especially the case prompts.":"Move into practice and sharpen the counterarguments."}</p></div>
+  <div class="cb-card"><h3>Export reminder</h3><p>Your Cross-Border notes are saved in this browser only. Use the main session backup after major updates so you can restore progress on another device.</p></div>`;
+}
+const CB_RENDER={now:cbNow,before:cbBefore,structures:cbStructures,deliverables:cbDeliverables,practice:cbPractice,work:cbWork};
 
 const SL_KEY="mbaassist-sustainable-leadership-v2";
 
@@ -6923,6 +7107,28 @@ document.addEventListener("click",e=>{
   if(course&&course.dataset.course==="sustain"){ location.hash="sustain"; show("sustain"); return; }
   if(course&&course.dataset.course==="crossborder"){ location.hash="crossborder"; show("crossborder"); return; }
 
+  const cbTab=e.target.closest("[data-cb-tab]");
+  if(cbTab){ CBTAB=cbTab.dataset.cbTab; renderCrossBorder(); window.scrollTo({top:0,behavior:"smooth"}); return; }
+  const cbRead=e.target.closest("[data-cb-read]");
+  if(cbRead){
+    const id=cbRead.dataset.cbRead;
+    CBSTATE.read=CBSTATE.read.includes(id)?CBSTATE.read.filter(x=>x!==id):[...CBSTATE.read,id];
+    cbSave(); renderCrossBorder(); return;
+  }
+  const cbStruct=e.target.closest("[data-cb-structure]");
+  if(cbStruct){ CBSTATE.structure.choice=cbStruct.dataset.cbStructure; cbSave(); renderCrossBorder(); return; }
+  const cbAnswer=e.target.closest("[data-cb-q]");
+  if(cbAnswer){
+    const qi=Number(cbAnswer.dataset.cbQ), ai=Number(cbAnswer.dataset.cbA);
+    if(CBSTATE.quiz.picks[qi]===undefined){
+      CBSTATE.quiz.picks[qi]=ai;
+      CBSTATE.quiz.seen=Object.keys(CBSTATE.quiz.picks).length;
+      CBSTATE.quiz.right=Object.entries(CBSTATE.quiz.picks).filter(([k,v])=>CB_QUIZ[Number(k)]&&CB_QUIZ[Number(k)].c===v).length;
+      cbSave(); renderCrossBorder();
+    }
+    return;
+  }
+
   const slTab=e.target.closest("[data-sl-tab]");
   if(slTab){ SLTAB=slTab.dataset.slTab; renderSustain(); window.scrollTo({top:0,behavior:"smooth"}); return; }
   const slJump=e.target.closest("[data-sl-jump]");
@@ -7116,6 +7322,17 @@ document.addEventListener("input",e=>{
   SLSTATE.updated=new Date().toISOString();
   try{localStorage.setItem(SL_KEY,JSON.stringify(SLSTATE));}catch(_){}
 });
+document.addEventListener("input",e=>{
+  const f=e.target.closest("[data-cb-field]");
+  if(!f) return;
+  cbSet(f.dataset.cbField,f.value);
+});
+document.addEventListener("change",e=>{
+  const r=e.target.closest("[data-cb-risk]");
+  if(!r) return;
+  CBSTATE.structure.risks[r.dataset.cbRisk]=r.value;
+  cbSave(); renderCrossBorder();
+});
 $("#welcomeForm").onsubmit=e=>{
   e.preventDefault();
   const name=$("#welcomeName").value.trim();
@@ -7153,13 +7370,13 @@ $("#newSess").onclick=()=>{
   SESSION.started=!!SESSION.name;
   SESSION.oriented=wasOriented;   /* clearing progress shouldn't replay the tour */
   saveSession();
-  M={}; DRILLNO=0; FLAGS={}; LDONE={}; WDONE={}; LESSON_ID=null;
+  M={}; DRILLNO=0; FLAGS={}; LDONE={}; WDONE={}; LESSON_ID=null; CBSTATE=cbDefault(); cbSave();
   saveProgress(); saveFlags(); renderSession(); renderHome(); location.hash="finance"; show("home");
 };
 
 /* progress backup & restore */
 $("#exportProg").onclick=()=>{
-  const data={v:5,exported:new Date().toISOString(),session:SESSION,m:M,drill:DRILLNO,flags:FLAGS,lessons:LDONE,written:WDONE,courseArchive:COURSE_ARCHIVE,sustainableLeadership:SLSTATE||slLoad()};
+  const data={v:6,exported:new Date().toISOString(),session:SESSION,m:M,drill:DRILLNO,flags:FLAGS,lessons:LDONE,written:WDONE,courseArchive:COURSE_ARCHIVE,sustainableLeadership:SLSTATE||slLoad(),crossBorder:CBSTATE||cbLoad()};
   const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
   const a=document.createElement("a");
   a.href=URL.createObjectURL(blob);
@@ -7180,6 +7397,7 @@ $("#importFile").onchange=e=>{
       M=d.m||{}; DRILLNO=d.drill||0; FLAGS=d.flags||{}; LDONE=d.lessons||{}; WDONE=d.written||{}; LESSON_ID=null;
       COURSE_ARCHIVE={}; saveCourseArchive();
       SLSTATE=Object.assign(slDefault(),d.sustainableLeadership||{}); try{localStorage.setItem(SL_KEY,JSON.stringify(SLSTATE));}catch(_){}
+      CBSTATE=cbNormalize(d.crossBorder||{}); cbSave();
       saveProgress(); saveFlags();
       $("#learnerName").value=SESSION.name||"";
       renderSession(); renderHome(); renderCourseHub();

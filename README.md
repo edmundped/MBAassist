@@ -3,9 +3,35 @@
 A scalable MBA course learning workspace. Three courses are mounted in the app:
 **MBA512 Managerial Finance**, **Sustainable Leadership & Ethical Business**
 (Module 3, Seminar 673), and **Cross-Border Business**. Managerial Finance and
-Sustainable Leadership have built learning tools; Cross-Border Business now has
-a live workspace ready for buildout. Everything is in one self-contained
+Sustainable Leadership have built learning tools; Cross-Border Business has a
+v1 guided workspace for Week 1 and the course-long capstone arc. Everything is in one self-contained
 `index.html` — no build step, no dependencies, works offline.
+
+---
+
+# Cross-Border Business
+
+The Cross-Border workspace follows the course assessment shape rather than the
+Managerial Finance question-bank model. It has six tabs:
+
+| Tab | Purpose |
+|---|---|
+| Now | Three learner actions: prepare for class, build the deal, practise for quiz/exam |
+| Prepare | Week 1 concept and case-prep cards, with read tracking |
+| Structures | Entry-mode comparator, risk allocation matrix, and negotiation prep |
+| Deliverables | Own-words canvases for interim deliverables and the capstone |
+| Practice | Objective MCQs plus judgment prompts with counterargument practice |
+| My Work | Device-local progress summary and next recommended move |
+
+V1 includes Week 1 content from the course outline, AfCFTA and FDI tralac
+guides, plus prompt-level preparation for MTN Investing in Africa, Attijariwafa
+Bank: Egypt Expansion, and Peak Investment Capital. Copyrighted case text is
+not reproduced; the app gives frameworks and questions to prepare with.
+
+Cross-Border notes and progress are saved in the same browser and included in
+the existing backup/restore flow. The workspace is intentionally a study aid:
+it structures thinking but does not draft graded case analyses or capstone
+submissions.
 
 ---
 
