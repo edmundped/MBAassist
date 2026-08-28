@@ -4,7 +4,7 @@ A scalable MBA course learning workspace. Three courses are mounted in the app:
 **MBA512 Managerial Finance**, **Sustainable Leadership & Ethical Business**
 (Module 3, Seminar 673), and **Cross-Border Business**. Managerial Finance and
 Sustainable Leadership have built learning tools; Cross-Border Business has a
-v1 guided workspace for Week 1 and the course-long capstone arc. Everything is in one self-contained
+modular v1 workspace for Week 1 and the course-long capstone arc. Everything is in one self-contained
 `index.html` — no build step, no dependencies, works offline.
 
 ---
@@ -12,24 +12,28 @@ v1 guided workspace for Week 1 and the course-long capstone arc. Everything is i
 # Cross-Border Business
 
 The Cross-Border workspace follows the course assessment shape rather than the
-Managerial Finance question-bank model. Learners first land on a course overview
-with what the course is about, the four-week schedule, expectations, and a clear
-Week 1 entry point. It has six tabs:
+Managerial Finance question-bank model. Learners first land on a clean course
+dashboard with only the essentials: what the course is about, expectations, the
+four-week schedule, week boxes, and learner action tiles.
 
-| Tab | Purpose |
+| Area | Purpose |
 |---|---|
-| Course | Course purpose, schedule, expectations, and the Week 1 entry point |
-| Week 1 | Market-entry resources, in-app article readers, concept cards, and case prep |
+| Course | Course purpose, schedule, expectations, week boxes, and action tiles |
+| Week | The selected week's hub, with resources, mastery, testing, structures and deliverables |
+| Resources | Assigned readings, cases, and in-app study readers where available |
+| Mastery | Flashcard-style concept and case prep cards |
+| Testing | Objective MCQs plus written judgment prompts with counterargument practice |
 | Structures | Entry-mode comparator, risk allocation matrix, and negotiation prep |
 | Deliverables | Own-words canvases for interim deliverables and the capstone |
-| Practice | Objective MCQs plus judgment prompts with counterargument practice |
 | My Work | Device-local progress summary and next recommended move |
 
 V1 includes Week 1 content from the course outline, AfCFTA and FDI tralac
 guides, plus prompt-level preparation for MTN Investing in Africa, Attijariwafa
 Bank: Egypt Expansion, and Peak Investment Capital. The tralac guides have
 in-app study readers; copyrighted case text is not reproduced, so the app gives
-frameworks and questions to prepare with.
+frameworks and questions to prepare with. Weeks 2-4 are mounted as modular
+placeholders so their resources and practice can be added without changing the
+course navigation model.
 
 Cross-Border notes and progress are saved in the same browser and included in
 the existing backup/restore flow. The workspace is intentionally a study aid:

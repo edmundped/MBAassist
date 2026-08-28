@@ -478,6 +478,7 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 }
 .cb-action b{display:block;font-size:15px}
 .cb-action span{display:block;font-size:12.5px;color:var(--ink-3);line-height:1.45;margin-top:3px}
+.cb-action small{display:inline-flex;margin-top:12px;border:1px solid var(--line);border-radius:999px;padding:5px 8px;font-size:11px;font-weight:750;color:var(--accent);background:var(--surface)}
 .cb-kicker{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px}
 .cb-kicker .kvmini{border:1px solid var(--line);border-radius:11px;background:var(--raised);padding:10px}
 .cb-kicker b{display:block;font-family:var(--mono);font-size:17px}.cb-kicker span{font-size:11.5px;color:var(--ink-3)}
@@ -1182,12 +1183,14 @@ body.dark .lvl.l1{color:#7FD3B8}body.dark .lvl.l2{color:#E3BE6A}body.dark .lvl.l
     </div>
   </section>
 
-  <div class="seg sl-seg" id="cbSeg">
+  <div class="seg sl-seg hidden" id="cbSeg">
     <button class="on" data-cb-tab="overview" type="button"><span class="sl-tab-ico">1</span><span>Course</span></button>
-    <button data-cb-tab="week1" type="button"><span class="sl-tab-ico">2</span><span>Week 1</span></button>
+    <button data-cb-tab="week" type="button"><span class="sl-tab-ico">2</span><span>Week</span></button>
+    <button data-cb-tab="resources" type="button"><span class="sl-tab-ico">3</span><span>Resources</span></button>
+    <button data-cb-tab="flashcards" type="button"><span class="sl-tab-ico">4</span><span>Mastery</span></button>
+    <button data-cb-tab="testing" type="button"><span class="sl-tab-ico">5</span><span>Testing</span></button>
     <button data-cb-tab="structures" type="button"><span class="sl-tab-ico">3</span><span>Structures</span></button>
     <button data-cb-tab="deliverables" type="button"><span class="sl-tab-ico">4</span><span>Deliverables</span></button>
-    <button data-cb-tab="practice" type="button"><span class="sl-tab-ico">5</span><span>Practice</span></button>
     <button data-cb-tab="work" type="button"><span class="sl-tab-ico">6</span><span>My Work</span></button>
   </div>
 
@@ -4657,9 +4660,10 @@ function renderCrossBorder(){
   $("#crossborderGreet").textContent=nm?`Ready, ${nm}`:"Cross-Border Business";
   const p=cbProgress();
   if(!CB_RENDER[CBTAB]) CBTAB="overview";
-  const title={overview:"Course overview",week1:"Market entry and cross-border expansion",structures:"Deal structure tools",deliverables:"Deliverable canvases",practice:"Quiz and exam practice",work:"My Work"}[CBTAB];
+  const week=cbSelectedWeek();
+  const title={overview:"Course overview",week:`${week.n}: ${week.t}`,resources:`${week.n} resources`,flashcards:`${week.n} mastery`,testing:`${week.n} testing area`,structures:"Deal structure tools",deliverables:"Deliverable canvases",work:"My Work"}[CBTAB];
   $("#cbPhaseTitle").textContent=title;
-  $("#cbPhase").textContent=CBTAB==="week1"?"Week 1 / Market entry":"Cross-Border workspace";
+  $("#cbPhase").textContent=CBTAB==="overview"?"Cross-Border workspace":`${week.n} / ${week.t}`;
   $("#cbPhaseSub").textContent=`${p.read}/${CB_CARDS.length} prep cards read · ${p.deliv}/${CB_DELIVERABLES.length} deliverable canvases started · ${p.structures} structure choices saved.`;
   document.querySelectorAll("#cbSeg button").forEach(b=>b.classList.toggle("on",b.dataset.cbTab===CBTAB));
   const pane=$("#cbPane");
@@ -4667,12 +4671,12 @@ function renderCrossBorder(){
 }
 
 const CB_KEY="mbaassist-crossborder-v1";
-let CBTAB="overview", CB_READER="";
+let CBTAB="overview", CB_WEEK="w1", CB_READER="";
 const CB_WEEKENDS=[
-  {id:"w1",n:"Weekend 1",t:"Market entry and cross-border expansion",due:"Individual case analysis, group deal-concept proposal, quiz"},
-  {id:"w2",n:"Weekend 2",t:"Structuring and negotiating cross-border transactions",due:"Simulation reflection brief"},
-  {id:"w3",n:"Weekend 3",t:"Cross-border finance and sovereign transactions",due:"Individual case analysis, reflection memo"},
-  {id:"w4",n:"Weekend 4",t:"Dispute resolution, ESG, and the capstone",due:"Capstone report, presentation, final sit-in test"}
+  {id:"w1",n:"Week 1",t:"Market entry and cross-border expansion",due:"Individual case analysis, group deal-concept proposal, quiz"},
+  {id:"w2",n:"Week 2",t:"Structuring and negotiating cross-border transactions",due:"Simulation reflection brief"},
+  {id:"w3",n:"Week 3",t:"Cross-border finance and sovereign transactions",due:"Individual case analysis, reflection memo"},
+  {id:"w4",n:"Week 4",t:"Dispute resolution, ESG, and the capstone",due:"Capstone report, presentation, final sit-in test"}
 ];
 const CB_CARDS=[
   {id:"cb1",w:"w1",tag:"Concept",t:"What counts as a cross-border transaction",src:"Course outline",p:"A cross-border transaction joins parties, assets, capital, laws or performance obligations across national borders. The course treats these deals as legal, financial, strategic and negotiation problems at the same time.",q:"When you read a case, name the parties, the countries, the asset or activity, and the decision that must be made."},
@@ -4783,23 +4787,37 @@ function cbCardTag(card){
   const done=CBSTATE.read.includes(card.id);
   return `<button class="cb-pill${done?" on":""}" data-cb-read="${card.id}" type="button">${done?"Read":"Mark read"}</button>`;
 }
+function cbSelectedWeek(){
+  return CB_WEEKENDS.find(w=>w.id===CB_WEEK)||CB_WEEKENDS[0];
+}
+function cbWeekResources(){
+  return CB_RESOURCES.filter(r=>r.w===CB_WEEK);
+}
+function cbWeekCards(){
+  return CB_CARDS.filter(c=>c.w===CB_WEEK);
+}
+function cbActionTile(tab,title,body,meta){
+  return `<button class="cb-action" data-cb-tab="${tab}" type="button"><b>${title}</b><span>${body}</span>${meta?`<small>${meta}</small>`:""}</button>`;
+}
 function cbOverview(){
-  const p=cbProgress();
-  return `<div class="notice"><b>What this course is about</b><p>Cross-Border Transactions in Africa studies how international business deals on the continent are structured, financed, negotiated and executed, and what happens when they go wrong. The course blends law, finance, strategy, negotiation, ethics and sustainability.</p></div>
-  <div class="cb-kicker">
-    <div class="kvmini"><b>${p.read}/${CB_CARDS.length}</b><span>prep cards read</span></div>
-    <div class="kvmini"><b>${p.deliv}/${CB_DELIVERABLES.length}</b><span>deliverables started</span></div>
-    <div class="kvmini"><b>${p.structures}</b><span>structure choices</span></div>
-    <div class="kvmini"><b>${p.quizSeen}/${CB_QUIZ.length}</b><span>quiz items attempted</span></div>
+  return `<div class="notice"><b>About the course</b><p>Cross-Border Transactions in Africa studies how African deals move from market-entry choices to negotiation, finance, risk allocation, enforcement, ESG and capstone defence. Use the space to prepare, practise and organise your own thinking.</p></div>
+  <div class="cb-grid">
+    <div class="cb-card"><p class="eyebrow">Course expectations</p><h3>What matters</h3><ul><li>Prepare before class and contribute actively.</li><li>Separate market attractiveness from deal attractiveness.</li><li>Use canvases to structure thinking, not to generate graded submissions.</li><li>Build the capstone gradually from Week 1.</li></ul></div>
+    <div class="cb-card"><p class="eyebrow">Assessment shape</p><h3>How the course is tested</h3><p>Capstone, participation, quizzes, final test, individual case analysis and reflections all reward defensible judgment: facts, frameworks, recommendation, counterargument and mitigation.</p></div>
   </div>
+  <p class="eyebrow sec-label">Course schedule</p>
+  <div class="cb-grid">${CB_WEEKENDS.map((w,i)=>{
+    const cards=CB_CARDS.filter(c=>c.w===w.id).length;
+    const resources=CB_RESOURCES.filter(r=>r.w===w.id).length;
+    return `<button class="cb-card${i===0?"":" resource"}" data-cb-week="${w.id}" type="button"><p class="eyebrow">${w.n}</p><h3>${w.t}</h3><p>${w.due}</p><p class="warn">${resources?`${resources} resources · `:""}${cards} mastery cards</p></button>`;
+  }).join("")}</div>
+  <p class="eyebrow sec-label">Learning areas</p>
   <div class="cb-top-actions">
-    <button class="cb-action" data-cb-tab="week1" type="button"><b>Week 1 / Market entry</b><span>Open the Weekend 1 resources, article readers, concept cards, case prep and quiz checks.</span></button>
-    <button class="cb-action" data-cb-tab="deliverables" type="button"><b>Build my deal</b><span>Start the capstone from Weekend 1: market, structure, risks, financing and social licence.</span></button>
-    <button class="cb-action" data-cb-tab="practice" type="button"><b>Practice for quiz/exam</b><span>Objective questions get scored. Judgment prompts get counterarguments instead of fake precision.</span></button>
-  </div>
-  <p class="eyebrow sec-label">Schedule and expectations</p>
-  <div class="cb-grid">${CB_WEEKENDS.map((w,i)=>`<button class="cb-card${i===0?"":" resource"}" ${i===0?`data-cb-tab="week1"`:""} type="button"><p class="eyebrow">${w.n}</p><h3>${w.t}</h3><p>${w.due}</p></button>`).join("")}</div>
-  <div class="cb-card"><h3>How to use this space</h3><ul><li>Read and prepare before class so you can contribute, because participation carries real weight.</li><li>Use canvases to structure your own work, not to generate graded submissions.</li><li>For judgment topics, write both the recommendation and the strongest counterargument.</li><li>Build the capstone gradually from Week 1 instead of waiting for the final weekend.</li></ul></div>`;
+    ${cbActionTile("resources","Resources","Read the assigned material or open the in-app study readers for available articles.","reader")}
+    ${cbActionTile("flashcards","Mastery cards","Check the core ideas and case prompts until the week feels familiar.","flashcards")}
+    ${cbActionTile("testing","Testing area","Take objective checks and practise written judgment prompts.","quiz")}
+    ${cbActionTile("deliverables","Deliverable canvases","Capture your own notes for cases, reflections and the capstone.","workspace")}
+  </div>`;
 }
 function cbArticleReader(){
   const art=CB_ARTICLES[CB_READER];
@@ -4809,21 +4827,45 @@ function cbArticleReader(){
     <div class="cb-reader-body">${art.sections.map(s=>`<h4>${s[0]}</h4><p>${s[1]}</p>`).join("")}</div>
   </div>`;
 }
-function cbWeek1(){
-  const cards=CB_CARDS.filter(c=>c.w==="w1");
-  const resources=CB_RESOURCES.filter(r=>r.w==="w1");
-  return `<div class="notice"><b>Weekend 1 focus</b><p>Market entry and cross-border expansion. By the end, learners should explain the frameworks governing trade and investment in Africa, analyse a market-entry decision, and recommend an entry mode and sequence.</p></div>
-  <p class="eyebrow sec-label">Resources</p>
-  <div class="cb-grid">${resources.map(r=>`<div class="cb-card resource">
+function cbWeek(){
+  const week=cbSelectedWeek();
+  const cards=cbWeekCards(), resources=cbWeekResources();
+  const read=cards.filter(c=>CBSTATE.read.includes(c.id)).length;
+  return `<button class="cb-mini-link" data-cb-tab="overview" type="button">Back to course</button>
+  <div class="notice"><b>${week.n} focus</b><p>${week.t}. ${week.id==="w1"?"By the end, learners should explain the frameworks governing trade and investment in Africa, analyse market entry, and recommend an entry mode and sequence.":"This section is mounted as the course schedule placeholder. Resources and practice can be expanded as the class releases more materials."}</p></div>
+  <div class="cb-kicker">
+    <div class="kvmini"><b>${resources.length}</b><span>resources</span></div>
+    <div class="kvmini"><b>${read}/${cards.length}</b><span>mastery cards read</span></div>
+    <div class="kvmini"><b>${week.due.split(",").length}</b><span>course outputs</span></div>
+    <div class="kvmini"><b>${CB_WEEK==="w1"?CB_QUIZ.length:"0"}</b><span>testing prompts</span></div>
+  </div>
+  <p class="eyebrow sec-label">Open a module</p>
+  <div class="cb-top-actions">
+    ${cbActionTile("resources","Resources","Open assigned readings, cases, and in-app study readers for this week.",resources.length?`${resources.length} items`:"coming soon")}
+    ${cbActionTile("flashcards","Mastery cards","Review concise concept and case cards, then mark what you have genuinely understood.",cards.length?`${cards.length} cards`:"coming soon")}
+    ${cbActionTile("testing","Testing area","Use MCQs and written prompts to check whether you can apply the week.",CB_WEEK==="w1"?`${CB_QUIZ.length} checks`:"coming soon")}
+    ${cbActionTile("structures","Deal structures","Compare entry modes and allocate risks before writing recommendations.","tool")}
+    ${cbActionTile("deliverables","Deliverable canvases","Organise your own case, reflection and capstone notes.","workspace")}
+  </div>`;
+}
+function cbResources(){
+  const week=cbSelectedWeek(), resources=cbWeekResources();
+  return `<button class="cb-mini-link" data-cb-tab="week" type="button">Back to ${week.n}</button>
+  <div class="notice"><b>${week.n} resources</b><p>${resources.length?"Read for argument, not coverage. For each resource, capture what it changes about market entry, transaction structure, risk or implementation.":"Resources for this week will be mounted when the materials are released."}</p></div>
+  ${resources.length?`<div class="cb-grid">${resources.map(r=>`<div class="cb-card resource">
     <p class="eyebrow">${r.kind} · ${r.source}</p><h3>${r.t}</h3><p>${r.why}</p>
     ${r.read?`<button class="cb-mini-link" data-cb-reader="${r.id}" type="button">Read in app</button>`:`<p class="warn">Use the linked or distributed course material for the full text.</p>`}
-  </div>`).join("")}</div>
-  ${cbArticleReader()}
-  <p class="eyebrow sec-label">Concept and case prep</p>
-  <div class="cb-grid">${cards.map(c=>`<div class="cb-card">
+  </div>`).join("")}</div>`:`<div class="cb-card"><h3>No resources mounted yet</h3><p>This week is visible in the course schedule so the course stays modular as new materials arrive.</p></div>`}
+  ${cbArticleReader()}`;
+}
+function cbFlashcards(){
+  const week=cbSelectedWeek(), cards=cbWeekCards();
+  return `<button class="cb-mini-link" data-cb-tab="week" type="button">Back to ${week.n}</button>
+  <div class="notice"><b>${week.n} mastery cards</b><p>Use these as quick retrieval checks. Read the card, answer the prompt in your own words, then mark it read only when you can explain it without looking.</p></div>
+  ${cards.length?`<div class="cb-grid">${cards.map(c=>`<div class="cb-card">
     <p class="eyebrow">${c.tag} · ${c.src}</p><h3>${c.t}</h3><p>${c.p}</p>
     <div class="cb-check"><p class="prompt">${c.q}</p>${cbCardTag(c)}</div>
-  </div>`).join("")}</div>`;
+  </div>`).join("")}</div>`:`<div class="cb-card"><h3>No mastery cards yet</h3><p>This week is ready for future cards once the class materials are released.</p></div>`}`;
 }
 function cbStructures(){
   const choice=CBSTATE.structure.choice||"";
@@ -4845,8 +4887,13 @@ function cbDeliverables(){
     ${d.fields.map(f=>`<label><p class="prompt" style="margin-top:13px">${f}</p>${cbField(`deliverables.${d.id}.${f}`,"Write the points you can defend from the reading, class discussion or case evidence.")}</label>`).join("")}
   </div>`;}).join("")}`;
 }
-function cbPractice(){
-  return `<div class="notice"><b>Practice model</b><p>MCQs are for objective recall. For judgment topics, practise making a defensible argument and naming the strongest counterargument.</p></div>
+function cbTesting(){
+  const week=cbSelectedWeek();
+  if(CB_WEEK!=="w1") return `<button class="cb-mini-link" data-cb-tab="week" type="button">Back to ${week.n}</button>
+  <div class="notice"><b>${week.n} testing area</b><p>Testing prompts for this week will be added once the resources and class questions are available.</p></div>
+  <div class="cb-card"><h3>Until then</h3><p>Use the Week 1 testing model: objective checks for core terms, then written judgment prompts that require a recommendation and counterargument.</p></div>`;
+  return `<button class="cb-mini-link" data-cb-tab="week" type="button">Back to ${week.n}</button>
+  <div class="notice"><b>${week.n} testing area</b><p>MCQs are for objective recall. Written prompts are for defensible judgment: recommendation, evidence, counterargument and mitigation.</p></div>
   <p class="eyebrow sec-label">Objective checks</p><div class="cb-quiz">${CB_QUIZ.map((q,qi)=>{const pick=CBSTATE.quiz.picks[qi]; return `<div class="cb-card"><h3>${qi+1}. ${q.q}</h3>${q.a.map((a,ai)=>`<button class="${pick!==undefined?(ai===q.c?"right":ai===pick?"wrong":""):""}" data-cb-q="${qi}" data-cb-a="${ai}" ${pick!==undefined?"disabled":""} type="button">${String.fromCharCode(65+ai)}. ${a}</button>`).join("")}${pick!==undefined?`<p style="margin-top:10px">${q.e}</p>`:""}</div>`;}).join("")}</div>
   <p class="eyebrow sec-label">Judgment reps</p>
   <div class="cb-grid">
@@ -4869,7 +4916,7 @@ function cbWork(){
   <div class="cb-card"><h3>Next best move</h3><p>${capStarted<2?"Start the capstone deal concept: target market, structure and top risks.":p.read<CB_CARDS.length?"Finish the Week 1 prep cards, especially the case prompts.":"Move into practice and sharpen the counterarguments."}</p></div>
   <div class="cb-card"><h3>Export reminder</h3><p>Your Cross-Border notes are saved in this browser only. Use the main session backup after major updates so you can restore progress on another device.</p></div>`;
 }
-const CB_RENDER={overview:cbOverview,week1:cbWeek1,structures:cbStructures,deliverables:cbDeliverables,practice:cbPractice,work:cbWork};
+const CB_RENDER={overview:cbOverview,week:cbWeek,resources:cbResources,flashcards:cbFlashcards,testing:cbTesting,structures:cbStructures,deliverables:cbDeliverables,work:cbWork,week1:()=>{CB_WEEK="w1"; return cbWeek();},practice:cbTesting};
 
 const SL_KEY="mbaassist-sustainable-leadership-v2";
 
@@ -7193,8 +7240,10 @@ document.addEventListener("click",e=>{
   if(course&&course.dataset.course==="sustain"){ location.hash="sustain"; show("sustain"); return; }
   if(course&&course.dataset.course==="crossborder"){ location.hash="crossborder"; show("crossborder"); return; }
 
+  const cbWeek=e.target.closest("[data-cb-week]");
+  if(cbWeek){ CB_WEEK=cbWeek.dataset.cbWeek; CBTAB="week"; CB_READER=""; renderCrossBorder(); window.scrollTo({top:0,behavior:"smooth"}); return; }
   const cbTab=e.target.closest("[data-cb-tab]");
-  if(cbTab){ CBTAB=cbTab.dataset.cbTab; renderCrossBorder(); window.scrollTo({top:0,behavior:"smooth"}); return; }
+  if(cbTab){ CBTAB=cbTab.dataset.cbTab; if(CBTAB!=="resources") CB_READER=""; renderCrossBorder(); window.scrollTo({top:0,behavior:"smooth"}); return; }
   const cbReader=e.target.closest("[data-cb-reader]");
   if(cbReader){ CB_READER=cbReader.dataset.cbReader; renderCrossBorder(); if(CB_READER) document.querySelector(".cb-reader")?.scrollIntoView({behavior:"smooth",block:"start"}); return; }
   const cbRead=e.target.closest("[data-cb-read]");
