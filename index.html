@@ -5504,7 +5504,7 @@ function prepTopicView(id){
   const T=prepTopics(), idx=T.findIndex(x=>x.id===id), unit=prepUnits().find(u=>u.id===t.unit)||{};
   let out=`<div class="ptopbar"><a class="pback" href="#econprep/topics" aria-label="Back to topics">‹</a><div><p class="eyebrow">Topic ${idx+1} of ${T.length}</p><b>${esc(t.title)}</b></div>${prepChip(prepState(id))}</div>
   <div class="pprog" aria-hidden="true"><i style="width:${blocks.length?(Math.min(upto+1,blocks.length)/blocks.length*100):0}%"></i></div>
-  <a class="plink" href="#econprep/cards/${id}" style="display:inline-block;margin:3px 0 7px;font-weight:600">\u25A6 Flip through this as cards \u203A</a>`;
+  <a class="plink" href="#econprep/cards/${id}" style="display:inline-block;margin:3px 0 7px;font-weight:600">\u25A6 Learn this with visuals \u203A</a>`;
   if(ts.priority&&!prepIsReady(id)&&upto===0) out+=`<div class="pnote warn"><b>Worth a careful look</b>In the check you were sure about an answer that was wrong. This topic clears that up.</div>`;
   out+=`<article class="pblocks">`;
   for(let k=0;k<=upto&&k<blocks.length;k++) out+=prepBlock(t,blocks[k],k,k===upto&&!ts.done);
@@ -5708,18 +5708,21 @@ function prepCardsInit(id){
   PCARD={id,pos:0,max:0,flip:{},eg:0,plus:null,spark:false};
 }
 function prepDeckModel(t){
-  const ts=prepTS(t.id), ids=(ts.cards&&ts.cards.ids)||[], out=[{type:"cover"}]; let checked=false;
+  const ts=prepTS(t.id), ids=(ts.cards&&ts.cards.ids)||[];
+  const learn=[{type:"cover"}], quiz=[];
   (t.blocks||[]).forEach(b=>{
-    if(b.k==="hook") out.push({type:"hook",b});
-    else if(b.k==="fig") out.push({type:"fig",b});
-    else if(b.k==="idea") out.push({type:"idea",b});
-    else if(b.k==="plain") out.push({type:"plain",b});
-    else if(b.k==="eg") out.push({type:"eg",b});
-    else if(b.k==="trap") out.push({type:"trap",b});
-    else if(b.k==="check" && !checked){ checked=true; ids.forEach((i,n)=>out.push({type:"q",i,n})); }
+    if(b.k==="idea") learn.push({type:"idea",b});
+    else if(b.k==="fig") learn.push({type:"fig",b});
+    else if(b.k==="plain") learn.push({type:"plain",b});
+    else if(b.k==="eg") learn.push({type:"eg",b});
+    else if(b.k==="trap") learn.push({type:"trap",b});
+    else if(b.k==="hook") quiz.push({type:"hook",b});
   });
-  if(!checked) ids.forEach((i,n)=>out.push({type:"q",i,n}));
-  if(PREP_EXPLORE[t.id]){ let ix=out.findIndex(c=>c.type==="idea"); if(ix<0) ix=out.findIndex(c=>c.type==="fig"); out.splice((ix<0?0:ix)+1,0,{type:"explore"}); }
+  if(PREP_EXPLORE[t.id]){ let ix=learn.findIndex(c=>c.type==="idea"); if(ix<0) ix=learn.findIndex(c=>c.type==="fig"); learn.splice((ix<0?0:ix)+1,0,{type:"explore"}); }
+  ids.forEach((i,n)=>quiz.push({type:"q",i,n}));
+  const out=learn.slice();
+  if(quiz.length) out.push({type:"gate"});
+  quiz.forEach(c=>out.push(c));
   out.push({type:"finish"});
   return out;
 }
@@ -5736,7 +5739,7 @@ function prepCardBody(t,card,deck){
   switch(card.type){
     case "cover":{
       const unit=prepUnits().find(u=>u.id===t.unit)||{};
-      return `<div class="pdcard pc-finish"><div class="pc-medal">✦</div><p class="pc-kicker">${esc(unit.n||"Warm-up")} · ${deck.length-2} cards · ~${t.mins||6} min</p><h3>${esc(t.title)}</h3><p class="pc-sub">${pmd(t.goal||"")}</p><p class="pc-sub" style="margin-top:10px">Swipe or tap Next. Answer the checks to earn XP.</p></div>`;
+      return `<div class="pdcard pc-finish"><div class="pc-medal">✦</div><p class="pc-kicker">${esc(unit.n||"Warm-up")} · ${deck.length-2} cards · ~${t.mins||6} min</p><h3>${esc(t.title)}</h3><p class="pc-sub">${pmd(t.goal||"")}</p><p class="pc-sub" style="margin-top:10px">Concept and interactive first. The quick checks come after \u2014 skippable any time.</p></div>`;
     }
     case "hook":{
       const b=card.b, pick=ts.hook;
@@ -5771,6 +5774,9 @@ function prepCardBody(t,card,deck){
     case "explore":{
       const x=PREP_EXPLORE[t.id];
       return `<div class="pdcard"><p class="pc-kicker">Explore it</p><p class="pc-body" style="margin-top:4px">${esc((ECONX[x]||{}).prompt||"")}</p>${econxHTML(t.id)}</div>`;
+    }
+    case "gate":{
+      return `<div class="pdcard pc-finish"><div class="pc-medal">✓</div><h3>That\u2019s the concept</h3><p class="pc-sub">Pocket rule: ${pmd(t.pocket||"")}</p><p class="pc-body" style="margin-top:8px">You\u2019ve seen the idea and the interactive. Now a few quick checks to lock it in \u2014 they earn XP, or skip straight to the end.</p><div class="pc-reveal"><button class="plink" data-pcard="skipq" type="button">Skip the checks \u203A</button></div></div>`;
     }
     case "finish":{
       const ready=prepIsReady(t.id), rightN=prepDistinctRight(t.id), needN=PREP_CFG.perTopic;
@@ -5819,6 +5825,7 @@ function prepCardAct(k,d){
     ts.cards={v:t.v||1, ids:prepQueue(src,Math.min(3,src.length)), picks:{}, ord:{}, fin:ts.cards.fin}; prepSave();
     PCARD={id,pos:0,max:0,flip:{},eg:0,plus:null,spark:false};
   }
+  else if(k==="skipq"){ PCARD.pos=deck.length-1; if(!ts.cards.fin){ ts.cards.fin=1; PREPSTATE.xp=(PREPSTATE.xp||0)+25; PCARD.spark=true; prepSave(); } }
   renderPrep();
   if(k==="next"||k==="prev") window.scrollTo({top:0});
 }
@@ -5913,7 +5920,7 @@ function prepPractise(){
   const ready=prepTopics().filter(t=>prepIsReady(t.id)).length;
   return `${prepHead("Practise","Keep it warm","Short mixed sets bring back what you've learned just before you'd forget it. That spacing is what makes it stick.")}
   <div class="pcards">
-    <a class="pcard" href="#econprep/cards/${prepFirstCardsTopic()}"><b>Flashcards</b><span>Swipe a topic as survey cards and earn XP \u00b7 fun revision</span></a>
+    <a class="pcard" href="#econprep/cards/${prepFirstCardsTopic()}"><b>Learn with visual cards</b><span>Concepts and interactive graphs first, then quick checks \u00b7 earns XP</span></a>
     <button class="pcard" data-prep-run="warm" type="button"><b>Warm-up</b><span>6 mixed questions from ${ready>=2?"your finished topics":"across the recap"} · 3 min</span></button>
     <button class="pcard" data-prep-run="check" type="button"><b>Readiness check</b><span>${PREP_CFG.checkSize} questions, weighted to your weakest topics · pass mark ${PREP_CFG.checkPass}${PREPSTATE.check?` · best ${PREPSTATE.check.best}`:""}</span></button>
     <button class="pcard" data-prep-act="diag" type="button"><b>${PREPSTATE.diag&&PREPSTATE.diag.done?"Re-check what I know":"Check what I know"}</b><span>Tests only topics that aren't ready</span></button>
