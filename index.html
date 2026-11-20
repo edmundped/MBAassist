@@ -1109,6 +1109,39 @@ body.dark .lvl.l1{color:#7FD3B8}body.dark .lvl.l2{color:#E3BE6A}body.dark .lvl.l
 .pc-spark i{position:absolute;top:-12px;width:7px;height:11px;border-radius:2px;opacity:.9;animation:pc-fall 1.5s linear forwards}
 @keyframes pc-fall{to{transform:translateY(420px) rotate(240deg);opacity:0}}
 @media (prefers-reduced-motion:reduce){.pdcard,.pc-steps li,.pc-plus,.pc-finish .pc-medal{animation:none}.pc-spark{display:none}}
+/* ---- interactive concept explorers ---- */
+.econx{margin:12px 0 2px}
+.econx-svg{width:100%;height:auto;display:block;background:var(--raised);border:1px solid var(--line);border-radius:14px}
+.xx-axis{stroke:var(--line-2);stroke-width:1.2}
+.xx-grid{stroke:var(--line);stroke-width:1}
+.xx-demand{stroke:var(--pc);stroke-width:2.4;stroke-linecap:round;transition:opacity .4s ease}
+.xx-demand2{stroke:var(--pc);stroke-width:2.4;stroke-linecap:round;opacity:0;transition:opacity .4s ease}
+.xx-mc{stroke:var(--dx-atc,#8A6116);stroke-width:2;stroke-dasharray:4 4}
+.xx-mr{stroke:var(--dx-demand,#2E4C8F);stroke-width:2.2;stroke-linecap:round}
+.xx-mid{stroke:var(--ink-3);stroke-width:1;stroke-dasharray:3 4;opacity:.5}
+.xx-drop{stroke:var(--ink-3);stroke-width:1;stroke-dasharray:3 3;opacity:.6}
+.xx-rev{fill:color-mix(in srgb,var(--pc) 16%,transparent);transition:none}
+.xx-pt{fill:var(--pc);stroke:var(--surface);stroke-width:2}
+.xx-ptg{transition:transform .45s cubic-bezier(.2,.7,.3,1)}
+.xx-star{fill:var(--dx-atc,#8A6116)}
+.xx-txt{fill:var(--ink-3);font-family:var(--mono);font-size:9px}
+.econx-ctrl{display:flex;align-items:center;gap:12px;margin-top:12px}
+.econx-ctrl label{font-size:13px;color:var(--ink-2);white-space:nowrap}
+.econx-ctrl label b{font-family:var(--mono);color:var(--ink);font-size:14px}
+.econx-ctrl input[type=range]{flex:1;accent-color:var(--pc);height:26px}
+.econx-read{display:flex;gap:10px;margin-top:10px}
+.econx-read span{flex:1;background:var(--raised);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:12px;color:var(--ink-3)}
+.econx-read b{display:block;font-family:var(--mono);font-size:16px;color:var(--ink);margin-top:2px}
+.econx-hint{margin-top:11px;font-size:13.5px;line-height:1.45;border-radius:10px;padding:10px 12px;background:var(--raised);color:var(--ink-2);border-left:3px solid var(--line-2)}
+.econx-hint.e{border-color:var(--ok);background:var(--ok-bg);color:var(--ok)}
+.econx-hint.i{border-color:var(--no);background:var(--no-bg);color:var(--no)}
+.econx-hint.u,.econx-hint.ok{border-color:var(--pc);background:color-mix(in srgb,var(--pc) 10%,transparent);color:var(--pc)}
+.econx-seg{display:flex;gap:7px;margin-top:12px;flex-wrap:wrap}
+.econx-seg button{flex:1;min-width:92px;border:1px solid var(--line-2);background:var(--surface);border-radius:10px;padding:10px 8px;font-size:12.5px;font-weight:560;color:var(--ink-2);transition:border-color .15s,background .15s}
+.econx-seg button.on{border-color:var(--pc);background:color-mix(in srgb,var(--pc) 10%,transparent);color:var(--pc)}
+.econx-seg button:active{transform:scale(.98)}
+@media (prefers-reduced-motion:reduce){.xx-ptg,.xx-demand,.xx-demand2{transition:none}}
+
 
 body.in-prep.prep-immersive .prep{padding-bottom:calc(40px + var(--safe-b))}
 .prep .eyebrow{font-size:var(--fs-2xs)}
@@ -5371,6 +5404,7 @@ function renderPrep(){
   else html=({plan:prepPlan,topics:prepTopicsView,practise:prepPractise,shelf:prepShelf,me:prepMe,res:prepResView}[PR.tab]||prepPlan)(nm);
   const immersive=["topic","diag","run","cards"].includes(PR.tab)||(!PREPSTATE.started&&PR.tab==="plan");
   root.innerHTML=html+(immersive?"":prepTabs());
+  prepInitWidgets();
   document.body.classList.toggle("prep-immersive",immersive);
   renderPrepHub();
 }
@@ -5490,7 +5524,7 @@ function prepBlock(t,b,k,current){
       const ts=prepTS(t.id), pick=ts.hook;
       return `<section class="${cls}"><p class="eyebrow">Gut check</p><h3>${pmd(b.q)}</h3><div class="phook">${(b.o||[]).map((o,i)=>`<button class="${pick===i?"on":""}" data-prep-hook="${t.id}" data-i="${i}" type="button" ${pick!==undefined?"disabled":""}>${pmd(o)}</button>`).join("")}</div>${pick!==undefined&&b.reply?`<p class="preply">${pmd(b.reply)}</p>`:pick===undefined?`<p class="pfine">No score. Just commit to a guess.</p>`:""}</section>`;
     }
-    case "fig": return `<figure class="${cls} pfig">${prepFig(t.fig,t)}<figcaption>${pmd(b.caption||"")}</figcaption></figure>`;
+    case "fig": return `<figure class="${cls} pfig">${prepFig(t.fig,t)}<figcaption>${pmd(b.caption||"")}</figcaption>${econxHTML(t.id)}</figure>`;
     case "idea": return `<section class="${cls}">${b.h?`<h3>${pmd(b.h)}</h3>`:""}${String(b.p||"").split(/\n\n+/).map(p=>`<p>${pmd(p)}</p>`).join("")}</section>`;
     case "plain": return `<section class="${cls} pplain"><p class="eyebrow">In plain terms</p><p class="big">${pmd(b.p)}</p>${b.formula?`<details><summary>The formula, if you need it</summary><p class="pformula">${esc(b.formula)}</p></details>`:""}</section>`;
     case "eg": return `<section class="${cls} peg"><p class="eyebrow">Worked example</p><p class="pprob">${pmd(b.problem)}</p><ol>${(b.steps||[]).map(s=>`<li><b>${pmd(s[0])}</b><span>${pmd(s[1])}</span></li>`).join("")}</ol></section>`;
@@ -5530,6 +5564,132 @@ function prepDonePanel(t,idx,T){
 }
 
 
+
+/* ================= INTERACTIVE CONCEPT EXPLORERS ================= */
+/* Small, self-contained SVG widgets with a slider or toggles. They update
+   the SVG directly on input, so they never trigger an app re-render. Built
+   to make a concept click without a single formula. Cedi figures are
+   illustrative. */
+const PREP_EXPLORE={pt_elast:"elast", pt_margin:"margin", pt_demand:"demand"};
+
+/* shared plot geometry (viewBox 0 0 300 200) */
+const _XP=38,_YB=168,_XW=250,_YH=150;
+function _axes(){return `<line class="xx-axis" x1="${_XP}" y1="${_YB}" x2="${_XP+_XW}" y2="${_YB}"/><line class="xx-axis" x1="${_XP}" y1="18" x2="${_XP}" y2="${_YB}"/><text class="xx-txt" x="${_XP+_XW}" y="186" text-anchor="end">Quantity →</text><text class="xx-txt" x="6" y="26">Price</text>`;}
+
+const ECONX={
+  /* ---- demand & revenue: drag price, watch quantity and total revenue ---- */
+  elast:{
+    prompt:"Drag the price. Watch quantity and total revenue move in opposite ways.",
+    html(){return `<div class="econx-wrap">
+      <svg viewBox="0 0 300 200" class="econx-svg" role="img" aria-label="Demand curve and total-revenue rectangle you can change with the price slider">
+        ${_axes()}
+        <rect class="xx-rev" x="0" y="0" width="0" height="0"/>
+        <line class="xx-mid" x1="0" y1="0" x2="0" y2="0"/>
+        <line class="xx-demand" x1="0" y1="0" x2="0" y2="0"/>
+        <line class="xx-drop" x1="0" y1="0" x2="0" y2="0"/>
+        <circle class="xx-pt" r="5.5" cx="0" cy="0"/>
+      </svg>
+      <div class="econx-ctrl"><label>Price <b class="xx-p">—</b></label><input type="range" class="xx-range" min="5" max="95" value="70" step="1" aria-label="Price"></div>
+      <div class="econx-read"><span>Quantity sold<b class="xx-q">—</b></span><span>Total revenue<b class="xx-tr">—</b></span></div>
+      <div class="econx-hint xx-hint">—</div></div>`;},
+    init(el){
+      const QM=100,PM=100,sx=q=>_XP+q/QM*_XW,sy=p=>_YB-p/PM*_YH,$=s=>el.querySelector(s);
+      const d=$('.xx-demand');d.setAttribute('x1',sx(0));d.setAttribute('y1',sy(100));d.setAttribute('x2',sx(100));d.setAttribute('y2',sy(0));
+      const m=$('.xx-mid');m.setAttribute('x1',sx(50));m.setAttribute('y1',sy(50));m.setAttribute('x2',sx(50));m.setAttribute('y2',sy(0));
+      const r=$('.xx-range');
+      function upd(){const p=+r.value,q=QM-p,tr=p*q;
+        const pt=$('.xx-pt');pt.setAttribute('cx',sx(q));pt.setAttribute('cy',sy(p));
+        const rv=$('.xx-rev');rv.setAttribute('x',sx(0));rv.setAttribute('y',sy(p));rv.setAttribute('width',Math.max(0,sx(q)-sx(0)));rv.setAttribute('height',Math.max(0,sy(0)-sy(p)));
+        const dr=$('.xx-drop');dr.setAttribute('x1',sx(q));dr.setAttribute('y1',sy(p));dr.setAttribute('x2',sx(q));dr.setAttribute('y2',sy(0));
+        $('.xx-p').textContent='GH₵'+p;$('.xx-q').textContent=q;$('.xx-tr').textContent='GH₵'+tr.toLocaleString();
+        const h=$('.xx-hint');
+        if(p===50){h.className='econx-hint xx-hint u';h.textContent='Unit elastic — revenue peaks right here.';}
+        else if(p>50){h.className='econx-hint xx-hint e';h.textContent='Elastic: buyers react strongly. Cut the price and total revenue rises.';}
+        else{h.className='econx-hint xx-hint i';h.textContent='Inelastic: buyers barely react. Raise the price and total revenue rises.';}
+      }
+      r.addEventListener('input',upd);upd();
+    }
+  },
+  /* ---- MR = MC: should the firm make one more unit? ---- */
+  margin:{
+    prompt:"Slide the output. The firm should keep going while the next unit earns more than it costs.",
+    html(){return `<div class="econx-wrap">
+      <svg viewBox="0 0 300 200" class="econx-svg" role="img" aria-label="Marginal revenue and marginal cost lines with a movable output marker">
+        ${_axes()}
+        <line class="xx-mc" x1="0" y1="0" x2="0" y2="0"/>
+        <line class="xx-mr" x1="0" y1="0" x2="0" y2="0"/>
+        <circle class="xx-star" r="4" cx="0" cy="0"/>
+        <line class="xx-drop" x1="0" y1="0" x2="0" y2="0"/>
+        <circle class="xx-pt" r="5" cx="0" cy="0"/>
+        <text class="xx-txt xx-mrlab" x="0" y="0">MR</text><text class="xx-txt xx-mclab" x="0" y="0">MC</text>
+      </svg>
+      <div class="econx-ctrl"><label>Make <b class="xx-q">—</b> units</label><input type="range" class="xx-range" min="0" max="50" value="18" step="1" aria-label="Output"></div>
+      <div class="econx-read"><span>Next unit earns (MR)<b class="xx-mr2">—</b></span><span>Next unit costs (MC)<b class="xx-mc2">—</b></span></div>
+      <div class="econx-hint xx-hint">—</div></div>`;},
+    init(el){
+      const QM=50,PM=100,MC=20,sx=q=>_XP+q/QM*_XW,sy=p=>_YB-p/PM*_YH,$=s=>el.querySelector(s);
+      const mr=$('.xx-mr');mr.setAttribute('x1',sx(0));mr.setAttribute('y1',sy(100));mr.setAttribute('x2',sx(50));mr.setAttribute('y2',sy(0));
+      const mc=$('.xx-mc');mc.setAttribute('x1',sx(0));mc.setAttribute('y1',sy(MC));mc.setAttribute('x2',sx(50));mc.setAttribute('y2',sy(MC));
+      const st=$('.xx-star');st.setAttribute('cx',sx(40));st.setAttribute('cy',sy(MC));
+      $('.xx-mrlab').setAttribute('x',sx(2));$('.xx-mrlab').setAttribute('y',sy(96));
+      $('.xx-mclab').setAttribute('x',sx(44));$('.xx-mclab').setAttribute('y',sy(MC)-4);
+      const r=$('.xx-range');
+      function upd(){const q=+r.value,mrv=Math.max(0,100-2*q);
+        const pt=$('.xx-pt');pt.setAttribute('cx',sx(q));pt.setAttribute('cy',sy(mrv));
+        const dr=$('.xx-drop');dr.setAttribute('x1',sx(q));dr.setAttribute('y1',sy(mrv));dr.setAttribute('x2',sx(q));dr.setAttribute('y2',sy(0));
+        $('.xx-q').textContent=q;$('.xx-mr2').textContent='GH₵'+mrv;$('.xx-mc2').textContent='GH₵'+MC;
+        const h=$('.xx-hint');
+        if(q===40){h.className='econx-hint xx-hint ok';h.textContent='Sweet spot: MR = MC. Profit is as high as it gets.';}
+        else if(mrv>MC){h.className='econx-hint xx-hint e';h.textContent='The next unit adds GH₵'+mrv+' and costs GH₵'+MC+'. Make it — keep going.';}
+        else{h.className='econx-hint xx-hint i';h.textContent='The next unit adds only GH₵'+mrv+' but costs GH₵'+MC+'. Stop — you have gone too far.';}
+      }
+      r.addEventListener('input',upd);upd();
+    }
+  },
+  /* ---- shift vs movement: what changed? ---- */
+  demand:{
+    prompt:"What changed? A price change slides along the curve. Anything else moves the whole curve.",
+    html(){return `<div class="econx-wrap">
+      <svg viewBox="0 0 300 200" class="econx-svg" role="img" aria-label="A demand curve that either slides a point along itself or shifts to a new position">
+        ${_axes()}
+        <line class="xx-demand2" x1="0" y1="0" x2="0" y2="0"/>
+        <line class="xx-demand" x1="0" y1="0" x2="0" y2="0"/>
+        <g class="xx-ptg"><circle class="xx-pt" r="5.5" cx="0" cy="0"/></g>
+      </svg>
+      <div class="econx-seg">
+        <button data-x="base" class="on">Start</button>
+        <button data-x="own">Own price ↑</button>
+        <button data-x="income">Income ↑</button>
+        <button data-x="season">New season</button>
+      </div>
+      <div class="econx-hint xx-hint">—</div></div>`;},
+    init(el){
+      const QM=100,PM=100,sx=q=>_XP+q/QM*_XW,sy=p=>_YB-p/PM*_YH,$=s=>el.querySelector(s);
+      const d0=$('.xx-demand');d0.setAttribute('x1',sx(0));d0.setAttribute('y1',sy(100));d0.setAttribute('x2',sx(100));d0.setAttribute('y2',sy(0));
+      /* D1 = D0 shifted right by +25 units: from (25,100) to (100,25), clipped to the plot */
+      const d1=$('.xx-demand2');d1.setAttribute('x1',sx(25));d1.setAttribute('y1',sy(100));d1.setAttribute('x2',sx(100));d1.setAttribute('y2',sy(25));
+      const ptg=$('.xx-ptg'),pt=$('.xx-pt');pt.setAttribute('cx',0);pt.setAttribute('cy',0);
+      function place(q,p,shifted){ptg.setAttribute('transform','translate('+sx(q)+','+sy(p)+')');d1.style.opacity=shifted?1:0;d0.style.opacity=shifted?.4:1;}
+      const h=$('.xx-hint');
+      function set(mode){
+        el.querySelectorAll('.econx-seg button').forEach(b=>b.classList.toggle('on',b.dataset.x===mode));
+        if(mode==='own'){place(70,30,false);h.className='econx-hint xx-hint i';h.textContent='Own price rose, so buyers want less. You slide UP-LEFT along the same curve — a movement, not a shift.';}
+        else if(mode==='income'){place(75,55,true);h.className='econx-hint xx-hint e';h.textContent='Higher income: buyers want more at every price. The whole curve SHIFTS right.';}
+        else if(mode==='season'){place(78,58,true);h.className='econx-hint xx-hint e';h.textContent='A new season lifts demand at every price. Again the whole curve SHIFTS right.';}
+        else{place(50,50,false);h.className='econx-hint xx-hint u';h.textContent='A point sitting on the demand curve. Change something and watch what happens.';}
+      }
+      el.querySelectorAll('.econx-seg button').forEach(b=>b.addEventListener('click',()=>set(b.dataset.x)));
+      set('base');
+    }
+  }
+};
+
+function econxHTML(topicId){ const x=PREP_EXPLORE[topicId]; if(!x||!ECONX[x]) return ""; return `<div class="econx" data-econx="${x}">${ECONX[x].html()}</div>`; }
+function prepInitWidgets(){
+  const root=document.getElementById('prepRoot'); if(!root) return;
+  root.querySelectorAll('[data-econx]').forEach(el=>{ if(el._xinit) return; const w=ECONX[el.dataset.econx]; if(w){ el._xinit=1; try{ w.init(el); }catch(_){}} });
+}
+
 /* ================= FLASHCARD DECK (survey-style swipe cards) ================= */
 /* A fun, swipeable way through one warm-up topic, built from the topic's own
    hook / idea / plain / example / check content. Earns XP; feeds the same
@@ -5559,6 +5719,7 @@ function prepDeckModel(t){
     else if(b.k==="check" && !checked){ checked=true; ids.forEach((i,n)=>out.push({type:"q",i,n})); }
   });
   if(!checked) ids.forEach((i,n)=>out.push({type:"q",i,n}));
+  if(PREP_EXPLORE[t.id]){ let ix=out.findIndex(c=>c.type==="idea"); if(ix<0) ix=out.findIndex(c=>c.type==="fig"); out.splice((ix<0?0:ix)+1,0,{type:"explore"}); }
   out.push({type:"finish"});
   return out;
 }
@@ -5606,6 +5767,10 @@ function prepCardBody(t,card,deck){
     case "trap":{
       const b=card.b;
       return `<div class="pdcard"><p class="pc-kicker">Watch out</p><p class="pc-big">${pmd(b.p)}</p></div>`;
+    }
+    case "explore":{
+      const x=PREP_EXPLORE[t.id];
+      return `<div class="pdcard"><p class="pc-kicker">Explore it</p><p class="pc-body" style="margin-top:4px">${esc((ECONX[x]||{}).prompt||"")}</p>${econxHTML(t.id)}</div>`;
     }
     case "finish":{
       const ready=prepIsReady(t.id), rightN=prepDistinctRight(t.id), needN=PREP_CFG.perTopic;
