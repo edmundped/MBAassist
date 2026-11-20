@@ -1359,6 +1359,80 @@ body.in-prep.prep-immersive .prep{padding-bottom:calc(40px + var(--safe-b))}
 .pask .prow .pbtn{flex:1;align-items:center}
 .pbtn.danger b{color:var(--no)}
 
+
+/* =================================================================
+   FRIENDLY REDESIGN LAYER (2026) — overrides the base system.
+   Warm Ashesi identity kept; rounded, soft-shadowed, card-forward
+   look inspired by modern learning apps. Appended last so it wins.
+   ================================================================= */
+:root{
+  --r:17px; --r-lg:20px; --r-xl:24px; --r-md:13px;
+  --shadow-sm:0 1px 2px rgba(40,26,12,.05);
+  --shadow:0 1px 2px rgba(40,26,12,.05), 0 10px 26px -12px rgba(40,26,12,.16);
+  --shadow-lift:0 2px 4px rgba(40,26,12,.06), 0 18px 40px -16px rgba(40,26,12,.22);
+}
+body.dark{
+  --shadow-sm:0 1px 2px rgba(0,0,0,.45);
+  --shadow:0 1px 2px rgba(0,0,0,.45), 0 12px 30px -12px rgba(0,0,0,.6);
+  --shadow-lift:0 2px 6px rgba(0,0,0,.5), 0 20px 46px -16px rgba(0,0,0,.7);
+}
+/* soft elevation + hairline-light borders on the shared card surfaces */
+.course-card,.cube-card,.panel,.cb-card,.sl-card,.map-card,.teach-card,
+.ls-summary,.written-card,.pdcard,.focus,.tool-row,.pcard,.topic,.exam-spotlight,
+.cx-continue,.sl-daycard,.econx-svg,.notice{
+  box-shadow:var(--shadow);
+  border-color:color-mix(in srgb,var(--line) 55%,transparent);
+}
+.cube-card,.course-card,.tool-row,.focus,.pcard,.sl-daycard{transition:transform .16s ease,box-shadow .2s ease}
+.cube-card:hover,.course-card:not([disabled]):hover,.tool-row:hover,.focus:hover,.pcard:hover{box-shadow:var(--shadow-lift);transform:translateY(-2px)}
+.cube-card:active,.course-card:active,.tool-row:active,.focus:active{transform:translateY(0) scale(.99)}
+/* pill-ish primary actions */
+.pbtn,.next,.go,.lenbtn,.pnext,.ghost{border-radius:var(--r-md)}
+.pxp,.tag,.pchip,.chip{border-radius:var(--r-pill)}
+
+/* ---------- gamified dashboard ---------- */
+.dash-hi{display:flex;align-items:center;gap:16px;background:var(--surface);border:1px solid color-mix(in srgb,var(--line) 55%,transparent);border-radius:var(--r-lg);padding:16px 18px;box-shadow:var(--shadow);margin:4px 0 18px;position:relative;overflow:hidden}
+.dash-hi:before{content:"";position:absolute;inset:auto -30% -70% 40%;height:160%;background:radial-gradient(circle,var(--accent) 0,transparent 60%);opacity:.06}
+.dash-ring{width:84px;height:84px;flex:none;position:relative;z-index:1}
+.dash-ring .rlabel{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0}
+.dash-ring .rlabel-n{font-family:var(--mono);font-weight:700;font-size:19px;color:var(--ink);line-height:1}
+.dash-ring .rlabel-t{font-size:9px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.08em;margin-top:2px}
+.dash-hw{flex:1;min-width:0;z-index:1}
+.dash-hw h2{font-family:var(--serif);font-size:20px;line-height:1.2;margin:0 0 4px}
+.dash-hw p{font-size:13px;color:var(--ink-2);line-height:1.45}
+.dash-streak{display:inline-flex;align-items:center;gap:5px;margin-top:8px;font-family:var(--mono);font-size:12px;font-weight:600;color:var(--gold);background:color-mix(in srgb,var(--gold) 14%,transparent);border-radius:var(--r-pill);padding:4px 10px}
+
+/* today's plan — colour-coded action cards */
+.plan{display:flex;flex-direction:column;gap:11px}
+.plancard{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--surface);border:1px solid color-mix(in srgb,var(--line) 55%,transparent);border-radius:var(--r-lg);padding:14px 15px;box-shadow:var(--shadow);transition:transform .16s ease,box-shadow .2s ease}
+.plancard:hover{box-shadow:var(--shadow-lift);transform:translateY(-2px)}
+.plancard:active{transform:scale(.99)}
+.plancard .pic{width:52px;height:52px;flex:none;border-radius:15px;display:grid;place-items:center;background:color-mix(in srgb,var(--pcc) 16%,transparent);color:var(--pcc);font-size:24px}
+.plancard .pbody{flex:1;min-width:0}
+.plancard .pbody b{display:block;font-size:15.5px;font-weight:620;color:var(--ink);letter-spacing:-.01em}
+.plancard .pbody span{display:block;font-size:12.5px;color:var(--ink-3);margin-top:2px}
+.plancard .pmeta{display:flex;gap:10px;margin-top:6px}
+.plancard .pmeta i{font-style:normal;font-family:var(--mono);font-size:11px;color:var(--ink-3)}
+.plancard .pgo{width:34px;height:34px;flex:none;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--pcc) 14%,transparent);color:var(--pcc);font-size:16px}
+
+/* progress stats tiles */
+.statrow{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin:2px 0}
+.stat{background:var(--surface);border:1px solid color-mix(in srgb,var(--line) 55%,transparent);border-radius:var(--r-lg);padding:14px 15px;box-shadow:var(--shadow);display:flex;align-items:center;gap:12px}
+.stat .si{width:40px;height:40px;flex:none;border-radius:12px;display:grid;place-items:center;background:color-mix(in srgb,var(--sc,var(--accent)) 15%,transparent);color:var(--sc,var(--accent));font-size:19px}
+.stat .sv{font-family:var(--mono);font-size:19px;font-weight:700;color:var(--ink);line-height:1.1}
+.stat .sl{font-size:11.5px;color:var(--ink-3);margin-top:1px}
+
+/* concept of the day */
+.conceptday{position:relative;overflow:hidden;background:var(--surface);border:1px solid color-mix(in srgb,var(--line) 55%,transparent);border-radius:var(--r-lg);padding:16px 18px;box-shadow:var(--shadow);margin-top:2px}
+.conceptday .eyebrow{color:var(--accent)}
+.conceptday h3{font-family:var(--serif);font-size:19px;margin:6px 0 5px}
+.conceptday p{font-size:13.5px;color:var(--ink-2);line-height:1.5;max-width:52ch}
+.conceptday .cd-gift{position:absolute;right:-6px;bottom:-10px;font-size:64px;opacity:.1;transform:rotate(-8deg)}
+
+.sec-head2{display:flex;align-items:baseline;justify-content:space-between;margin:24px 0 12px}
+.sec-head2 h3{font-family:var(--serif);font-size:18px}
+.sec-head2 a,.sec-head2 .sub{font-size:12.5px;color:var(--accent);font-weight:560}
+
 </style>
 </head>
 <body>
@@ -1518,32 +1592,38 @@ body.in-prep.prep-immersive .prep{padding-bottom:calc(40px + var(--safe-b))}
 
 <!-- ============ MANAGERIAL FINANCE HOME ============ -->
 <main id="homeView" class="wrap">
-  <div class="hero">
-    <img src="./assets/study-hero.png" alt="MBA students studying finance together on a hillside campus terrace">
-    <div class="veil"></div>
-    <div class="hbody">
-      <p class="eyebrow" id="heroGreet">Akwaaba</p>
-      <h2 id="heroTitle">Managerial Finance</h2>
-      <div class="hmeta"><b class="num" id="railPct">0%</b><span id="heroStreak"></span></div>
-      <div class="hbar"><i id="railBar" style="width:0%"></i></div>
+  <div class="homebanner" style="border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow);margin:4px 0 14px;height:104px"><img src="./assets/study-hero.png" alt="Ashesi campus study scene" style="width:100%;height:100%;object-fit:cover;object-position:center 42%;display:block"></div>
+
+  <div class="dash-hi">
+    <div class="dash-ring">
+      <svg viewBox="0 0 84 84" aria-hidden="true"><circle cx="42" cy="42" r="36" fill="none" stroke="var(--line)" stroke-width="8"/><circle id="railRing" cx="42" cy="42" r="36" fill="none" stroke="var(--accent)" stroke-width="8" stroke-linecap="round" stroke-dasharray="0 226" transform="rotate(-90 42 42)" style="transition:stroke-dasharray .6s ease"/></svg>
+      <div class="rlabel"><span class="rlabel-n" id="railPct">0%</span><span class="rlabel-t">mastery</span></div>
+    </div>
+    <div class="dash-hw">
+      <h2 id="heroGreet">Akwaaba</h2>
+      <p id="heroMsg">Let’s learn something today.</p>
+      <span class="dash-streak" id="heroStreak">Day 1</span>
     </div>
   </div>
 
-  <div class="notice">
-    <b>Learning use only</b>
-    <p>This app is for private study and practice before graded work. MBA512 bars AI chatbots for quizzes, assignments, case analysis, and exams; use this to learn the material, then complete deliverables on your own.</p>
-  </div>
+  <div class="sec-head2"><h3>Today’s plan</h3><span class="sub">weakest first</span></div>
+  <div class="plan" id="focusStack"></div>
 
   <section class="exam-spotlight" id="examSpotlight"></section>
 
-  <div class="sec-head"><span class="eyebrow">Lectures</span><span class="sub">learn &amp; drill each week</span></div>
+  <div class="sec-head2"><h3>Lectures</h3><span class="sub">learn &amp; drill</span></div>
   <div class="grid" id="moduleGrid"></div>
 
-  <div class="sec-head"><span class="eyebrow">Study tools</span><span class="sub">use across every lecture</span></div>
+  <div class="sec-head2"><h3>Study tools</h3><span class="sub">every lecture</span></div>
   <div class="tools" id="toolsList"></div>
 
-  <p class="eyebrow sec-label">Next up</p>
-  <div class="stack" id="focusStack"></div>
+  <div class="sec-head2"><h3>Your progress</h3><span class="sub">this device</span></div>
+  <div class="statrow" id="statRow"></div>
+
+  <div class="notice" style="margin-top:18px">
+    <b>Learning use only</b>
+    <p>This app is for private study and practice before graded work. MBA512 bars AI chatbots for quizzes, assignments, case analysis, and exams; use this to learn the material, then complete deliverables on your own.</p>
+  </div>
 </main>
 
 <!-- ============ SUSTAINABLE LEADERSHIP ============ -->
@@ -4954,12 +5034,18 @@ function renderHome(){
   const finalCore=statsFor(FINAL_CORE_TOPICS);
   const writtenDone=EXAM_WRITTEN_SAMPLES.filter(w=>WDONE[w.id]).length;
   $("#railPct").textContent=all.pct+"%";
-  $("#railBar").style.width=all.pct+"%";
+  const _ring=document.getElementById("railRing"); if(_ring){const C=2*Math.PI*36; _ring.setAttribute("stroke-dasharray",(all.pct/100*C).toFixed(1)+" "+C.toFixed(1));}
 
   const nm=(SESSION.name||"").trim();
   $("#heroGreet").textContent=nm?("Akwaaba, "+nm.split(/\s+/)[0]):"Akwaaba";
   const st=touchStreak();
-  $("#heroStreak").textContent = all.pct===100 ? "All questions retired" : st>1 ? st+"-day streak" : "Course mastery";
+  const msg = all.pct===100 ? "Every question retired \u2014 keep it warm." : all.pct>=50 ? "Strong progress. A short drill keeps it sharp." : st>1 ? "You\u2019re on a roll. Keep the streak going." : "Let\u2019s learn something today.";
+  if($("#heroMsg")) $("#heroMsg").textContent=msg;
+  $("#heroStreak").textContent = st>1 ? (st+"-day streak") : "Day "+st;
+  const _sr=document.getElementById("statRow");
+  if(_sr) _sr.innerHTML=
+    `<div class="stat" style="--sc:var(--gold)"><span class="si">\u2726</span><div><div class="sv">${st}</div><div class="sl">day streak</div></div></div>`+
+    `<div class="stat" style="--sc:var(--accent)"><span class="si">\u25C6</span><div><div class="sv">${all.retired}/${all.total}</div><div class="sl">questions mastered</div></div></div>`;
 
   $("#examSpotlight").innerHTML=`
     <p class="eyebrow">Exam</p>
@@ -5005,15 +5091,15 @@ function renderHome(){
     return;
   }
   strip.innerHTML=
-    `<button class="focus" data-drill="all">
-      <span class="dot" style="background:var(--ink)"></span>
-      <span class="fbody"><b>Mixed drill</b><span>12 questions, weakest material first</span></span>
-      <span class="arrow">›</span>
+    `<button class="plancard" data-drill="all" style="--pcc:var(--accent)">
+      <span class="pic">\u25CE</span>
+      <span class="pbody"><b>Mixed drill</b><span>Your weakest material \u00b7 12 questions</span></span>
+      <span class="pgo">\u203A</span>
     </button>` +
-    weak.map(x=>`<button class="focus" data-drill="topic" data-topic="${x.t.id}">
-      <span class="dot" style="background:${x.m.hue}"></span>
-      <span class="fbody"><b>${x.t.n}</b><span>${x.m.lec} · ${x.s.retired}/${x.s.total} retired</span></span>
-      <span class="arrow">›</span>
+    weak.map(x=>`<button class="plancard" data-drill="topic" data-topic="${x.t.id}" style="--pcc:${x.m.hue}">
+      <span class="pic">\u25A4</span>
+      <span class="pbody"><b>${x.t.n}</b><span>${x.m.lec} \u00b7 ${x.s.retired}/${x.s.total} mastered</span></span>
+      <span class="pgo">\u203A</span>
     </button>`).join("");
 }
 function renderCourseHub(){
@@ -5570,7 +5656,7 @@ function prepDonePanel(t,idx,T){
    the SVG directly on input, so they never trigger an app re-render. Built
    to make a concept click without a single formula. Cedi figures are
    illustrative. */
-const PREP_EXPLORE={pt_elast:"elast", pt_margin:"margin", pt_demand:"demand"};
+const PREP_EXPLORE={pt_elast:"elast", pt_margin:"margin", pt_demand:"demand", pt_oligop:"oligopoly"};
 
 /* shared plot geometry (viewBox 0 0 300 200) */
 const _XP=38,_YB=168,_XW=250,_YH=150;
@@ -5680,6 +5766,41 @@ const ECONX={
       }
       el.querySelectorAll('.econx-seg button').forEach(b=>b.addEventListener('click',()=>set(b.dataset.x)));
       set('base');
+    }
+  },
+  /* ---- oligopoly: a few rivals land between monopoly and competition ---- */
+  oligopoly:{
+    prompt:"Two firms, demand P = 1600 − Q, each with cost GH₵100. Pick how they compete and watch the price.",
+    html(){return `<div class="econx-wrap">
+      <svg viewBox="0 0 300 200" class="econx-svg" role="img" aria-label="Demand line with the market outcome moving between monopoly and perfect competition">
+        ${_axes()}
+        <line class="xx-demand" x1="0" y1="0" x2="0" y2="0"/>
+        <line class="xx-drop" x1="0" y1="0" x2="0" y2="0"/>
+        <g class="xx-ptg"><circle class="xx-pt" r="5.5" cx="0" cy="0"/></g>
+      </svg>
+      <div class="econx-seg">
+        <button data-x="mono" class="on">Monopoly</button>
+        <button data-x="cournot">Cournot (2)</button>
+        <button data-x="stack">Stackelberg</button>
+        <button data-x="comp">Competition</button>
+      </div>
+      <div class="econx-read"><span>Price<b class="xx-p">—</b></span><span>Total quantity<b class="xx-q">—</b></span></div>
+      <div class="econx-hint xx-hint">—</div></div>`;},
+    init(el){
+      const QM=1600,PM=1600,sx=q=>_XP+q/QM*_XW,sy=p=>_YB-p/PM*_YH,$=s=>el.querySelector(s);
+      const d=$('.xx-demand');d.setAttribute('x1',sx(0));d.setAttribute('y1',sy(1600));d.setAttribute('x2',sx(1600));d.setAttribute('y2',sy(0));
+      const ptg=$('.xx-ptg'),h=$('.xx-hint');
+      const O={mono:{q:750,p:850,t:"One seller holds output back to 750 and charges GH₵850 — the highest price, the most market power."},
+               cournot:{q:1000,p:600,t:"Two rivals setting quantity at the same time land at GH₵600: between monopoly and competition."},
+               stack:{q:1125,p:475,t:"A first-mover leader expands output, dragging the price down to GH₵475."},
+               comp:{q:1500,p:100,t:"Many sellers compete the price all the way down to cost, GH₵100. No market power left."}};
+      function set(m){const o=O[m];el.querySelectorAll('.econx-seg button').forEach(b=>b.classList.toggle('on',b.dataset.x===m));
+        ptg.setAttribute('transform','translate('+sx(o.q)+','+sy(o.p)+')');
+        const dr=$('.xx-drop');dr.setAttribute('x1',sx(o.q));dr.setAttribute('y1',sy(o.p));dr.setAttribute('x2',sx(o.q));dr.setAttribute('y2',sy(0));
+        $('.xx-p').textContent="GH₵"+o.p;$('.xx-q').textContent=o.q.toLocaleString();
+        h.className="econx-hint xx-hint "+(m==="mono"?"i":m==="comp"?"e":"u");h.textContent=o.t;}
+      el.querySelectorAll('.econx-seg button').forEach(b=>b.addEventListener('click',()=>set(b.dataset.x)));
+      set('mono');
     }
   }
 };
