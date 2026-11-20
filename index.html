@@ -1056,6 +1056,60 @@ body.dark .lvl.l1{color:#7FD3B8}body.dark .lvl.l2{color:#E3BE6A}body.dark .lvl.l
 
 /* ============ ECON PREP (pre-course warm-up) ============ */
 .prep{--pc:var(--c-recap);padding-bottom:calc(92px + var(--safe-b))}
+/* ---- flashcard deck (survey-style swipe cards) ---- */
+.pdeck{display:flex;flex-direction:column;min-height:calc(100dvh - 150px);touch-action:pan-y}
+.pdeck-top{display:flex;align-items:center;gap:10px;margin:2px 0 14px}
+.pdots{display:flex;gap:4px;flex:1;min-width:0}
+.pdots i{flex:1;height:4px;border-radius:4px;background:var(--line);transition:background .2s}
+.pdots i.done{background:var(--pc);opacity:.55}
+.pdots i.on{background:var(--pc)}
+.pxp{font-family:var(--mono);font-size:12.5px;font-weight:600;color:var(--pc);background:color-mix(in srgb,var(--pc) 13%,transparent);border-radius:999px;padding:5px 11px;white-space:nowrap;flex:none}
+.pdcardwrap{flex:1;display:flex}
+.pdcard{position:relative;width:100%;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px 20px;display:flex;flex-direction:column;overflow:hidden;animation:pcard-in .26s cubic-bezier(.2,.7,.3,1)}
+@keyframes pcard-in{from{opacity:0;transform:translateX(var(--pdx,14px))}to{opacity:1;transform:none}}
+.pdcard .pc-kicker{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--pc)}
+.pdcard h3{font-family:var(--serif);font-size:21px;line-height:1.28;margin:7px 0 2px;color:var(--ink)}
+.pc-sub{font-size:13.5px;color:var(--ink-3);margin-top:6px}
+.pc-big{font-size:17.5px;line-height:1.55;color:var(--ink);margin-top:10px}
+.pc-body{font-size:15px;line-height:1.6;color:var(--ink-2);margin-top:10px}
+.pc-body b{color:var(--ink)}
+.pc-fig{margin:6px 0 2px}
+.pc-opts{display:flex;flex-direction:column;gap:9px;margin-top:16px}
+.pc-opts button{width:100%;text-align:left;border:1px solid var(--line-2);background:var(--raised);border-radius:12px;padding:14px 15px;font-size:15px;line-height:1.4;color:var(--ink);transition:transform .12s ease,border-color .12s ease,background .12s ease}
+.pc-opts button:hover{border-color:var(--pc)}
+.pc-opts button:active{transform:scale(.99)}
+.pc-opts button.on{border-color:var(--pc);background:color-mix(in srgb,var(--pc) 8%,var(--raised))}
+.pc-opts button.right{border-color:var(--ok);background:var(--ok-bg);color:var(--ok)}
+.pc-opts button.wrong{border-color:var(--no);background:var(--no-bg);color:var(--no)}
+.pc-opts button[disabled]{cursor:default}
+.pc-reply{margin-top:14px;font-size:14.5px;line-height:1.55;color:var(--ink-2);background:var(--raised);border-radius:12px;padding:12px 14px}
+.pc-verdict{margin-top:14px;font-size:14.5px;line-height:1.55;border-radius:12px;padding:12px 14px}
+.pc-verdict.y{background:var(--ok-bg);color:var(--ok)} .pc-verdict.n{background:var(--no-bg);color:var(--no)}
+.pc-verdict b{display:block;font-family:var(--mono);font-size:12px;letter-spacing:.03em;text-transform:uppercase;margin-bottom:3px}
+.pc-reveal{margin-top:auto;padding-top:16px}
+.pc-reveal .plink{font-weight:600}
+.pc-formula{font-family:var(--mono);font-size:13px;line-height:1.6;color:var(--ink-2);background:var(--raised);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-top:12px;white-space:pre-wrap;overflow-x:auto}
+.pc-steps{margin:12px 0 0;padding:0;list-style:none;counter-reset:pcs}
+.pc-steps li{position:relative;padding:10px 0 10px 34px;border-top:1px solid var(--line);font-size:14.5px;line-height:1.5;color:var(--ink-2);animation:pcard-in .22s ease}
+.pc-steps li:before{counter-increment:pcs;content:counter(pcs);position:absolute;left:0;top:10px;width:24px;height:24px;border-radius:50%;background:color-mix(in srgb,var(--pc) 14%,transparent);color:var(--pc);font-family:var(--mono);font-size:12px;display:grid;place-items:center}
+.pc-steps li b{display:block;color:var(--ink);margin-bottom:2px}
+.pc-plus{position:absolute;top:16px;right:16px;font-family:var(--mono);font-size:13px;font-weight:700;color:var(--pc);animation:pc-pop .5s ease}
+@keyframes pc-pop{0%{opacity:0;transform:translateY(8px) scale(.8)}40%{opacity:1;transform:translateY(-2px) scale(1.1)}100%{opacity:1;transform:none}}
+.pdeck-nav{display:flex;gap:10px;margin-top:16px;align-items:center}
+.pdeck-nav .pnav{width:52px;height:52px;flex:none;border:1px solid var(--line-2);background:var(--surface);border-radius:14px;font-size:20px;color:var(--ink);display:grid;place-items:center}
+.pdeck-nav .pnav:disabled{opacity:.35}
+.pdeck-nav .pnav:active{transform:scale(.96)}
+.pdeck-nav .pnext{flex:1;height:52px;border-radius:14px;background:var(--pc);color:#fff;font-size:16px;font-weight:620;letter-spacing:-.01em}
+.pdeck-nav .pnext:active{opacity:.9}
+.pc-finish{text-align:center;align-items:center;justify-content:center}
+.pc-finish .pc-medal{width:72px;height:72px;border-radius:50%;background:color-mix(in srgb,var(--pc) 16%,transparent);color:var(--pc);display:grid;place-items:center;font-size:34px;margin:4px auto 10px;animation:pc-pop .5s ease}
+.pc-finish .pc-xpbig{font-family:var(--mono);font-size:30px;font-weight:700;color:var(--pc);margin:4px 0}
+.pc-finish .prow{margin-top:18px;width:100%;flex-direction:column;gap:8px;display:flex}
+.pc-spark{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.pc-spark i{position:absolute;top:-12px;width:7px;height:11px;border-radius:2px;opacity:.9;animation:pc-fall 1.5s linear forwards}
+@keyframes pc-fall{to{transform:translateY(420px) rotate(240deg);opacity:0}}
+@media (prefers-reduced-motion:reduce){.pdcard,.pc-steps li,.pc-plus,.pc-finish .pc-medal{animation:none}.pc-spark{display:none}}
+
 body.in-prep.prep-immersive .prep{padding-bottom:calc(40px + var(--safe-b))}
 .prep .eyebrow{font-size:var(--fs-2xs)}
 .prep h2,.prep h3{font-family:var(--serif);font-weight:600;letter-spacing:-.012em}
@@ -5300,7 +5354,7 @@ const prepIntegrity=()=>`<p class="pfine">Learning use only. The ${esc(PREP.cour
 function prepRoute(h){
   PREP_ASK="";
   const parts=(h||"").split("/"); const tab=parts[1]||"plan", id=parts[2]||null;
-  PR={tab:["plan","topics","practise","shelf","me","topic","diag","run","res"].includes(tab)?tab:"plan",id};
+  PR={tab:["plan","topics","practise","shelf","me","topic","diag","run","res","cards"].includes(tab)?tab:"plan",id};
 }
 function prepGo(path){ location.hash="econprep"+(path?"/"+path:""); }
 
@@ -5313,8 +5367,9 @@ function renderPrep(){
   else if(PR.tab==="topic") html=prepTopicView(PR.id);
   else if(PR.tab==="diag") html=prepDiagView();
   else if(PR.tab==="run") html=prepRunView();
+  else if(PR.tab==="cards") html=prepCardsView(PR.id);
   else html=({plan:prepPlan,topics:prepTopicsView,practise:prepPractise,shelf:prepShelf,me:prepMe,res:prepResView}[PR.tab]||prepPlan)(nm);
-  const immersive=["topic","diag","run"].includes(PR.tab)||(!PREPSTATE.started&&PR.tab==="plan");
+  const immersive=["topic","diag","run","cards"].includes(PR.tab)||(!PREPSTATE.started&&PR.tab==="plan");
   root.innerHTML=html+(immersive?"":prepTabs());
   document.body.classList.toggle("prep-immersive",immersive);
   renderPrepHub();
@@ -5414,7 +5469,8 @@ function prepTopicView(id){
   const upto=Math.min(ts.done?blocks.length:(ts.block||0),blocks.length);
   const T=prepTopics(), idx=T.findIndex(x=>x.id===id), unit=prepUnits().find(u=>u.id===t.unit)||{};
   let out=`<div class="ptopbar"><a class="pback" href="#econprep/topics" aria-label="Back to topics">‹</a><div><p class="eyebrow">Topic ${idx+1} of ${T.length}</p><b>${esc(t.title)}</b></div>${prepChip(prepState(id))}</div>
-  <div class="pprog" aria-hidden="true"><i style="width:${blocks.length?(Math.min(upto+1,blocks.length)/blocks.length*100):0}%"></i></div>`;
+  <div class="pprog" aria-hidden="true"><i style="width:${blocks.length?(Math.min(upto+1,blocks.length)/blocks.length*100):0}%"></i></div>
+  <a class="plink" href="#econprep/cards/${id}" style="display:inline-block;margin:3px 0 7px;font-weight:600">\u25A6 Flip through this as cards \u203A</a>`;
   if(ts.priority&&!prepIsReady(id)&&upto===0) out+=`<div class="pnote warn"><b>Worth a careful look</b>In the check you were sure about an answer that was wrong. This topic clears that up.</div>`;
   out+=`<article class="pblocks">`;
   for(let k=0;k<=upto&&k<blocks.length;k++) out+=prepBlock(t,blocks[k],k,k===upto&&!ts.done);
@@ -5472,6 +5528,141 @@ function prepDonePanel(t,idx,T){
     <a class="pbtn ghost" href="#econprep"><b>Back to plan</b></a>
     <button class="plink" data-prep-redo="${t.id}" type="button">Go through it again</button></div></div></section>`;
 }
+
+
+/* ================= FLASHCARD DECK (survey-style swipe cards) ================= */
+/* A fun, swipeable way through one warm-up topic, built from the topic's own
+   hook / idea / plain / example / check content. Earns XP; feeds the same
+   mastery scoring as everything else. Session nav state is not persisted. */
+let PCARD=null;
+
+function prepCardsInit(id){
+  const t=prepTopic(id); if(!t) return;
+  const ts=prepTS(id);
+  if(!ts.cards || ts.cards.v!==(t.v||1)){
+    const pool=prepItems(id).filter(q=>(q.use||[]).some(u=>u==="check"||u==="review"));
+    const src=pool.length?pool:prepItems(id);
+    ts.cards={v:t.v||1, ids:prepQueue(src, Math.min(3, src.length)), picks:{}, ord:{}, fin:ts.cards&&ts.cards.fin?1:0};
+    prepSave();
+  }
+  PCARD={id,pos:0,max:0,flip:{},eg:0,plus:null,spark:false};
+}
+function prepDeckModel(t){
+  const ts=prepTS(t.id), ids=(ts.cards&&ts.cards.ids)||[], out=[{type:"cover"}]; let checked=false;
+  (t.blocks||[]).forEach(b=>{
+    if(b.k==="hook") out.push({type:"hook",b});
+    else if(b.k==="fig") out.push({type:"fig",b});
+    else if(b.k==="idea") out.push({type:"idea",b});
+    else if(b.k==="plain") out.push({type:"plain",b});
+    else if(b.k==="eg") out.push({type:"eg",b});
+    else if(b.k==="trap") out.push({type:"trap",b});
+    else if(b.k==="check" && !checked){ checked=true; ids.forEach((i,n)=>out.push({type:"q",i,n})); }
+  });
+  if(!checked) ids.forEach((i,n)=>out.push({type:"q",i,n}));
+  out.push({type:"finish"});
+  return out;
+}
+function prepFirstCardsTopic(){ const t=prepTopics().find(x=>!prepIsReady(x.id))||prepTopics()[0]; return t?t.id:""; }
+function prepDeckNextTopic(id){
+  const T=prepTopics(), i=T.findIndex(x=>x.id===id);
+  const nxt=T.slice(i+1).concat(T.slice(0,i)).find(x=>!prepIsReady(x.id));
+  return nxt?`<a class="pbtn primary" href="#econprep/cards/${nxt.id}"><b>Next cards: ${esc(nxt.title)}</b></a>`
+            :`<a class="pbtn primary" href="#econprep"><b>Back to plan</b></a>`;
+}
+
+function prepCardBody(t,card,deck){
+  const ts=prepTS(t.id), pos=PCARD.pos, plus=PCARD.plus;
+  switch(card.type){
+    case "cover":{
+      const unit=prepUnits().find(u=>u.id===t.unit)||{};
+      return `<div class="pdcard pc-finish"><div class="pc-medal">✦</div><p class="pc-kicker">${esc(unit.n||"Warm-up")} · ${deck.length-2} cards · ~${t.mins||6} min</p><h3>${esc(t.title)}</h3><p class="pc-sub">${pmd(t.goal||"")}</p><p class="pc-sub" style="margin-top:10px">Swipe or tap Next. Answer the checks to earn XP.</p></div>`;
+    }
+    case "hook":{
+      const b=card.b, pick=ts.hook;
+      return `<div class="pdcard"><p class="pc-kicker">Gut check · no score</p><h3 style="font-family:var(--sans);font-size:18px;font-weight:620">${pmd(b.q)}</h3><div class="pc-opts">${(b.o||[]).map((o,i)=>`<button class="${pick===i?"on":""}" data-pcard="hook" data-i="${i}" type="button" ${pick!==undefined?"disabled":""}>${pmd(o)}</button>`).join("")}</div>${pick!==undefined&&b.reply?`<div class="pc-reply">${pmd(b.reply)}</div>`:`<p class="pc-sub" style="margin-top:12px">Commit to a guess — no marks for this one.</p>`}</div>`;
+    }
+    case "fig":{
+      const b=card.b;
+      return `<div class="pdcard"><p class="pc-kicker">Picture it</p><div class="pc-fig">${prepFig(t.fig)}</div><p class="pc-body">${pmd(b.caption||"")}</p></div>`;
+    }
+    case "idea":{
+      const b=card.b, open=PCARD.flip[pos];
+      return `<div class="pdcard"><p class="pc-kicker">The idea</p><h3>${pmd(b.h||t.title)}</h3>${open?`<div class="pc-body">${String(b.p||"").split(/\n\n+/).map(p=>`<p style="margin-top:8px">${pmd(p)}</p>`).join("")}</div>`:`<p class="pc-sub" style="margin-top:12px">Think of your own answer first, then reveal.</p>`}<div class="pc-reveal"><button class="plink" data-pcard="flip" type="button">${open?"Hide":"Reveal the idea ›"}</button></div></div>`;
+    }
+    case "plain":{
+      const b=card.b, show=PCARD.flip[pos];
+      return `<div class="pdcard"><p class="pc-kicker">In plain terms</p><p class="pc-big">${pmd(b.p)}</p>${b.formula?`<div class="pc-reveal"><button class="plink" data-pcard="flip" type="button">${show?"Hide the formula":"Show the formula ›"}</button>${show?`<div class="pc-formula">${esc(b.formula)}</div>`:""}</div>`:""}</div>`;
+    }
+    case "eg":{
+      const b=card.b, steps=b.steps||[], shown=Math.min(PCARD.eg||1, steps.length);
+      return `<div class="pdcard"><p class="pc-kicker">Worked example</p><p class="pc-body">${pmd(b.problem)}</p><ol class="pc-steps">${steps.slice(0,shown).map(s=>`<li><b>${pmd(s[0])}</b>${pmd(s[1])}</li>`).join("")}</ol>${shown<steps.length?`<div class="pc-reveal"><button class="plink" data-pcard="egstep" type="button">Reveal next step (${shown}/${steps.length}) ›</button></div>`:""}</div>`;
+    }
+    case "q":{
+      const q=prepItem(card.i); if(!q) return `<div class="pdcard"><p class="pc-body">Question unavailable.</p></div>`;
+      ts.cards.ord[card.i]=ts.cards.ord[card.i]||prepOrder(q);
+      const ord=ts.cards.ord[card.i], pick=ts.cards.picks[card.i], done=pick!==undefined;
+      return `<div class="pdcard">${plus?`<span class="pc-plus">+${plus} XP</span>`:""}<p class="pc-kicker">Quick check · ${card.n+1} of ${ts.cards.ids.length}</p><h3 style="font-family:var(--sans);font-size:17px;font-weight:620">${pmd(q.q)}</h3><div class="pc-opts">${ord.map(a=>{let c="";if(done){if(a===q.c)c="right";else if(a===pick)c="wrong";}return `<button class="${c}" data-pcard="ans" data-q="${card.i}" data-a="${a}" type="button" ${done?"disabled":""}>${pmd(q.a[a])}</button>`;}).join("")}</div>${done?`<div class="pc-verdict ${pick===q.c?"y":"n"}"><b>${pick===q.c?"Correct":"Not quite"}</b>${pmd(q.e)}</div>`:""}</div>`;
+    }
+    case "trap":{
+      const b=card.b;
+      return `<div class="pdcard"><p class="pc-kicker">Watch out</p><p class="pc-big">${pmd(b.p)}</p></div>`;
+    }
+    case "finish":{
+      const ready=prepIsReady(t.id), rightN=prepDistinctRight(t.id), needN=PREP_CFG.perTopic;
+      const spark=PCARD.spark?`<div class="pc-spark">${Array.from({length:14}).map((_,k)=>`<i style="left:${6+k*6.6}%;background:${["var(--pc)","var(--gold,#B07A2E)","var(--ok)"][k%3]};animation-delay:${(k%7)*80}ms"></i>`).join("")}</div>`:"";
+      return `<div class="pdcard pc-finish">${spark}<div class="pc-medal">${ready?"★":"✓"}</div><h3>${ready?"Topic ready!":"Deck complete"}</h3><p class="pc-xpbig">★ ${PREPSTATE.xp||0} XP</p><p class="pc-sub">Pocket rule: ${pmd(t.pocket||"")}</p><p class="pc-body" style="margin-top:8px">${ready?`You've answered ${rightN} questions in this topic correctly — it counts as ready for ${esc(PREP.course)}.`:`Answer ${needN} different questions correctly to mark this topic ready — ${rightN}/${needN} so far.`}</p><div class="prow">${prepDeckNextTopic(t.id)}<a class="pbtn ghost" href="#econprep/topic/${t.id}"><b>See the full lesson</b></a><button class="plink" data-pcard="replay" type="button">Shuffle and go again</button></div></div>`;
+    }
+    default: return `<div class="pdcard"></div>`;
+  }
+}
+function prepCardsView(id){
+  const t=prepTopic(id); if(!t) return `<p>Topic not found.</p>`;
+  if(!PCARD||PCARD.id!==id) prepCardsInit(id);
+  const deck=prepDeckModel(t);
+  PCARD.pos=Math.max(0,Math.min(PCARD.pos,deck.length-1)); PCARD.max=Math.max(PCARD.max,PCARD.pos);
+  const card=deck[PCARD.pos], xp=PREPSTATE.xp||0;
+  const dots=deck.map((_,k)=>`<i class="${k===PCARD.pos?"on":k<=PCARD.max?"done":""}"></i>`).join("");
+  const body=prepCardBody(t,card,deck);
+  PCARD.plus=null; PCARD.spark=false;
+  const last=PCARD.pos>=deck.length-2;
+  const nav=card.type==="finish"?"":`<div class="pdeck-nav"><button class="pnav" data-pcard="prev" aria-label="Previous card" type="button" ${PCARD.pos===0?"disabled":""}>‹</button><button class="pnext" data-pcard="next" type="button">${PCARD.pos===0?"Start ›":last?"Finish ›":"Next ›"}</button></div>`;
+  return `<div class="pdeck"><div class="pdeck-top"><a class="pback" href="#econprep/topic/${id}" aria-label="Back to the lesson">‹</a><div class="pdots" aria-hidden="true">${dots}</div><span class="pxp" aria-label="${xp} experience points">★ ${xp} XP</span></div><div class="pdcardwrap">${body}</div>${nav}</div>`;
+}
+function prepCardAct(k,d){
+  if(!PCARD) return;
+  const id=PCARD.id, t=prepTopic(id); if(!t) return;
+  const deck=prepDeckModel(t), ts=prepTS(id);
+  if(k==="prev"){ PCARD.pos=Math.max(0,PCARD.pos-1); PCARD.eg=0; }
+  else if(k==="next"){
+    const was=PCARD.pos; PCARD.pos=Math.min(deck.length-1,PCARD.pos+1); PCARD.eg=0;
+    if(deck[PCARD.pos].type==="finish" && deck[was].type!=="finish"){
+      if(!ts.cards.fin){ ts.cards.fin=1; PREPSTATE.xp=(PREPSTATE.xp||0)+25; PCARD.spark=true; prepSave(); }
+    }
+  }
+  else if(k==="flip"){ PCARD.flip[PCARD.pos]=!PCARD.flip[PCARD.pos]; }
+  else if(k==="egstep"){ PCARD.eg=(PCARD.eg||1)+1; }
+  else if(k==="hook"&&d){ ts.hook=Number(d.i); prepSave(); }
+  else if(k==="ans"&&d){
+    const i=d.q, a=Number(d.a); if(ts.cards.picks[i]!==undefined) return;
+    const q=prepItem(i); const wasNew=(a===q.c)&&!(((PREPSTATE.m||{})[i]||{}).s>0);
+    ts.cards.picks[i]=a; prepRecord(i,a===q.c);
+    if(wasNew){ PREPSTATE.xp=(PREPSTATE.xp||0)+10; PCARD.plus=10; prepSave(); }
+  }
+  else if(k==="replay"){
+    const pool=prepItems(id).filter(q=>(q.use||[]).some(u=>u==="check"||u==="review"));
+    const src=pool.length?pool:prepItems(id);
+    ts.cards={v:t.v||1, ids:prepQueue(src,Math.min(3,src.length)), picks:{}, ord:{}, fin:ts.cards.fin}; prepSave();
+    PCARD={id,pos:0,max:0,flip:{},eg:0,plus:null,spark:false};
+  }
+  renderPrep();
+  if(k==="next"||k==="prev") window.scrollTo({top:0});
+}
+/* keyboard + swipe for the deck */
+function _pcActive(){ return !!PCARD && PR.tab==="cards" && String(location.hash).indexOf("econprep")>-1; }
+document.addEventListener("keydown",e=>{ if(!_pcActive())return; if(e.key==="ArrowRight"){e.preventDefault();prepCardAct("next");} else if(e.key==="ArrowLeft"){e.preventDefault();prepCardAct("prev");} });
+let _pcTouch=null;
+document.addEventListener("touchstart",e=>{ if(!_pcActive())return; const x=e.touches[0]; _pcTouch={x:x.clientX,y:x.clientY}; },{passive:true});
+document.addEventListener("touchend",e=>{ if(!_pcActive()||!_pcTouch)return; const x=e.changedTouches[0], dx=x.clientX-_pcTouch.x, dy=x.clientY-_pcTouch.y; _pcTouch=null; if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)*1.3) prepCardAct(dx<0?"next":"prev"); },{passive:true});
 
 /* ---------- diagnostic ---------- */
 function prepDiagStart(){
@@ -5557,6 +5748,7 @@ function prepPractise(){
   const ready=prepTopics().filter(t=>prepIsReady(t.id)).length;
   return `${prepHead("Practise","Keep it warm","Short mixed sets bring back what you've learned just before you'd forget it. That spacing is what makes it stick.")}
   <div class="pcards">
+    <a class="pcard" href="#econprep/cards/${prepFirstCardsTopic()}"><b>Flashcards</b><span>Swipe a topic as survey cards and earn XP \u00b7 fun revision</span></a>
     <button class="pcard" data-prep-run="warm" type="button"><b>Warm-up</b><span>6 mixed questions from ${ready>=2?"your finished topics":"across the recap"} · 3 min</span></button>
     <button class="pcard" data-prep-run="check" type="button"><b>Readiness check</b><span>${PREP_CFG.checkSize} questions, weighted to your weakest topics · pass mark ${PREP_CFG.checkPass}${PREPSTATE.check?` · best ${PREPSTATE.check.best}`:""}</span></button>
     <button class="pcard" data-prep-act="diag" type="button"><b>${PREPSTATE.diag&&PREPSTATE.diag.done?"Re-check what I know":"Check what I know"}</b><span>Tests only topics that aren't ready</span></button>
@@ -5610,9 +5802,10 @@ function prepMe(){
 
 /* ---------- events ---------- */
 function prepClick(e){
-  const el=e.target.closest("[data-prep-act],[data-prep-step],[data-prep-ask],[data-prep-skipyes],[data-prep-redo],[data-prep-hook],[data-prep-ans],[data-prep-conf],[data-prep-run],[data-prep-filter]");
+  const el=e.target.closest("[data-prep-act],[data-prep-step],[data-prep-ask],[data-prep-skipyes],[data-prep-redo],[data-prep-hook],[data-prep-ans],[data-prep-conf],[data-prep-run],[data-prep-filter],[data-pcard]");
   if(!el||!el.closest("#econprepView")) return false;
   const d=el.dataset;
+  if(d.pcard){ prepCardAct(d.pcard,d); return true; }
   if(d.prepAct){
     const a=d.prepAct;
     if(a==="diag") prepDiagStart();
