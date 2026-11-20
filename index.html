@@ -1433,6 +1433,79 @@ body.dark{
 .sec-head2 h3{font-family:var(--serif);font-size:18px}
 .sec-head2 a,.sec-head2 .sub{font-size:12.5px;color:var(--accent);font-weight:560}
 
+
+/* =================================================================
+   RESOURCES COURSE — modern editorial redesign + schedule timeline.
+   Hierarchy by size/weight/space; one accent; no icon-tiles, no
+   full-card colour overlays, no everything-centered.
+   ================================================================= */
+.res-hero{margin:6px 0 20px}
+.res-hero .eyebrow{color:var(--pc);margin-bottom:10px}
+.res-hero h1{font-family:var(--serif);font-size:clamp(30px,8.5vw,40px);line-height:1.04;letter-spacing:-.02em;margin:0 0 12px;max-width:16ch}
+.res-hero .res-sub{font-size:16px;line-height:1.55;color:var(--ink-2);max-width:48ch}
+.res-count{display:flex;align-items:baseline;gap:10px;margin:18px 0 22px}
+.res-count b{font-family:var(--mono);font-size:46px;font-weight:700;line-height:1;color:var(--accent);letter-spacing:-.03em}
+.res-count span{font-size:14px;color:var(--ink-2);line-height:1.25}
+
+.res-prog{margin:0 0 20px}
+.res-prog-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+.res-prog-top span{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+.res-prog-top b{font-family:var(--mono);font-size:15px;color:var(--ink)}
+.res-bar{height:7px;border-radius:99px;background:var(--sunken);overflow:hidden}
+.res-bar i{display:block;height:100%;background:var(--pc);border-radius:99px;transition:width .6s var(--ease,ease)}
+
+.res-next{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--ink);color:var(--bg);border:0;border-radius:var(--r-lg);padding:18px 20px;margin:0 0 12px}
+.res-next div{flex:1;min-width:0}
+.res-next .eyebrow{color:color-mix(in srgb,var(--bg) 70%,transparent);margin-bottom:5px}
+.res-next b{display:block;font-family:var(--serif);font-size:20px;line-height:1.2;color:var(--bg)}
+.res-next small{display:block;font-size:13px;color:color-mix(in srgb,var(--bg) 66%,transparent);margin-top:4px;line-height:1.4}
+.res-next .res-next-go{font-size:26px;flex:none;color:var(--bg)}
+.res-next:active{transform:scale(.995)}
+.res-due{display:flex;gap:8px;align-items:baseline;width:100%;text-align:left;background:none;border:0;border-top:2px solid var(--pc);border-bottom:1px solid var(--line);padding:12px 2px;margin:0 0 6px;color:var(--ink)}
+.res-due b{font-size:14px}.res-due span{font-size:12.5px;color:var(--ink-3)}
+
+.res-h2{font-family:var(--serif);font-size:22px;letter-spacing:-.01em;margin:30px 0 4px;padding-bottom:9px;border-bottom:2px solid var(--ink)}
+.res-note{font-size:13px;color:var(--ink-3);margin:8px 0 14px}
+.res-actions{display:grid;gap:9px;margin:22px 0 10px}
+
+/* ---- vertical schedule timeline ---- */
+.vtl{list-style:none;margin:16px 0 4px;padding:0;position:relative}
+.vtl:before{content:"";position:absolute;left:8px;top:8px;bottom:14px;width:2px;background:var(--line-2)}
+.vtl-row,.vtl-today{position:relative;padding:0 0 22px 32px;list-style:none}
+.vtl-node{position:absolute;left:0;top:3px;width:18px;height:18px;border-radius:50%;background:var(--surface);border:2.5px solid var(--line-2);box-sizing:border-box}
+.vtl-row.ms .vtl-node{border-color:var(--pc);background:var(--pc)}
+.vtl-row.past{opacity:.48}
+.vtl-row.past .vtl-node{background:var(--line-2);border-color:var(--line-2)}
+.vtl-row.today .vtl-node,.vtl-today .vtl-node{border-color:var(--accent);background:var(--accent);box-shadow:0 0 0 5px color-mix(in srgb,var(--accent) 18%,transparent)}
+.vtl-today{padding-bottom:16px}
+.vtl-today b{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
+.vtl-date{font-family:var(--mono);font-size:11px;color:var(--ink-3);letter-spacing:.04em}
+.vtl-tag{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-top:3px}
+.vtl-t{font-size:14.5px;line-height:1.45;color:var(--ink);margin-top:4px;font-weight:500;max-width:46ch}
+.vtl-row.ms .vtl-t{font-family:var(--serif);font-size:17px;font-weight:600;margin-top:2px}
+.vtl-warm{font-size:12.5px;color:var(--ink-3);margin-top:6px}
+.vtl-warm a{color:var(--pc);font-weight:560}
+.vtl-warm a+a:before{content:" · ";color:var(--ink-3)}
+
+/* ---- Finance dashboard: tile-free plan + stats ---- */
+.plan{display:flex;flex-direction:column;gap:0}
+.planrow{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:none;border:0;border-top:1px solid var(--line);padding:16px 2px;color:var(--ink)}
+.plan .planrow:first-child{border-top:0}
+.planrow .pdot{width:10px;height:10px;border-radius:50%;flex:none}
+.planrow .pb{flex:1;min-width:0}
+.planrow .pb b{display:block;font-size:16px;font-weight:620;letter-spacing:-.01em}
+.planrow .pb span{display:block;font-size:12.5px;color:var(--ink-3);margin-top:2px}
+.planrow .pa{font-size:20px;color:var(--ink-3);flex:none}
+.planrow:hover .pa{color:var(--ink)}
+.plan .planrow.lead{border-top:0;border-bottom:2px solid var(--ink);padding-top:4px}
+.plan .planrow.lead .pb b{font-family:var(--serif);font-size:19px}
+
+.statrow{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;box-shadow:none}
+.statblock{padding:18px 18px;background:var(--surface)}
+.statblock+.statblock{border-left:1px solid var(--line)}
+.statblock .sv{font-family:var(--mono);font-size:28px;font-weight:700;letter-spacing:-.02em;color:var(--ink);line-height:1}
+.statblock .sl{font-size:12px;color:var(--ink-3);margin-top:6px;text-transform:uppercase;letter-spacing:.08em}
+
 </style>
 </head>
 <body>
@@ -5044,8 +5117,8 @@ function renderHome(){
   $("#heroStreak").textContent = st>1 ? (st+"-day streak") : "Day "+st;
   const _sr=document.getElementById("statRow");
   if(_sr) _sr.innerHTML=
-    `<div class="stat" style="--sc:var(--gold)"><span class="si">\u2726</span><div><div class="sv">${st}</div><div class="sl">day streak</div></div></div>`+
-    `<div class="stat" style="--sc:var(--accent)"><span class="si">\u25C6</span><div><div class="sv">${all.retired}/${all.total}</div><div class="sl">questions mastered</div></div></div>`;
+    `<div class="statblock"><div class="sv">${st}</div><div class="sl">day streak</div></div>`+
+    `<div class="statblock"><div class="sv">${all.retired}/${all.total}</div><div class="sl">mastered</div></div>`;
 
   $("#examSpotlight").innerHTML=`
     <p class="eyebrow">Exam</p>
@@ -5091,15 +5164,14 @@ function renderHome(){
     return;
   }
   strip.innerHTML=
-    `<button class="plancard" data-drill="all" style="--pcc:var(--accent)">
-      <span class="pic">\u25CE</span>
-      <span class="pbody"><b>Mixed drill</b><span>Your weakest material \u00b7 12 questions</span></span>
-      <span class="pgo">\u203A</span>
+    `<button class="planrow lead" data-drill="all">
+      <span class="pb"><b>Mixed drill</b><span>Your weakest material \u00b7 12 questions</span></span>
+      <span class="pa" aria-hidden="true">\u2192</span>
     </button>` +
-    weak.map(x=>`<button class="plancard" data-drill="topic" data-topic="${x.t.id}" style="--pcc:${x.m.hue}">
-      <span class="pic">\u25A4</span>
-      <span class="pbody"><b>${x.t.n}</b><span>${x.m.lec} \u00b7 ${x.s.retired}/${x.s.total} mastered</span></span>
-      <span class="pgo">\u203A</span>
+    weak.map(x=>`<button class="planrow" data-drill="topic" data-topic="${x.t.id}">
+      <span class="pdot" style="background:${x.m.hue}"></span>
+      <span class="pb"><b>${x.t.n}</b><span>${x.m.lec} \u00b7 ${x.s.retired}/${x.s.total} mastered</span></span>
+      <span class="pa" aria-hidden="true">\u2192</span>
     </button>`).join("");
 }
 function renderCourseHub(){
@@ -5523,29 +5595,54 @@ function prepPlan(nm){
   const T=prepTopics(), n=prepReadyCount(), next=prepNext();
   const due=prepDueWarmup();
   const left=T.filter(t=>!prepIsReady(t.id));
-  const mins=left.reduce((a,t)=>a+(t.mins||6),0);
-  let days="";
-  if(PREP.starts){const d=Math.ceil((new Date(PREP.starts+"T08:00:00")-Date.now())/864e5); if(d>=0) days=`<p class="pcount"><b>${d}</b> day${d===1?"":"s"} to ${esc(PREP.course)}</p>`;}
   const ready=PREPSTATE.readyAt;
-  return `${prepHead(nm?`Akwaaba, ${esc(nm)}`:"Your plan","Your warm-up plan",ready?`You're ready for ${esc(PREP.course)}. Keep it warm with a quick set now and then.`:left.length?`${left.length} topic${left.length===1?"":"s"} to go · about ${mins} min. One topic per trip; your place is saved after every step.`:"Every topic is ready. Take the readiness check to finish.")}
-  <section class="pplan-top">
-    ${prepRing(n,T.length)}
-    <div>${days}
-      ${next?`<a class="pcontinue" href="#econprep/topic/${next.id}"><span class="eyebrow">${PREP_STATE_LABEL[prepState(next.id)]==="To do"?"Next topic":"Continue"}</span><b>${esc(next.title)}</b><small>${esc(next.goal||"")} · ${next.mins||6} min</small></a>`
-      :`<button class="pcontinue" data-prep-run="check" type="button"><span class="eyebrow">Last step</span><b>Readiness check</b><small>${PREP_CFG.checkSize} mixed questions · pass mark ${PREP_CFG.checkPass}</small></button>`}
-    </div>
-  </section>
-  ${due?`<button class="pdue" data-prep-run="warm" type="button"><b>Warm-up due</b><span>6 mixed questions from topics you've finished · about 3 min</span></button>`:""}
+  const pct=T.length?Math.round(n/T.length*100):0;
+  let dcount=null;
+  if(PREP.starts){const d=Math.ceil((new Date(PREP.starts+"T08:00:00")-Date.now())/864e5); if(d>=0) dcount=d;}
+  return `
+  <header class="res-hero">
+    <p class="eyebrow">${nm?`Akwaaba, ${esc(nm)} · `:""}${esc(PREP.prereq)} warm-up</p>
+    <h1>${esc(PREP.title)}</h1>
+    <p class="res-sub">The economics ${esc(PREP.course)} assumes you already know — ${T.length} short topics, each explained plainly with a visual. Learn what you need, skip what you don’t.</p>
+  </header>
+  ${dcount!==null?`<div class="res-count"><b>${dcount}</b><span>day${dcount===1?"":"s"} until<br>${esc(PREP.course)} begins</span></div>`:""}
+  <div class="res-prog"><div class="res-prog-top"><span>Readiness</span><b>${n} / ${T.length} topics ready</b></div><div class="res-bar"><i style="width:${pct}%"></i></div></div>
+  ${next?`<a class="res-next" href="#econprep/topic/${next.id}"><div><span class="eyebrow">${PREP_STATE_LABEL[prepState(next.id)]==="To do"?"Start next":"Continue"}</span><b>${esc(next.title)}</b><small>${esc(next.goal||"")}</small></div><span class="res-next-go" aria-hidden="true">→</span></a>`
+   :`<button class="res-next" data-prep-run="check" type="button"><div><span class="eyebrow">Last step</span><b>Readiness check</b><small>${PREP_CFG.checkSize} mixed questions · pass ${PREP_CFG.checkPass}</small></div><span class="res-next-go" aria-hidden="true">→</span></button>`}
+  ${due?`<button class="res-due" data-prep-run="warm" type="button"><b>Warm-up due</b> <span>6 mixed questions · about 3 min</span></button>`:""}
   ${ready?`<div class="pready">${PREP_ART.ready}<div><b>Ready for ${esc(PREP.course)}</b><p>Since ${new Date(ready).toLocaleDateString(undefined,{day:"numeric",month:"short"})}. Your pocket rules:</p><ul>${prepPocketRules().map(p=>`<li>${pmd(p)}</li>`).join("")}</ul></div></div>`:""}
-  ${prepTimeline()}
-  <p class="eyebrow sec-label">Path</p>
+
+  <h2 class="res-h2">The road to the exam</h2>
+  <p class="res-note">Every class, case and deadline in ${esc(PREP.course)} — and which warm-up to do before each.</p>
+  ${prepScheduleTimeline()}
+
+  <h2 class="res-h2">Your path</h2>
+  <p class="res-note">${left.length?`${left.length} of ${T.length} topics still to master.`:"Every topic is ready."} Open any one, in any order.</p>
   ${prepUnitList(true)}
-  <div class="prow-actions">
-    <button class="pbtn ghost" data-prep-act="diag" type="button"><b>${PREPSTATE.diag&&PREPSTATE.diag.done?"Re-check what I know":"Check what I already know"}</b><span>Tests only topics that aren't ready yet</span></button>
+
+  <div class="res-actions">
+    <button class="pbtn ghost" data-prep-act="diag" type="button"><b>${PREPSTATE.diag&&PREPSTATE.diag.done?"Re-check what I know":"Check what I already know"}</b><span>Tests only topics that aren’t ready yet</span></button>
     <button class="pbtn ghost" data-prep-run="check" type="button"><b>Readiness check</b><span>${PREPSTATE.check?`Best so far ${PREPSTATE.check.best}/${PREP_CFG.checkSize}`:`${PREP_CFG.checkSize} questions · no topic labels`}</span></button>
   </div>
   ${prepIntegrity()}`;
 }
+function prepScheduleTimeline(){
+  if(typeof PREP_SCHEDULE==="undefined"||!PREP_SCHEDULE.length) return "";
+  const today=new Date(); today.setHours(0,0,0,0);
+  const TAGC={"Class":"var(--accent)","Group case":"var(--indigo)","Problem set":"var(--ochre)","Final":"var(--laterite)"};
+  let rows="", inserted=false;
+  PREP_SCHEDULE.forEach(e=>{
+    const dd=new Date(e.d+"T00:00:00");
+    const past=dd<today, isToday=dd.getTime()===today.getTime();
+    if(!inserted && dd>=today){ if(!isToday) rows+=`<li class="vtl-today"><span class="vtl-node"></span><div><b>Today</b></div></li>`; inserted=true; }
+    const ms=e.tag==="Class"||e.tag==="Final";
+    const dstr=new Date(e.d+"T12:00:00").toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"short"});
+    const links=(e.topics||[]).map(t=>prepTopic(t)?`<a href="#econprep/topic/${t}">${esc(prepTopic(t).title)}</a>`:"").filter(Boolean).join("");
+    rows+=`<li class="vtl-row${past?" past":""}${isToday?" today":""}${ms?" ms":""}"><span class="vtl-node"></span><div><p class="vtl-date">${dstr}</p><p class="vtl-tag" style="color:${TAGC[e.tag]||"var(--ink-3)"}">${esc(e.tag)}</p><p class="vtl-t">${esc(e.t)}</p>${links?`<p class="vtl-warm">Warm up: ${links}</p>`:""}</div></li>`;
+  });
+  return `<ol class="vtl">${rows}</ol>`;
+}
+
 function prepPocketRules(){
   return prepTopics().slice().sort((a,b)=>prepAcc(a.id)-prepAcc(b.id)).slice(0,3).map(t=>t.pocket).filter(Boolean);
 }
