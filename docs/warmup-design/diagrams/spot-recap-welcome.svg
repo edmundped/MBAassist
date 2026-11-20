@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="dx dx-spot" viewBox="0 0 360 200" width="100%" role="img" aria-labelledby="dxs-t dxs-d">
+<title id="dxs-t">Trade along the West African coast</title>
+<desc id="dxs-d">An abstract strip of the Gulf of Guinea coastline on ruled ledger paper. A dashed shipping route links five ports from west to east, a stack of four containers sits by a port, a low harmattan sun hangs in the haze, and a faint downward-sloping demand curve crosses the land.</desc>
+<style>
+.dx-spot-sea{fill:var(--dx-indigo-soft,#DCE3F2)}
+.dx-spot-land{fill:var(--dx-land,#EADFC9)}
+.dx-spot-coast{fill:none;stroke:var(--dx-axis,#4E463B);stroke-width:1.25}
+.dx-spot-sun{fill:var(--dx-atc,#8A6116);fill-opacity:.85}
+.dx-spot-haze{fill:none;stroke:var(--dx-atc,#8A6116);stroke-opacity:.35;stroke-width:1}
+.dx-spot-route{fill:none;stroke:var(--dx-mc,#A8452A);stroke-width:2;stroke-dasharray:5 6;stroke-linecap:round}
+.dx-spot-port{fill:var(--dx-point,#FFFCF6);stroke:var(--dx-ink,#1B1712);stroke-width:1.75}
+.dx-spot-c1{fill:var(--accent,#8A2E3B)}.dx-spot-c2{fill:var(--dx-demand,#2E4C8F)}.dx-spot-c3{fill:var(--dx-atc,#8A6116)}.dx-spot-c4{fill:var(--dx-supply,#1C6B63)}
+.dx-spot-rib{stroke:var(--dx-point,#FFFCF6);stroke-opacity:.45;stroke-width:1}
+.dx-spot-ledger{stroke:var(--dx-axis,#4E463B);stroke-opacity:.08;stroke-width:1}
+.dx-spot-curve{fill:none;stroke:var(--dx-demand,#2E4C8F);stroke-width:2;stroke-linecap:round;opacity:.55}
+.dx-spot-route{animation:dx-route 2.8s linear infinite}
+@keyframes dx-route{to{stroke-dashoffset:-22}}
+@media (prefers-reduced-motion:reduce){.dx-spot-route{animation:none}}
+</style>
+<path class="dx-spot-land" d="M0,0 H360 V200 H330 C322,186 312,170 300,160 C282,146 262,137 240,134 C214,130 196,132 168,128 C140,124 118,126 92,122 C62,118 40,108 0,112 Z" />
+<path class="dx-spot-sea" d="M0,112 C40,108 62,118 92,122 C118,126 140,124 168,128 C196,132 214,130 240,134 C262,137 282,146 300,160 C312,170 322,186 330,200 L330,200 H0 Z"/>
+<path class="dx-spot-ledger" d="M0,20 H360"/>
+<path class="dx-spot-ledger" d="M0,40 H360"/>
+<path class="dx-spot-ledger" d="M0,60 H360"/>
+<path class="dx-spot-ledger" d="M0,80 H360"/>
+<path class="dx-spot-ledger" d="M0,100 H360"/>
+<path class="dx-spot-ledger" d="M0,120 H360"/>
+<path class="dx-spot-ledger" d="M0,140 H360"/>
+<path class="dx-spot-ledger" d="M0,160 H360"/>
+<path class="dx-spot-ledger" d="M0,180 H360"/>
+<path class="dx-spot-coast" d="M0,112 C40,108 62,118 92,122 C118,126 140,124 168,128 C196,132 214,130 240,134 C262,137 282,146 300,160 C312,170 322,186 330,200"/>
+<circle class="dx-spot-sun" cx="290" cy="52" r="16"/>
+<circle class="dx-spot-haze" cx="290" cy="52" r="25"/><circle class="dx-spot-haze" cx="290" cy="52" r="35"/>
+<path class="dx-spot-curve" d="M22,20 C58,50 110,64 190,70"/>
+<path class="dx-spot-route" d="M34,111 C60,142 80,146 104,124 C124,148 142,150 160,127 C178,152 192,154 208,131 C228,158 246,162 262,139"/>
+<circle class="dx-spot-port" cx="34" cy="111" r="4.5"/>
+<circle class="dx-spot-port" cx="104" cy="124" r="4.5"/>
+<circle class="dx-spot-port" cx="160" cy="127" r="4.5"/>
+<circle class="dx-spot-port" cx="208" cy="131" r="4.5"/>
+<circle class="dx-spot-port" cx="262" cy="139" r="4.5"/>
+<rect class="dx-spot-c1" x="84" y="96" width="38" height="14" rx="1.5"/><path class="dx-spot-rib" d="M90,98 V108"/><path class="dx-spot-rib" d="M96,98 V108"/><path class="dx-spot-rib" d="M102,98 V108"/><path class="dx-spot-rib" d="M108,98 V108"/><path class="dx-spot-rib" d="M114,98 V108"/>
+<rect class="dx-spot-c4" x="124" y="96" width="38" height="14" rx="1.5"/><path class="dx-spot-rib" d="M130,98 V108"/><path class="dx-spot-rib" d="M136,98 V108"/><path class="dx-spot-rib" d="M142,98 V108"/><path class="dx-spot-rib" d="M148,98 V108"/><path class="dx-spot-rib" d="M154,98 V108"/>
+<rect class="dx-spot-c2" x="104" y="81" width="38" height="14" rx="1.5"/><path class="dx-spot-rib" d="M110,83 V93"/><path class="dx-spot-rib" d="M116,83 V93"/><path class="dx-spot-rib" d="M122,83 V93"/><path class="dx-spot-rib" d="M128,83 V93"/><path class="dx-spot-rib" d="M134,83 V93"/>
+<rect class="dx-spot-c3" x="144" y="81" width="30" height="14" rx="1.5"/><path class="dx-spot-rib" d="M150,83 V93"/><path class="dx-spot-rib" d="M156,83 V93"/><path class="dx-spot-rib" d="M162,83 V93"/><path class="dx-spot-rib" d="M168,83 V93"/>
+</svg>

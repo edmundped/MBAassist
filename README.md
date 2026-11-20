@@ -2,47 +2,67 @@
 
 A scalable MBA course learning workspace. Three courses are mounted in the app:
 **MBA512 Managerial Finance**, **Sustainable Leadership & Ethical Business**
-(Module 3, Seminar 673), and **Cross-Border Business**. Managerial Finance and
-Sustainable Leadership have built learning tools; Cross-Border Business has a
-modular v1 workspace for Week 1 and the course-long capstone arc. Everything is in one self-contained
-`index.html` — no build step, no dependencies, works offline.
+(Module 3, Seminar 673), and the **Managerial Economics warm-up**, a pre-course
+recap for **MBA645 Resources, Incentives and Market Failures**. Everything is in
+one self-contained `index.html` — no build step, no dependencies, works offline.
+
+The look is "Harmattan Ledger": warm paper tones, Ashesi maroon as the brand
+colour, indigo for the warm-up, and system fonts only so nothing loads from the web.
 
 ---
 
-# Cross-Border Business
+# Managerial Economics warm-up (before MBA645)
 
-The Cross-Border workspace follows the course assessment shape rather than the
-Managerial Finance question-bank model. Learners first land on a clean course
-dashboard with only the essentials: what the course is about, expectations, the
-four-week schedule, week boxes, and learner action tiles.
+MBA645 lists Managerial Economics as its prerequisite and opens Weekend 1 with a
+recap of market structures, then Problem Set 1 on deadweight loss and HHI. This
+workspace gets colleagues ready for that.
 
-| Area | Purpose |
+| Tab | What it holds |
 |---|---|
-| Course | Course purpose, schedule, expectations, week boxes, and action tiles |
-| Week | The selected week's hub, with resources, mastery, testing, structures and deliverables |
-| Resources | Assigned readings, cases, and in-app study readers where available |
-| Mastery | Flashcard-style concept and case prep cards |
-| Testing | Objective MCQs plus written judgment prompts with counterargument practice |
-| Structures | Entry-mode comparator, risk allocation matrix, and negotiation prep |
-| Deliverables | Own-words canvases for interim deliverables and the capstone |
-| My Work | Device-local progress summary and next recommended move |
+| Plan | Progress ring, countdown to the first class, the next topic, a due warm-up, and what's coming up in MBA645 |
+| Topics | 14 topics in 4 units following the three Managerial Economics weekends, plus a 50-term plain-English glossary |
+| Practise | 6-question warm-ups, 5-question topic sets, and a 10-question readiness check (pass mark 8) |
+| Shelf | Lecture notes, the ECG negotiation session, the three mini-cases, and MBA645 material and compulsory readings |
+| Progress | Topic states, strength by kind of decision, and answers you were sure of but got wrong |
 
-V1 includes Week 1 content from the course outline, AfCFTA and FDI tralac
-guides, plus prompt-level preparation for MTN Investing in Africa, Attijariwafa
-Bank: Egypt Expansion, and Peak Investment Capital. The tralac guides have
-in-app study readers; copyrighted case text is not reproduced, so the app gives
-frameworks and questions to prepare with. Weeks 2-4 are mounted as modular
-placeholders so their resources and practice can be added without changing the
-course navigation model.
+**How a topic runs (about 6 minutes):** a gut-check question, an illustration,
+a short explanation, the idea in plain terms, a worked example, two quick
+questions, a "watch out", and where you'll use it in MBA645.
 
-Cross-Border notes and progress are saved in the same browser and included in
-the existing backup/restore flow. The workspace is intentionally a study aid:
-it structures thinking but does not draft graded case analyses or capstone
-submissions.
+**Check what I already know** is a short adaptive diagnostic. Each topic gets one
+question plus a "how sure are you?" tap; topics answered correctly get one
+follow-up. Two different correct answers mark a topic ready (the same rule as
+Finance's mastery engine, but stored separately). Confident wrong answers are
+marked Priority and come first.
 
-On the course hub, long-press a course card to remove it from the personal
-workspace. Removed courses can be shown and restored from the same hub; no
-course data is deleted.
+**Accuracy:** the lecture notes contain errors (for example reversed
+cross-price elasticity signs, and competitive demand called "perfectly
+inelastic"). The warm-up teaches the correct textbook version. Every number in
+the 14 diagrams is checked by assertions when they are generated.
+
+## Adding material later
+
+All content is data in the block marked `ECON PREP: content` in `index.html`.
+No code changes are needed.
+
+- **A new MBA645 slide deck, reading or case:** add an entry to
+  `PREP_RESOURCES_COURSE` with a new `id`, a `kind` (for example
+  "MBA645 reading"), a title, `why`, optional `url`, the `topics` it links to,
+  and today's date in `added`. It shows a **New** badge for 14 days.
+- **A new question:** add to `PREP_ITEMS` with a new id; `t` is the topic id
+  and `c` is the 0-based index of the right answer.
+- **A new topic:** add to `PREP_TOPICS` with at least 5 questions, 2 of them
+  tagged `diag`.
+- **Dates:** `PREP.starts` (first class) and `PREP_SCHEDULE` drive the countdown
+  and the "Coming up" list.
+
+Open the app with `?debug` to have content problems listed in the console.
+Ids are permanent: never rename or reuse one; set `retired:true` instead.
+
+The warm-up's progress lives in this browser under its own key and is included
+in the existing backup and restore. Cross-Border Business has been removed from
+the app; any Cross-Border notes already saved in a browser are kept and still
+included in backup files.
 
 ---
 

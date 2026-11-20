@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="dx" viewBox="0 0 360 594" width="100%" role="img" aria-labelledby="dxa-t dxa-d" preserveAspectRatio="xMidYMid meet">
+<title id="dxa-t">Price elasticity along a straight-line demand curve, and what a price cut does to revenue</title>
+<desc id="dxa-d">Two panels share the demand curve P = 100 − Q. Top, elastic range: price falls from 80 to 70 and quantity rises from 20 to 30. Revenue lost on the 20 units already sold is 200; revenue gained from 10 new units is 700; total revenue rises from 1,600 to 2,100. Bottom, inelastic range: price falls from 30 to 20 and quantity rises from 70 to 80. Revenue lost is 700, gained is 200; total revenue falls from 2,100 to 1,600. At the midpoint, Q = 50 and P = 50, elasticity is minus one and total revenue is at its maximum of 2,500.</desc>
+<style>
+.dx{font-family:var(--sans,-apple-system,"Segoe UI",Roboto,system-ui,sans-serif)}
+.dx-axis{fill:none;stroke:var(--dx-axis,#4E463B);stroke-width:1.25;stroke-linecap:square}
+.dx-guide{fill:none;stroke:var(--dx-guide,#8F8472);stroke-width:1;stroke-dasharray:2 3}
+.dx-curve{fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.dx-d{stroke:var(--dx-demand,#2E4C8F)}
+.dx-mr{stroke:var(--dx-mr,#2E4C8F);stroke-dasharray:7 5;stroke-linecap:butt}
+.dx-s{stroke:var(--dx-supply,#1C6B63)}
+.dx-mc{stroke:var(--dx-mc,#A8452A);stroke-width:2.75}
+.dx-atc{stroke:var(--dx-atc,#8A6116)}
+.dx-avc{stroke:var(--dx-avc,#8A6116);stroke-dasharray:8 5;stroke-linecap:butt}
+.dx-afc{stroke:var(--dx-afc,#6B6152);stroke-width:2.25;stroke-dasharray:.5 5}
+.dx-ghost{opacity:.3}
+.dx-lab{font-size:12.5px;font-weight:700;letter-spacing:.01em}
+.dx-lab-d{fill:var(--dx-demand,#2E4C8F)}.dx-lab-mr{fill:var(--dx-mr,#2E4C8F)}
+.dx-lab-s{fill:var(--dx-supply,#1C6B63)}.dx-lab-mc{fill:var(--dx-mc,#A8452A)}
+.dx-lab-atc{fill:var(--dx-atc,#8A6116)}.dx-lab-avc{fill:var(--dx-avc,#8A6116)}.dx-lab-afc{fill:var(--dx-afc,#6B6152)}
+.dx-tick{font-family:var(--mono,ui-monospace,Menlo,monospace);font-size:11px;fill:var(--dx-label,#4E463B);font-variant-numeric:tabular-nums}
+.dx-axlab{font-size:11px;font-weight:600;fill:var(--dx-label,#4E463B);letter-spacing:.02em}
+.dx-title{font-size:13px;font-weight:700;fill:var(--dx-ink,#1B1712)}
+.dx-note{font-size:11.5px;fill:var(--dx-label,#4E463B)}
+.dx-note-b{font-weight:700;fill:var(--dx-ink,#1B1712)}
+.dx-zone{stroke-width:1;fill-opacity:var(--dx-fill-o,.18)}
+.dx-zone-profit{fill:var(--dx-profit,#2A6A46);stroke:var(--dx-profit,#2A6A46)}
+.dx-zone-loss{fill:var(--dx-loss,#9A3324);stroke:var(--dx-loss,#9A3324)}
+.dx-zone-rev{fill:var(--dx-revenue,#8A6116);stroke:none;fill-opacity:var(--dx-fill-o2,.09)}
+.dx-zone-gain{fill:var(--dx-profit,#2A6A46);stroke:var(--dx-profit,#2A6A46)}
+.dx-pt{fill:var(--dx-point,#FFFCF6);stroke-width:2}
+.dx-pt-ink{stroke:var(--dx-ink,#1B1712)}
+.dx-anno{fill:none;stroke:var(--dx-ink,#1B1712);stroke-width:1.25;stroke-linecap:round}
+.dx-head{fill:var(--dx-ink,#1B1712)}
+.dx-leader{fill:none;stroke:var(--dx-guide,#8F8472);stroke-width:1}
+</style>
+<g aria-hidden="true">
+<text class="dx-title" x="16.0" y="20.0" text-anchor="start">Elastic range: cut price, revenue rises</text>
+<rect class="dx-zone-rev" x="48" y="100.2" width="53.6" height="121.8"/>
+<rect class="dx-zone dx-zone-loss" x="48" y="82.8" width="53.6" height="17.4"/>
+<rect class="dx-zone dx-zone-gain" x="101.6" y="100.2" width="26.8" height="121.8"/>
+<path class="dx-curve dx-d dx-ghost" d="M182.0,135.0 L249.0,178.5 L316.0,222.0"/>
+<path class="dx-curve dx-d" d="M48.0,48.0 L115.0,91.5 L182.0,135.0"/>
+<path class="dx-axis" d="M48,40 V222 H324"/>
+<path class="dx-head" style="fill:var(--dx-axis,#4E463B)" d="M48.0,40.0 L44.7,46.0 L51.3,46.0 Z"/>
+<path class="dx-head" style="fill:var(--dx-axis,#4E463B)" d="M324.0,222.0 L318.0,218.7 L318.0,225.3 Z"/>
+<text class="dx-axlab" x="54" y="42">Price (GH₵)</text>
+<text class="dx-axlab" x="324" y="252" text-anchor="end">Quantity per week</text>
+<text class="dx-tick" x="42" y="236" text-anchor="end">0</text>
+<path class="dx-guide" d="M48,82.8 H101.6 V222"/>
+<path class="dx-guide" d="M48,100.2 H128.4 V222"/>
+<circle cx="182.0" cy="135.0" r="3" style="fill:var(--dx-demand,#2E4C8F)"/>
+<path class="dx-leader" d="M185.0,132.0 L200.8,119.3"/>
+<text class="dx-note" x="203.4" y="107.2" text-anchor="start"><tspan class="dx-note-b">|ε| = 1</tspan></text>
+<text class="dx-note" x="203.4" y="121.2" text-anchor="start">revenue peaks</text>
+<text class="dx-note" x="165.9" y="86.3" text-anchor="start"><tspan class="dx-note-b">|ε| &gt; 1</tspan></text>
+<text class="dx-lab dx-lab-d" x="314.0" y="214.0" text-anchor="end">D</text>
+<circle class="dx-pt" cx="101.6" cy="82.8" r="4" style="stroke:var(--dx-demand,#2E4C8F)"/>
+<circle class="dx-pt" cx="128.4" cy="100.2" r="4" style="stroke:var(--dx-demand,#2E4C8F)"/>
+<text class="dx-note dx-note-b" x="107.6" y="76.8" text-anchor="start">A</text>
+<text class="dx-note dx-note-b" x="134.4" y="94.2" text-anchor="start">B</text>
+<text class="dx-tick" x="42" y="86.8" text-anchor="end">80</text>
+<text class="dx-tick" x="42" y="104.2" text-anchor="end">70</text>
+<text class="dx-tick" x="101.6" y="237" text-anchor="middle">20</text>
+<text class="dx-tick" x="128.4" y="237" text-anchor="middle">30</text>
+<text class="dx-tick" x="74.8" y="95.5" text-anchor="middle">−200</text>
+<path class="dx-leader" d="M115.0,190.7 H136.4"/>
+<text class="dx-note" x="139.4" y="194.7" text-anchor="start">+700 from new buyers</text>
+<text class="dx-note" x="16.0" y="272.0" text-anchor="start"><tspan class="dx-note-b">Revenue 1,600 → 2,100</tspan> (rises by 500): the gain beats the loss.</text>
+</g>
+<path d="M16,294 H344" style="fill:none;stroke:var(--dx-grid,#E4DCCC);stroke-width:1"/>
+<g aria-hidden="true">
+<text class="dx-title" x="16.0" y="330.0" text-anchor="start">Inelastic range: cut price, revenue falls</text>
+<rect class="dx-zone-rev" x="48" y="497.2" width="187.6" height="34.8"/>
+<rect class="dx-zone dx-zone-loss" x="48" y="479.8" width="187.6" height="17.4"/>
+<rect class="dx-zone dx-zone-gain" x="235.6" y="497.2" width="26.8" height="34.8"/>
+<path class="dx-curve dx-d dx-ghost" d="M48.0,358.0 L115.0,401.5 L182.0,445.0"/>
+<path class="dx-curve dx-d" d="M182.0,445.0 L249.0,488.5 L316.0,532.0"/>
+<path class="dx-axis" d="M48,350 V532 H324"/>
+<path class="dx-head" style="fill:var(--dx-axis,#4E463B)" d="M48.0,350.0 L44.7,356.0 L51.3,356.0 Z"/>
+<path class="dx-head" style="fill:var(--dx-axis,#4E463B)" d="M324.0,532.0 L318.0,528.7 L318.0,535.3 Z"/>
+<text class="dx-axlab" x="54" y="352">Price (GH₵)</text>
+<text class="dx-axlab" x="324" y="562" text-anchor="end">Quantity per week</text>
+<text class="dx-tick" x="42" y="546" text-anchor="end">0</text>
+<path class="dx-guide" d="M48,479.8 H235.6 V532"/>
+<path class="dx-guide" d="M48,497.2 H262.4 V532"/>
+<circle cx="182.0" cy="445.0" r="3" style="fill:var(--dx-demand,#2E4C8F)"/>
+<path class="dx-leader" d="M185.0,442.0 L200.8,429.3"/>
+<text class="dx-note" x="203.4" y="417.2" text-anchor="start"><tspan class="dx-note-b">|ε| = 1</tspan></text>
+<text class="dx-note" x="203.4" y="431.2" text-anchor="start">revenue peaks</text>
+<text class="dx-note" x="281.2" y="485.0" text-anchor="start"><tspan class="dx-note-b">|ε| &lt; 1</tspan></text>
+<text class="dx-lab dx-lab-d" x="314.0" y="524.0" text-anchor="end">D</text>
+<circle class="dx-pt" cx="235.6" cy="479.8" r="4" style="stroke:var(--dx-demand,#2E4C8F)"/>
+<circle class="dx-pt" cx="262.4" cy="497.2" r="4" style="stroke:var(--dx-demand,#2E4C8F)"/>
+<text class="dx-note dx-note-b" x="241.6" y="473.8" text-anchor="start">A</text>
+<text class="dx-note dx-note-b" x="268.4" y="491.2" text-anchor="start">B</text>
+<text class="dx-tick" x="42" y="483.8" text-anchor="end">30</text>
+<text class="dx-tick" x="42" y="501.2" text-anchor="end">20</text>
+<text class="dx-tick" x="235.6" y="547" text-anchor="middle">70</text>
+<text class="dx-tick" x="262.4" y="547" text-anchor="middle">80</text>
+<text class="dx-tick" x="141.8" y="492.5" text-anchor="middle">−700 on units already sold</text>
+<text class="dx-note" x="221.6" y="522.1" text-anchor="end">+200 from new buyers</text>
+<path class="dx-anno" d="M224.6,518.1 L241.6,518.1"/><path class="dx-head" d="M241.6,518.1 L235.6,514.8 L235.6,521.4 Z"/>
+<text class="dx-note" x="16.0" y="582.0" text-anchor="start"><tspan class="dx-note-b">Revenue 2,100 → 1,600</tspan> (falls by 500): the loss beats the gain.</text>
+</g>
+</svg>

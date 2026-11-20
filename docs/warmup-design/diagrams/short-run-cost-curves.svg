@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="dx" viewBox="0 0 360 456" width="100%" role="img" aria-labelledby="dxb-t dxb-d" preserveAspectRatio="xMidYMid meet">
+<title id="dxb-t">Short-run cost curves: marginal cost crosses average variable cost and average total cost at their minimums</title>
+<desc id="dxb-d">Fixed cost is 60 and average variable cost is 30 − 6Q + 0.5Q². Marginal cost, 30 − 12Q + 1.5Q², is U-shaped with its lowest point at Q = 4, where diminishing returns set in. It crosses AVC at AVC's minimum (Q = 6, cost 12) and ATC at ATC's minimum (Q ≈ 7.2, cost ≈ 21). Average fixed cost, 60 ÷ Q, falls continuously, and the vertical gap between ATC and AVC equals AFC, so the two average curves converge as output rises.</desc>
+<style>
+.dx{font-family:var(--sans,-apple-system,"Segoe UI",Roboto,system-ui,sans-serif)}
+.dx-axis{fill:none;stroke:var(--dx-axis,#4E463B);stroke-width:1.25;stroke-linecap:square}
+.dx-guide{fill:none;stroke:var(--dx-guide,#8F8472);stroke-width:1;stroke-dasharray:2 3}
+.dx-curve{fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.dx-d{stroke:var(--dx-demand,#2E4C8F)}
+.dx-mr{stroke:var(--dx-mr,#2E4C8F);stroke-dasharray:7 5;stroke-linecap:butt}
+.dx-s{stroke:var(--dx-supply,#1C6B63)}
+.dx-mc{stroke:var(--dx-mc,#A8452A);stroke-width:2.75}
+.dx-atc{stroke:var(--dx-atc,#8A6116)}
+.dx-avc{stroke:var(--dx-avc,#8A6116);stroke-dasharray:8 5;stroke-linecap:butt}
+.dx-afc{stroke:var(--dx-afc,#6B6152);stroke-width:2.25;stroke-dasharray:.5 5}
+.dx-ghost{opacity:.3}
+.dx-lab{font-size:12.5px;font-weight:700;letter-spacing:.01em}
+.dx-lab-d{fill:var(--dx-demand,#2E4C8F)}.dx-lab-mr{fill:var(--dx-mr,#2E4C8F)}
+.dx-lab-s{fill:var(--dx-supply,#1C6B63)}.dx-lab-mc{fill:var(--dx-mc,#A8452A)}
+.dx-lab-atc{fill:var(--dx-atc,#8A6116)}.dx-lab-avc{fill:var(--dx-avc,#8A6116)}.dx-lab-afc{fill:var(--dx-afc,#6B6152)}
+.dx-tick{font-family:var(--mono,ui-monospace,Menlo,monospace);font-size:11px;fill:var(--dx-label,#4E463B);font-variant-numeric:tabular-nums}
+.dx-axlab{font-size:11px;font-weight:600;fill:var(--dx-label,#4E463B);letter-spacing:.02em}
+.dx-title{font-size:13px;font-weight:700;fill:var(--dx-ink,#1B1712)}
+.dx-note{font-size:11.5px;fill:var(--dx-label,#4E463B)}
+.dx-note-b{font-weight:700;fill:var(--dx-ink,#1B1712)}
+.dx-zone{stroke-width:1;fill-opacity:var(--dx-fill-o,.18)}
+.dx-zone-profit{fill:var(--dx-profit,#2A6A46);stroke:var(--dx-profit,#2A6A46)}
+.dx-zone-loss{fill:var(--dx-loss,#9A3324);stroke:var(--dx-loss,#9A3324)}
+.dx-zone-rev{fill:var(--dx-revenue,#8A6116);stroke:none;fill-opacity:var(--dx-fill-o2,.09)}
+.dx-zone-gain{fill:var(--dx-profit,#2A6A46);stroke:var(--dx-profit,#2A6A46)}
+.dx-pt{fill:var(--dx-point,#FFFCF6);stroke-width:2}
+.dx-pt-ink{stroke:var(--dx-ink,#1B1712)}
+.dx-anno{fill:none;stroke:var(--dx-ink,#1B1712);stroke-width:1.25;stroke-linecap:round}
+.dx-head{fill:var(--dx-ink,#1B1712)}
+.dx-leader{fill:none;stroke:var(--dx-guide,#8F8472);stroke-width:1}
+</style>
+<g aria-hidden="true">
+<text class="dx-title" x="16.0" y="22.0" text-anchor="start">Short-run cost curves</text>
+<text class="dx-note" x="16.0" y="40.0" text-anchor="start">MC cuts AVC and ATC at their lowest points.</text>
+<path class="dx-axis" d="M48,72 V356 H314"/>
+<path class="dx-head" style="fill:var(--dx-axis,#4E463B)" d="M48.0,72.0 L44.7,78.0 L51.3,78.0 Z"/>
+<path class="dx-head" style="fill:var(--dx-axis,#4E463B)" d="M314.0,356.0 L308.0,352.7 L308.0,359.3 Z"/>
+<text class="dx-axlab" x="54" y="74">Cost per unit (GH₵)</text>
+<text class="dx-axlab" x="314" y="386" text-anchor="end">Output per day</text>
+<text class="dx-tick" x="42" y="370" text-anchor="end">0</text>
+<clipPath id="dxb-clip"><rect x="48" y="74" width="268" height="282"/></clipPath><g clip-path="url(#dxb-clip)">
+<path class="dx-curve dx-afc" d="M75.9,77.1 L77.3,91.0 L78.8,103.7 L80.2,115.1 L81.7,125.6 L83.2,135.2 L84.6,144.0 L86.1,152.2 L87.6,159.7 L89.0,166.7 L90.5,173.3 L92.0,179.4 L93.4,185.1 L94.9,190.4 L96.4,195.4 L97.8,200.1 L99.3,204.6 L100.8,208.8 L102.2,212.8 L103.7,216.5 L105.2,220.1 L106.6,223.5 L108.1,226.8 L109.6,229.8 L111.0,232.8 L112.5,235.6 L114.0,238.2 L115.4,240.8 L116.9,243.3 L118.4,245.6 L119.8,247.9 L121.3,250.0 L122.8,252.1 L124.2,254.1 L125.7,256.0 L127.2,257.9 L128.6,259.7 L130.1,261.4 L131.6,263.0 L133.0,264.6 L134.5,266.2 L136.0,267.7 L137.4,269.1 L138.9,270.5 L140.4,271.9 L141.8,273.2 L143.3,274.5 L144.8,275.7 L146.2,276.9 L147.7,278.1 L149.1,279.2 L150.6,280.3 L152.1,281.4 L153.5,282.4 L155.0,283.4 L156.5,284.4 L157.9,285.3 L159.4,286.3 L160.9,287.2 L162.3,288.1 L163.8,288.9 L165.3,289.8 L166.7,290.6 L168.2,291.4 L169.7,292.2 L171.1,292.9 L172.6,293.7 L174.1,294.4 L175.5,295.1 L177.0,295.8 L178.5,296.5 L179.9,297.1 L181.4,297.8 L182.9,298.4 L184.3,299.0 L185.8,299.6 L187.3,300.2 L188.7,300.8 L190.2,301.4 L191.7,301.9 L193.1,302.5 L194.6,303.0 L196.1,303.5 L197.5,304.0 L199.0,304.6 L200.5,305.0 L201.9,305.5 L203.4,306.0 L204.9,306.5 L206.3,306.9 L207.8,307.4 L209.2,307.8 L210.7,308.3 L212.2,308.7 L213.6,309.1 L215.1,309.5 L216.6,309.9 L218.0,310.3 L219.5,310.7 L221.0,311.1 L222.4,311.5 L223.9,311.8 L225.4,312.2 L226.8,312.6 L228.3,312.9 L229.8,313.3 L231.2,313.6 L232.7,313.9 L234.2,314.3 L235.6,314.6 L237.1,314.9 L238.6,315.2 L240.0,315.5 L241.5,315.9 L243.0,316.2 L244.4,316.5 L245.9,316.7 L247.4,317.0 L248.8,317.3 L250.3,317.6 L251.8,317.9 L253.2,318.1 L254.7,318.4 L256.2,318.7 L257.6,318.9 L259.1,319.2 L260.6,319.5 L262.0,319.7 L263.5,320.0 L265.0,320.2 L266.4,320.4 L267.9,320.7 L269.4,320.9 L270.8,321.1 L272.3,321.4 L273.8,321.6 L275.2,321.8 L276.7,322.0 L278.1,322.2 L279.6,322.5 L281.1,322.7 L282.5,322.9 L284.0,323.1 L285.5,323.3 L286.9,323.5 L288.4,323.7 L289.9,323.9 L291.3,324.1 L292.8,324.3 L294.3,324.5 L295.7,324.6 L297.2,324.8 L298.7,325.0 L300.1,325.2 L301.6,325.4 L303.1,325.5 L304.5,325.7 L306.0,325.9"/>
+<path class="dx-curve dx-avc" d="M48.0,190.4 L50.1,193.4 L52.3,196.4 L54.5,199.3 L56.6,202.2 L58.8,205.0 L60.9,207.8 L63.0,210.5 L65.2,213.2 L67.3,215.8 L69.5,218.4 L71.7,221.0 L73.8,223.5 L76.0,225.9 L78.1,228.4 L80.2,230.7 L82.4,233.0 L84.6,235.3 L86.7,237.5 L88.8,239.7 L91.0,241.8 L93.2,243.9 L95.3,246.0 L97.5,248.0 L99.6,249.9 L101.8,251.8 L103.9,253.7 L106.1,255.5 L108.2,257.2 L110.3,258.9 L112.5,260.6 L114.6,262.2 L116.8,263.8 L118.9,265.3 L121.1,266.8 L123.2,268.3 L125.4,269.6 L127.5,271.0 L129.7,272.3 L131.9,273.5 L134.0,274.7 L136.1,275.9 L138.3,277.0 L140.4,278.1 L142.6,279.1 L144.8,280.1 L146.9,281.0 L149.1,281.9 L151.2,282.7 L153.3,283.5 L155.5,284.2 L157.6,284.9 L159.8,285.6 L161.9,286.2 L164.1,286.7 L166.2,287.2 L168.4,287.7 L170.6,288.1 L172.7,288.5 L174.8,288.8 L177.0,289.1 L179.2,289.3 L181.3,289.5 L183.5,289.6 L185.6,289.7 L187.8,289.8 L189.9,289.8 L192.0,289.7 L194.2,289.6 L196.4,289.5 L198.5,289.3 L200.7,289.0 L202.8,288.8 L205.0,288.4 L207.1,288.1 L209.2,287.6 L211.4,287.2 L213.5,286.7 L215.7,286.1 L217.8,285.5 L220.0,284.9 L222.1,284.2 L224.3,283.4 L226.5,282.6 L228.6,281.8 L230.8,280.9 L232.9,280.0 L235.0,279.0 L237.2,278.0 L239.3,276.9 L241.5,275.8 L243.7,274.6 L245.8,273.4 L248.0,272.2 L250.1,270.9 L252.2,269.5 L254.4,268.1 L256.6,266.7 L258.7,265.2 L260.9,263.7 L263.0,262.1 L265.1,260.5 L267.3,258.8 L269.4,257.1 L271.6,255.3 L273.8,253.5 L275.9,251.6 L278.1,249.7 L280.2,247.8 L282.4,245.8 L284.5,243.7 L286.6,241.7 L288.8,239.5 L290.9,237.3 L293.1,235.1 L295.2,232.8 L297.4,230.5 L299.5,228.1 L301.7,225.7 L303.9,223.3 L306.0,220.8"/>
+<path class="dx-curve dx-atc" d="M93.4,73.3 L94.9,80.0 L96.4,86.4 L97.8,92.5 L99.3,98.2 L100.8,103.7 L102.2,109.0 L103.7,114.0 L105.2,118.9 L106.6,123.5 L108.1,127.9 L109.6,132.2 L111.0,136.2 L112.5,140.2 L114.0,144.0 L115.4,147.6 L116.9,151.1 L118.4,154.5 L119.8,157.8 L121.3,161.0 L122.8,164.0 L124.2,167.0 L125.7,169.8 L127.2,172.6 L128.6,175.3 L130.1,177.9 L131.6,180.4 L133.0,182.8 L134.5,185.2 L136.0,187.5 L137.4,189.7 L138.9,191.8 L140.4,193.9 L141.8,195.9 L143.3,197.9 L144.8,199.8 L146.2,201.6 L147.7,203.4 L149.1,205.1 L150.6,206.8 L152.1,208.4 L153.5,209.9 L155.0,211.5 L156.5,212.9 L157.9,214.3 L159.4,215.7 L160.9,217.0 L162.3,218.3 L163.8,219.6 L165.3,220.8 L166.7,221.9 L168.2,223.0 L169.7,224.1 L171.1,225.1 L172.6,226.1 L174.1,227.1 L175.5,228.0 L177.0,228.9 L178.5,229.7 L179.9,230.5 L181.4,231.3 L182.9,232.0 L184.3,232.7 L185.8,233.3 L187.3,234.0 L188.7,234.6 L190.2,235.1 L191.7,235.6 L193.1,236.1 L194.6,236.6 L196.1,237.0 L197.5,237.4 L199.0,237.8 L200.5,238.1 L201.9,238.4 L203.4,238.7 L204.9,238.9 L206.3,239.1 L207.8,239.3 L209.2,239.5 L210.7,239.6 L212.2,239.7 L213.6,239.7 L215.1,239.8 L216.6,239.8 L218.0,239.8 L219.5,239.7 L221.0,239.6 L222.4,239.5 L223.9,239.4 L225.4,239.2 L226.8,239.0 L228.3,238.8 L229.8,238.6 L231.2,238.3 L232.7,238.0 L234.2,237.7 L235.6,237.3 L237.1,236.9 L238.6,236.5 L240.0,236.1 L241.5,235.6 L243.0,235.2 L244.4,234.6 L245.9,234.1 L247.4,233.5 L248.8,233.0 L250.3,232.3 L251.8,231.7 L253.2,231.0 L254.7,230.3 L256.2,229.6 L257.6,228.9 L259.1,228.1 L260.6,227.3 L262.0,226.5 L263.5,225.7 L265.0,224.8 L266.4,223.9 L267.9,223.0 L269.4,222.1 L270.8,221.1 L272.3,220.1 L273.8,219.1 L275.2,218.0 L276.7,217.0 L278.1,215.9 L279.6,214.8 L281.1,213.6 L282.5,212.5 L284.0,211.3 L285.5,210.1 L286.9,208.9 L288.4,207.6 L289.9,206.3 L291.3,205.0 L292.8,203.7 L294.3,202.3 L295.7,201.0 L297.2,199.6 L298.7,198.1 L300.1,196.7 L301.6,195.2 L303.1,193.7 L304.5,192.2 L306.0,190.7"/>
+<path class="dx-curve dx-mc" d="M48.0,190.4 L49.6,194.9 L51.2,199.4 L52.8,203.7 L54.5,208.0 L56.1,212.2 L57.7,216.3 L59.3,220.4 L60.9,224.3 L62.5,228.2 L64.1,232.0 L65.7,235.8 L67.3,239.4 L69.0,243.0 L70.6,246.5 L72.2,249.9 L73.8,253.2 L75.4,256.5 L77.0,259.7 L78.6,262.8 L80.2,265.8 L81.9,268.8 L83.5,271.6 L85.1,274.4 L86.7,277.2 L88.3,279.8 L89.9,282.3 L91.5,284.8 L93.2,287.2 L94.8,289.6 L96.4,291.8 L98.0,294.0 L99.6,296.1 L101.2,298.1 L102.8,300.0 L104.4,301.8 L106.1,303.6 L107.7,305.3 L109.3,306.9 L110.9,308.5 L112.5,309.9 L114.1,311.3 L115.7,312.6 L117.3,313.9 L118.9,315.0 L120.6,316.1 L122.2,317.1 L123.8,318.0 L125.4,318.8 L127.0,319.6 L128.6,320.3 L130.2,320.9 L131.9,321.4 L133.5,321.8 L135.1,322.2 L136.7,322.5 L138.3,322.7 L139.9,322.8 L141.5,322.9 L143.1,322.9 L144.8,322.8 L146.4,322.6 L148.0,322.3 L149.6,322.0 L151.2,321.6 L152.8,321.1 L154.4,320.5 L156.0,319.8 L157.6,319.1 L159.3,318.3 L160.9,317.4 L162.5,316.4 L164.1,315.4 L165.7,314.3 L167.3,313.1 L168.9,311.8 L170.6,310.5 L172.2,309.0 L173.8,307.5 L175.4,305.9 L177.0,304.2 L178.6,302.5 L180.2,300.7 L181.8,298.8 L183.5,296.8 L185.1,294.7 L186.7,292.6 L188.3,290.4 L189.9,288.1 L191.5,285.7 L193.1,283.3 L194.7,280.7 L196.4,278.1 L198.0,275.4 L199.6,272.7 L201.2,269.8 L202.8,266.9 L204.4,263.9 L206.0,260.8 L207.6,257.7 L209.2,254.4 L210.9,251.1 L212.5,247.7 L214.1,244.3 L215.7,240.7 L217.3,237.1 L218.9,233.4 L220.5,229.6 L222.1,225.8 L223.8,221.8 L225.4,217.8 L227.0,213.7 L228.6,209.5 L230.2,205.3 L231.8,200.9 L233.4,196.5 L235.0,192.1 L236.7,187.5 L238.3,182.8 L239.9,178.1 L241.5,173.3 L243.1,168.4 L244.7,163.5 L246.3,158.5 L248.0,153.3 L249.6,148.2 L251.2,142.9 L252.8,137.5 L254.4,132.1 L256.0,126.6 L257.6,121.0 L259.2,115.4 L260.9,109.6 L262.5,103.8 L264.1,97.9 L265.7,91.9 L267.3,85.9 L268.9,79.8"/>
+</g>
+<path class="dx-guide" d="M48,289.8 H188.7 V356"/>
+<path class="dx-guide" d="M48,239.8 H216.1 V356"/>
+<circle class="dx-pt" cx="188.7" cy="289.8" r="4" style="stroke:var(--dx-mc,#A8452A)"/>
+<circle class="dx-pt" cx="216.1" cy="239.8" r="4" style="stroke:var(--dx-mc,#A8452A)"/>
+<circle cx="141.8" cy="322.9" r="3" style="fill:var(--dx-mc,#A8452A)"/>
+<text class="dx-tick" x="42" y="293.8" text-anchor="end">12</text>
+<text class="dx-tick" x="42" y="243.8" text-anchor="end">21</text>
+<text class="dx-tick" x="188.7" y="371" text-anchor="middle">6</text>
+<text class="dx-tick" x="216.1" y="371" text-anchor="middle">7.2</text>
+<path class="dx-leader" d="M214.1,234.8 L195.8,149.0"/>
+<text class="dx-note" x="188.7" y="138.0" text-anchor="middle">min ATC: MC = ATC</text>
+<path class="dx-leader" d="M192.7,292.8 L209.8,297.5"/>
+<text class="dx-note" x="212.2" y="305.2" text-anchor="start">min AVC: MC = AVC</text>
+<path class="dx-leader" d="M141.8,326.9 L148.9,338.3"/>
+<text class="dx-note" x="152.4" y="347.2" text-anchor="start">diminishing returns set in</text>
+<path class="dx-anno" d="M311.0,190.7 h4 V220.8 h-4" style="stroke:var(--dx-afc,#6B6152)"/>
+<text class="dx-lab dx-lab-mc" x="258.1" y="90.0" text-anchor="end">MC</text>
+<text class="dx-lab dx-lab-atc" x="319.0" y="194.7" text-anchor="start">ATC</text>
+<text class="dx-lab dx-lab-avc" x="319.0" y="224.8" text-anchor="start">AVC</text>
+<text class="dx-lab dx-lab-afc" x="311.0" y="329.9" text-anchor="start">AFC</text>
+<text class="dx-note" x="16.0" y="412.0" text-anchor="start"><tspan class="dx-note-b">Why:</tspan> an MC below the average pulls it down; above, pulls it up.</text>
+<text class="dx-note" x="16.0" y="428.0" text-anchor="start"><tspan class="dx-note-b">Gap:</tspan> ATC − AVC = AFC (= 60 ÷ Q), which keeps falling,</text>
+<text class="dx-note" x="16.0" y="444.0" text-anchor="start">so the two average curves converge as output grows.</text>
+</g>
+</svg>
