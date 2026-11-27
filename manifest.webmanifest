@@ -1,12 +1,21 @@
 {
+  "id": "./",
   "name": "MBAassist",
   "short_name": "MBAassist",
-  "description": "Scalable MBA course learning workspace with guided practice, quizzes, cases, and calculators.",
+  "description": "MBA study workspace: Managerial Finance practice, Sustainable Leadership and the Managerial Economics warm-up for MBA645.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#F1F2F5",
-  "theme_color": "#0E1014",
-  "icons": []
+  "background_color": "#F5F1E8",
+  "theme_color": "#7A1F2E",
+  "icons": [
+    { "src": "assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Economics warm-up", "short_name": "Warm-up", "url": "./#econprep", "icons": [{ "src": "assets/icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Managerial Finance", "short_name": "Finance", "url": "./#finance", "icons": [{ "src": "assets/icons/icon-192.png", "sizes": "192x192" }] }
+  ]
 }

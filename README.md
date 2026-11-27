@@ -25,9 +25,22 @@ workspace gets colleagues ready for that.
 | Shelf | Lecture notes, the ECG negotiation session, the three mini-cases, and MBA645 material and compulsory readings |
 | Progress | Topic states, strength by kind of decision, and answers you were sure of but got wrong |
 
-**How a topic runs (about 6 minutes):** a gut-check question, an illustration,
-a short explanation, the idea in plain terms, a worked example, two quick
-questions, a "watch out", and where you'll use it in MBA645.
+**How a topic runs (about 6 minutes):** topics open as swipe cards (or "One page" if you
+prefer scrolling): a gut-check prediction first, then the picture, an **interactive explorer**,
+the idea, a worked example, quick checks, a "watch out", and where you'll use it in MBA645.
+
+**Interactive explorers (18, one or more per topic).** Drag the point on the graph or use the
+slider; every readout, shaded area and formula updates live, and each explorer ends in a small
+challenge ("Find the output that makes the most profit", "Find the one merger that tips the
+market above 1,800"). Highlights for Weekend 1: monopoly deadweight loss, surplus and pollution,
+cartel cheating, an HHI calculator that takes your own market shares, and Akerlof's lemons
+unravelling round by round. Explorer sources live in the `ECONX-NEW` block of `index.html`.
+
+**Points and study days (all courses).** One points total: +10 for a first-try correct answer,
++30 when a topic turns Ready, +15 for a solved challenge or an on-time warm-up, +20 for fixing
+a "sure but wrong" answer, +50 for being ready before a deadline. Nothing is ever taken away.
+A study day is 5 answers or a finished topic; class days count automatically, so there is no
+streak to lose.
 
 **Check what I already know** is a short adaptive diagnostic. Each topic gets one
 question plus a "how sure are you?" tap; topics answered correctly get one
