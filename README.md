@@ -1,17 +1,27 @@
 # MBAassist
 
-A scalable MBA course learning workspace. Three courses are mounted in the app:
-**MBA512 Managerial Finance**, **Sustainable Leadership & Ethical Business**
-(Module 3, Seminar 673), and the **Managerial Economics warm-up**, a pre-course
-recap for **MBA645 Resources, Incentives and Market Failures**. Everything is in
-one self-contained `index.html` — no build step, no dependencies, works offline.
+A scalable MBA course learning workspace. The hub holds two courses:
+**MBA512 Managerial Finance** and **MBA645 Resources, Incentives and Market Failures**.
+(Sustainable Leadership is removed from the hub; its saved work is kept, and
+"Show removed courses" on the hub brings it back.) Everything is in one
+self-contained `index.html`: no build step, no dependencies, works offline, and
+installs to a phone's home screen.
+
+**MBA645 is organised by weekend.** The course home lists Weekends 1–4; each
+weekend shows its sessions day by day, deadlines (cases, problem sets, the final
+essay), its readings and cases, and the warm-up topics to brush up before each
+session, with a "Practise this weekend's topics" set. The **Warm-up** tab is the
+collection of everything MBA645 assumes from Managerial Economics: 14 topics with
+interactive graphs, practice sets, a readiness check and the glossary. Weekend
+data lives in `PREP_WEEKS` (edit it if the timetable changes; give a new reading
+`week:"w2"` to file it under a weekend).
 
 The look is "Harmattan Ledger": warm paper tones, Ashesi maroon as the brand
-colour, indigo for the warm-up, and system fonts only so nothing loads from the web.
+colour, indigo for MBA645, and system fonts only.
 
 ---
 
-# Managerial Economics warm-up (before MBA645)
+# MBA645 warm-up (Managerial Economics recap)
 
 MBA645 lists Managerial Economics as its prerequisite and opens Weekend 1 with a
 recap of market structures, then Problem Set 1 on deadweight loss and HHI. This
