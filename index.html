@@ -6336,7 +6336,7 @@ const PREP_WEEK_LABEL={now:"This weekend",next:"Next",done:"Done",later:"Later"}
 function prepWeekDates(w){ const f=new Date(w.from+"T12:00:00"), t=new Date(w.to+"T12:00:00"); return `${f.toLocaleDateString("en-GB",{weekday:"short",day:"numeric"})} – ${t.toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"short"})}`; }
 function prepTopicChips(ids){ return ids.map(prepTopic).filter(Boolean).map(t=>{const s=prepState(t.id);return `<a class="wtopic s-${s}" href="#econprep/topic/${t.id}"><span class="ptdot" aria-hidden="true"></span>${esc(t.title.split(/[:(]/)[0])}</a>`;}).join(""); }
 
-/* course home: the weekends, then the warm-up collection */
+/* course home: prerequisite warm-up before the weekend content */
 function prepCourseHome(nm){
   const T=prepTopics(), n=prepReadyCount(), a=prepPrimary();
   return `<header class="res-hero">
@@ -6346,12 +6346,12 @@ function prepCourseHome(nm){
   </header>
   ${prepCountdown()}
   ${prepPrimaryCard(a)}
+  <h2 class="res-h2">Warm-up</h2>
+  <a class="wcollect" href="#econprep/warmup">${prepRing(n,T.length,64)}<div><b>Managerial Economics warm-up</b><span>${T.length} topics with interactive graphs, practice sets and a readiness check. Everything MBA645 assumes you know.</span></div><span class="res-next-go" aria-hidden="true">→</span></a>
   <h2 class="res-h2">Weekends</h2>
   <div class="wgrid">${PREP_WEEKS.map(w=>{ const st=prepWeekStatus(w), tps=prepWeekTopics(w), r=tps.filter(prepIsReady).length;
     const due=w.sessions.filter(s=>s.due&&s.due>=momDay()).slice(0,1)[0];
     return `<a class="wcard st-${st}" href="#econprep/week/${w.id}"><span class="wtag">${PREP_WEEK_LABEL[st]}</span><span class="wn">${esc(w.n)} · ${prepWeekDates(w)}</span><b>${esc(w.t)}</b>${tps.length?`<span class="wprog"><span class="pmeter" aria-hidden="true"><i style="width:${r/tps.length*100}%"></i></span>${r} of ${tps.length} warm-up topics ready</span>`:""}${due&&st!=="done"?`<small>Due ${new Date(due.due+"T12:00:00").toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"short"})}: ${esc(due.t.split(/[:(]/)[0].trim())}</small>`:""}</a>`; }).join("")}</div>
-  <h2 class="res-h2">Warm-up</h2>
-  <a class="wcollect" href="#econprep/warmup">${prepRing(n,T.length,64)}<div><b>Managerial Economics warm-up</b><span>${T.length} topics with interactive graphs, practice sets and a readiness check. Everything MBA645 assumes you know.</span></div><span class="res-next-go" aria-hidden="true">→</span></a>
   ${typeof momentumStrip==="function"?momentumStrip("econ"):""}
   <a class="wshelf" href="#econprep/shelf"><b>Shelf</b><span>${PREP_RESOURCES.filter(r=>!r.retired).length} cases, readings and notes</span><span aria-hidden="true">→</span></a>
   ${prepIntegrity()}`;
